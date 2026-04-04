@@ -1,0 +1,314 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sobre Nós — Japão Express</title>
+    <!-- Favicon & PWA -->
+    <link rel="icon" type="image/png" href="logo.png">
+    <link rel="apple-touch-icon" href="logo.png">
+    <link rel="manifest" href="manifest.json">
+    <meta name="theme-color" content="#9B59B6">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="default">
+    <meta name="apple-mobile-web-app-title" content="Japão Express">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Caveat:wght@600;700&family=Nunito:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        @font-face { font-family:'Sucker Brush'; src:url('sucker-brush.ttf') format('truetype'); font-display:swap; }
+        * { box-sizing:border-box; }
+        body { font-family:'Nunito',sans-serif; background:#E8DEF8; min-height:100vh; display:flex; justify-content:center; align-items:flex-start; padding:2rem 1rem; }
+        .font-hand { font-family:'Caveat',cursive; }
+        .font-hero { font-family:'Sucker Brush','Bebas Neue',cursive; font-weight:normal !important; letter-spacing:0.01em; }
+        .post-it { position:relative; box-shadow:2px 5px 14px rgba(0,0,0,0.10); }
+        .tape { position:absolute; top:-13px; left:50%; transform:translateX(-50%) rotate(-2deg); width:52px; height:20px; background:rgba(226,206,148,0.82); }
+        .tab-panel { display:none; }
+        .tab-panel.active { display:block; animation:fadeIn 0.2s ease; }
+        @keyframes fadeIn { from{opacity:0;transform:translateY(5px)} to{opacity:1;transform:none} }
+        .tab-btn { padding:8px 16px; border-radius:9999px; font-weight:800; font-size:0.75rem; letter-spacing:0.04em; cursor:pointer; transition:all 0.15s; border:none; }
+        .tab-btn.active { background:#9B59B6; color:white; box-shadow:0 3px 10px rgba(155,89,182,0.35); }
+        .tab-btn:not(.active) { background:#EFEFEF; color:#2C1654; }
+        .tab-btn:not(.active):hover { background:#E2D4F0; }
+        .acc-btn { width:100%; display:flex; justify-content:space-between; align-items:center; padding:14px 0; font-weight:800; font-size:0.85rem; color:#2C1654; background:none; border:none; cursor:pointer; text-align:left; }
+        .acc-icon { transition:transform 0.25s; color:#9B59B6; }
+        .acc-body { max-height:0; overflow:hidden; transition:max-height 0.3s ease; }
+        .acc-body.open { max-height:200px; }
+        .acc-icon.open { transform:rotate(180deg); }
+    </style>
+</head>
+<body>
+<div class="bg-[#FDFAF2] w-full max-w-4xl rounded-3xl shadow-2xl overflow-visible border-t-[10px] border-[#9B59B6]">
+
+    <!-- HEADER -->
+    <header class="flex flex-col md:flex-row justify-between items-center px-6 md:px-10 pt-5 pb-4 gap-4">
+        <a href="index.html"><img src="logo.png" onerror="this.src='https://i.imgur.com/YZ4IgF9.png'" alt="Japão Express Logo" class="h-20 md:h-24 object-contain drop-shadow-sm"></a>
+        <div class="flex flex-col items-center gap-3 md:gap-2">
+            <nav class="flex flex-wrap justify-center gap-4 md:gap-8 font-bold text-sm text-[#3D1A78] tracking-wide">
+                <a href="produtos.html" class="hover:text-[#9B59B6] transition">Produtos</a>
+                <a href="index.html#como-funciona" class="hover:text-[#9B59B6] transition">Como Funciona</a>
+                <a href="contato.html" class="hover:text-[#9B59B6] transition">Contato</a>
+            </nav>
+            <div class="flex items-center gap-4">
+                <a href="carrinho.html" class="relative text-[#3D1A78] hover:text-[#9B59B6] transition" title="Carrinho">
+                    <i class="fa-solid fa-bag-shopping text-xl"></i>
+                    <span class="absolute -top-2 -right-2 bg-[#9B59B6] text-white text-[10px] font-black rounded-full w-4 h-4 flex items-center justify-center leading-none">3</span>
+                </a>
+                <a href="favoritos.html" class="text-[#3D1A78] hover:text-[#9B59B6] transition" title="Favoritos">
+                    <i class="fa-regular fa-heart text-xl"></i>
+                </a>
+                <a href="perfil.html" class="text-[#3D1A78] hover:text-[#9B59B6] transition" title="Minha Conta">
+                    <i class="fa-regular fa-circle-user text-xl"></i>
+                </a>
+                <span class="text-[#C9B8E8] font-light select-none">|</span>
+                <a href="login.html" class="text-[#3D1A78] hover:text-[#9B59B6] transition font-bold text-xs tracking-wide uppercase">Entrar</a>
+                <a href="login.html#cadastro" class="bg-[#9B59B6] text-white font-black text-xs px-3 py-1.5 rounded-full hover:bg-[#7D3C98] transition tracking-wide uppercase">Cadastrar</a>
+            </div>
+        </div>
+    </header>
+
+    <!-- BREADCRUMB -->
+    <div class="px-6 md:px-10 pt-3 pb-1">
+        <p class="text-xs font-semibold text-[#9B59B6] tracking-wide">
+            <a href="index.html" class="hover:underline">Home</a>
+            <span class="mx-1 text-gray-400">/</span>
+            <span class="text-[#2C1654]">Institucional</span>
+        </p>
+    </div>
+
+    <!-- HERO -->
+    <section class="px-6 md:px-10 pt-6 pb-4 border-b border-gray-100">
+        <h1 class="font-hero text-[2.8rem] text-[#2C1654] leading-none mb-1">Japão Express</h1>
+        <p class="font-hand text-xl text-[#9B59B6] font-bold">Trazendo o melhor do Japão para o Brasil desde 2022 🌸</p>
+
+        <!-- TABS -->
+        <div class="flex flex-wrap gap-2 mt-5">
+            <button class="tab-btn active" data-tab="sobre" onclick="switchTab(this,'sobre')">
+                <i class="fa-solid fa-store mr-1"></i>Sobre Nós
+            </button>
+            <button class="tab-btn" data-tab="envio" onclick="switchTab(this,'envio')">
+                <i class="fa-solid fa-plane mr-1"></i>Política de Envio
+            </button>
+            <button class="tab-btn" data-tab="trocas" onclick="switchTab(this,'trocas')">
+                <i class="fa-solid fa-rotate-left mr-1"></i>Trocas e Devoluções
+            </button>
+            <button class="tab-btn" data-tab="termos" onclick="switchTab(this,'termos')">
+                <i class="fa-solid fa-file-lines mr-1"></i>Termos de Uso
+            </button>
+            <button class="tab-btn" data-tab="privacidade" onclick="switchTab(this,'privacidade')">
+                <i class="fa-solid fa-shield-halved mr-1"></i>Privacidade
+            </button>
+        </div>
+    </section>
+
+    <!-- CONTEÚDO DAS TABS -->
+    <section class="px-6 md:px-10 py-8">
+
+        <!-- ═══ SOBRE NÓS ═══ -->
+        <div id="tab-sobre" class="tab-panel active">
+            <div class="post-it bg-[#F5F5F5] rounded-2xl p-6 shadow-md mb-6">
+                <div class="tape"></div>
+                <p class="font-hand text-2xl text-[#9B59B6] font-bold mt-3 mb-3">Nossa Missão</p>
+                <p class="text-sm font-semibold text-[#4A3060] leading-relaxed mb-3">
+                    A <strong>Japão Express</strong> nasceu da paixão genuína pelo Japão e tudo que esse país incrível tem a oferecer. Somos uma loja especializada em importados japoneses autênticos — cosméticos, guloseimas, colecionáveis e papelaria — tudo comprado diretamente nas lojas do Japão e enviado com carinho para o Brasil.
+                </p>
+                <p class="text-sm font-semibold text-[#4A3060] leading-relaxed mb-3">
+                    Compramos pessoalmente nas melhores lojas — <strong>Don Quijote, Matsumoto Kiyoshi, Loft</strong> e lojas especializadas — sem intermediários. Isso significa que você recebe produtos 100% originais com preços justos.
+                </p>
+                <p class="text-sm font-semibold text-[#4A3060] leading-relaxed">
+                    Nossa embalagem é pensada para ser <strong>filmável e perfeita</strong> — porque a experiência do unboxing faz parte do prazer de receber algo especial do Japão!
+                </p>
+            </div>
+
+            <!-- Cards de valores -->
+            <div class="grid grid-cols-1 sm:grid-cols-3 gap-5 mb-6">
+                <div class="post-it bg-white rounded-xl p-5 text-center shadow-sm border border-gray-100 rotate-[-0.5deg]">
+                    <div class="tape"></div>
+                    <i class="fa-solid fa-store text-3xl text-[#9B59B6] mt-3 mb-2 block"></i>
+                    <h4 class="font-black text-xs text-[#2C1654] uppercase tracking-wide mb-1">Compras Autênticas</h4>
+                    <p class="text-[0.7rem] font-semibold text-gray-500 leading-snug">Direto em Don Quijote e Matsumoto Kiyoshi. Sem intermediários.</p>
+                </div>
+                <div class="post-it bg-[#EFEFEF] rounded-xl p-5 text-center shadow-sm rotate-[0.5deg]">
+                    <div class="tape" style="transform:translateX(-50%) rotate(1deg)"></div>
+                    <i class="fa-solid fa-box-open text-3xl text-[#9B59B6] mt-3 mb-2 block"></i>
+                    <h4 class="font-black text-xs text-[#2C1654] uppercase tracking-wide mb-1">Embalagem Filmável</h4>
+                    <p class="text-[0.7rem] font-semibold text-gray-500 leading-snug">Cuidamos de cada detalhe para um unboxing perfeito e inesquecível.</p>
+                </div>
+                <div class="post-it bg-white rounded-xl p-5 text-center shadow-sm border border-gray-100 rotate-[-0.3deg]">
+                    <div class="tape"></div>
+                    <i class="fa-solid fa-plane text-3xl text-[#9B59B6] mt-3 mb-2 block"></i>
+                    <h4 class="font-black text-xs text-[#2C1654] uppercase tracking-wide mb-1">Japan Post Direto</h4>
+                    <p class="text-[0.7rem] font-semibold text-gray-500 leading-snug">Envio rastreável via Japan Post EMS diretamente para seu endereço.</p>
+                </div>
+            </div>
+
+            <!-- Números -->
+            <div class="bg-[#2C1654] rounded-2xl p-6 text-white text-center">
+                <p class="font-hand text-xl mb-4 text-[#E2D4F0]">Nossos números</p>
+                <div class="grid grid-cols-3 gap-4">
+                    <div><p class="font-hero text-3xl text-[#C39BD3]">500+</p><p class="text-xs font-bold text-[#E2D4F0] mt-1">Clientes<br>satisfeitos</p></div>
+                    <div><p class="font-hero text-3xl text-[#C39BD3]">3+</p><p class="text-xs font-bold text-[#E2D4F0] mt-1">Anos de<br>operação</p></div>
+                    <div><p class="font-hero text-3xl text-[#C39BD3]">100%</p><p class="text-xs font-bold text-[#E2D4F0] mt-1">Produtos<br>autênticos</p></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- ═══ POLÍTICA DE ENVIO ═══ -->
+        <div id="tab-envio" class="tab-panel">
+            <div class="space-y-4">
+                <div class="bg-[#F5F5F5] rounded-2xl p-5 shadow-sm">
+                    <h3 class="font-black text-base text-[#2C1654] mb-3 flex items-center gap-2"><i class="fa-solid fa-clock text-[#9B59B6]"></i>Prazo de Entrega</h3>
+                    <p class="text-sm font-semibold text-[#4A3060] leading-relaxed">O prazo estimado é de <strong>15 a 30 dias úteis</strong> após a confirmação do pagamento. O envio ocorre em até 5 dias úteis após a confirmação.</p>
+                </div>
+                <div class="bg-[#EFEFEF] rounded-2xl p-5 shadow-sm">
+                    <h3 class="font-black text-base text-[#2C1654] mb-3 flex items-center gap-2"><i class="fa-solid fa-plane text-[#9B59B6]"></i>Transportadora</h3>
+                    <p class="text-sm font-semibold text-[#4A3060] leading-relaxed">Utilizamos exclusivamente a <strong>Japan Post EMS</strong> — o serviço expresso dos Correios japoneses. O rastreamento é disponibilizado por email e WhatsApp logo após o envio.</p>
+                </div>
+                <div class="bg-white rounded-2xl p-5 shadow-sm border border-gray-100">
+                    <h3 class="font-black text-base text-[#2C1654] mb-3 flex items-center gap-2"><i class="fa-solid fa-yen-sign text-[#9B59B6]"></i>Frete</h3>
+                    <p class="text-sm font-semibold text-[#4A3060] leading-relaxed mb-3">O frete é calculado automaticamente no checkout com base no peso do pacote e região de destino. Trabalhamos para manter os melhores preços.</p>
+                    <div class="overflow-x-auto">
+                        <table class="w-full text-xs font-semibold text-[#4A3060]">
+                            <thead><tr class="border-b-2 border-[#E2D4F0]"><th class="text-left py-2 font-black text-[#2C1654]">Região</th><th class="text-left py-2 font-black text-[#2C1654]">Prazo estimado</th><th class="text-left py-2 font-black text-[#2C1654]">Frete médio</th></tr></thead>
+                            <tbody>
+                                <tr class="border-b border-gray-100"><td class="py-2">Sul e Sudeste</td><td class="py-2">15–20 dias úteis</td><td class="py-2">R$ 45–65</td></tr>
+                                <tr class="border-b border-gray-100"><td class="py-2">Centro-Oeste</td><td class="py-2">18–25 dias úteis</td><td class="py-2">R$ 55–75</td></tr>
+                                <tr><td class="py-2">Norte e Nordeste</td><td class="py-2">20–30 dias úteis</td><td class="py-2">R$ 65–90</td></tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                <div class="bg-[#F5F5F5] rounded-2xl p-5 shadow-sm">
+                    <h3 class="font-black text-base text-[#2C1654] mb-3 flex items-center gap-2"><i class="fa-solid fa-box text-[#9B59B6]"></i>Embalagem</h3>
+                    <p class="text-sm font-semibold text-[#4A3060] leading-relaxed">Embalamos cada pedido com cuidado especial para garantir proteção e uma experiência de unboxing incrível. Utilizamos caixas reforçadas, papel de seda e lacre personalizado da Japão Express.</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- ═══ TROCAS E DEVOLUÇÕES ═══ -->
+        <div id="tab-trocas" class="tab-panel">
+            <div class="space-y-4">
+                <div class="bg-[#F5F5F5] rounded-2xl p-5 shadow-sm">
+                    <h3 class="font-black text-base text-[#2C1654] mb-3 flex items-center gap-2"><i class="fa-solid fa-rotate-left text-[#9B59B6]"></i>Política de Trocas</h3>
+                    <ul class="text-sm font-semibold text-[#4A3060] space-y-2 leading-relaxed">
+                        <li class="flex items-start gap-2"><i class="fa-solid fa-check text-[#25D366] mt-0.5 flex-shrink-0"></i>Aceitamos devoluções em até <strong>7 dias corridos</strong> após o recebimento (conforme CDC)</li>
+                        <li class="flex items-start gap-2"><i class="fa-solid fa-check text-[#25D366] mt-0.5 flex-shrink-0"></i>Produto deve estar <strong>lacrado e sem uso</strong> para troca integral</li>
+                        <li class="flex items-start gap-2"><i class="fa-solid fa-check text-[#25D366] mt-0.5 flex-shrink-0"></i>Em caso de produto avariado ou errado, nos responsabilizamos pelo novo envio</li>
+                        <li class="flex items-start gap-2"><i class="fa-solid fa-check text-[#25D366] mt-0.5 flex-shrink-0"></i>Para acionar: fale conosco via WhatsApp ou email em até 7 dias</li>
+                    </ul>
+                </div>
+                <div class="bg-[#EFEFEF] rounded-2xl p-5 shadow-sm">
+                    <h3 class="font-black text-base text-[#2C1654] mb-3 flex items-center gap-2"><i class="fa-solid fa-xmark-circle text-red-400"></i>Itens não aceitos para troca</h3>
+                    <ul class="text-sm font-semibold text-[#4A3060] space-y-1.5">
+                        <li class="flex items-start gap-2"><i class="fa-solid fa-minus text-red-400 mt-0.5 flex-shrink-0"></i>Alimentos e guloseimas após abertura da embalagem</li>
+                        <li class="flex items-start gap-2"><i class="fa-solid fa-minus text-red-400 mt-0.5 flex-shrink-0"></i>Cosméticos após uso</li>
+                        <li class="flex items-start gap-2"><i class="fa-solid fa-minus text-red-400 mt-0.5 flex-shrink-0"></i>Produtos personalizados ou edições especiais abertas</li>
+                        <li class="flex items-start gap-2"><i class="fa-solid fa-minus text-red-400 mt-0.5 flex-shrink-0"></i>Itens danificados pelo mau uso do cliente</li>
+                    </ul>
+                </div>
+                <div class="bg-white rounded-2xl p-5 shadow-sm border border-gray-100">
+                    <h3 class="font-black text-base text-[#2C1654] mb-3 flex items-center gap-2"><i class="fa-brands fa-whatsapp text-[#25D366]"></i>Como solicitar</h3>
+                    <p class="text-sm font-semibold text-[#4A3060] leading-relaxed mb-3">Entre em contato pelo WhatsApp ou email informando: número do pedido, motivo da troca/devolução e fotos do produto recebido.</p>
+                    <a href="https://wa.me/551199999999" class="inline-flex items-center gap-2 bg-[#25D366] text-white font-black py-2.5 px-6 rounded-full text-xs hover:bg-[#1EB855] transition">
+                        <i class="fa-brands fa-whatsapp text-base"></i>Solicitar via WhatsApp
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <!-- ═══ TERMOS DE USO ═══ -->
+        <div id="tab-termos" class="tab-panel">
+            <div class="bg-[#F5F5F5] rounded-2xl p-6 shadow-sm space-y-4 text-sm font-semibold text-[#4A3060] leading-relaxed">
+                <p class="font-hand text-2xl text-[#2C1654] font-bold">Termos de Uso</p>
+                <p class="text-[0.7rem] text-gray-400 font-bold">Última atualização: Janeiro de 2026</p>
+
+                <div class="space-y-3">
+                    <div><p class="font-black text-[#2C1654] text-xs uppercase tracking-wide mb-1">1. Aceitação dos Termos</p><p class="text-xs">Ao acessar e utilizar os serviços da Japão Express, você concorda com estes Termos de Uso. Caso não concorde, por favor, não utilize nossos serviços.</p></div>
+                    <div><p class="font-black text-[#2C1654] text-xs uppercase tracking-wide mb-1">2. Produtos e Disponibilidade</p><p class="text-xs">Os produtos são adquiridos no Japão mediante encomenda. A Japão Express não é responsável por eventual indisponibilidade de produto nas lojas japonesas após confirmação do pedido. Nesses casos, o cliente será reembolsado integralmente.</p></div>
+                    <div><p class="font-black text-[#2C1654] text-xs uppercase tracking-wide mb-1">3. Preços e Pagamentos</p><p class="text-xs">Os preços incluem o custo do produto no Japão e a taxa de serviço da Japão Express. O frete é calculado no checkout com base no destino e peso. Os preços estão sujeitos a alterações sem aviso prévio.</p></div>
+                    <div><p class="font-black text-[#2C1654] text-xs uppercase tracking-wide mb-1">4. Responsabilidades Aduaneiras</p><p class="text-xs">Importações estão sujeitas à fiscalização pela Receita Federal Brasileira. A Japão Express não se responsabiliza por taxas aduaneiras eventualmente aplicadas, nem por atrasos causados pela alfândega.</p></div>
+                    <div><p class="font-black text-[#2C1654] text-xs uppercase tracking-wide mb-1">5. Propriedade Intelectual</p><p class="text-xs">Todo o conteúdo deste site (textos, imagens, logotipo) é propriedade da Japão Express e protegido por direitos autorais. É proibida a reprodução sem autorização prévia.</p></div>
+                    <div><p class="font-black text-[#2C1654] text-xs uppercase tracking-wide mb-1">6. Limitação de Responsabilidade</p><p class="text-xs">A Japão Express não se responsabiliza por danos indiretos decorrentes do uso dos produtos adquiridos. Nossa responsabilidade se limita ao valor pago pelo produto.</p></div>
+                    <div><p class="font-black text-[#2C1654] text-xs uppercase tracking-wide mb-1">7. Foro e Legislação</p><p class="text-xs">Estes termos são regidos pela legislação brasileira. Quaisquer disputas serão resolvidas no foro da comarca de São Paulo — SP.</p></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- ═══ PRIVACIDADE ═══ -->
+        <div id="tab-privacidade" class="tab-panel">
+            <div class="bg-[#F5F5F5] rounded-2xl p-6 shadow-sm space-y-4 text-sm font-semibold text-[#4A3060] leading-relaxed">
+                <p class="font-hand text-2xl text-[#2C1654] font-bold">Política de Privacidade</p>
+                <p class="text-[0.7rem] text-gray-400 font-bold">Em conformidade com a LGPD (Lei 13.709/2018)</p>
+
+                <div class="space-y-4">
+                    <div class="bg-white rounded-xl p-4 border border-gray-100">
+                        <p class="font-black text-[#2C1654] text-xs uppercase tracking-wide mb-2 flex items-center gap-2"><i class="fa-solid fa-database text-[#9B59B6]"></i>Dados que coletamos</p>
+                        <ul class="text-xs space-y-1">
+                            <li>• Nome, email, telefone e CPF (para processamento de pedidos)</li>
+                            <li>• Endereço de entrega (para envio dos produtos)</li>
+                            <li>• Dados de navegação (cookies para melhorar a experiência)</li>
+                            <li>• Histórico de compras (para recomendações personalizadas)</li>
+                        </ul>
+                    </div>
+                    <div class="bg-white rounded-xl p-4 border border-gray-100">
+                        <p class="font-black text-[#2C1654] text-xs uppercase tracking-wide mb-2 flex items-center gap-2"><i class="fa-solid fa-gear text-[#9B59B6]"></i>Como usamos seus dados</p>
+                        <ul class="text-xs space-y-1">
+                            <li>• Processar e entregar seus pedidos</li>
+                            <li>• Comunicar sobre status do pedido e rastreamento</li>
+                            <li>• Enviar promoções (apenas com sua autorização)</li>
+                            <li>• Melhorar nossos serviços e site</li>
+                        </ul>
+                    </div>
+                    <div class="bg-white rounded-xl p-4 border border-gray-100">
+                        <p class="font-black text-[#2C1654] text-xs uppercase tracking-wide mb-2 flex items-center gap-2"><i class="fa-solid fa-shield-halved text-[#9B59B6]"></i>Seus direitos (LGPD)</p>
+                        <ul class="text-xs space-y-1">
+                            <li>• Acessar seus dados pessoais a qualquer momento</li>
+                            <li>• Solicitar correção de dados incorretos</li>
+                            <li>• Solicitar exclusão de seus dados</li>
+                            <li>• Revogar consentimento de marketing</li>
+                        </ul>
+                        <p class="text-xs mt-2 text-[#9B59B6] font-black">Para exercer seus direitos: ojapaoexpress@gmail.com</p>
+                    </div>
+                    <div class="bg-white rounded-xl p-4 border border-gray-100">
+                        <p class="font-black text-[#2C1654] text-xs uppercase tracking-wide mb-2 flex items-center gap-2"><i class="fa-solid fa-share-nodes text-[#9B59B6]"></i>Compartilhamento de dados</p>
+                        <p class="text-xs">Seus dados são compartilhados apenas com a Japan Post (para entrega) e processadores de pagamento. <strong>Nunca vendemos seus dados a terceiros.</strong></p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- FOOTER -->
+    <footer class="border-t-2 border-gray-200 px-6 md:px-10 pt-8 pb-6 grid grid-cols-1 md:grid-cols-3 gap-8 text-center md:text-left text-sm text-[#4A3060]">
+        <div><h5 class="font-black text-base mb-2 text-[#2C1654]">Japão Express</h5><p class="text-xs leading-relaxed font-semibold">Chiryu-shi, Aichi-ken<br>Direto do Japão para o Brasil.</p></div>
+        <div><h5 class="font-black text-base mb-2 text-[#2C1654]">Quick Links</h5><ul class="space-y-1 text-xs font-semibold"><li><a href="produtos.html" class="hover:text-[#9B59B6]">Produtos</a></li><li><a href="contato.html" class="hover:text-[#9B59B6]">Contato</a></li><li><a href="institucional.html" class="text-[#9B59B6]">Sobre Nós</a></li></ul></div>
+        <div><h5 class="font-black text-base mb-3 text-[#2C1654]">Social Media</h5><div class="flex justify-center md:justify-start gap-4 text-xl"><a href="https://www.instagram.com/ojapaoexpress" target="_blank" rel="noopener" class="text-[#2C1654] hover:text-[#9B59B6]"><i class="fa-brands fa-instagram"></i></a><a href="#" class="text-[#2C1654] hover:text-[#9B59B6]"><i class="fa-brands fa-tiktok"></i></a><a href="mailto:ojapaoexpress@gmail.com" class="text-[#2C1654] hover:text-[#9B59B6]" title="E-mail"><i class="fa-solid fa-envelope"></i></a></div></div>
+    </footer>
+    <div class="text-center text-xs py-4 text-gray-400 border-t border-gray-100 font-semibold">© 2026 Japão Express. Todos os direitos reservados</div>
+</div>
+<script>
+    function switchTab(btn, tabId) {
+        // Esconder todos os painéis
+        document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
+        document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+        // Mostrar o selecionado
+        document.getElementById('tab-' + tabId).classList.add('active');
+        btn.classList.add('active');
+        // Atualizar título da página
+        document.title = btn.textContent.trim() + ' — Japão Express';
+    }
+
+    // Suporte a hash na URL (ex: institucional.html#envio)
+    function activateFromHash() {
+        const hash = window.location.hash.replace('#','');
+        const valid = ['sobre','envio','trocas','termos','privacidade'];
+        if (valid.includes(hash)) {
+            const btn = document.querySelector('[data-tab="' + hash + '"]');
+            if (btn) switchTab(btn, hash);
+        }
+    }
+    activateFromHash();
+    window.addEventListener('hashchange', activateFromHash);
+</script>
+</body>
+</html>

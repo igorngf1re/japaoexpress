@@ -1,0 +1,583 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Produto — Japão Express</title>
+    <!-- Favicon & PWA -->
+    <link rel="icon" type="image/png" href="logo.png">
+    <link rel="apple-touch-icon" href="logo.png">
+    <link rel="manifest" href="manifest.json">
+    <meta name="theme-color" content="#9B59B6">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="default">
+    <meta name="apple-mobile-web-app-title" content="Japão Express">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@700;800;900&family=Caveat:wght@600;700&family=Nunito:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <style>
+        @font-face {
+            font-family: 'Sucker Brush';
+            src: url('sucker-brush.ttf') format('truetype');
+            font-weight: normal;
+            font-style: normal;
+            font-display: swap;
+        }
+
+        * { box-sizing: border-box; }
+
+        body {
+            font-family: 'Nunito', sans-serif;
+            background-color: #E8DEF8;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: flex-start;
+            padding: 2rem 1rem;
+        }
+
+        .font-hand { font-family: 'Caveat', cursive; }
+        .font-hero { font-family: 'Sucker Brush', cursive; font-weight: normal !important; }
+
+        .post-it {
+            position: relative;
+            box-shadow: 2px 5px 14px rgba(0,0,0,0.10);
+        }
+
+        .tape {
+            position: absolute;
+            top: -13px;
+            left: 50%;
+            transform: translateX(-50%) rotate(-2deg);
+            width: 52px;
+            height: 20px;
+            background-color: rgba(226, 206, 148, 0.82);
+            border-left:  1px solid rgba(0,0,0,0.06);
+            border-right: 1px solid rgba(0,0,0,0.06);
+        }
+
+        .pin {
+            position: absolute;
+            top: 10px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 14px;
+            height: 14px;
+            background: radial-gradient(circle at 38% 38%, #ff7e7e, #c0392b);
+            border-radius: 50%;
+            box-shadow: inset -2px -2px 4px rgba(0,0,0,0.28), 1px 2px 4px rgba(0,0,0,0.22);
+            z-index: 10;
+        }
+
+        .stars { color: #F5A623; }
+
+        /* Thumbnail galeria */
+        .thumb {
+            width: 64px;
+            height: 64px;
+            border-radius: 8px;
+            border: 2px solid transparent;
+            cursor: pointer;
+            transition: border-color 0.15s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: white;
+        }
+        .thumb.active { border-color: #9B59B6; }
+        .thumb:hover  { border-color: #C39BD3; }
+
+        /* Quantidade */
+        .qty-btn {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            border: 2px solid #9B59B6;
+            color: #9B59B6;
+            font-weight: 900;
+            font-size: 1rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.15s;
+        }
+        .qty-btn:hover { background: #9B59B6; color: white; }
+
+        /* Related card hover */
+        .related-card {
+            transition: transform 0.2s, box-shadow 0.2s;
+            cursor: pointer;
+        }
+        .related-card:hover {
+            transform: translateY(-4px) scale(1.02);
+            box-shadow: 0 8px 24px rgba(0,0,0,0.13);
+        }
+
+        /* Badge */
+        .badge-top {
+            position: absolute;
+            top: 12px;
+            left: 12px;
+            background: #F5A623;
+            color: white;
+            font-size: 0.65rem;
+            font-weight: 900;
+            padding: 3px 10px;
+            border-radius: 9999px;
+            letter-spacing: 0.05em;
+            text-transform: uppercase;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.18);
+            z-index: 10;
+        }
+
+        /* Accordion */
+        .accordion-content {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.3s ease;
+        }
+        .accordion-content.open {
+            max-height: 300px;
+        }
+    </style>
+</head>
+
+<body>
+
+<div class="bg-[#FDFAF2] w-full max-w-4xl rounded-3xl shadow-2xl overflow-visible border-t-[10px] border-[#9B59B6]">
+
+    <!-- ══════════════ HEADER ══════════════ -->
+    <header class="flex flex-col md:flex-row justify-between items-center px-6 md:px-10 pt-5 pb-4 gap-4">
+        <a href="index.html">
+            <img src="logo.png"
+                 onerror="this.src='https://i.imgur.com/YZ4IgF9.png'"
+                 alt="Japão Express Logo"
+                 class="h-20 md:h-24 object-contain drop-shadow-sm">
+        </a>
+        <div class="flex flex-col items-center gap-3 md:gap-2">
+            <nav class="flex flex-wrap justify-center gap-4 md:gap-8 font-bold text-sm text-[#3D1A78] tracking-wide">
+                <a href="produtos.html" class="text-[#9B59B6] border-b-2 border-[#9B59B6] pb-0.5">Produtos</a>
+                <a href="index.html#como-funciona" class="hover:text-[#9B59B6] transition">Como Funciona</a>
+                <a href="index.html#unboxing" class="hover:text-[#9B59B6] transition">Unboxing</a>
+                <a href="index.html#contato" class="hover:text-[#9B59B6] transition">Contato</a>
+            </nav>
+            <div class="flex items-center gap-4">
+                <a href="carrinho.html" class="relative text-[#3D1A78] hover:text-[#9B59B6] transition" title="Carrinho">
+                    <i class="fa-solid fa-bag-shopping text-xl"></i>
+                    <span class="absolute -top-2 -right-2 bg-[#9B59B6] text-white text-[10px] font-black rounded-full w-4 h-4 flex items-center justify-center leading-none">3</span>
+                </a>
+                <a href="favoritos.html" class="text-[#3D1A78] hover:text-[#9B59B6] transition" title="Favoritos">
+                    <i class="fa-regular fa-heart text-xl"></i>
+                </a>
+                <a href="perfil.html" class="text-[#3D1A78] hover:text-[#9B59B6] transition" title="Minha Conta">
+                    <i class="fa-regular fa-circle-user text-xl"></i>
+                </a>
+                <span class="text-[#C9B8E8] font-light select-none">|</span>
+                <a href="login.html" class="text-[#3D1A78] hover:text-[#9B59B6] transition font-bold text-xs tracking-wide uppercase">Entrar</a>
+                <a href="login.html#cadastro" class="bg-[#9B59B6] text-white font-black text-xs px-3 py-1.5 rounded-full hover:bg-[#7D3C98] transition tracking-wide uppercase">Cadastrar</a>
+            </div>
+        </div>
+    </header>
+
+    <!-- ══════════════ BREADCRUMB ══════════════ -->
+    <div class="px-6 md:px-10 pt-3 pb-1">
+        <p class="text-xs font-semibold text-[#9B59B6] tracking-wide">
+            <a href="index.html" class="hover:underline">Home</a>
+            <span class="mx-1 text-gray-400">/</span>
+            <a href="produtos.html" class="hover:underline">Produtos</a>
+            <span class="mx-1 text-gray-400">/</span>
+            <span id="breadcrumbName" class="text-[#2C1654]">Produto</span>
+        </p>
+    </div>
+
+    <!-- ══════════════ DETALHE DO PRODUTO ══════════════ -->
+    <section class="px-6 md:px-10 py-8">
+        <div class="flex flex-col md:flex-row gap-10">
+
+            <!-- ── COLUNA ESQUERDA: Imagem ── -->
+            <div class="md:w-2/5 flex flex-col gap-4">
+
+                <!-- Imagem principal -->
+                <div class="post-it bg-white rounded-2xl p-6 relative border-4 border-white shadow-xl rotate-[0.5deg]">
+                    <div class="tape"></div>
+                    <span id="productBadge" class="badge-top hidden"></span>
+
+                    <!-- Área de imagem (ícone como placeholder) -->
+                    <div id="mainImage"
+                         class="w-full h-56 rounded-xl flex items-center justify-center bg-[#F4F0FF] border border-purple-100">
+                        <i class="fa-solid fa-box-open text-7xl text-[#C39BD3]"></i>
+                    </div>
+                </div>
+
+                <!-- Miniaturas -->
+                <div id="thumbsRow" class="flex gap-2 justify-center flex-wrap">
+                    <!-- geradas pelo JS -->
+                </div>
+
+                <!-- Origem -->
+                <div class="post-it bg-white rounded-xl p-4 text-center rotate-[-1deg]">
+                    <div class="pin"></div>
+                    <p class="text-xs font-black text-[#2C1654] mt-3 uppercase tracking-wide">Comprado em</p>
+                    <p id="productOrigin" class="font-hand text-xl font-bold text-[#9B59B6] mt-1">—</p>
+                    <p class="text-[0.65rem] font-semibold text-gray-500 mt-0.5">Autêntico do Japão 🇯🇵</p>
+                </div>
+            </div>
+
+            <!-- ── COLUNA DIREITA: Informações ── -->
+            <div class="md:w-3/5 flex flex-col gap-5">
+
+                <!-- Categoria + Badge -->
+                <div class="flex items-center gap-2 flex-wrap">
+                    <span id="productCatLabel"
+                          class="text-[0.65rem] font-black uppercase tracking-widest text-[#9B59B6] bg-[#E2D4F0] px-2.5 py-0.5 rounded-full">
+                        Categoria
+                    </span>
+                    <span id="productBadgeLabel" class="hidden text-[0.65rem] font-black uppercase tracking-widest text-white bg-[#F5A623] px-2.5 py-0.5 rounded-full"></span>
+                </div>
+
+                <!-- Nome -->
+                <h1 id="productName"
+                    class="font-hero text-[2.2rem] text-[#2C1654] leading-tight">
+                    Carregando...
+                </h1>
+
+                <!-- Estrelas -->
+                <div class="flex items-center gap-2">
+                    <span class="stars text-lg">★★★★★</span>
+                    <span class="text-xs font-bold text-gray-400">(47 avaliações)</span>
+                </div>
+
+                <!-- Preço -->
+                <div class="flex items-baseline gap-3">
+                    <p id="productPrice" class="text-4xl font-black text-[#9B59B6]">R$ —</p>
+                    <p class="text-xs font-semibold text-gray-400">+ frete calculado no checkout</p>
+                </div>
+
+                <!-- Descrição curta -->
+                <p id="productDesc" class="text-sm font-semibold text-[#4A3060] leading-relaxed border-l-4 border-[#E2D4F0] pl-4">
+                    —
+                </p>
+
+                <!-- Quantidade -->
+                <div class="flex items-center gap-3">
+                    <span class="text-xs font-black text-[#2C1654] uppercase tracking-wide">Quantidade:</span>
+                    <button class="qty-btn" onclick="changeQty(-1)">−</button>
+                    <span id="qtyDisplay" class="font-black text-lg text-[#2C1654] w-6 text-center">1</span>
+                    <button class="qty-btn" onclick="changeQty(1)">+</button>
+                </div>
+
+                <!-- CTAs -->
+                <div class="flex flex-col sm:flex-row gap-3 mt-1">
+                    <button id="btnAddCart"
+                       class="flex-1 bg-[#9B59B6] text-white font-black py-3.5 px-6 rounded-full shadow-lg hover:bg-[#7D3C98] transition text-sm tracking-widest uppercase text-center flex items-center justify-center gap-2">
+                        <i class="fa-solid fa-bag-shopping"></i>
+                        ADICIONAR AO CARRINHO
+                    </button>
+                    <button id="favBtn"
+                       class="bg-white border-2 border-[#9B59B6] text-[#9B59B6] font-black py-3.5 px-4 rounded-full shadow-lg hover:bg-[#F7F3FF] transition text-sm flex items-center justify-center gap-2">
+                        <i class="fa-regular fa-heart"></i>
+                    </button>
+                    <a href="https://wa.me/5511999999999"
+                       class="flex-1 bg-[#25D366] text-white font-black py-3.5 px-6 rounded-full shadow-lg hover:bg-[#1EB855] transition text-sm tracking-widest uppercase text-center flex items-center justify-center gap-2">
+                        <i class="fa-brands fa-whatsapp text-lg"></i>
+                        WHATSAPP
+                    </a>
+                </div>
+
+                <!-- Badges de confiança -->
+                <div class="flex flex-wrap gap-3 mt-1">
+                    <span class="flex items-center gap-1.5 text-xs font-bold text-[#4A3060] bg-[#F4F0FF] px-3 py-1.5 rounded-full">
+                        <i class="fa-solid fa-shield-halved text-[#9B59B6]"></i> 100% Autêntico
+                    </span>
+                    <span class="flex items-center gap-1.5 text-xs font-bold text-[#4A3060] bg-[#F4F0FF] px-3 py-1.5 rounded-full">
+                        <i class="fa-solid fa-box text-[#9B59B6]"></i> Embalagem Segura
+                    </span>
+                    <span class="flex items-center gap-1.5 text-xs font-bold text-[#4A3060] bg-[#F4F0FF] px-3 py-1.5 rounded-full">
+                        <i class="fa-solid fa-plane text-[#9B59B6]"></i> Japan Post
+                    </span>
+                    <span class="flex items-center gap-1.5 text-xs font-bold text-[#4A3060] bg-[#F4F0FF] px-3 py-1.5 rounded-full">
+                        <i class="fa-solid fa-camera text-[#9B59B6]"></i> Unboxing Filmável
+                    </span>
+                </div>
+
+                <!-- Accordion: Detalhes / Envio -->
+                <div class="border-t border-gray-100 mt-2 space-y-2">
+
+                    <div class="border-b border-gray-100 pb-2">
+                        <button onclick="toggleAccordion('acc1')"
+                                class="w-full flex justify-between items-center py-2 font-black text-sm text-[#2C1654] text-left">
+                            <span><i class="fa-solid fa-circle-info mr-2 text-[#9B59B6]"></i>Detalhes do Produto</span>
+                            <i id="acc1-icon" class="fa-solid fa-chevron-down text-[#9B59B6] transition-transform"></i>
+                        </button>
+                        <div id="acc1" class="accordion-content">
+                            <p id="productDetails" class="text-xs font-semibold text-[#4A3060] leading-relaxed pb-3 pt-1">—</p>
+                        </div>
+                    </div>
+
+                    <div class="border-b border-gray-100 pb-2">
+                        <button onclick="toggleAccordion('acc2')"
+                                class="w-full flex justify-between items-center py-2 font-black text-sm text-[#2C1654] text-left">
+                            <span><i class="fa-solid fa-truck mr-2 text-[#9B59B6]"></i>Envio e Prazo</span>
+                            <i id="acc2-icon" class="fa-solid fa-chevron-down text-[#9B59B6] transition-transform"></i>
+                        </button>
+                        <div id="acc2" class="accordion-content">
+                            <p class="text-xs font-semibold text-[#4A3060] leading-relaxed pb-3 pt-1">
+                                Enviamos via <strong>Japan Post EMS</strong> — rastreável e com seguro.<br>
+                                Prazo estimado: <strong>15 a 30 dias úteis</strong> após o envio.<br>
+                                Peso do produto: <strong><span id="productWeight">—</span></strong><br>
+                                Embalagem projetada para ser <strong>filmável e protegida</strong>. 📦🌸
+                            </p>
+                        </div>
+                    </div>
+
+                    <div>
+                        <button onclick="toggleAccordion('acc3')"
+                                class="w-full flex justify-between items-center py-2 font-black text-sm text-[#2C1654] text-left">
+                            <span><i class="fa-solid fa-rotate-left mr-2 text-[#9B59B6]"></i>Trocas e Garantia</span>
+                            <i id="acc3-icon" class="fa-solid fa-chevron-down text-[#9B59B6] transition-transform"></i>
+                        </button>
+                        <div id="acc3" class="accordion-content">
+                            <p class="text-xs font-semibold text-[#4A3060] leading-relaxed pb-3 pt-1">
+                                Caso o produto chegue com defeito ou avariado, entre em contato pelo WhatsApp.<br>
+                                Trabalhamos para garantir <strong>100% de satisfação</strong> em cada pedido. ✅
+                            </p>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ══════════════ AVALIAÇÕES ══════════════ -->
+    <section class="mx-4 md:mx-6 mb-8 bg-[#F4EFE4] rounded-2xl px-6 md:px-8 py-8 shadow-inner">
+        <h2 class="font-hand text-[2rem] font-bold text-[#2C1654] mb-6">O que dizem nossos clientes 💬</h2>
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-5">
+
+            <div class="post-it bg-white rounded-xl p-4 shadow-md rotate-[-0.5deg]">
+                <div class="tape"></div>
+                <div class="stars text-sm mt-3 mb-1">★★★★★</div>
+                <p class="text-xs font-semibold text-[#3D2060] leading-snug mb-2">
+                    "Chegou perfeito, embalagem incrível e o produto é idêntico ao original do Japão! Já comprei 3 vezes."
+                </p>
+                <p class="text-[0.65rem] font-black text-[#9B59B6]">— Ana Paula, SP</p>
+            </div>
+
+            <div class="post-it bg-white rounded-xl p-4 shadow-md rotate-[1deg]">
+                <div class="pin"></div>
+                <div class="stars text-sm mt-5 mb-1">★★★★★</div>
+                <p class="text-xs font-semibold text-[#3D2060] leading-snug mb-2">
+                    "O unboxing ficou tão lindo que postei nos stories! Produto autêntico, vim de volta comprar mais."
+                </p>
+                <p class="text-[0.65rem] font-black text-[#9B59B6]">— Carla, RJ</p>
+            </div>
+
+            <div class="post-it bg-white rounded-xl p-4 shadow-md rotate-[-0.8deg]">
+                <div class="tape"></div>
+                <div class="stars text-sm mt-3 mb-1">★★★★★</div>
+                <p class="text-xs font-semibold text-[#3D2060] leading-snug mb-2">
+                    "Presentei minha namorada e ela amou! Chegou bem antes do prazo e muito bem embalado. 10/10!"
+                </p>
+                <p class="text-[0.65rem] font-black text-[#9B59B6]">— Lucas, MG</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- ══════════════ PRODUTOS RELACIONADOS ══════════════ -->
+    <section class="px-6 md:px-10 pb-10">
+        <h2 class="font-hand text-[2rem] font-bold text-[#2C1654] mb-6">Você também pode gostar 🌸</h2>
+        <div id="relatedGrid" class="grid grid-cols-2 md:grid-cols-4 gap-5">
+            <!-- gerado pelo JS -->
+        </div>
+    </section>
+
+    <!-- ══════════════ CTA WHATSAPP ══════════════ -->
+    <section class="flex flex-col md:flex-row items-center justify-center gap-6 px-6 md:px-10 pb-10 text-center">
+        <a href="https://wa.me/551199999999"
+           class="bg-[#25D366] text-white font-black py-4 px-9 rounded-full shadow-xl hover:bg-[#1EB855] transition flex items-center gap-3 text-sm tracking-widest uppercase">
+            <i class="fa-brands fa-whatsapp text-2xl"></i>
+            FALE NO WHATSAPP BUSINESS
+        </a>
+        <div class="post-it bg-white px-5 py-4 text-center rotate-[4deg] max-w-[170px] rounded-sm">
+            <div class="tape"></div>
+            <p class="font-hand text-[1.2rem] leading-tight mt-2 text-[#2C1654] font-semibold">
+                Dúvidas sobre redirecionamento? Nos chame!
+            </p>
+        </div>
+    </section>
+
+    <!-- ══════════════ FOOTER ══════════════ -->
+    <footer class="border-t-2 border-gray-200 px-6 md:px-10 pt-8 pb-6 grid grid-cols-1 md:grid-cols-3 gap-8 text-center md:text-left text-sm text-[#4A3060]">
+        <div>
+            <h5 class="font-black text-base mb-2 text-[#2C1654]">Japão Express</h5>
+            <p class="text-xs leading-relaxed font-semibold">Chiryu-shi, Aichi-ken<br>Direto do Japão para o Brasil.</p>
+        </div>
+        <div>
+            <h5 class="font-black text-base mb-2 text-[#2C1654]">Quick Links</h5>
+            <ul class="space-y-1 text-xs font-semibold">
+                <li><a href="produtos.html" class="hover:text-[#9B59B6] transition">Produtos</a></li>
+                <li><a href="index.html#como-funciona" class="hover:text-[#9B59B6] transition">Como Funciona</a></li>
+                <li><a href="index.html#contato" class="hover:text-[#9B59B6] transition">Contato</a></li>
+            </ul>
+        </div>
+        <div>
+            <h5 class="font-black text-base mb-3 text-[#2C1654]">Social Media</h5>
+            <div class="flex justify-center md:justify-start gap-4 text-xl">
+                <a href="#" class="text-[#2C1654] hover:text-[#9B59B6] transition"><i class="fa-brands fa-facebook"></i></a>
+                <a href="https://www.instagram.com/ojapaoexpress" target="_blank" rel="noopener" class="text-[#2C1654] hover:text-[#9B59B6] transition"><i class="fa-brands fa-instagram"></i></a>
+                <a href="#" class="text-[#2C1654] hover:text-[#9B59B6] transition"><i class="fa-brands fa-tiktok"></i></a><a href="mailto:ojapaoexpress@gmail.com" class="text-[#2C1654] hover:text-[#9B59B6]" title="E-mail"><i class="fa-solid fa-envelope"></i></a>
+            </div>
+        </div>
+    </footer>
+    <div class="text-center text-xs py-4 text-gray-400 border-t border-gray-100 font-semibold">
+        © 2026 Japão Express. Todos os direitos reservados
+    </div>
+
+</div>
+
+<!-- ════════════════════ JAVASCRIPT ════════════════════ -->
+<script src="js/products.js"></script>
+<script src="js/cart.js"></script>
+<script src="js/currency.js"></script>
+<script src="js/auth.js"></script>
+<script>
+    // ── Helpers de categoria ──────────────────────────────────────
+    const CAT_STYLE = {
+        'Cosméticos':   'text-[#9B59B6] bg-[#E2D4F0]',
+        'Guloseimas':   'text-emerald-600 bg-emerald-100',
+        'Colecionáveis':'text-violet-600 bg-violet-100',
+    };
+
+    // ── Quantidade ────────────────────────────────────────────────
+    let qty = 1;
+    function changeQty(delta) {
+        qty = Math.max(1, qty + delta);
+        document.getElementById('qtyDisplay').textContent = qty;
+    }
+
+    // ── Accordion ─────────────────────────────────────────────────
+    function toggleAccordion(id) {
+        const el   = document.getElementById(id);
+        const icon = document.getElementById(id + '-icon');
+        el.classList.toggle('open');
+        icon.style.transform = el.classList.contains('open') ? 'rotate(180deg)' : '';
+    }
+
+    // ── Renderizar produto ─────────────────────────────────────────
+    function renderProduct(id) {
+        const p = getProductById(id);
+        if (!p) {
+            document.getElementById('breadcrumbName').textContent = 'Não encontrado';
+            document.getElementById('productName').textContent = 'Produto não encontrado';
+            return;
+        }
+
+        document.title = p.name + ' — Japão Express';
+        document.getElementById('breadcrumbName').textContent = p.name;
+        document.getElementById('productName').textContent    = p.name;
+        document.getElementById('productPrice').setAttribute('data-price-brl', p.priceBRL);
+        document.getElementById('productPrice').textContent   = 'R$ ' + p.priceBRL.toFixed(2).replace('.', ',');
+        document.getElementById('productDesc').textContent    = p.description;
+        document.getElementById('productDetails').textContent = p.details;
+        document.getElementById('productOrigin').textContent  = p.origin;
+
+        // Avaliações dinâmicas
+        document.querySelector('.stars + span').textContent = '(' + p.reviews + ' avaliações)';
+
+        // Categoria
+        const catEl = document.getElementById('productCatLabel');
+        catEl.textContent = p.category;
+        catEl.className   = 'text-[0.65rem] font-black uppercase tracking-widest px-2.5 py-0.5 rounded-full ' + (CAT_STYLE[p.category] || 'text-[#9B59B6] bg-[#E2D4F0]');
+
+        // Badge
+        if (p.badge) {
+            const badgeTop = document.getElementById('productBadge');
+            badgeTop.textContent = p.badge;
+            badgeTop.style.background = p.badgeBg || '#F5A623';
+            badgeTop.classList.remove('hidden');
+            const badgeLbl = document.getElementById('productBadgeLabel');
+            badgeLbl.textContent = p.badge;
+            badgeLbl.style.background = p.badgeBg || '#F5A623';
+            badgeLbl.classList.remove('hidden');
+        }
+
+        // Imagem principal
+        const mainImg = document.getElementById('mainImage');
+        mainImg.innerHTML = '<img src="' + p.image + '" alt="' + p.name + '" class="w-full h-full object-contain p-4">';
+
+        // Thumbnails (3 variações de ângulo da mesma imagem)
+        const thumbsRow = document.getElementById('thumbsRow');
+        thumbsRow.innerHTML = '';
+        [p.image, p.image, p.image].forEach((src, i) => {
+            const t = document.createElement('div');
+            t.className = 'thumb bg-[#F5F5F5] ' + (i === 0 ? 'active' : '');
+            t.innerHTML = '<img src="' + src + '" class="w-full h-full object-contain p-1">';
+            t.onclick = () => {
+                document.querySelectorAll('.thumb').forEach(x => x.classList.remove('active'));
+                t.classList.add('active');
+            };
+            thumbsRow.appendChild(t);
+        });
+
+        // Botão favoritar
+        updateFavBtn(id);
+        const favBtn = document.getElementById('favBtn');
+        if (favBtn) favBtn.onclick = () => { toggleFav(id); updateFavBtn(id); };
+
+        // CTA carrinho
+        document.getElementById('btnAddCart').onclick = () => {
+            addToCart(p, qty);
+        };
+
+        // Peso no botão de envio
+        document.getElementById('productWeight').textContent = p.weight + 'g';
+
+        // Relacionados (mesma categoria, excluindo o atual)
+        const related = PRODUCTS.filter(r => r.cat === p.cat && r.id !== id).slice(0, 4);
+        renderRelated(related);
+
+        // Atualiza preços com moeda escolhida
+        refreshAllPrices();
+    }
+
+    function updateFavBtn(id) {
+        const btn = document.getElementById('favBtn');
+        if (!btn) return;
+        const faved = isFav(id);
+        btn.innerHTML = faved
+            ? '<i class="fa-solid fa-heart text-[#E74C3C]"></i>'
+            : '<i class="fa-regular fa-heart text-[#9B59B6]"></i>';
+        btn.title = faved ? 'Remover dos favoritos' : 'Adicionar aos favoritos';
+    }
+
+    // ── Cards relacionados ─────────────────────────────────────────
+    const rotations = ['rotate-[1deg]','rotate-[-1.5deg]','rotate-[0.5deg]','rotate-[-1deg]'];
+
+    function renderRelated(products) {
+        const grid = document.getElementById('relatedGrid');
+        grid.innerHTML = '';
+        products.forEach((p, i) => {
+            const card = document.createElement('div');
+            card.className = 'related-card post-it ' + p.cardBg + ' p-4 pt-8 rounded-sm text-center ' + (rotations[i] || '') + ' shadow-md';
+            card.onclick = () => { window.location = 'produto.html?id=' + p.id; };
+            card.innerHTML = '<div class="tape"></div>'
+                + '<div class="w-full h-24 bg-white rounded mb-2 flex items-center justify-center border border-gray-100 shadow-sm overflow-hidden">'
+                + '<img src="' + p.image + '" class="w-full h-full object-contain p-1"></div>'
+                + '<h4 class="font-black text-xs mb-0.5 text-[#2C1654] leading-snug">' + p.name + '</h4>'
+                + '<p class="text-base font-black text-[#9B59B6] mb-2" data-price-brl="' + p.priceBRL + '">R$ ' + p.priceBRL.toFixed(2).replace('.',',') + '</p>'
+                + '<button class="bg-[#9B59B6] text-white w-full py-1.5 rounded-full font-black text-xs hover:bg-[#7D3C98] transition">Ver Detalhes</button>';
+            grid.appendChild(card);
+        });
+    }
+
+    // ── Init ──────────────────────────────────────────────────────
+    const params = new URLSearchParams(window.location.search);
+    const id = params.get('id') || 'biore-uv';
+    renderProduct(id);
+</script>
+
+</body>
+</html>

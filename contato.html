@@ -1,0 +1,432 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Contato — Japão Express</title>
+  <!-- Favicon & PWA -->
+  <link rel="icon" type="image/png" href="logo.png">
+  <link rel="apple-touch-icon" href="logo.png">
+  <link rel="manifest" href="manifest.json">
+  <meta name="theme-color" content="#9B59B6">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="default">
+  <meta name="apple-mobile-web-app-title" content="Japão Express">
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Caveat:wght@600;700&family=Nunito:wght@400;600;700;800;900&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            brand: '#9B59B6',
+            'brand-dark': '#2C1654',
+          }
+        }
+      }
+    }
+  </script>
+  <style>
+    .font-hand { font-family: 'Caveat', cursive; }
+    .font-hero { font-family: 'Bebas Neue', cursive; letter-spacing: 0.01em; font-weight: normal !important; }
+    body {
+      font-family: 'Nunito', sans-serif;
+      background: #E8DEF8;
+      min-height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: flex-start;
+      padding: 2rem 1rem;
+    }
+    .tape {
+      position: absolute;
+      top: -13px;
+      left: 50%;
+      transform: translateX(-50%) rotate(-2deg);
+      width: 52px;
+      height: 20px;
+      background: rgba(226, 206, 148, 0.82);
+      border-radius: 2px;
+    }
+    .input-field {
+      border: 2px solid #e5e7eb;
+      border-radius: 0.75rem;
+      padding: 0.625rem 1rem;
+      font-family: 'Nunito', sans-serif;
+      font-weight: 600;
+      font-size: 0.875rem;
+      outline: none;
+      width: 100%;
+      background: white;
+      transition: border-color 0.2s;
+    }
+    .input-field:focus { border-color: #9B59B6; }
+    .label-field {
+      display: block;
+      font-weight: 900;
+      font-size: 0.75rem;
+      color: #2C1654;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      margin-bottom: 0.25rem;
+    }
+    .faq-answer {
+      max-height: 0;
+      overflow: hidden;
+      transition: max-height 0.3s ease, padding 0.3s ease;
+    }
+    .faq-answer.open {
+      max-height: 200px;
+    }
+    .faq-chevron {
+      transition: transform 0.3s ease;
+    }
+    .faq-chevron.open {
+      transform: rotate(180deg);
+    }
+    #success-msg {
+      display: none;
+    }
+  </style>
+</head>
+<body>
+  <div class="bg-[#FDFAF2] w-full max-w-4xl rounded-3xl shadow-2xl border-t-[10px] border-[#9B59B6] overflow-visible">
+
+    <!-- HEADER -->
+    <header class="flex flex-col md:flex-row justify-between items-center px-6 md:px-10 pt-5 pb-4 gap-4">
+      <a href="index.html">
+        <img src="logo.png" onerror="this.src='https://i.imgur.com/YZ4IgF9.png'" alt="Japão Express Logo" class="h-20 md:h-24 object-contain drop-shadow-sm" />
+      </a>
+      <div class="flex flex-col items-center gap-3 md:gap-2">
+          <nav class="flex flex-wrap justify-center gap-4 md:gap-8 font-bold text-sm text-[#3D1A78] tracking-wide">
+              <a href="produtos.html" class="hover:text-[#9B59B6] transition">Produtos</a>
+              <a href="index.html#como-funciona" class="hover:text-[#9B59B6] transition">Como Funciona</a>
+              <a href="index.html#unboxing" class="hover:text-[#9B59B6] transition">Unboxing</a>
+              <a href="contato.html" class="text-[#9B59B6] border-b-2 border-[#9B59B6] pb-0.5">Contato</a>
+          </nav>
+          <div class="flex items-center gap-4">
+              <a href="carrinho.html" class="relative text-[#3D1A78] hover:text-[#9B59B6] transition" title="Carrinho">
+                  <i class="fa-solid fa-bag-shopping text-xl"></i>
+                  <span class="absolute -top-2 -right-2 bg-[#9B59B6] text-white text-[10px] font-black rounded-full w-4 h-4 flex items-center justify-center leading-none">3</span>
+              </a>
+              <a href="favoritos.html" class="text-[#3D1A78] hover:text-[#9B59B6] transition" title="Favoritos">
+                  <i class="fa-regular fa-heart text-xl"></i>
+              </a>
+              <a href="perfil.html" class="text-[#3D1A78] hover:text-[#9B59B6] transition" title="Minha Conta">
+                  <i class="fa-regular fa-circle-user text-xl"></i>
+              </a>
+              <span class="text-[#C9B8E8] font-light select-none">|</span>
+              <a href="login.html" class="text-[#3D1A78] hover:text-[#9B59B6] transition font-bold text-xs tracking-wide uppercase">Entrar</a>
+              <a href="login.html#cadastro" class="bg-[#9B59B6] text-white font-black text-xs px-3 py-1.5 rounded-full hover:bg-[#7D3C98] transition tracking-wide uppercase">Cadastrar</a>
+          </div>
+      </div>
+    </header>
+
+    <!-- MAIN CONTENT -->
+    <main class="px-6 md:px-10 pb-10">
+
+      <!-- BREADCRUMB -->
+      <div class="flex items-center gap-2 text-xs font-semibold text-[#7B5EA0] mb-6">
+        <a href="index.html" class="hover:text-[#9B59B6] transition">Home</a>
+        <i class="fa-solid fa-chevron-right text-[10px]"></i>
+        <span class="text-[#2C1654]">Contato</span>
+      </div>
+
+      <!-- PAGE HEADER -->
+      <div class="mb-8">
+        <h1 class="font-hero text-[2.8rem] text-[#2C1654] leading-none">Fale Conosco</h1>
+        <p class="text-[#7B5EA0] font-semibold mt-1">Nossa equipe no Japão está pronta para te ajudar!</p>
+      </div>
+
+      <!-- 2-COLUMN LAYOUT -->
+      <div class="flex flex-col md:flex-row gap-8 mb-10">
+
+        <!-- LEFT: FORM (55%) -->
+        <div class="md:w-[55%]">
+          <div class="bg-[#F5F5F5] rounded-2xl p-6 shadow-md">
+            <h2 class="font-hand text-2xl text-[#2C1654] mb-5">Envie uma mensagem</h2>
+
+            <form id="contact-form" class="space-y-4" onsubmit="handleSubmit(event)">
+
+              <!-- Nome -->
+              <div>
+                <label class="label-field" for="nome">Nome</label>
+                <input type="text" id="nome" name="nome" class="input-field" placeholder="Seu nome completo" required />
+              </div>
+
+              <!-- Email -->
+              <div>
+                <label class="label-field" for="email">Email</label>
+                <input type="email" id="email" name="email" class="input-field" placeholder="seu@email.com" required />
+              </div>
+
+              <!-- WhatsApp -->
+              <div>
+                <label class="label-field" for="whatsapp">WhatsApp</label>
+                <input type="tel" id="whatsapp" name="whatsapp" class="input-field" placeholder="+55 11 99999-9999" />
+              </div>
+
+              <!-- Assunto -->
+              <div>
+                <label class="label-field" for="assunto">Assunto</label>
+                <select id="assunto" name="assunto" class="input-field" required>
+                  <option value="" disabled selected>Selecione um assunto...</option>
+                  <option value="duvida">Dúvida sobre produto</option>
+                  <option value="rastreamento">Rastreamento de pedido</option>
+                  <option value="entrega">Problema com entrega</option>
+                  <option value="sugestao">Sugestão</option>
+                  <option value="outro">Outro</option>
+                </select>
+              </div>
+
+              <!-- Mensagem -->
+              <div>
+                <label class="label-field" for="mensagem">Mensagem</label>
+                <textarea
+                  id="mensagem"
+                  name="mensagem"
+                  rows="4"
+                  class="input-field resize-none"
+                  placeholder="Descreva sua dúvida ou mensagem..."
+                  required
+                ></textarea>
+              </div>
+
+              <!-- Submit -->
+              <button
+                type="submit"
+                class="w-full bg-[#9B59B6] hover:bg-[#7D3C98] text-white font-black text-sm uppercase tracking-widest rounded-xl py-3 transition flex items-center justify-center gap-2 shadow-lg"
+              >
+                <i class="fa-solid fa-paper-plane"></i>
+                ENVIAR MENSAGEM
+              </button>
+
+              <!-- Success message -->
+              <div id="success-msg" class="bg-[#F0E6FF] border border-[#9B59B6] rounded-xl px-4 py-3 text-center font-bold text-[#2C1654] text-sm">
+                Mensagem enviada! Responderemos em até 24h 💜
+              </div>
+            </form>
+          </div>
+        </div>
+
+        <!-- RIGHT: DIRECT CONTACTS (45%) -->
+        <div class="md:w-[45%] flex flex-col gap-8 pt-4">
+
+          <!-- Post-it 1: WhatsApp -->
+          <div class="relative bg-[#EFEFEF] rounded-2xl p-5 shadow-md" style="transform: rotate(-1deg);">
+            <div class="tape"></div>
+            <div class="flex flex-col gap-2">
+              <i class="fa-brands fa-whatsapp text-[#25D366] text-2xl"></i>
+              <span class="font-hand text-xl text-[#2C1654]">WhatsApp Business</span>
+              <p class="font-black text-[#2C1654] text-base">+55 11 99999-9999</p>
+              <p class="text-xs font-semibold text-gray-500">Respondemos em até 2 horas</p>
+              <a
+                href="https://wa.me/5511999999999"
+                target="_blank"
+                rel="noopener noreferrer"
+                class="mt-1 inline-flex items-center justify-center gap-2 bg-[#25D366] hover:bg-[#1ebe57] text-white font-black text-xs uppercase tracking-widest rounded-xl px-4 py-2.5 transition shadow"
+              >
+                <i class="fa-brands fa-whatsapp"></i>
+                Chamar no WhatsApp
+              </a>
+            </div>
+          </div>
+
+          <!-- Post-it 2: Instagram -->
+          <div class="relative bg-white rounded-2xl p-5 shadow-md" style="transform: rotate(1deg);">
+            <div class="tape" style="transform: translateX(-50%) rotate(2deg);"></div>
+            <div class="flex flex-col gap-2">
+              <i class="fa-brands fa-instagram text-pink-500 text-2xl"></i>
+              <span class="font-hand text-xl text-[#2C1654]">@ojapaoexpress</span>
+              <p class="text-xs font-semibold text-gray-500">DM aberto, respondemos sempre!</p>
+              <a
+                href="https://www.instagram.com/ojapaoexpress"
+                target="_blank"
+                rel="noopener noreferrer"
+                class="mt-1 inline-flex items-center justify-center gap-2 border-2 border-pink-400 text-pink-500 hover:bg-pink-50 font-black text-xs uppercase tracking-widest rounded-xl px-4 py-2.5 transition"
+              >
+                <i class="fa-brands fa-instagram"></i>
+                Ver Instagram
+              </a>
+            </div>
+          </div>
+
+          <!-- Post-it 3: Email -->
+          <div class="relative bg-[#F5F5F5] rounded-2xl p-5 shadow-md" style="transform: rotate(-0.5deg);">
+            <div class="tape" style="transform: translateX(-50%) rotate(-1deg);"></div>
+            <div class="flex flex-col gap-2">
+              <i class="fa-solid fa-envelope text-[#9B59B6] text-2xl"></i>
+              <span class="font-hand text-lg text-[#2C1654]">ojapaoexpress@gmail.com</span>
+              <p class="text-xs font-semibold text-gray-500">Parcerias, dúvidas e imprensa</p>
+              <a
+                href="mailto:ojapaoexpress@gmail.com"
+                class="mt-1 inline-flex items-center justify-center gap-2 border-2 border-[#9B59B6] text-[#9B59B6] hover:bg-[#F4F0FF] font-black text-xs uppercase tracking-widest rounded-xl px-4 py-2.5 transition"
+              >
+                <i class="fa-solid fa-envelope"></i>
+                Enviar E-mail
+              </a>
+            </div>
+          </div>
+
+        </div>
+      </div>
+
+      <!-- FAQ SECTION -->
+      <div class="mb-10">
+        <h2 class="font-hand text-2xl text-[#2C1654] mb-5">Perguntas Frequentes</h2>
+        <div class="bg-white rounded-2xl shadow-md overflow-hidden divide-y divide-gray-100">
+
+          <!-- FAQ item 1 -->
+          <div class="border-b border-gray-200">
+            <button
+              class="faq-btn flex justify-between items-center w-full font-bold text-sm text-[#2C1654] px-5 py-4 hover:bg-gray-50 transition text-left"
+              onclick="toggleFaq(this)"
+            >
+              <span>Quanto tempo leva a entrega?</span>
+              <i class="fa-solid fa-chevron-down faq-chevron text-[#9B59B6] text-xs flex-shrink-0 ml-3"></i>
+            </button>
+            <div class="faq-answer px-5">
+              <p class="text-xs font-semibold text-gray-600 pb-4">15 a 30 dias úteis via Japan Post EMS com rastreamento.</p>
+            </div>
+          </div>
+
+          <!-- FAQ item 2 -->
+          <div class="border-b border-gray-200">
+            <button
+              class="faq-btn flex justify-between items-center w-full font-bold text-sm text-[#2C1654] px-5 py-4 hover:bg-gray-50 transition text-left"
+              onclick="toggleFaq(this)"
+            >
+              <span>Os produtos são 100% originais?</span>
+              <i class="fa-solid fa-chevron-down faq-chevron text-[#9B59B6] text-xs flex-shrink-0 ml-3"></i>
+            </button>
+            <div class="faq-answer px-5">
+              <p class="text-xs font-semibold text-gray-600 pb-4">Sim! Compramos diretamente em Don Quijote e Matsumoto Kiyoshi no Japão.</p>
+            </div>
+          </div>
+
+          <!-- FAQ item 3 -->
+          <div class="border-b border-gray-200">
+            <button
+              class="faq-btn flex justify-between items-center w-full font-bold text-sm text-[#2C1654] px-5 py-4 hover:bg-gray-50 transition text-left"
+              onclick="toggleFaq(this)"
+            >
+              <span>Posso rastrear meu pedido?</span>
+              <i class="fa-solid fa-chevron-down faq-chevron text-[#9B59B6] text-xs flex-shrink-0 ml-3"></i>
+            </button>
+            <div class="faq-answer px-5">
+              <p class="text-xs font-semibold text-gray-600 pb-4">Sim, você receberá o código Japan Post por email e WhatsApp.</p>
+            </div>
+          </div>
+
+          <!-- FAQ item 4 -->
+          <div class="border-b border-gray-200">
+            <button
+              class="faq-btn flex justify-between items-center w-full font-bold text-sm text-[#2C1654] px-5 py-4 hover:bg-gray-50 transition text-left"
+              onclick="toggleFaq(this)"
+            >
+              <span>Fazem envio para todo o Brasil?</span>
+              <i class="fa-solid fa-chevron-down faq-chevron text-[#9B59B6] text-xs flex-shrink-0 ml-3"></i>
+            </button>
+            <div class="faq-answer px-5">
+              <p class="text-xs font-semibold text-gray-600 pb-4">Sim, enviamos para todos os estados!</p>
+            </div>
+          </div>
+
+          <!-- FAQ item 5 -->
+          <div>
+            <button
+              class="faq-btn flex justify-between items-center w-full font-bold text-sm text-[#2C1654] px-5 py-4 hover:bg-gray-50 transition text-left"
+              onclick="toggleFaq(this)"
+            >
+              <span>Como funciona o processo de compra?</span>
+              <i class="fa-solid fa-chevron-down faq-chevron text-[#9B59B6] text-xs flex-shrink-0 ml-3"></i>
+            </button>
+            <div class="faq-answer px-5">
+              <p class="text-xs font-semibold text-gray-600 pb-4">Escolha o produto no nosso site, nós compramos no Japão, embalamos com cuidado e enviamos direto para você.</p>
+            </div>
+          </div>
+
+        </div>
+      </div>
+
+      <!-- CTA FINAL: WhatsApp -->
+      <div class="flex justify-center">
+        <a
+          href="https://wa.me/5511999999999"
+          target="_blank"
+          rel="noopener noreferrer"
+          class="inline-flex items-center gap-3 bg-[#25D366] hover:bg-[#1ebe57] text-white font-black text-base uppercase tracking-widest rounded-2xl px-8 py-4 transition shadow-xl"
+        >
+          <i class="fa-brands fa-whatsapp text-2xl"></i>
+          Falar pelo WhatsApp Agora
+        </a>
+      </div>
+
+    </main>
+
+    <!-- FOOTER -->
+    <footer class="border-t-2 border-gray-200 px-6 md:px-10 pt-8 pb-6 grid grid-cols-1 md:grid-cols-3 gap-8 text-center md:text-left text-sm text-[#4A3060]">
+      <div>
+        <h5 class="font-black text-base mb-2 text-[#2C1654]">Japão Express</h5>
+        <p class="text-xs leading-relaxed font-semibold">Chiryu-shi, Aichi-ken<br />Direto do Japão para o Brasil.</p>
+      </div>
+      <div>
+        <h5 class="font-black text-base mb-2 text-[#2C1654]">Quick Links</h5>
+        <ul class="space-y-1 text-xs font-semibold">
+          <li><a href="produtos.html" class="hover:text-[#9B59B6]">Produtos</a></li>
+          <li><a href="institucional.html" class="hover:text-[#9B59B6]">Sobre Nós</a></li>
+          <li><a href="contato.html" class="hover:text-[#9B59B6]">Contato</a></li>
+        </ul>
+      </div>
+      <div>
+        <h5 class="font-black text-base mb-3 text-[#2C1654]">Social Media</h5>
+        <div class="flex justify-center md:justify-start gap-4 text-xl">
+          <a href="#" class="text-[#2C1654] hover:text-[#9B59B6]"><i class="fa-brands fa-instagram"></i></a>
+          <a href="#" class="text-[#2C1654] hover:text-[#9B59B6]"><i class="fa-brands fa-tiktok"></i></a>
+        </div>
+      </div>
+    </footer>
+    <div class="text-center text-xs py-4 text-gray-400 border-t border-gray-100 font-semibold">© 2026 Japão Express. Todos os direitos reservados</div>
+
+  </div>
+
+  <script>
+    function toggleFaq(btn) {
+      const answer = btn.nextElementSibling;
+      const chevron = btn.querySelector('.faq-chevron');
+      const isOpen = answer.classList.contains('open');
+
+      // Close all
+      document.querySelectorAll('.faq-answer').forEach(a => a.classList.remove('open'));
+      document.querySelectorAll('.faq-chevron').forEach(c => c.classList.remove('open'));
+
+      // Open this one if it was closed
+      if (!isOpen) {
+        answer.classList.add('open');
+        chevron.classList.add('open');
+      }
+    }
+
+    function handleSubmit(e) {
+      e.preventDefault();
+      const form = document.getElementById('contact-form');
+      const successMsg = document.getElementById('success-msg');
+      const submitBtn = form.querySelector('button[type="submit"]');
+
+      submitBtn.disabled = true;
+      submitBtn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> ENVIANDO...';
+
+      setTimeout(() => {
+        form.reset();
+        submitBtn.disabled = false;
+        submitBtn.innerHTML = '<i class="fa-solid fa-paper-plane"></i> ENVIAR MENSAGEM';
+        successMsg.style.display = 'block';
+        setTimeout(() => { successMsg.style.display = 'none'; }, 5000);
+      }, 1200);
+    }
+  </script>
+</body>
+</html>

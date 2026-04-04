@@ -1,0 +1,372 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Pedido Confirmado — Japão Express</title>
+  <!-- Favicon & PWA -->
+  <link rel="icon" type="image/png" href="logo.png">
+  <link rel="apple-touch-icon" href="logo.png">
+  <link rel="manifest" href="manifest.json">
+  <meta name="theme-color" content="#9B59B6">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="default">
+  <meta name="apple-mobile-web-app-title" content="Japão Express">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Caveat:wght@600;700&family=Nunito:wght@400;600;700;800;900&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+  <style>
+    body {
+      font-family: 'Nunito', sans-serif;
+      background: #E8DEF8;
+      min-height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: flex-start;
+      padding: 2rem 1rem;
+    }
+    .font-hand { font-family: 'Caveat', cursive; }
+    .font-hero { font-family: 'Bebas Neue', cursive; letter-spacing: 0.01em; font-weight: normal !important; }
+
+    @keyframes pop {
+      0%   { transform: scale(0.5); opacity: 0; }
+      70%  { transform: scale(1.1); }
+      100% { transform: scale(1); opacity: 1; }
+    }
+    .anim-pop { animation: pop 0.5s ease forwards; }
+
+    @keyframes float {
+      0%, 100% { transform: translateY(0px) rotate(-6deg); }
+      50%       { transform: translateY(-8px) rotate(-6deg); }
+    }
+    .anim-float { animation: float 3s ease-in-out infinite; }
+
+    @keyframes fadeInUp {
+      from { opacity: 0; transform: translateY(20px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+    .anim-fadeinup { animation: fadeInUp 0.6s ease forwards; }
+
+    .tape {
+      position: absolute;
+      top: -13px;
+      left: 50%;
+      transform: translateX(-50%) rotate(-2deg);
+      width: 52px;
+      height: 20px;
+      background: rgba(226, 206, 148, 0.82);
+      border-radius: 2px;
+    }
+
+    /* Confetti */
+    .confetti-piece {
+      position: absolute;
+      width: 8px;
+      height: 8px;
+      border-radius: 2px;
+      animation: confettiFall linear forwards;
+    }
+    @keyframes confettiFall {
+      0%   { transform: translateY(-20px) rotate(0deg); opacity: 1; }
+      100% { transform: translateY(200px) rotate(720deg); opacity: 0; }
+    }
+
+    .step-line {
+      flex: 1;
+      height: 3px;
+      background: #E0D0F0;
+    }
+    .step-line.done {
+      background: #9B59B6;
+    }
+  </style>
+</head>
+<body>
+  <!-- Confetti container -->
+  <div id="confetti-container" class="fixed top-0 left-0 w-full pointer-events-none overflow-hidden" style="height:100vh; z-index:0;"></div>
+
+  <div class="bg-[#FDFAF2] w-full max-w-4xl rounded-3xl shadow-2xl border-t-[10px] border-[#9B59B6] overflow-visible relative z-10">
+
+    <!-- Header -->
+    <header class="flex flex-col md:flex-row justify-between items-center px-6 md:px-10 pt-5 pb-4 gap-4">
+      <a href="index.html"><img src="logo.png" onerror="this.src='https://i.imgur.com/YZ4IgF9.png'" alt="Japão Express Logo" class="h-20 md:h-24 object-contain drop-shadow-sm"></a>
+      <div class="flex flex-col items-center gap-3 md:gap-2">
+          <nav class="flex flex-wrap justify-center gap-4 md:gap-8 font-bold text-sm text-[#3D1A78] tracking-wide">
+              <a href="produtos.html" class="hover:text-[#9B59B6] transition">Produtos</a>
+              <a href="index.html#como-funciona" class="hover:text-[#9B59B6] transition">Como Funciona</a>
+              <a href="index.html#contato" class="hover:text-[#9B59B6] transition">Contato</a>
+          </nav>
+          <div class="flex items-center gap-4">
+              <a href="carrinho.html" class="relative text-[#3D1A78] hover:text-[#9B59B6] transition" title="Carrinho">
+                  <i class="fa-solid fa-bag-shopping text-xl"></i>
+                  <span class="absolute -top-2 -right-2 bg-[#9B59B6] text-white text-[10px] font-black rounded-full w-4 h-4 flex items-center justify-center leading-none">3</span>
+              </a>
+              <a href="favoritos.html" class="text-[#3D1A78] hover:text-[#9B59B6] transition" title="Favoritos">
+                  <i class="fa-regular fa-heart text-xl"></i>
+              </a>
+              <a href="perfil.html" class="text-[#3D1A78] hover:text-[#9B59B6] transition" title="Minha Conta">
+                  <i class="fa-regular fa-circle-user text-xl"></i>
+              </a>
+              <span class="text-[#C9B8E8] font-light select-none">|</span>
+              <a href="login.html" class="text-[#3D1A78] hover:text-[#9B59B6] transition font-bold text-xs tracking-wide uppercase">Entrar</a>
+              <a href="login.html#cadastro" class="bg-[#9B59B6] text-white font-black text-xs px-3 py-1.5 rounded-full hover:bg-[#7D3C98] transition tracking-wide uppercase">Cadastrar</a>
+          </div>
+      </div>
+    </header>
+
+    <div class="px-6 md:px-10 pb-10">
+
+      <!-- ===== HERO SUCESSO ===== -->
+      <section class="text-center py-10 relative">
+        <!-- Sakuras decorativas -->
+        <span class="absolute text-2xl select-none" style="top:10px; left:8%; animation: float 3.2s ease-in-out infinite;">🌸</span>
+        <span class="absolute text-xl select-none" style="top:20px; left:20%; animation: float 2.8s ease-in-out infinite 0.4s;">🌸</span>
+        <span class="absolute text-3xl select-none" style="top:5px; right:10%; animation: float 3.5s ease-in-out infinite 0.2s;">🌸</span>
+        <span class="absolute text-xl select-none" style="top:18px; right:22%; animation: float 2.6s ease-in-out infinite 0.6s;">🌸</span>
+        <span class="absolute text-lg select-none" style="bottom:10px; left:12%; animation: float 3.1s ease-in-out infinite 0.3s;">🌸</span>
+        <span class="absolute text-2xl select-none" style="bottom:5px; right:15%; animation: float 2.9s ease-in-out infinite 0.5s;">🌸</span>
+
+        <!-- Ícone animado -->
+        <div class="w-24 h-24 rounded-full bg-[#9B59B6] flex items-center justify-center mx-auto shadow-xl anim-pop mb-6">
+          <i class="fa-solid fa-check text-white text-4xl"></i>
+        </div>
+
+        <!-- Título -->
+        <h1 class="font-hero text-[3rem] text-[#2C1654] leading-none mb-2">Pedido Confirmado!</h1>
+
+        <!-- Subtítulo -->
+        <p class="font-hand text-xl text-[#9B59B6] mb-4">Seu Japão está a caminho! ✈️</p>
+
+        <!-- Número do pedido -->
+        <span class="inline-block bg-[#E2D4F0] rounded-full px-4 py-1 font-black text-[#9B59B6] text-sm tracking-wide">
+          Pedido #JP-2026-0042
+        </span>
+      </section>
+
+      <!-- ===== RESUMO DO PEDIDO (post-it) ===== -->
+      <div class="relative mb-8 anim-fadeinup" style="animation-delay:0.2s; opacity:0;">
+        <div class="tape"></div>
+        <div class="bg-[#F5F5F5] rounded-2xl p-5 shadow-md">
+          <h2 class="font-black text-lg text-[#2C1654] mb-4 flex items-center gap-2">
+            <i class="fa-solid fa-receipt text-[#9B59B6]"></i> Resumo do Pedido
+          </h2>
+
+          <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-4 text-sm">
+            <div>
+              <p class="text-gray-500 font-semibold text-xs uppercase tracking-wide mb-1">Data</p>
+              <p class="font-bold text-[#2C1654]">28/03/2026</p>
+            </div>
+            <div>
+              <p class="text-gray-500 font-semibold text-xs uppercase tracking-wide mb-1">Endereço de Entrega</p>
+              <p class="font-bold text-[#2C1654]">Rua das Cerejeiras, 42<br>São Paulo — SP, 01310-100</p>
+            </div>
+            <div>
+              <p class="text-gray-500 font-semibold text-xs uppercase tracking-wide mb-1">Pagamento</p>
+              <p class="font-bold text-[#2C1654] flex items-center gap-1">
+                <span class="inline-block w-5 h-5 rounded bg-[#32BCAD] flex items-center justify-center text-white text-xs font-black">P</span>
+                PIX — Confirmado
+              </p>
+            </div>
+          </div>
+
+          <div class="border-t border-gray-200 pt-4 space-y-3">
+            <!-- Produto 1 -->
+            <div class="flex items-center justify-between">
+              <div class="flex items-center gap-3">
+                <span class="text-lg">🧴</span>
+                <div>
+                  <p class="font-bold text-[#2C1654] text-sm">Bioré UV Aqua Rich SPF 50+</p>
+                  <p class="text-xs text-gray-500 font-semibold">Qtd: 1</p>
+                </div>
+              </div>
+              <p class="font-black text-[#9B59B6] text-sm">R$ 85,00</p>
+            </div>
+            <!-- Produto 2 -->
+            <div class="flex items-center justify-between">
+              <div class="flex items-center gap-3">
+                <span class="text-lg">🍫</span>
+                <div>
+                  <p class="font-bold text-[#2C1654] text-sm">KitKat Matcha Japonês (caixa)</p>
+                  <p class="text-xs text-gray-500 font-semibold">Qtd: 1</p>
+                </div>
+              </div>
+              <p class="font-black text-[#9B59B6] text-sm">R$ 60,00</p>
+            </div>
+            <!-- Produto 3 -->
+            <div class="flex items-center justify-between">
+              <div class="flex items-center gap-3">
+                <span class="text-lg">🎴</span>
+                <div>
+                  <p class="font-bold text-[#2C1654] text-sm">Pokémon TCG — Booster Pack SV</p>
+                  <p class="text-xs text-gray-500 font-semibold">Qtd: 1</p>
+                </div>
+              </div>
+              <p class="font-black text-[#9B59B6] text-sm">R$ 75,00</p>
+            </div>
+          </div>
+
+          <div class="border-t border-gray-200 mt-4 pt-4 flex justify-between items-center">
+            <p class="font-black text-[#2C1654] text-base">Total</p>
+            <p class="font-black text-[#9B59B6] text-xl">R$ 220,00</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- ===== TIMELINE ===== -->
+      <div class="mb-8 anim-fadeinup" style="animation-delay:0.35s; opacity:0;">
+        <h2 class="font-black text-lg text-[#2C1654] mb-5 flex items-center gap-2">
+          <i class="fa-solid fa-timeline text-[#9B59B6]"></i> Próximos Passos
+        </h2>
+
+        <!-- Desktop timeline -->
+        <div class="hidden md:flex items-start gap-0">
+
+          <!-- Step 1 — Ativo -->
+          <div class="flex flex-col items-center flex-1">
+            <div class="w-12 h-12 rounded-full bg-[#9B59B6] flex items-center justify-center text-white font-black text-lg shadow-md mb-2">
+              <i class="fa-solid fa-check text-sm"></i>
+            </div>
+            <p class="font-black text-[#9B59B6] text-sm text-center">Pedido Recebido</p>
+            <p class="text-xs text-gray-400 font-semibold text-center">Confirmado ✓</p>
+          </div>
+
+          <div class="step-line done mt-6"></div>
+
+          <!-- Step 2 -->
+          <div class="flex flex-col items-center flex-1">
+            <div class="w-12 h-12 rounded-full bg-[#E0D0F0] flex items-center justify-center text-[#9B59B6] font-black text-lg shadow-sm mb-2">2</div>
+            <p class="font-black text-[#4A3060] text-sm text-center">Preparando</p>
+            <p class="text-xs text-gray-400 font-semibold text-center">1–2 dias úteis</p>
+          </div>
+
+          <div class="step-line mt-6"></div>
+
+          <!-- Step 3 -->
+          <div class="flex flex-col items-center flex-1">
+            <div class="w-12 h-12 rounded-full bg-[#E0D0F0] flex items-center justify-center text-[#9B59B6] font-black text-lg shadow-sm mb-2">3</div>
+            <p class="font-black text-[#4A3060] text-sm text-center">Japan Post</p>
+            <p class="text-xs text-gray-400 font-semibold text-center">7–14 dias úteis</p>
+          </div>
+
+          <div class="step-line mt-6"></div>
+
+          <!-- Step 4 -->
+          <div class="flex flex-col items-center flex-1">
+            <div class="w-12 h-12 rounded-full bg-[#E0D0F0] flex items-center justify-center text-[#9B59B6] font-black text-lg shadow-sm mb-2">4</div>
+            <p class="font-black text-[#4A3060] text-sm text-center">Entrega no Brasil</p>
+            <p class="text-xs text-gray-400 font-semibold text-center">3–5 dias úteis</p>
+          </div>
+        </div>
+
+        <!-- Mobile timeline -->
+        <div class="flex flex-col gap-3 md:hidden">
+          <div class="flex items-start gap-4 bg-[#F3EAFC] rounded-xl p-3">
+            <div class="w-10 h-10 rounded-full bg-[#9B59B6] flex items-center justify-center text-white shadow-md shrink-0">
+              <i class="fa-solid fa-check text-sm"></i>
+            </div>
+            <div>
+              <p class="font-black text-[#9B59B6] text-sm">① Pedido Recebido</p>
+              <p class="text-xs text-gray-500 font-semibold">Confirmado ✓</p>
+            </div>
+          </div>
+          <div class="flex items-start gap-4 bg-white rounded-xl p-3 border border-gray-100">
+            <div class="w-10 h-10 rounded-full bg-[#E0D0F0] flex items-center justify-center text-[#9B59B6] font-black shrink-0">2</div>
+            <div>
+              <p class="font-black text-[#4A3060] text-sm">② Preparando Embalagem</p>
+              <p class="text-xs text-gray-400 font-semibold">1–2 dias úteis</p>
+            </div>
+          </div>
+          <div class="flex items-start gap-4 bg-white rounded-xl p-3 border border-gray-100">
+            <div class="w-10 h-10 rounded-full bg-[#E0D0F0] flex items-center justify-center text-[#9B59B6] font-black shrink-0">3</div>
+            <div>
+              <p class="font-black text-[#4A3060] text-sm">③ Japan Post</p>
+              <p class="text-xs text-gray-400 font-semibold">7–14 dias úteis</p>
+            </div>
+          </div>
+          <div class="flex items-start gap-4 bg-white rounded-xl p-3 border border-gray-100">
+            <div class="w-10 h-10 rounded-full bg-[#E0D0F0] flex items-center justify-center text-[#9B59B6] font-black shrink-0">4</div>
+            <div>
+              <p class="font-black text-[#4A3060] text-sm">④ Entrega no Brasil</p>
+              <p class="text-xs text-gray-400 font-semibold">3–5 dias úteis</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ===== BOTÕES + POST-IT DECORATIVO ===== -->
+      <div class="flex flex-col md:flex-row items-start gap-6 mb-4 anim-fadeinup" style="animation-delay:0.5s; opacity:0;">
+
+        <!-- Botões -->
+        <div class="flex flex-col sm:flex-row md:flex-col gap-3 flex-1">
+          <a href="perfil.html"
+             class="flex items-center justify-center gap-2 bg-[#9B59B6] hover:bg-[#7D3E99] text-white font-black py-3 px-6 rounded-2xl transition shadow-md text-sm tracking-wide">
+            <i class="fa-solid fa-box-open"></i> Ver Meus Pedidos
+          </a>
+          <a href="produtos.html"
+             class="flex items-center justify-center gap-2 border-2 border-[#9B59B6] text-[#9B59B6] hover:bg-[#F3EAFC] font-black py-3 px-6 rounded-2xl transition text-sm tracking-wide">
+            <i class="fa-solid fa-store"></i> Continuar Comprando
+          </a>
+          <a href="https://wa.me/551199999999" target="_blank"
+             class="flex items-center justify-center gap-2 bg-[#25D366] hover:bg-[#1ebe5a] text-white font-black py-3 px-6 rounded-2xl transition shadow-md text-sm tracking-wide">
+            <i class="fa-brands fa-whatsapp text-lg"></i> Acompanhar via WhatsApp
+          </a>
+        </div>
+
+        <!-- Post-it decorativo -->
+        <div class="relative self-start md:self-center">
+          <div class="tape"></div>
+          <div class="bg-white rounded-2xl shadow-md px-5 py-4 font-hand text-lg text-[#4A3060] leading-snug"
+               style="transform: rotate(4deg); max-width: 200px;">
+            Obrigado pela confiança! 🌸<br>
+            <span class="text-sm text-[#9B59B6] font-semibold">— Equipe Japão Express</span>
+          </div>
+        </div>
+
+      </div>
+
+    </div><!-- /px -->
+
+    <!-- Footer -->
+    <footer class="border-t-2 border-gray-200 px-6 md:px-10 pt-8 pb-6 grid grid-cols-1 md:grid-cols-3 gap-8 text-center md:text-left text-sm text-[#4A3060]">
+      <div><h5 class="font-black text-base mb-2 text-[#2C1654]">Japão Express</h5><p class="text-xs leading-relaxed font-semibold">Chiryu-shi, Aichi-ken<br>Direto do Japão para o Brasil.</p></div>
+      <div><h5 class="font-black text-base mb-2 text-[#2C1654]">Quick Links</h5><ul class="space-y-1 text-xs font-semibold"><li><a href="produtos.html" class="hover:text-[#9B59B6] transition">Produtos</a></li><li><a href="index.html#contato" class="hover:text-[#9B59B6] transition">Contato</a></li></ul></div>
+      <div><h5 class="font-black text-base mb-3 text-[#2C1654]">Social Media</h5><div class="flex justify-center md:justify-start gap-4 text-xl"><a href="https://www.instagram.com/ojapaoexpress" target="_blank" rel="noopener" class="text-[#2C1654] hover:text-[#9B59B6] transition"><i class="fa-brands fa-instagram"></i></a><a href="#" class="text-[#2C1654] hover:text-[#9B59B6] transition"><i class="fa-brands fa-tiktok"></i></a><a href="mailto:ojapaoexpress@gmail.com" class="text-[#2C1654] hover:text-[#9B59B6]" title="E-mail"><i class="fa-solid fa-envelope"></i></a></div></div>
+    </footer>
+    <div class="text-center text-xs py-4 text-gray-400 border-t border-gray-100 font-semibold">© 2026 Japão Express. Todos os direitos reservados</div>
+
+  </div><!-- /card -->
+
+  <script>
+    // Confetti
+    const container = document.getElementById('confetti-container');
+    const colors = ['#9B59B6','#E2D4F0','#F1C40F','#E74C3C','#2ECC71','#3498DB','#FF69B4','#FFB347'];
+
+    function createConfetti() {
+      for (let i = 0; i < 80; i++) {
+        const piece = document.createElement('div');
+        piece.classList.add('confetti-piece');
+        piece.style.left = Math.random() * 100 + 'vw';
+        piece.style.top = '-20px';
+        piece.style.background = colors[Math.floor(Math.random() * colors.length)];
+        piece.style.width = (6 + Math.random() * 8) + 'px';
+        piece.style.height = (6 + Math.random() * 8) + 'px';
+        piece.style.borderRadius = Math.random() > 0.5 ? '50%' : '2px';
+        piece.style.animationDuration = (1.5 + Math.random() * 2) + 's';
+        piece.style.animationDelay = (Math.random() * 1.2) + 's';
+        container.appendChild(piece);
+        setTimeout(() => piece.remove(), 4000);
+      }
+    }
+
+    createConfetti();
+    setTimeout(createConfetti, 1500);
+
+    // Re-trigger fadeInUp elements
+    document.querySelectorAll('.anim-fadeinup').forEach(el => {
+      el.style.animationFillMode = 'forwards';
+    });
+  </script>
+</body>
+</html>

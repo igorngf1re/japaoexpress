@@ -1,0 +1,280 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Favoritos — Japão Express</title>
+  <!-- Favicon & PWA -->
+  <link rel="icon" type="image/png" href="logo.png">
+  <link rel="apple-touch-icon" href="logo.png">
+  <link rel="manifest" href="manifest.json">
+  <meta name="theme-color" content="#9B59B6">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="default">
+  <meta name="apple-mobile-web-app-title" content="Japão Express">
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Caveat:wght@600;700&family=Nunito:wght@400;600;700;800;900&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            brand: '#9B59B6',
+            brandDark: '#3D1A78',
+            brandDeep: '#2C1654',
+          }
+        }
+      }
+    }
+  </script>
+  <style>
+    .font-hand { font-family: 'Caveat', cursive; }
+    .font-hero { font-family: 'Bebas Neue', cursive; letter-spacing: 0.01em; font-weight: normal !important; }
+    body {
+      font-family: 'Nunito', sans-serif;
+      background: #E8DEF8;
+      min-height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: flex-start;
+      padding: 2rem 1rem;
+    }
+    .tape {
+      position: absolute;
+      top: -13px;
+      left: 50%;
+      transform: translateX(-50%) rotate(-2deg);
+      width: 52px;
+      height: 20px;
+      background: rgba(226,206,148,0.82);
+      border-radius: 2px;
+    }
+    .pin {
+      position: absolute;
+      top: 10px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 14px;
+      height: 14px;
+      background: radial-gradient(circle at 38% 38%, #ff7e7e, #c0392b);
+      border-radius: 50%;
+      box-shadow: inset -2px -2px 4px rgba(0,0,0,0.28), 1px 2px 4px rgba(0,0,0,0.22);
+      z-index: 10;
+    }
+    .fav-card {
+      transition: opacity 0.3s ease, transform 0.3s ease;
+    }
+    .fav-card.removing {
+      opacity: 0;
+      transform: scale(0.9);
+    }
+    .heart-btn {
+      transition: transform 0.2s ease;
+    }
+    .heart-btn:hover {
+      transform: scale(1.2);
+    }
+    .heart-btn.removed i {
+      color: #d1d5db;
+    }
+  </style>
+</head>
+<body>
+
+<div class="bg-[#FDFAF2] w-full max-w-4xl rounded-3xl shadow-2xl border-t-[10px] border-[#9B59B6] overflow-visible">
+
+  <!-- HEADER -->
+  <header class="flex flex-col md:flex-row justify-between items-center px-6 md:px-10 pt-5 pb-4 gap-4">
+    <a href="index.html"><img src="logo.png" onerror="this.src='https://i.imgur.com/YZ4IgF9.png'" alt="Japão Express Logo" class="h-20 md:h-24 object-contain drop-shadow-sm"></a>
+    <div class="flex flex-col items-center gap-3 md:gap-2">
+        <nav class="flex flex-wrap justify-center gap-4 md:gap-8 font-bold text-sm text-[#3D1A78] tracking-wide">
+            <a href="produtos.html" class="hover:text-[#9B59B6] transition">Produtos</a>
+            <a href="index.html#como-funciona" class="hover:text-[#9B59B6] transition">Como Funciona</a>
+            <a href="index.html#contato" class="hover:text-[#9B59B6] transition">Contato</a>
+        </nav>
+        <div class="flex items-center gap-4">
+            <a href="carrinho.html" class="relative text-[#3D1A78] hover:text-[#9B59B6] transition" title="Carrinho">
+                <i class="fa-solid fa-bag-shopping text-xl"></i>
+                <span id="cart-badge" data-cart-badge class="absolute -top-2 -right-2 bg-[#9B59B6] text-white text-[10px] font-black rounded-full w-4 h-4 flex items-center justify-center leading-none" style="display:none"></span>
+            </a>
+            <a href="favoritos.html" class="text-[#9B59B6]" title="Favoritos">
+                <i class="fa-solid fa-heart text-xl"></i>
+            </a>
+            <a href="perfil.html" class="text-[#3D1A78] hover:text-[#9B59B6] transition" title="Minha Conta">
+                <i class="fa-regular fa-circle-user text-xl"></i>
+            </a>
+            <span class="text-[#C9B8E8] font-light select-none">|</span>
+            <a href="login.html" data-auth-entrar class="text-[#3D1A78] hover:text-[#9B59B6] transition font-bold text-xs tracking-wide uppercase">Entrar</a>
+            <a href="login.html#cadastro" data-auth-cadastrar class="bg-[#9B59B6] text-white font-black text-xs px-3 py-1.5 rounded-full hover:bg-[#7D3C98] transition tracking-wide uppercase">Cadastrar</a>
+            <a href="perfil.html" data-auth-perfil class="hidden text-[#3D1A78] hover:text-[#9B59B6] transition font-bold text-xs tracking-wide uppercase"><span data-user-name></span></a>
+        </div>
+    </div>
+  </header>
+
+  <!-- DIVIDER -->
+  <div class="border-t border-gray-200 mx-6 md:mx-10"></div>
+
+  <!-- MAIN CONTENT -->
+  <main class="px-6 md:px-10 py-8">
+
+    <!-- BREADCRUMB -->
+    <nav class="flex items-center gap-2 text-xs font-semibold text-gray-400 mb-6">
+      <a href="index.html" class="hover:text-[#9B59B6] transition">Home</a>
+      <i class="fa-solid fa-chevron-right text-[10px]"></i>
+      <span class="text-[#9B59B6] font-bold">Favoritos</span>
+    </nav>
+
+    <!-- PAGE HEADER -->
+    <div class="flex flex-col sm:flex-row sm:items-end sm:justify-between gap-2 mb-6">
+      <div>
+        <h1 class="font-hero text-[2.6rem] text-[#2C1654] leading-none mb-1">Favoritos</h1>
+        <p class="text-sm font-semibold text-[#4A3060]">Produtos que você salvou para depois 💜</p>
+      </div>
+      <span id="counter-badge" class="inline-flex items-center gap-2 bg-[#E2D4F0] text-[#3D1A78] text-sm font-black px-4 py-1.5 rounded-full">
+        <i class="fa-solid fa-heart text-[#9B59B6]"></i>
+        <span id="counter-text">4 produtos salvos</span>
+      </span>
+    </div>
+
+    <!-- FAVORITES GRID -->
+    <div id="favorites-grid" class="grid grid-cols-2 md:grid-cols-4 gap-5 mb-10"></div>
+
+    <!-- EMPTY STATE (hidden by default) -->
+    <div id="empty-state" class="hidden flex-col items-center justify-center py-16 text-center gap-4">
+      <i class="fa-solid fa-heart-crack text-[#E2D4F0] text-6xl"></i>
+      <p class="font-hand text-2xl text-[#4A3060]">Sua lista de favoritos está vazia</p>
+      <p class="text-sm text-gray-400 font-semibold max-w-xs">Explore nossos produtos e salve seus favoritos para não perder nada especial!</p>
+      <a href="produtos.html" class="mt-2 inline-block px-6 py-2.5 bg-[#9B59B6] text-white font-black text-sm rounded-full hover:bg-[#7d3fa0] transition">
+        <i class="fa-solid fa-store mr-2"></i>Explorar Produtos
+      </a>
+    </div>
+
+    <!-- SUGESTÕES POST-IT -->
+    <div id="sugestoes-section" class="relative mt-4 mb-6 inline-block w-full max-w-sm" style="transform: rotate(-2deg);">
+      <div class="tape"></div>
+      <div class="bg-[#F5F5F5] rounded-sm shadow-md p-5 pt-7">
+        <p class="font-hand text-xl text-[#3D1A78] mb-3">Produtos que você pode gostar 🌸</p>
+        <div id="sugestoes-list" class="flex flex-col gap-3"></div>
+      </div>
+    </div>
+
+  </main>
+
+  <!-- FOOTER -->
+  <footer class="border-t-2 border-gray-200 px-6 md:px-10 pt-8 pb-6 grid grid-cols-1 md:grid-cols-3 gap-8 text-center md:text-left text-sm text-[#4A3060]">
+    <div><h5 class="font-black text-base mb-2 text-[#2C1654]">Japão Express</h5><p class="text-xs leading-relaxed font-semibold">Chiryu-shi, Aichi-ken<br>Direto do Japão para o Brasil.</p></div>
+    <div><h5 class="font-black text-base mb-2 text-[#2C1654]">Quick Links</h5><ul class="space-y-1 text-xs font-semibold"><li><a href="produtos.html" class="hover:text-[#9B59B6]">Produtos</a></li><li><a href="institucional.html" class="hover:text-[#9B59B6]">Sobre Nós</a></li><li><a href="contato.html" class="hover:text-[#9B59B6]">Contato</a></li></ul></div>
+    <div><h5 class="font-black text-base mb-3 text-[#2C1654]">Social Media</h5><div class="flex justify-center md:justify-start gap-4 text-xl"><a href="https://www.instagram.com/ojapaoexpress" target="_blank" rel="noopener" class="text-[#2C1654] hover:text-[#9B59B6]"><i class="fa-brands fa-instagram"></i></a><a href="#" class="text-[#2C1654] hover:text-[#9B59B6]"><i class="fa-brands fa-tiktok"></i></a><a href="mailto:ojapaoexpress@gmail.com" class="text-[#2C1654] hover:text-[#9B59B6]" title="E-mail"><i class="fa-solid fa-envelope"></i></a></div></div>
+  </footer>
+  <div class="text-center text-xs py-4 text-gray-400 border-t border-gray-100 font-semibold">© 2026 Japão Express. Todos os direitos reservados</div>
+
+</div>
+
+<script src="js/products.js"></script>
+<script src="js/cart.js"></script>
+<script src="js/currency.js"></script>
+<script src="js/auth.js"></script>
+<script>
+  const DECOS = ['tape', 'pin', 'tape', 'pin'];
+
+  function renderFavCard(p, idx) {
+    const deco = (p.deco || DECOS[idx % DECOS.length]) === 'pin'
+      ? `<div class="pin"></div>`
+      : `<div class="tape"></div>`;
+    const pt = (p.deco || DECOS[idx % DECOS.length]) === 'pin' ? 'pt-10' : 'pt-8';
+    const priceStr = formatBRL(p.priceBRL);
+    return `
+      <div class="fav-card relative ${p.cardBg || 'bg-[#EFEFEF]'} p-4 ${pt} rounded-sm shadow-md ${p.rotate || ''}" data-fav-id="${p.id}">
+        ${deco}
+        <button class="heart-btn absolute top-3 right-3 z-20 text-[#9B59B6] text-lg" onclick="doRemoveFav('${p.id}', this)" title="Remover dos favoritos">
+          <i class="fa-solid fa-heart"></i>
+        </button>
+        <a href="produto.html?id=${p.id}" class="block w-full aspect-square bg-white rounded-lg flex items-center justify-center mb-3 shadow-inner overflow-hidden">
+          <img src="${p.image}" alt="${p.name}" class="w-full h-full object-contain" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
+          <div class="w-full h-full hidden items-center justify-center">
+            <i class="fa-solid fa-star text-[#9B59B6] text-4xl opacity-60"></i>
+          </div>
+        </a>
+        <p class="font-black text-xs text-[#2C1654] leading-tight mb-1">${p.name}</p>
+        <p class="text-[#9B59B6] font-black text-sm mb-3" data-price-brl="${p.priceBRL}">${priceStr}</p>
+        <a href="produto.html?id=${p.id}" class="block w-full text-center bg-[#9B59B6] text-white text-xs font-black py-1.5 rounded-full hover:bg-[#7d3fa0] transition">
+          Ver Detalhes
+        </a>
+      </div>`;
+  }
+
+  function renderSuggestions(favIds) {
+    const suggestions = PRODUCTS.filter(p => !favIds.includes(p.id)).slice(0, 2);
+    const container = document.querySelector('#sugestoes-list');
+    if (!container) return;
+    container.innerHTML = suggestions.map(p => `
+      <div class="flex items-center gap-3 bg-white rounded-xl p-2.5 shadow-sm">
+        <div class="w-10 h-10 bg-[#E2D4F0] rounded-lg flex items-center justify-center flex-shrink-0 overflow-hidden">
+          <img src="${p.image}" alt="${p.name}" class="w-full h-full object-contain" onerror="this.style.display='none'">
+        </div>
+        <div class="flex-1 min-w-0">
+          <p class="font-black text-xs text-[#2C1654] truncate">${p.name}</p>
+          <p class="text-[#9B59B6] font-black text-xs" data-price-brl="${p.priceBRL}">${formatBRL(p.priceBRL)}</p>
+        </div>
+        <a href="produto.html?id=${p.id}" class="px-3 py-1 bg-[#9B59B6] text-white text-xs font-black rounded-full hover:bg-[#7d3fa0] transition flex-shrink-0">Ver</a>
+      </div>`).join('');
+  }
+
+  function updateCounter(count) {
+    const counterText = document.getElementById('counter-text');
+    const counterBadge = document.getElementById('counter-badge');
+    const emptyState = document.getElementById('empty-state');
+    const favGrid = document.getElementById('favorites-grid');
+    const suggestions = document.getElementById('sugestoes-section');
+
+    counterText.textContent = count === 1 ? '1 produto salvo' : count + ' produtos salvos';
+
+    if (count === 0) {
+      favGrid.style.display = 'none';
+      counterBadge.style.display = 'none';
+      if (suggestions) suggestions.style.display = 'none';
+      emptyState.classList.remove('hidden');
+      emptyState.style.display = 'flex';
+    } else {
+      favGrid.style.display = '';
+      counterBadge.style.display = '';
+      if (suggestions) suggestions.style.display = '';
+      emptyState.classList.add('hidden');
+      emptyState.style.display = 'none';
+    }
+  }
+
+  function renderFavorites() {
+    const favIds = getFavs();
+    const grid = document.getElementById('favorites-grid');
+    const favProducts = favIds.map(id => getProductById(id)).filter(Boolean);
+
+    grid.innerHTML = favProducts.map((p, i) => renderFavCard(p, i)).join('');
+    updateCounter(favProducts.length);
+    renderSuggestions(favIds);
+    refreshAllPrices();
+    updateAllBadges();
+    updateAuthUI();
+  }
+
+  function doRemoveFav(id, btn) {
+    const card = btn.closest('.fav-card');
+    const icon = btn.querySelector('i');
+    icon.classList.replace('fa-solid', 'fa-regular');
+    btn.classList.add('removed');
+    btn.style.pointerEvents = 'none';
+    card.classList.add('removing');
+    setTimeout(() => {
+      toggleFav(id);
+      renderFavorites();
+    }, 300);
+  }
+
+  document.addEventListener('DOMContentLoaded', renderFavorites);
+</script>
+
+</body>
+</html>

@@ -1,0 +1,260 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Entrar — Japão Express</title>
+    <!-- Favicon & PWA -->
+    <link rel="icon" type="image/png" href="logo.png">
+    <link rel="apple-touch-icon" href="logo.png">
+    <link rel="manifest" href="manifest.json">
+    <meta name="theme-color" content="#9B59B6">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="default">
+    <meta name="apple-mobile-web-app-title" content="Japão Express">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Caveat:wght@600;700&family=Nunito:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        @font-face { font-family:'Sucker Brush'; src:url('sucker-brush.ttf') format('truetype'); font-display:swap; }
+        * { box-sizing:border-box; }
+        body { font-family:'Nunito',sans-serif; background:#E8DEF8; min-height:100vh; display:flex; justify-content:center; align-items:flex-start; padding:2rem 1rem; }
+        .font-hand { font-family:'Caveat',cursive; }
+        .font-hero { font-family:'Sucker Brush','Bebas Neue',cursive; font-weight:normal !important; letter-spacing:0.01em; }
+        .post-it { position:relative; box-shadow:2px 5px 14px rgba(0,0,0,0.10); }
+        .tape { position:absolute; top:-13px; left:50%; transform:translateX(-50%) rotate(-2deg); width:52px; height:20px; background:rgba(226,206,148,0.82); }
+        .fl { display:block; font-weight:900; font-size:0.7rem; text-transform:uppercase; letter-spacing:0.06em; color:#2C1654; margin-bottom:4px; }
+        .fi { width:100%; border:2px solid #e5e7eb; border-radius:12px; padding:11px 14px; font-family:'Nunito',sans-serif; font-weight:600; font-size:0.88rem; color:#2C1654; background:white; outline:none; transition:border-color 0.15s; }
+        .fi:focus { border-color:#9B59B6; }
+        .tab-content { display:none; }
+        .tab-content.active { display:block; }
+        @keyframes fadeIn { from{opacity:0;transform:translateY(6px)} to{opacity:1;transform:none} }
+        .tab-content.active { animation:fadeIn 0.2s ease; }
+    </style>
+</head>
+<body>
+<div class="bg-[#FDFAF2] w-full max-w-4xl rounded-3xl shadow-2xl overflow-visible border-t-[10px] border-[#9B59B6]">
+
+    <!-- HEADER -->
+    <header class="flex flex-col md:flex-row justify-between items-center px-6 md:px-10 pt-5 pb-4 gap-4">
+        <a href="index.html"><img src="logo.png" onerror="this.src='https://i.imgur.com/YZ4IgF9.png'" alt="Japão Express Logo" class="h-20 md:h-24 object-contain drop-shadow-sm"></a>
+        <div class="flex flex-col items-center gap-3 md:gap-2">
+            <nav class="flex flex-wrap justify-center gap-4 md:gap-8 font-bold text-sm text-[#3D1A78] tracking-wide">
+                <a href="produtos.html" class="hover:text-[#9B59B6] transition">Produtos</a>
+                <a href="index.html#como-funciona" class="hover:text-[#9B59B6] transition">Como Funciona</a>
+                <a href="index.html#contato" class="hover:text-[#9B59B6] transition">Contato</a>
+            </nav>
+            <div class="flex items-center gap-4">
+                <a href="carrinho.html" class="relative text-[#3D1A78] hover:text-[#9B59B6] transition" title="Carrinho">
+                    <i class="fa-solid fa-bag-shopping text-xl"></i>
+                    <span class="absolute -top-2 -right-2 bg-[#9B59B6] text-white text-[10px] font-black rounded-full w-4 h-4 flex items-center justify-center leading-none">3</span>
+                </a>
+                <a href="favoritos.html" class="text-[#3D1A78] hover:text-[#9B59B6] transition" title="Favoritos">
+                    <i class="fa-regular fa-heart text-xl"></i>
+                </a>
+                <a href="perfil.html" class="text-[#3D1A78] hover:text-[#9B59B6] transition" title="Minha Conta">
+                    <i class="fa-regular fa-circle-user text-xl"></i>
+                </a>
+                <span class="text-[#C9B8E8] font-light select-none">|</span>
+                <a href="login.html" class="text-[#9B59B6] border-b-2 border-[#9B59B6] font-bold text-xs tracking-wide uppercase pb-0.5">Entrar</a>
+                <a href="login.html#cadastro" class="bg-[#9B59B6] text-white font-black text-xs px-3 py-1.5 rounded-full hover:bg-[#7D3C98] transition tracking-wide uppercase">Cadastrar</a>
+            </div>
+        </div>
+    </header>
+
+    <!-- BREADCRUMB -->
+    <div class="px-6 md:px-10 pt-3 pb-1">
+        <p class="text-xs font-semibold text-[#9B59B6] tracking-wide">
+            <a href="index.html" class="hover:underline">Home</a>
+            <span class="mx-1 text-gray-400">/</span>
+            <span class="text-[#2C1654]">Entrar</span>
+        </p>
+    </div>
+
+    <!-- CONTEÚDO -->
+    <section class="px-6 md:px-10 py-8 flex flex-col md:flex-row gap-8 items-start justify-center">
+
+        <!-- CARD PRINCIPAL -->
+        <div class="w-full max-w-md mx-auto md:mx-0">
+
+            <!-- TABS -->
+            <div class="flex gap-2 mb-6 relative">
+                <button id="tabLoginBtn" onclick="switchTab('login')"
+                    class="flex-1 py-2.5 rounded-full font-black text-sm tracking-wide transition bg-[#9B59B6] text-white shadow-md">
+                    Entrar
+                </button>
+                <button id="tabRegisterBtn" onclick="switchTab('register')"
+                    class="flex-1 py-2.5 rounded-full font-black text-sm tracking-wide transition bg-[#F0F0F0] text-[#2C1654] hover:bg-[#E2D4F0]">
+                    Criar Conta
+                </button>
+            </div>
+
+            <!-- TAB: ENTRAR -->
+            <div id="tabLogin" class="tab-content active">
+                <h1 class="font-hero text-[2.5rem] text-[#2C1654] leading-none mb-1">Bem-vindo de volta!</h1>
+                <p class="text-sm font-semibold text-[#4A3060] mb-6">Acesse sua conta Japão Express</p>
+
+                <form onsubmit="handleLogin(event)" class="space-y-4">
+                    <div>
+                        <label class="fl" for="loginEmail">Email</label>
+                        <div class="relative">
+                            <i class="fa-solid fa-envelope absolute left-3.5 top-1/2 -translate-y-1/2 text-[#C39BD3] text-sm"></i>
+                            <input id="loginEmail" class="fi pl-9" type="email" placeholder="seu@email.com" required>
+                        </div>
+                    </div>
+                    <div>
+                        <label class="fl" for="loginPass">Senha</label>
+                        <div class="relative">
+                            <i class="fa-solid fa-lock absolute left-3.5 top-1/2 -translate-y-1/2 text-[#C39BD3] text-sm"></i>
+                            <input id="loginPass" class="fi pl-9 pr-10" type="password" placeholder="Sua senha" required>
+                            <button type="button" onclick="togglePwd('loginPass','eyeLogin')" class="absolute right-3.5 top-1/2 -translate-y-1/2 text-gray-400 hover:text-[#9B59B6] transition cursor-pointer">
+                                <i id="eyeLogin" class="fa-solid fa-eye text-sm"></i>
+                            </button>
+                        </div>
+                    </div>
+                    <div class="flex items-center justify-between">
+                        <label class="flex items-center gap-2 cursor-pointer">
+                            <input type="checkbox" class="accent-[#9B59B6] w-4 h-4 rounded">
+                            <span class="text-xs font-semibold text-[#4A3060]">Lembrar de mim</span>
+                        </label>
+                        <a href="#" class="text-xs font-black text-[#9B59B6] hover:underline">Esqueci minha senha</a>
+                    </div>
+                    <button type="submit" class="w-full bg-[#9B59B6] text-white font-black py-3.5 rounded-full hover:bg-[#7D3C98] transition text-sm tracking-widest uppercase shadow-lg cursor-pointer">
+                        ENTRAR
+                    </button>
+                </form>
+
+                <div class="flex items-center gap-3 my-5">
+                    <div class="flex-1 h-px bg-gray-200"></div>
+                    <span class="text-xs font-bold text-gray-400">ou entre com</span>
+                    <div class="flex-1 h-px bg-gray-200"></div>
+                </div>
+
+                <button class="w-full border-2 border-gray-200 rounded-full py-3 flex items-center justify-center gap-3 font-bold text-sm text-[#2C1654] hover:border-[#9B59B6] hover:bg-[#F7F3FF] transition cursor-pointer">
+                    <svg width="18" height="18" viewBox="0 0 48 48"><path fill="#4285F4" d="M44.5 20H24v8.5h11.7C34.2 33.5 29.7 36 24 36c-6.6 0-12-5.4-12-12s5.4-12 12-12c3 0 5.7 1.1 7.8 2.9l6.4-6.4C34.6 5.1 29.6 3 24 3 12.4 3 3 12.4 3 24s9.4 21 21 21c10.8 0 20-7.4 20-21 0-1.3-.2-2.7-.5-4z"/><path fill="#34A853" d="M6.3 14.7l7 5.1C15.1 16.1 19.2 13 24 13c3 0 5.7 1.1 7.8 2.9l6.4-6.4C34.6 5.1 29.6 3 24 3c-7.6 0-14.2 4.6-17.7 11.7z"/><path fill="#FBBC05" d="M24 45c5.5 0 10.5-1.9 14.4-5l-6.7-5.5C29.7 36 27 37 24 37c-5.7 0-10.2-3.5-11.7-8.5L6.3 34C9.8 40.4 16.4 45 24 45z"/><path fill="#EA4335" d="M44.5 20H24v8.5h11.7c-.5 2.3-1.7 4.3-3.5 5.7l6.7 5.5C42.6 36.6 45 31 45 24c0-1.3-.2-2.7-.5-4z"/></svg>
+                    Entrar com Google
+                </button>
+
+                <p class="text-center text-xs font-semibold text-gray-400 mt-5">
+                    Não tem conta? <button onclick="switchTab('register')" class="text-[#9B59B6] font-black hover:underline cursor-pointer">Criar conta grátis</button>
+                </p>
+            </div>
+
+            <!-- TAB: CRIAR CONTA -->
+            <div id="tabRegister" class="tab-content">
+                <h1 class="font-hero text-[2.5rem] text-[#2C1654] leading-none mb-1">Crie sua conta</h1>
+                <p class="text-sm font-semibold text-[#4A3060] mb-6">É rápido e gratuito!</p>
+
+                <form onsubmit="handleRegister(event)" class="space-y-4">
+                    <div>
+                        <label class="fl">Nome completo</label>
+                        <div class="relative">
+                            <i class="fa-solid fa-user absolute left-3.5 top-1/2 -translate-y-1/2 text-[#C39BD3] text-sm"></i>
+                            <input class="fi pl-9" type="text" placeholder="Seu nome completo" required>
+                        </div>
+                    </div>
+                    <div>
+                        <label class="fl">Email</label>
+                        <div class="relative">
+                            <i class="fa-solid fa-envelope absolute left-3.5 top-1/2 -translate-y-1/2 text-[#C39BD3] text-sm"></i>
+                            <input class="fi pl-9" type="email" placeholder="seu@email.com" required>
+                        </div>
+                    </div>
+                    <div>
+                        <label class="fl">Senha</label>
+                        <div class="relative">
+                            <i class="fa-solid fa-lock absolute left-3.5 top-1/2 -translate-y-1/2 text-[#C39BD3] text-sm"></i>
+                            <input id="regPass" class="fi pl-9 pr-10" type="password" placeholder="Mín. 8 caracteres" required>
+                            <button type="button" onclick="togglePwd('regPass','eyeReg')" class="absolute right-3.5 top-1/2 -translate-y-1/2 text-gray-400 hover:text-[#9B59B6] transition cursor-pointer">
+                                <i id="eyeReg" class="fa-solid fa-eye text-sm"></i>
+                            </button>
+                        </div>
+                    </div>
+                    <div>
+                        <label class="fl">Confirmar senha</label>
+                        <div class="relative">
+                            <i class="fa-solid fa-lock absolute left-3.5 top-1/2 -translate-y-1/2 text-[#C39BD3] text-sm"></i>
+                            <input class="fi pl-9" type="password" placeholder="Repita a senha" required>
+                        </div>
+                    </div>
+                    <label class="flex items-start gap-2 cursor-pointer">
+                        <input type="checkbox" class="accent-[#9B59B6] w-4 h-4 mt-0.5 rounded flex-shrink-0" required>
+                        <span class="text-xs font-semibold text-[#4A3060] leading-relaxed">
+                            Aceito os <a href="institucional.html#termos" class="text-[#9B59B6] font-black hover:underline">Termos de Uso</a>
+                            e a <a href="institucional.html#privacidade" class="text-[#9B59B6] font-black hover:underline">Política de Privacidade</a>
+                        </span>
+                    </label>
+                    <button type="submit" class="w-full bg-[#9B59B6] text-white font-black py-3.5 rounded-full hover:bg-[#7D3C98] transition text-sm tracking-widest uppercase shadow-lg cursor-pointer">
+                        CRIAR CONTA
+                    </button>
+                </form>
+
+                <p class="text-center text-xs font-semibold text-gray-400 mt-5">
+                    Já tem conta? <button onclick="switchTab('login')" class="text-[#9B59B6] font-black hover:underline cursor-pointer">Entrar</button>
+                </p>
+            </div>
+        </div>
+
+        <!-- POST-IT LATERAL (desktop) -->
+        <div class="hidden md:block post-it bg-[#F5F5F5] rounded-xl p-5 max-w-[180px] rotate-[-2deg] shadow-md mt-12 flex-shrink-0">
+            <div class="tape"></div>
+            <div class="mt-3 space-y-3">
+                <p class="font-hand text-lg text-[#2C1654] font-bold leading-tight">Crie sua conta e rastreie seus pedidos! 📦</p>
+                <hr class="border-dashed border-gray-300">
+                <div class="space-y-1.5 text-xs font-bold text-[#4A3060]">
+                    <p class="flex items-center gap-1.5"><i class="fa-solid fa-check text-[#25D366]"></i> Histórico de pedidos</p>
+                    <p class="flex items-center gap-1.5"><i class="fa-solid fa-check text-[#25D366]"></i> Código de rastreio</p>
+                    <p class="flex items-center gap-1.5"><i class="fa-solid fa-check text-[#25D366]"></i> Lista de favoritos</p>
+                    <p class="flex items-center gap-1.5"><i class="fa-solid fa-check text-[#25D366]"></i> Checkout mais rápido</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- FOOTER -->
+    <footer class="border-t-2 border-gray-200 px-6 md:px-10 pt-8 pb-6 grid grid-cols-1 md:grid-cols-3 gap-8 text-center md:text-left text-sm text-[#4A3060]">
+        <div><h5 class="font-black text-base mb-2 text-[#2C1654]">Japão Express</h5><p class="text-xs leading-relaxed font-semibold">Chiryu-shi, Aichi-ken<br>Direto do Japão para o Brasil.</p></div>
+        <div><h5 class="font-black text-base mb-2 text-[#2C1654]">Quick Links</h5><ul class="space-y-1 text-xs font-semibold"><li><a href="produtos.html" class="hover:text-[#9B59B6]">Produtos</a></li><li><a href="contato.html" class="hover:text-[#9B59B6]">Contato</a></li><li><a href="institucional.html" class="hover:text-[#9B59B6]">Sobre Nós</a></li></ul></div>
+        <div><h5 class="font-black text-base mb-3 text-[#2C1654]">Social Media</h5><div class="flex justify-center md:justify-start gap-4 text-xl"><a href="https://www.instagram.com/ojapaoexpress" target="_blank" rel="noopener" class="text-[#2C1654] hover:text-[#9B59B6]"><i class="fa-brands fa-instagram"></i></a><a href="#" class="text-[#2C1654] hover:text-[#9B59B6]"><i class="fa-brands fa-tiktok"></i></a><a href="mailto:ojapaoexpress@gmail.com" class="text-[#2C1654] hover:text-[#9B59B6]" title="E-mail"><i class="fa-solid fa-envelope"></i></a></div></div>
+    </footer>
+    <div class="text-center text-xs py-4 text-gray-400 border-t border-gray-100 font-semibold">© 2026 Japão Express. Todos os direitos reservados</div>
+</div>
+<script src="js/products.js"></script>
+<script src="js/cart.js"></script>
+<script src="js/currency.js"></script>
+<script src="js/auth.js"></script>
+<script>
+    function switchTab(tab) {
+        document.getElementById('tabLogin').classList.toggle('active', tab === 'login');
+        document.getElementById('tabRegister').classList.toggle('active', tab === 'register');
+        document.getElementById('tabLoginBtn').className = tab === 'login'
+            ? 'flex-1 py-2.5 rounded-full font-black text-sm tracking-wide transition bg-[#9B59B6] text-white shadow-md'
+            : 'flex-1 py-2.5 rounded-full font-black text-sm tracking-wide transition bg-[#F0F0F0] text-[#2C1654] hover:bg-[#E2D4F0]';
+        document.getElementById('tabRegisterBtn').className = tab === 'register'
+            ? 'flex-1 py-2.5 rounded-full font-black text-sm tracking-wide transition bg-[#9B59B6] text-white shadow-md'
+            : 'flex-1 py-2.5 rounded-full font-black text-sm tracking-wide transition bg-[#F0F0F0] text-[#2C1654] hover:bg-[#E2D4F0]';
+    }
+    function togglePwd(inputId, eyeId) {
+        const inp = document.getElementById(inputId);
+        const eye = document.getElementById(eyeId);
+        const isPass = inp.type === 'password';
+        inp.type = isPass ? 'text' : 'password';
+        eye.className = isPass ? 'fa-solid fa-eye-slash text-sm' : 'fa-solid fa-eye text-sm';
+    }
+    function handleLogin(e) {
+        e.preventDefault();
+        const email = document.getElementById('loginEmail').value.trim();
+        const name  = email.split('@')[0].replace(/[^a-zA-Z]/g,' ').trim() || 'Usuário';
+        setUser({ email, name, uid: btoa(email) });
+        window.location.href = 'perfil.html';
+    }
+    function handleRegister(e) {
+        e.preventDefault();
+        const name  = e.target.querySelector('input[type=text]').value.trim() || 'Usuário';
+        const email = e.target.querySelector('input[type=email]').value.trim();
+        setUser({ email, name, uid: btoa(email) });
+        window.location.href = 'index.html';
+    }
+</script>
+</body>
+</html>

@@ -1,0 +1,374 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Produtos — Japão Express</title>
+    <!-- Favicon & PWA -->
+    <link rel="icon" type="image/png" href="logo.png">
+    <link rel="apple-touch-icon" href="logo.png">
+    <link rel="manifest" href="manifest.json">
+    <meta name="theme-color" content="#9B59B6">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="default">
+    <meta name="apple-mobile-web-app-title" content="Japão Express">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@700;800;900&family=Caveat:wght@600;700&family=Nunito:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <style>
+        @font-face {
+            font-family: 'Sucker Brush';
+            src: url('sucker-brush.ttf') format('truetype');
+            font-weight: normal;
+            font-style: normal;
+            font-display: swap;
+        }
+
+        * { box-sizing: border-box; }
+
+        body {
+            font-family: 'Nunito', sans-serif;
+            background-color: #E8DEF8;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: flex-start;
+            padding: 2rem 1rem;
+        }
+
+        .font-hand  { font-family: 'Caveat', cursive; }
+        .font-hero  { font-family: 'Sucker Brush', cursive; font-weight: normal !important; }
+
+        .post-it {
+            position: relative;
+            box-shadow: 2px 5px 14px rgba(0,0,0,0.10);
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+        .post-it:hover {
+            transform: scale(1.03) rotate(0deg) !important;
+            box-shadow: 4px 10px 22px rgba(0,0,0,0.16);
+            z-index: 10;
+        }
+
+        .tape {
+            position: absolute;
+            top: -13px;
+            left: 50%;
+            transform: translateX(-50%) rotate(-2deg);
+            width: 52px;
+            height: 20px;
+            background-color: rgba(226, 206, 148, 0.82);
+            border-left:  1px solid rgba(0,0,0,0.06);
+            border-right: 1px solid rgba(0,0,0,0.06);
+        }
+
+        .pin {
+            position: absolute;
+            top: 10px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 14px;
+            height: 14px;
+            background: radial-gradient(circle at 38% 38%, #ff7e7e, #c0392b);
+            border-radius: 50%;
+            box-shadow: inset -2px -2px 4px rgba(0,0,0,0.28), 1px 2px 4px rgba(0,0,0,0.22);
+            z-index: 10;
+        }
+
+        /* Filtro de categorias */
+        .cat-btn {
+            padding: 0.45rem 1.2rem;
+            border-radius: 9999px;
+            font-weight: 800;
+            font-size: 0.78rem;
+            letter-spacing: 0.05em;
+            border: 2px solid #9B59B6;
+            color: #9B59B6;
+            background: transparent;
+            cursor: pointer;
+            transition: all 0.18s;
+        }
+        .cat-btn:hover,
+        .cat-btn.active {
+            background: #9B59B6;
+            color: #fff;
+        }
+
+        /* Card oculto pelo filtro */
+        .product-card.hidden-cat {
+            display: none;
+        }
+
+        /* Badge de destaque */
+        .badge {
+            position: absolute;
+            top: -8px;
+            right: -8px;
+            background: #F5A623;
+            color: #fff;
+            font-size: 0.6rem;
+            font-weight: 900;
+            padding: 3px 8px;
+            border-radius: 9999px;
+            transform: rotate(6deg);
+            box-shadow: 1px 2px 6px rgba(0,0,0,0.2);
+            z-index: 20;
+            letter-spacing: 0.05em;
+            text-transform: uppercase;
+        }
+    </style>
+</head>
+
+<body>
+
+<div class="bg-[#FDFAF2] w-full max-w-4xl rounded-3xl shadow-2xl overflow-visible border-t-[10px] border-[#9B59B6]">
+
+    <!-- ══════════════ HEADER ══════════════ -->
+    <header class="flex flex-col md:flex-row justify-between items-center px-6 md:px-10 pt-5 pb-4 gap-4">
+        <a href="index.html">
+            <img src="logo.png"
+                 onerror="this.src='https://i.imgur.com/YZ4IgF9.png'"
+                 alt="Japão Express Logo"
+                 class="h-20 md:h-24 object-contain drop-shadow-sm">
+        </a>
+        <div class="flex flex-col items-center gap-3 md:gap-2">
+            <nav class="flex flex-wrap justify-center gap-4 md:gap-8 font-bold text-sm text-[#3D1A78] tracking-wide">
+                <a href="produtos.html" class="text-[#9B59B6] border-b-2 border-[#9B59B6] pb-0.5">Produtos</a>
+                <a href="index.html#como-funciona" class="hover:text-[#9B59B6] transition">Como Funciona</a>
+                <a href="index.html#unboxing" class="hover:text-[#9B59B6] transition">Unboxing</a>
+                <a href="index.html#contato" class="hover:text-[#9B59B6] transition">Contato</a>
+            </nav>
+            <div class="flex items-center gap-4">
+                <a href="carrinho.html" class="relative text-[#3D1A78] hover:text-[#9B59B6] transition" title="Carrinho">
+                    <i class="fa-solid fa-bag-shopping text-xl"></i>
+                    <span class="absolute -top-2 -right-2 bg-[#9B59B6] text-white text-[10px] font-black rounded-full w-4 h-4 flex items-center justify-center leading-none">3</span>
+                </a>
+                <a href="favoritos.html" class="text-[#3D1A78] hover:text-[#9B59B6] transition" title="Favoritos">
+                    <i class="fa-regular fa-heart text-xl"></i>
+                </a>
+                <a href="perfil.html" class="text-[#3D1A78] hover:text-[#9B59B6] transition" title="Minha Conta">
+                    <i class="fa-regular fa-circle-user text-xl"></i>
+                </a>
+                <span class="text-[#C9B8E8] font-light select-none">|</span>
+                <a href="login.html" class="text-[#3D1A78] hover:text-[#9B59B6] transition font-bold text-xs tracking-wide uppercase">Entrar</a>
+                <a href="login.html#cadastro" class="bg-[#9B59B6] text-white font-black text-xs px-3 py-1.5 rounded-full hover:bg-[#7D3C98] transition tracking-wide uppercase">Cadastrar</a>
+            </div>
+        </div>
+    </header>
+
+    <!-- ══════════════ PAGE HERO ══════════════ -->
+    <section class="px-6 md:px-10 pt-6 pb-8 border-b border-gray-100">
+        <!-- Breadcrumb -->
+        <p class="text-xs font-semibold text-[#9B59B6] mb-3 tracking-wide">
+            <a href="index.html" class="hover:underline">Home</a>
+            <span class="mx-1 text-gray-400">/</span>
+            <span class="text-[#2C1654]">Produtos</span>
+        </p>
+
+        <div class="flex flex-col md:flex-row md:items-end justify-between gap-4">
+            <div>
+                <h1 class="font-hero text-[2.6rem] text-[#2C1654] leading-none mb-1">Nossos Produtos</h1>
+                <p class="text-sm font-semibold text-[#4A3060]">
+                    Autênticos do Japão, enviados direto para você 🌸
+                </p>
+            </div>
+            <!-- Busca rápida -->
+            <div class="relative max-w-xs w-full">
+                <i class="fa-solid fa-magnifying-glass absolute left-3 top-1/2 -translate-y-1/2 text-[#9B59B6] text-sm"></i>
+                <input id="searchInput" type="text" placeholder="Buscar produto..."
+                    class="w-full pl-9 pr-4 py-2 rounded-full border-2 border-[#E2D4F0] focus:border-[#9B59B6] outline-none text-sm font-semibold text-[#2C1654] bg-[#F7F3FF]">
+            </div>
+        </div>
+
+        <!-- Filtros de categoria -->
+        <div class="flex flex-wrap gap-2 mt-5">
+            <button class="cat-btn active" data-cat="todos">Todos</button>
+            <button class="cat-btn" data-cat="cosmeticos">
+                <i class="fa-solid fa-sparkles mr-1"></i>Cosméticos
+            </button>
+            <button class="cat-btn" data-cat="guloseimas">
+                <i class="fa-solid fa-candy-cane mr-1"></i>Guloseimas
+            </button>
+            <button class="cat-btn" data-cat="colecionaveis">
+                <i class="fa-solid fa-star mr-1"></i>Colecionáveis
+            </button>
+            <button class="cat-btn" data-cat="papelaria">
+                <i class="fa-solid fa-pen-nib mr-1"></i>Papelaria
+            </button>
+        </div>
+    </section>
+
+    <!-- ══════════════ GRID DE PRODUTOS ══════════════ -->
+    <section class="px-6 md:px-10 py-10">
+
+        <!-- Contador -->
+        <p id="productCount" class="text-xs font-bold text-[#9B59B6] mb-6 tracking-widest uppercase"></p>
+
+        <div id="productsGrid" class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-x-5 gap-y-10">
+            <!-- preenchido via JS -->
+        </div>
+
+        <!-- Estado vazio -->
+        <div id="emptyState" class="hidden text-center py-16">
+            <div class="text-5xl mb-4">🔍</div>
+            <p class="font-hand text-2xl text-[#9B59B6] font-bold">Nenhum produto encontrado</p>
+            <p class="text-sm font-semibold text-gray-500 mt-1">Tente outra categoria ou termo de busca</p>
+        </div>
+    </section>
+
+    <!-- ══════════════ CTA WHATSAPP ══════════════ -->
+    <section class="flex flex-col md:flex-row items-center justify-center gap-6 px-6 md:px-10 pb-10 text-center">
+        <a href="https://wa.me/551199999999"
+           class="bg-[#25D366] text-white font-black py-4 px-9 rounded-full shadow-xl hover:bg-[#1EB855] transition flex items-center gap-3 text-sm tracking-widest uppercase">
+            <i class="fa-brands fa-whatsapp text-2xl"></i>
+            FALE NO WHATSAPP BUSINESS
+        </a>
+        <div class="post-it bg-white px-5 py-4 text-center rotate-[4deg] max-w-[170px] rounded-sm">
+            <div class="tape"></div>
+            <p class="font-hand text-[1.2rem] leading-tight mt-2 text-[#2C1654] font-semibold">
+                Não achou o que quer? Nos chame!
+            </p>
+        </div>
+    </section>
+
+    <!-- ══════════════ FOOTER ══════════════ -->
+    <footer class="border-t-2 border-gray-200 px-6 md:px-10 pt-8 pb-6 grid grid-cols-1 md:grid-cols-3 gap-8 text-center md:text-left text-sm text-[#4A3060]">
+        <div>
+            <h5 class="font-black text-base mb-2 text-[#2C1654]">Japão Express</h5>
+            <p class="text-xs leading-relaxed font-semibold">Chiryu-shi, Aichi-ken<br>Direto do Japão para o Brasil.</p>
+        </div>
+        <div>
+            <h5 class="font-black text-base mb-2 text-[#2C1654]">Quick Links</h5>
+            <ul class="space-y-1 text-xs font-semibold">
+                <li><a href="produtos.html" class="hover:text-[#9B59B6] transition">Produtos</a></li>
+                <li><a href="index.html#como-funciona" class="hover:text-[#9B59B6] transition">Como Funciona</a></li>
+                <li><a href="index.html#contato" class="hover:text-[#9B59B6] transition">Contato</a></li>
+            </ul>
+        </div>
+        <div>
+            <h5 class="font-black text-base mb-3 text-[#2C1654]">Social Media</h5>
+            <div class="flex justify-center md:justify-start gap-4 text-xl">
+                <a href="#" class="text-[#2C1654] hover:text-[#9B59B6] transition"><i class="fa-brands fa-facebook"></i></a>
+                <a href="https://www.instagram.com/ojapaoexpress" target="_blank" rel="noopener" class="text-[#2C1654] hover:text-[#9B59B6] transition"><i class="fa-brands fa-instagram"></i></a>
+                <a href="#" class="text-[#2C1654] hover:text-[#9B59B6] transition"><i class="fa-brands fa-tiktok"></i></a><a href="mailto:ojapaoexpress@gmail.com" class="text-[#2C1654] hover:text-[#9B59B6]" title="E-mail"><i class="fa-solid fa-envelope"></i></a>
+            </div>
+        </div>
+    </footer>
+    <div class="text-center text-xs py-4 text-gray-400 border-t border-gray-100 font-semibold">
+        © 2026 Japão Express. Todos os direitos reservados
+    </div>
+
+</div>
+
+<script src="js/products.js"></script>
+<script src="js/cart.js"></script>
+<script src="js/currency.js"></script>
+<script src="js/auth.js"></script>
+<script>
+    const grid      = document.getElementById('productsGrid');
+    const catBtns   = document.querySelectorAll('.cat-btn');
+    const searchInput = document.getElementById('searchInput');
+    const countEl   = document.getElementById('productCount');
+    const emptyEl   = document.getElementById('emptyState');
+
+    let activeCat  = 'todos';
+    let searchTerm = '';
+
+    // ── Gera HTML de um card a partir do catálogo ─────────────────
+    function renderCard(p) {
+        const deco = p.deco === 'pin'
+            ? `<div class="pin"></div>`
+            : `<div class="tape"></div>`;
+        const badge = p.badge
+            ? `<span class="badge" style="background:${p.badgeBg || '#F5A623'}">${p.badge}</span>`
+            : '';
+        const favActive = isFav(p.id) ? 'fa-solid text-[#E74C3C]' : 'fa-regular text-[#9B59B6]';
+        return `
+        <div class="product-card post-it ${p.cardBg} p-4 pt-9 rounded-sm text-center ${p.rotate} cursor-pointer"
+             data-cat="${p.cat}" data-name="${p.name.toLowerCase()} ${p.category.toLowerCase()}"
+             onclick="window.location='produto.html?id=${p.id}'">
+            ${deco}
+            ${badge}
+            <div class="relative w-full h-32 bg-white rounded mb-2 border border-gray-100 shadow-sm overflow-hidden">
+                <img src="${p.image}" alt="${p.name}"
+                     class="w-full h-full object-contain p-2"
+                     onerror="this.style.display='none'">
+                <button class="absolute top-1 right-1 w-6 h-6 flex items-center justify-center"
+                        onclick="event.stopPropagation(); handleFav('${p.id}', this)"
+                        title="Favoritar">
+                    <i class="${favActive} fa-heart text-sm"></i>
+                </button>
+            </div>
+            <span class="text-[0.6rem] font-black uppercase tracking-widest text-[#9B59B6] bg-[#E2D4F0] px-2 py-0.5 rounded-full">${p.category}</span>
+            <h3 class="font-black text-xs mt-1.5 mb-0.5 text-[#2C1654] leading-snug">${p.name}</h3>
+            <p class="text-[0.62rem] text-gray-500 font-semibold mb-2 leading-snug">${p.subcategory} · ${p.origin}</p>
+            <p class="text-base font-black text-[#9B59B6] mb-2" data-price-brl="${p.priceBRL}">R$ ${p.priceBRL.toFixed(2).replace('.',',')}</p>
+            <button onclick="event.stopPropagation(); addToCart(PRODUCTS.find(x=>x.id==='${p.id}'))"
+                    class="bg-[#9B59B6] text-white w-full py-1.5 rounded-full font-black text-xs hover:bg-[#7D3C98] transition cursor-pointer">
+                <i class="fa-solid fa-bag-shopping mr-1"></i>Adicionar
+            </button>
+        </div>`;
+    }
+
+    function handleFav(id, btn) {
+        const added = toggleFav(id);
+        const ico = btn.querySelector('i');
+        ico.className = added ? 'fa-solid fa-heart text-[#E74C3C] text-sm' : 'fa-regular fa-heart text-[#9B59B6] text-sm';
+    }
+
+    // ── Renderiza e filtra ────────────────────────────────────────
+    function renderAll() {
+        const filtered = PRODUCTS.filter(p => {
+            const matchCat    = activeCat === 'todos' || p.cat === activeCat;
+            const matchSearch = (p.name + ' ' + p.category).toLowerCase().includes(searchTerm);
+            return matchCat && matchSearch;
+        });
+
+        grid.innerHTML = filtered.map(renderCard).join('');
+        const n = filtered.length;
+        countEl.textContent = `${n} produto${n !== 1 ? 's' : ''} encontrado${n !== 1 ? 's' : ''}`;
+        emptyEl.classList.toggle('hidden', n > 0);
+        refreshAllPrices();
+    }
+
+    catBtns.forEach(btn => {
+        btn.addEventListener('click', () => {
+            catBtns.forEach(b => b.classList.remove('active'));
+            btn.classList.add('active');
+            activeCat = btn.dataset.cat;
+            renderAll();
+        });
+    });
+
+    searchInput.addEventListener('input', () => {
+        searchTerm = searchInput.value.toLowerCase().trim();
+        renderAll();
+    });
+
+    // ── Header: moeda + auth ──────────────────────────────────────
+    document.querySelectorAll('.flex.items-center.gap-4').forEach(nav => {
+        if (nav.querySelector('a[href="carrinho.html"]') && !nav.querySelector('[data-currency-toggle]')) {
+            const toggleBtn = document.createElement('button');
+            toggleBtn.setAttribute('data-currency-toggle', '');
+            toggleBtn.setAttribute('onclick', 'toggleCurrency()');
+            toggleBtn.className = 'text-[#3D1A78] hover:text-[#9B59B6] transition font-black text-xs border border-[#C9B8E8] rounded-full px-2 py-0.5';
+            toggleBtn.innerHTML = '🇯🇵 JPY';
+            nav.insertBefore(toggleBtn, nav.firstChild);
+        }
+    });
+
+    // Atualiza "Entrar" para auth-entrar
+    document.querySelectorAll('a[href="login.html"]').forEach(el => {
+        if (el.textContent.trim() === 'Entrar') el.setAttribute('data-auth-entrar', '');
+    });
+    document.querySelectorAll('a[href="login.html#cadastro"]').forEach(el => {
+        el.setAttribute('data-auth-cadastrar', '');
+    });
+
+    renderAll();
+</script>
+
+</body>
+</html>

@@ -1,0 +1,470 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Japão Express - Importados do Japão</title>
+    <!-- Favicon & PWA -->
+    <link rel="icon" type="image/png" href="logo.png">
+    <link rel="apple-touch-icon" href="logo.png">
+    <link rel="manifest" href="manifest.json">
+    <meta name="theme-color" content="#9B59B6">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="default">
+    <meta name="apple-mobile-web-app-title" content="Japão Express">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Baloo+2:wght@700;800;900&family=Caveat:wght@600;700&family=Nunito:wght@400;600;700;800;900&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <style>
+        @font-face {
+            font-family: 'Sucker Brush';
+            src: url('sucker-brush.ttf') format('truetype');
+            font-weight: normal;
+            font-style: normal;
+            font-display: swap;
+        }
+
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Nunito', sans-serif;
+            background-color: #E8DEF8;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: flex-start;
+            padding: 2rem 1rem;
+        }
+
+        .font-hand {
+            font-family: 'Caveat', cursive;
+        }
+
+        .font-hero {
+            font-family: 'Sucker Brush', 'Bebas Neue', cursive;
+            font-weight: normal !important;
+            font-style: normal !important;
+            letter-spacing: 0.01em;
+        }
+
+        /* ── Post-it base ── */
+        .post-it {
+            position: relative;
+            box-shadow: 2px 5px 14px rgba(0, 0, 0, 0.10);
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+
+        .post-it:hover {
+            transform: scale(1.04) rotate(0deg) !important;
+            box-shadow: 4px 8px 20px rgba(0, 0, 0, 0.15);
+            z-index: 10;
+        }
+
+        /* ── Fita adesiva ── */
+        .tape {
+            position: absolute;
+            top: -13px;
+            left: 50%;
+            transform: translateX(-50%) rotate(-2deg);
+            width: 52px;
+            height: 20px;
+            background-color: rgba(226, 206, 148, 0.82);
+            border-left: 1px solid rgba(0, 0, 0, 0.06);
+            border-right: 1px solid rgba(0, 0, 0, 0.06);
+        }
+
+        /* ── Percevejo ── */
+        .pin {
+            position: absolute;
+            top: 10px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 14px;
+            height: 14px;
+            background: radial-gradient(circle at 38% 38%, #ff7e7e, #c0392b);
+            border-radius: 50%;
+            box-shadow: inset -2px -2px 4px rgba(0, 0, 0, 0.28), 1px 2px 4px rgba(0, 0, 0, 0.22);
+            z-index: 10;
+        }
+
+        /* ── Estrelas ── */
+        .stars {
+            color: #F5A623;
+            letter-spacing: 1px;
+        }
+
+        /* ── Sakura SVG inline ── */
+        .sakura {
+            display: inline-block;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="bg-[#FDFAF2] w-full max-w-4xl rounded-3xl shadow-2xl overflow-visible border-t-[10px] border-[#9B59B6]">
+
+        <!-- ═══════════════════════════════ HEADER ═══════════════════════════════ -->
+        <header class="flex flex-col md:flex-row justify-between items-center px-6 md:px-10 pt-5 pb-4 gap-4">
+            <!-- Logo -->
+            <a href="index.html">
+                <img src="logo.png" onerror="this.src='https://i.imgur.com/lxyYcwX.png'" alt="Japão Express Logo"
+                    class="h-20 md:h-24 object-contain drop-shadow-sm">
+            </a>
+
+            <!-- Nav links + ações -->
+            <div class="flex flex-col items-center gap-3 md:gap-2">
+                <nav class="flex flex-wrap justify-center gap-4 md:gap-8 font-bold text-sm text-[#3D1A78] tracking-wide">
+                    <a href="produtos.html" class="hover:text-[#9B59B6] transition">Produtos</a>
+                    <a href="#como-funciona" class="hover:text-[#9B59B6] transition">Como Funciona</a>
+                    <a href="#unboxing" class="hover:text-[#9B59B6] transition">Unboxing</a>
+                    <a href="#contato" class="hover:text-[#9B59B6] transition">Contato</a>
+                </nav>
+
+                <!-- Ações: carrinho, perfil, login -->
+                <div class="flex items-center gap-4">
+                    <!-- Moeda -->
+                    <button data-currency-toggle onclick="toggleCurrency()"
+                        class="text-[#3D1A78] hover:text-[#9B59B6] transition font-black text-xs border border-[#C9B8E8] rounded-full px-2 py-0.5"
+                        title="Alternar moeda">🇯🇵 JPY</button>
+
+                    <!-- Carrinho -->
+                    <a href="carrinho.html" class="relative text-[#3D1A78] hover:text-[#9B59B6] transition" title="Carrinho">
+                        <i class="fa-solid fa-bag-shopping text-xl"></i>
+                        <span id="cart-badge" style="display:none" class="absolute -top-2 -right-2 bg-[#9B59B6] text-white text-[10px] font-black rounded-full w-4 h-4 flex items-center justify-center leading-none">0</span>
+                    </a>
+
+                    <!-- Favoritos -->
+                    <a href="favoritos.html" class="text-[#3D1A78] hover:text-[#9B59B6] transition" title="Favoritos">
+                        <i class="fa-regular fa-heart text-xl"></i>
+                    </a>
+
+                    <!-- Perfil -->
+                    <a href="perfil.html" data-auth-perfil class="text-[#3D1A78] hover:text-[#9B59B6] transition" title="Minha Conta">
+                        <i class="fa-regular fa-circle-user text-xl"></i>
+                    </a>
+
+                    <!-- Separador -->
+                    <span class="text-[#C9B8E8] font-light select-none">|</span>
+
+                    <!-- Login / Cadastro -->
+                    <a href="login.html" data-auth-entrar class="text-[#3D1A78] hover:text-[#9B59B6] transition font-bold text-xs tracking-wide uppercase">
+                        Entrar
+                    </a>
+                    <a href="login.html#cadastro" data-auth-cadastrar class="bg-[#9B59B6] text-white font-black text-xs px-3 py-1.5 rounded-full hover:bg-[#7D3C98] transition tracking-wide uppercase">
+                        Cadastrar
+                    </a>
+                </div>
+            </div>
+        </header>
+
+        <!-- ═══════════════════════════════ HERO ════════════════════════════════ -->
+        <section
+            class="flex flex-col md:flex-row items-center justify-between px-6 md:px-10 pt-4 pb-12 gap-8 text-center md:text-left">
+
+            <!-- Texto -->
+            <div class="flex-1 max-w-sm flex flex-col items-center md:items-start">
+                <h1 class="font-hero text-[3.4rem] md:text-[3.8rem] leading-[1.05] uppercase text-[#2C1654] mb-5 text-center md:text-left">
+                    Seu pedaço do Japão,<br>direto na sua porta!
+                </h1>
+                <p class="text-[0.95rem] font-semibold text-[#4A3060] mb-8 leading-relaxed">
+                    Os melhores cosméticos, guloseimas<br>
+                    e colecionáveis do Japão, com frete<br>
+                    direto para o Brasil.
+                </p>
+                <a href="produtos.html"
+                    class="inline-block bg-[#9B59B6] text-white font-black py-3 px-7 rounded-full shadow-lg hover:bg-[#7D3C98] transition text-sm tracking-widest uppercase">
+                    CONFIRA NOSSOS PRODUTOS
+                </a>
+            </div>
+
+            <!-- Imagem + decoração -->
+            <div class="flex-1 relative w-[90%] md:w-full max-w-[380px] mt-8 md:mt-0 mx-auto md:mx-0">
+                <!-- Sakura flores decorativas -->
+                <span class="absolute -top-5 -left-8 text-[2.2rem] select-none" style="color:#F5A8C9;">🌸</span>
+                <span class="absolute top-6  -left-5 text-[1.2rem] select-none" style="color:#F5A8C9;">🌸</span>
+                <span class="absolute bottom-10 -left-4 text-[1.5rem] select-none" style="color:#F5A8C9;">🌸</span>
+                <span class="absolute -top-3 right-10 text-[1rem] select-none" style="color:#F5A8C9;">🌸</span>
+
+                <!-- Foto da caixa -->
+                <img src="caixa.jpg" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex'"
+                    alt="Caixa Japão Express"
+                    class="rounded-2xl shadow-2xl w-full object-cover border-4 border-white rotate-[1.5deg]">
+                <!-- Placeholder caso não tenha a imagem -->
+                <div
+                    class="hidden rounded-2xl shadow-2xl w-full h-64 bg-[#E2D4F0] border-4 border-white rotate-[1.5deg] items-center justify-center text-[#9B59B6] font-bold text-sm">
+                    Foto da Caixa Japão Express
+                </div>
+
+                <!-- Sticker unboxing filmável -->
+                <div
+                    class="absolute -bottom-4 -right-4 bg-white p-2.5 rounded-xl shadow-2xl border-2 border-purple-200 rotate-[-6deg]">
+                    <i class="fa-solid fa-camera text-2xl text-[#9B59B6] block text-center mb-1"></i>
+                    <p class="font-hand text-[1.15rem] text-center leading-none text-[#2C1654] font-semibold">
+                        unboxing<br>filmável</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- ══════════════════════════ NOSSAS VANTAGENS ══════════════════════════ -->
+        <section class="px-6 md:px-10 pb-12">
+            <h2 class="font-hand text-[2.4rem] font-bold text-center text-[#2C1654] mb-10">Nossas Vantagens</h2>
+
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+
+                <!-- Compras no Japão -->
+                <div class="post-it bg-[#FFF3B0] p-6 pt-10 text-center rounded-sm rotate-[-2deg]">
+                    <div class="pin"></div>
+                    <!-- Ícone: loja -->
+                    <div class="flex justify-center mb-4">
+                        <i class="fa-solid fa-store text-4xl mb-4 text-gray-700 mt-2"></i>
+                    </div>
+                    <h3 class="font-black text-xs uppercase tracking-wider mb-2 text-[#2C1654]">COMPRAS NO JAPÃO</h3>
+                    <p class="text-xs font-semibold leading-snug text-[#3D2060]">
+                        Direto em Don Quijote<br>e Matsumoto Kiyoshi.<br>Sem intermediários.
+                    </p>
+                </div>
+
+                <!-- Unboxing Lindo -->
+                <div class="post-it bg-[#FDD5E5] p-6 pt-10 text-center rounded-sm rotate-[2.5deg]">
+                    <div class="pin"></div>
+                    <!-- Ícone: caixa com coração -->
+                    <div class="flex justify-center mb-4 relative">
+                        <i class="fa-solid fa-box-open text-4xl mb-4 text-gray-700 mt-2"></i>
+                        <i class="fa-solid fa-heart text-pink-500 text-base absolute -top-1 -right-1"></i>
+                    </div>
+                    <h3 class="font-black text-xs uppercase tracking-wider mb-2 text-[#2C1654]">UNBOXING LINDO</h3>
+                    <p class="text-xs font-semibold leading-snug text-[#3D2060]">
+                        Cuidamos da<br>embalagem para ser<br>filmável e perfeita!
+                    </p>
+                </div>
+
+                <!-- Conteúdo Autêntico -->
+                <div class="post-it bg-[#E8D5F5] p-6 pt-9 text-center rounded-sm rotate-[-1deg]">
+                    <div class="tape"></div>
+                    <!-- Ícone: Instagram + mapa -->
+                    <div class="flex justify-center items-center gap-1 mb-4 mt-2">
+                        <i class="fa-brands fa-instagram text-4xl text-gray-700"></i>
+                    </div>
+                    <h3 class="font-black text-xs uppercase tracking-wider mb-2 text-[#2C1654]">CONTEÚDO AUTÊNTICO</h3>
+                    <p class="text-xs font-semibold leading-snug text-[#3D2060]">
+                        Veja nossos bastidores<br>nas lojas e dia-a-dia<br>no Japão.
+                    </p>
+                </div>
+            </div>
+        </section>
+
+        <!-- ════════════════════════════ DESTAQUES ═══════════════════════════════ -->
+        <section class="mx-4 md:mx-6 mb-8 bg-[#F4EFE4] rounded-2xl px-4 md:px-8 py-8 shadow-inner">
+            <h2 class="font-hand text-[2.4rem] font-bold text-center text-[#2C1654] mb-7">Destaques</h2>
+
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+
+                <!-- Bioré UV -->
+                <a href="produto.html?id=biore-uv"
+                    class="post-it bg-[#D6EAF8] p-4 pt-8 rounded-sm text-center rotate-[1deg] block cursor-pointer hover:scale-[1.03] hover:shadow-xl transition-all">
+                    <div class="tape"></div>
+                    <img src="https://via.placeholder.com/100x130/FFFFFF/9B59B6?text=Bior%C3%A9+UV" alt="Bioré UV"
+                        class="mx-auto mb-2 h-28 object-contain rounded shadow-sm border border-white">
+                    <h4 class="font-black text-xs mb-0.5 text-[#2C1654]">Bioré UV</h4>
+                    <p class="text-[0.65rem] font-semibold text-gray-600 mb-1 leading-snug">Protetor comprado<br>no Matsumoto Kiyoshi.</p>
+                    <p class="text-lg font-black text-[#9B59B6] mb-2" data-price-brl="85">R$ 85,00</p>
+                    <span class="block bg-[#9B59B6] text-white w-full py-1.5 rounded-full font-black text-xs hover:bg-[#7D3C98] transition">Comprar</span>
+                </a>
+
+                <!-- Hada Labo -->
+                <a href="produto.html?id=hada-labo"
+                    class="post-it bg-[#EFEFEF] p-4 pt-8 rounded-sm text-center rotate-[-1.5deg] block cursor-pointer hover:scale-[1.03] hover:shadow-xl transition-all">
+                    <div class="pin"></div>
+                    <img src="https://via.placeholder.com/100x130/FFFFFF/9B59B6?text=Hada+Labo" alt="Hada Labo"
+                        class="mx-auto mb-2 h-28 object-contain rounded shadow-sm border border-white">
+                    <h4 class="font-black text-xs mb-0.5 text-[#2C1654]">Hada Labo</h4>
+                    <p class="text-[0.65rem] font-semibold text-gray-600 mb-1 leading-snug">Hidratante original<br>do Japão.</p>
+                    <p class="text-lg font-black text-[#9B59B6] mb-2" data-price-brl="90">R$ 90,00</p>
+                    <span class="block bg-[#9B59B6] text-white w-full py-1.5 rounded-full font-black text-xs hover:bg-[#7D3C98] transition">Comprar</span>
+                </a>
+
+                <!-- KitKat -->
+                <a href="produto.html?id=kitkat-matcha"
+                    class="post-it bg-[#FDD5E5] p-4 pt-8 rounded-sm text-center rotate-[2deg] block cursor-pointer hover:scale-[1.03] hover:shadow-xl transition-all">
+                    <div class="tape"></div>
+                    <img src="https://via.placeholder.com/100x130/FFFFFF/9B59B6?text=KitKat" alt="KitKat pack"
+                        class="mx-auto mb-2 h-28 object-contain rounded shadow-sm border border-white">
+                    <h4 class="font-black text-xs mb-0.5 text-[#2C1654]">KitKat pack</h4>
+                    <p class="text-[0.65rem] font-semibold text-gray-600 mb-1 leading-snug">Sabores exclusivos<br>em embalagem térmica.</p>
+                    <p class="text-lg font-black text-[#9B59B6] mb-2" data-price-brl="60">R$ 60,00</p>
+                    <span class="block bg-[#9B59B6] text-white w-full py-1.5 rounded-full font-black text-xs hover:bg-[#7D3C98] transition">Comprar</span>
+                </a>
+
+                <!-- Pokémon TCG -->
+                <a href="produto.html?id=pokemon-tcg"
+                    class="post-it bg-[#FFF3B0] p-4 pt-8 rounded-sm text-center rotate-[-1deg] block cursor-pointer hover:scale-[1.03] hover:shadow-xl transition-all">
+                    <div class="pin"></div>
+                    <img src="https://via.placeholder.com/100x130/FFFFFF/9B59B6?text=Pok%C3%A9mon+TCG" alt="Pokémon TCG"
+                        class="mx-auto mb-2 h-28 object-contain rounded shadow-sm border border-white">
+                    <h4 class="font-black text-xs mb-0.5 text-[#2C1654]">Pokémon TCG</h4>
+                    <p class="text-[0.65rem] font-semibold text-gray-600 mb-1 leading-snug">Booster pack raro<br>autêntico do Japão.</p>
+                    <p class="text-lg font-black text-[#9B59B6] mb-2" data-price-brl="75">R$ 75,00</p>
+                    <span class="block bg-[#9B59B6] text-white w-full py-1.5 rounded-full font-black text-xs hover:bg-[#7D3C98] transition">Comprar</span>
+                </a>
+            </div>
+        </section>
+
+        <!-- ════════════════════════ DEPOIMENTOS / REVIEWS ═══════════════════════ -->
+        <section id="unboxing" class="px-6 md:px-10 pb-10">
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
+
+                <!-- Review 1 -->
+                <div class="post-it bg-white p-4 rounded-xl flex gap-3 shadow-md rotate-[-0.8deg]">
+                    <div class="tape"></div>
+                    <img src="https://via.placeholder.com/80x80/E8D5F5/9B59B6?text=📦" alt="Foto review"
+                        class="w-20 h-20 rounded-lg object-cover flex-shrink-0 mt-3 shadow-sm">
+                    <div class="mt-2 flex-1">
+                        <div class="stars text-sm mb-1">★★★★★</div>
+                        <p class="text-xs leading-snug font-semibold text-[#3D2060]">
+                            Amei os cosméticos, tudo chegou perfeitinho e o unboxing ficou incrível!
+                        </p>
+                    </div>
+                </div>
+
+                <!-- Review 2 -->
+                <div class="post-it bg-white p-4 rounded-xl flex gap-3 shadow-md rotate-[1deg]">
+                    <div class="tape"></div>
+                    <img src="https://via.placeholder.com/80x80/FDD5E5/9B59B6?text=🎁" alt="Foto review"
+                        class="w-20 h-20 rounded-lg object-cover flex-shrink-0 mt-3 shadow-sm">
+                    <div class="mt-2 flex-1">
+                        <div class="stars text-sm mb-1">★★★★★</div>
+                        <p class="text-xs leading-snug font-semibold text-[#3D2060]">
+                            Faz essa embalagem o número aos outro porta ao o brasil!! Perfeito!
+                        </p>
+                    </div>
+                </div>
+
+                <!-- Review 3 -->
+                <div class="post-it bg-white p-4 rounded-xl flex gap-3 shadow-md rotate-[0.5deg]">
+                    <div class="pin"></div>
+                    <img src="https://via.placeholder.com/80x80/FFF3B0/9B59B6?text=⭐" alt="Foto review"
+                        class="w-20 h-20 rounded-lg object-cover flex-shrink-0 mt-3 shadow-sm">
+                    <div class="mt-2 flex-1">
+                        <div class="stars text-sm mb-1">★★★★★</div>
+                        <p class="text-xs leading-snug font-semibold text-[#3D2060]">
+                            Minha irmã adorou o unboxing, presentei meu namorado e chegou perfeito!
+                        </p>
+                    </div>
+                </div>
+
+                <!-- Review 4 — card produto -->
+                <div
+                    class="post-it bg-[#FDD5E5] p-4 rounded-xl text-center shadow-md rotate-[-0.5deg] flex flex-col items-center justify-between">
+                    <div class="tape"></div>
+                    <img src="https://via.placeholder.com/110x80/FFFFFF/9B59B6?text=Pok%C3%A9mon" alt="Pokémon"
+                        class="h-16 object-contain mt-3 rounded shadow-sm mb-2">
+                    <p class="text-xs font-bold text-[#2C1654] leading-snug">
+                        Pokémon TCG — comprei um booster, o mais pedido dia-a-dia do Japão.
+                    </p>
+                    <div class="stars text-sm mt-1">★★★★★</div>
+                    <p class="text-[0.6rem] text-gray-400 mt-0.5">...</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- ═══════════════════════════ COMO FUNCIONA ════════════════════════════ -->
+        <section id="como-funciona" class="mx-6 mb-8 bg-[#F4EFE4] rounded-2xl px-8 py-8 shadow-inner">
+            <h2 class="font-hand text-[2.4rem] font-bold text-center text-[#2C1654] mb-7">Como Funciona</h2>
+            <div class="flex flex-col md:flex-row justify-center items-center gap-4 md:gap-8 font-bold text-center">
+                <div>
+                    <i class="fa-solid fa-cart-shopping text-4xl text-[#9370DB] mb-2"></i>
+                    <p>1. Compras</p>
+                </div>
+                <i class="fa-solid fa-arrow-right text-gray-300 hidden md:block"></i>
+
+                <div>
+                    <i class="fa-solid fa-box-open text-4xl text-[#9370DB] mb-2 relative">
+                        <i class="fa-solid fa-heart text-pink-400 absolute -top-1 -right-2 text-xl"></i>
+                    </i>
+                    <p>2. Embalagem</p>
+                </div>
+
+                <i class="fa-solid fa-arrow-right text-gray-300 hidden md:block"></i>
+                <div>
+                    <i class="fa-solid fa-envelopes-bulk text-4xl text-[#9370DB] mb-2"></i>
+                    <p>3. Japan Post</p>
+                </div>
+                <i class="fa-solid fa-arrow-right text-gray-300 hidden md:block"></i>
+                <div>
+                    <i class="fa-solid fa-truck-fast text-4xl text-[#9370DB] mb-2"></i>
+                    <p>4. Entrega</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- ════════════════════════ CTA WHATSAPP ════════════════════════════════ -->
+        <section id="contato"
+            class="flex flex-col md:flex-row items-center justify-center gap-6 md:gap-10 px-6 md:px-10 pb-10 text-center">
+            <a href="https://wa.me/551199999999"
+                class="bg-[#25D366] text-white font-black py-4 px-9 rounded-full shadow-xl hover:bg-[#1EB855] transition flex items-center gap-3 text-sm tracking-widest uppercase">
+                <i class="fa-brands fa-whatsapp text-2xl"></i>
+                FALE NO WHATSAPP BUSINESS
+            </a>
+
+            <div class="post-it bg-[#FFF3B0] px-5 py-4 text-center rotate-[4deg] max-w-[170px] rounded-sm">
+                <div class="tape"></div>
+                <p class="font-hand text-[1.25rem] leading-tight mt-2 text-[#2C1654] font-semibold">
+                    Dúvidas sobre<br>redirecionamento?<br>Nos chame!
+                </p>
+            </div>
+        </section>
+
+        <!-- ══════════════════════════════ FOOTER ════════════════════════════════ -->
+        <footer
+            class="border-t-2 border-gray-200 px-6 md:px-10 pt-8 pb-6 grid grid-cols-1 md:grid-cols-3 gap-8 text-center md:text-left text-sm text-[#4A3060]">
+
+            <div>
+                <h5 class="font-black text-base mb-2 text-[#2C1654]">Japão Express</h5>
+                <p class="text-xs leading-relaxed font-semibold">
+                    Chiryu-shi, Aichi-ken<br>
+                    Rua Intotsin<br>
+                    Düreto Sonc 88322
+                </p>
+            </div>
+
+            <div>
+                <h5 class="font-black text-base mb-2 text-[#2C1654]">Quick Links</h5>
+                <ul class="space-y-1 text-xs font-semibold">
+                    <li><a href="produtos.html" class="hover:text-[#9B59B6] transition">Produtos</a></li>
+                    <li><a href="#unboxing" class="hover:text-[#9B59B6] transition">Unboxing</a></li>
+                    <li><a href="#como-funciona" class="hover:text-[#9B59B6] transition">Como Funciona</a></li>
+                    <li><a href="#contato" class="hover:text-[#9B59B6] transition">Contato</a></li>
+                </ul>
+            </div>
+
+            <div>
+                <h5 class="font-black text-base mb-3 text-[#2C1654]">Social Media</h5>
+                <div class="flex justify-center md:justify-start gap-4 text-xl">
+                    <a href="https://www.instagram.com/ojapaoexpress" target="_blank" rel="noopener" class="text-[#2C1654] hover:text-[#9B59B6] transition"><i class="fa-brands fa-instagram"></i></a>
+                    <a href="#" class="text-[#2C1654] hover:text-[#9B59B6] transition"><i class="fa-brands fa-tiktok"></i></a>
+                    <a href="mailto:ojapaoexpress@gmail.com" class="text-[#2C1654] hover:text-[#9B59B6] transition" title="E-mail"><i class="fa-solid fa-envelope"></i></a>
+                </div>
+            </div>
+
+        </footer>
+
+        <div class="text-center text-xs py-4 text-gray-400 border-t border-gray-100 font-semibold">
+            © 2026 Japão Express. Todos os direitos reservados
+        </div>
+
+    </div>
+
+    <script src="js/products.js"></script>
+    <script src="js/cart.js"></script>
+    <script src="js/currency.js"></script>
+    <script src="js/auth.js"></script>
+</body>
+
+</html>

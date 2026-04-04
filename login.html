@@ -219,11 +219,25 @@
     </footer>
     <div class="text-center text-xs py-4 text-gray-400 border-t border-gray-100 font-semibold">© 2026 Japão Express. Todos os direitos reservados</div>
 </div>
+<script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-auth-compat.js"></script>
+<script src="js/firebase-config.js"></script>
 <script src="js/products.js"></script>
 <script src="js/cart.js"></script>
 <script src="js/currency.js"></script>
 <script src="js/auth.js"></script>
 <script>
+    function showError(msg) {
+        let el = document.getElementById('authError');
+        if (!el) {
+            el = document.createElement('p');
+            el.id = 'authError';
+            el.className = 'text-red-500 text-xs font-bold text-center mt-2';
+            document.querySelector('.tab-content.active')?.appendChild(el);
+        }
+        el.textContent = msg;
+    }
+
     function switchTab(tab) {
         document.getElementById('tabLogin').classList.toggle('active', tab === 'login');
         document.getElementById('tabRegister').classList.toggle('active', tab === 'register');
@@ -234,6 +248,7 @@
             ? 'flex-1 py-2.5 rounded-full font-black text-sm tracking-wide transition bg-[#9B59B6] text-white shadow-md'
             : 'flex-1 py-2.5 rounded-full font-black text-sm tracking-wide transition bg-[#F0F0F0] text-[#2C1654] hover:bg-[#E2D4F0]';
     }
+
     function togglePwd(inputId, eyeId) {
         const inp = document.getElementById(inputId);
         const eye = document.getElementById(eyeId);
@@ -241,19 +256,50 @@
         inp.type = isPass ? 'text' : 'password';
         eye.className = isPass ? 'fa-solid fa-eye-slash text-sm' : 'fa-solid fa-eye text-sm';
     }
-    function handleLogin(e) {
+
+    async function handleLogin(e) {
         e.preventDefault();
+        const btn   = e.target.querySelector('button[type=submit]');
         const email = document.getElementById('loginEmail').value.trim();
-        const name  = email.split('@')[0].replace(/[^a-zA-Z]/g,' ').trim() || 'Usuário';
-        setUser({ email, name, uid: btoa(email) });
-        window.location.href = 'perfil.html';
+        const pass  = document.getElementById('loginPassword').value;
+        btn.disabled = true;
+        btn.textContent = 'Entrando…';
+        try {
+            await firebaseLogin(email, pass);
+            window.location.href = 'perfil.html';
+        } catch (err) {
+            btn.disabled = false;
+            btn.textContent = 'Entrar';
+            const msg = err.code === 'auth/invalid-credential' || err.code === 'auth/wrong-password'
+                ? 'E-mail ou senha incorretos.'
+                : err.code === 'auth/user-not-found' ? 'Usuário não encontrado.'
+                : err.code === 'auth/too-many-requests' ? 'Muitas tentativas. Tente mais tarde.'
+                : 'Erro ao entrar. Tente novamente.';
+            showError(msg);
+        }
     }
-    function handleRegister(e) {
+
+    async function handleRegister(e) {
         e.preventDefault();
+        const btn   = e.target.querySelector('button[type=submit]');
         const name  = e.target.querySelector('input[type=text]').value.trim() || 'Usuário';
         const email = e.target.querySelector('input[type=email]').value.trim();
-        setUser({ email, name, uid: btoa(email) });
-        window.location.href = 'index.html';
+        const pass  = e.target.querySelectorAll('input[type=password]')[0].value;
+        btn.disabled = true;
+        btn.textContent = 'Criando conta…';
+        try {
+            await firebaseRegister(email, pass, name);
+            window.location.href = 'index.html';
+        } catch (err) {
+            btn.disabled = false;
+            btn.textContent = 'Criar Conta';
+            const msg = err.code === 'auth/email-already-in-use'
+                ? 'Este e-mail já está cadastrado.'
+                : err.code === 'auth/weak-password' ? 'Senha muito fraca (mínimo 6 caracteres).'
+                : err.code === 'auth/invalid-email'  ? 'E-mail inválido.'
+                : 'Erro ao criar conta. Tente novamente.';
+            showError(msg);
+        }
     }
 </script>
 </body>

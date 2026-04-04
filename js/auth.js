@@ -1,12 +1,17 @@
 // ═══════════════════════════════════════════════════════════
-// Japão Express — Auth State (localStorage)
-// Firebase pode ser plugado aqui quando as credenciais
-// estiverem configuradas em js/firebase-config.js
+// Japão Express — Auth (Firebase + localStorage fallback)
+// Firebase usado quando firebaseConfig.js estiver preenchido.
 // ═══════════════════════════════════════════════════════════
 
 const USER_KEY = 'je_user';
 
-// ── Leitura / escrita ────────────────────────────────────
+// Detecta se Firebase está inicializado
+function _hasFirebase() {
+  try { return typeof firebase !== 'undefined' && firebase.apps.length > 0; }
+  catch { return false; }
+}
+
+// ── Leitura / escrita localStorage (cache + fallback) ─────
 
 function getUser() {
   try { return JSON.parse(localStorage.getItem(USER_KEY)); }
@@ -18,8 +23,42 @@ function setUser(user) {
   updateAuthUI();
 }
 
-function logout() {
+function _clearUser() {
   localStorage.removeItem(USER_KEY);
+}
+
+// ── Firebase Auth ─────────────────────────────────────────
+
+/**
+ * Login com email/senha.
+ * Retorna Promise<user> ou lança erro.
+ */
+async function firebaseLogin(email, password) {
+  const cred = await firebase.auth().signInWithEmailAndPassword(email, password);
+  const u = cred.user;
+  setUser({ uid: u.uid, email: u.email, name: u.displayName || email.split('@')[0] });
+  return u;
+}
+
+/**
+ * Cadastro com email/senha + nome.
+ * Retorna Promise<user> ou lança erro.
+ */
+async function firebaseRegister(email, password, name) {
+  const cred = await firebase.auth().createUserWithEmailAndPassword(email, password);
+  await cred.user.updateProfile({ displayName: name });
+  setUser({ uid: cred.user.uid, email, name });
+  return cred.user;
+}
+
+/**
+ * Logout Firebase + limpa localStorage.
+ */
+async function logout() {
+  if (_hasFirebase()) {
+    try { await firebase.auth().signOut(); } catch {}
+  }
+  _clearUser();
   updateAuthUI();
   window.location.href = 'index.html';
 }
@@ -38,7 +77,6 @@ function requireAuth() {
 function updateAuthUI() {
   const user = getUser();
 
-  // Link "Entrar" vira "Sair" quando logado
   document.querySelectorAll('[data-auth-entrar]').forEach(el => {
     if (user) {
       el.textContent = 'Sair';
@@ -51,12 +89,10 @@ function updateAuthUI() {
     }
   });
 
-  // Botão "Cadastrar" some quando logado
   document.querySelectorAll('[data-auth-cadastrar]').forEach(el => {
     el.style.display = user ? 'none' : '';
   });
 
-  // Ícone de perfil: ativo quando logado
   document.querySelectorAll('[data-auth-perfil]').forEach(el => {
     if (user) {
       el.classList.add('text-[#9B59B6]');
@@ -67,22 +103,35 @@ function updateAuthUI() {
     }
   });
 
-  // Nome do usuário
   document.querySelectorAll('[data-user-name]').forEach(el => {
     el.textContent = user?.name || '';
   });
 
-  // Elementos visíveis apenas quando logado
   document.querySelectorAll('[data-auth-show]').forEach(el => {
     el.style.display = user ? '' : 'none';
   });
 
-  // Elementos visíveis apenas quando deslogado
   document.querySelectorAll('[data-auth-hide]').forEach(el => {
     el.style.display = user ? 'none' : '';
   });
 }
 
-// ── Init ──────────────────────────────────────────────────
+// ── Sync Firebase → localStorage quando página carrega ────
 
-document.addEventListener('DOMContentLoaded', updateAuthUI);
+document.addEventListener('DOMContentLoaded', () => {
+  if (_hasFirebase()) {
+    firebase.auth().onAuthStateChanged(u => {
+      if (u) {
+        // Usuário logado no Firebase → sincroniza localStorage
+        setUser({ uid: u.uid, email: u.email, name: u.displayName || u.email.split('@')[0] });
+      } else {
+        // Deslogado no Firebase → limpa localStorage
+        _clearUser();
+        updateAuthUI();
+      }
+    });
+  } else {
+    // Sem Firebase: usa localStorage puro
+    updateAuthUI();
+  }
+});

@@ -1,16 +1,14 @@
 // ═══════════════════════════════════════════════════════════
 // Japão Express — Firebase Config
-// Preencha com os dados do seu projeto Firebase:
-// Console → Project Settings → General → Your Apps → Web App
 // ═══════════════════════════════════════════════════════════
 
 const firebaseConfig = {
-  apiKey:            "COLE_AQUI",
+  apiKey:            "AIzaSyD41IlaTAFm9_ta4Tc50FV11Viz3vR2ewg",
   authDomain:        "japaoexpress-e7773.firebaseapp.com",
   projectId:         "japaoexpress-e7773",
   storageBucket:     "japaoexpress-e7773.firebasestorage.app",
-  messagingSenderId: "COLE_AQUI",
-  appId:             "COLE_AQUI",
+  messagingSenderId: "344684740712",
+  appId:             "1:344684740712:web:22b0eaf26bd0d93ff07bdd",
 };
 
 firebase.initializeApp(firebaseConfig);

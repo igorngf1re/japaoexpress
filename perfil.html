@@ -100,7 +100,7 @@
         <div class="flex items-center gap-4">
             <a href="carrinho.html" class="relative text-[#3D1A78] hover:text-[#9B59B6] transition" title="Carrinho">
                 <i class="fa-solid fa-bag-shopping text-xl"></i>
-                <span class="absolute -top-2 -right-2 bg-[#9B59B6] text-white text-[10px] font-black rounded-full w-4 h-4 flex items-center justify-center leading-none">3</span>
+                <span id="cart-badge" data-cart-badge class="absolute -top-2 -right-2 bg-[#9B59B6] text-white text-[10px] font-black rounded-full w-4 h-4 flex items-center justify-center leading-none" style="display:none"></span>
             </a>
             <a href="favoritos.html" class="text-[#3D1A78] hover:text-[#9B59B6] transition" title="Favoritos">
                 <i class="fa-regular fa-heart text-xl"></i>
@@ -131,10 +131,10 @@
             <i class="fa-solid fa-user text-[#9B59B6] text-2xl"></i>
           </div>
           <div>
-            <p class="font-hero text-xl text-[#2C1654] leading-tight">Ana Paula</p>
-            <p class="text-xs text-gray-500 font-semibold">ana.paula@email.com</p>
+            <p id="sidebarName" class="font-hero text-xl text-[#2C1654] leading-tight"></p>
+            <p id="sidebarEmail" class="text-xs text-gray-500 font-semibold"></p>
           </div>
-          <button class="mt-1 px-4 py-1.5 rounded-full border-2 border-[#9B59B6] text-[#9B59B6] text-xs font-bold hover:bg-[#9B59B6] hover:text-white transition">
+          <button onclick="logout()" class="mt-1 px-4 py-1.5 rounded-full border-2 border-[#9B59B6] text-[#9B59B6] text-xs font-bold hover:bg-[#9B59B6] hover:text-white transition">
             <i class="fa-solid fa-right-from-bracket mr-1"></i>Sair
           </button>
         </div>
@@ -244,22 +244,22 @@
       <div id="tab-meu-perfil" class="tab-content">
         <h1 class="font-hero text-[2rem] text-[#2C1654] mb-5 leading-none">Meu Perfil</h1>
         <div class="bg-white rounded-2xl p-6 shadow-sm border border-gray-100">
-          <form class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+          <form onsubmit="saveProfile(event)" class="grid grid-cols-1 sm:grid-cols-2 gap-4">
             <div class="flex flex-col gap-1">
               <label class="text-xs font-black text-[#3D1A78] uppercase tracking-wide">Nome Completo</label>
-              <input type="text" value="Ana Paula" class="border-2 border-gray-200 rounded-xl px-3 py-2 text-sm font-semibold focus:outline-none focus:border-[#9B59B6] transition" />
+              <input id="profileName" type="text" class="border-2 border-gray-200 rounded-xl px-3 py-2 text-sm font-semibold focus:outline-none focus:border-[#9B59B6] transition" />
             </div>
             <div class="flex flex-col gap-1">
               <label class="text-xs font-black text-[#3D1A78] uppercase tracking-wide">E-mail</label>
-              <input type="email" value="ana.paula@email.com" class="border-2 border-gray-200 rounded-xl px-3 py-2 text-sm font-semibold focus:outline-none focus:border-[#9B59B6] transition" />
+              <input id="profileEmail" type="email" class="border-2 border-gray-200 rounded-xl px-3 py-2 text-sm font-semibold focus:outline-none focus:border-[#9B59B6] transition" />
             </div>
             <div class="flex flex-col gap-1">
               <label class="text-xs font-black text-[#3D1A78] uppercase tracking-wide">Telefone</label>
-              <input type="tel" value="(11) 99999-0000" class="border-2 border-gray-200 rounded-xl px-3 py-2 text-sm font-semibold focus:outline-none focus:border-[#9B59B6] transition" />
+              <input id="profilePhone" type="tel" class="border-2 border-gray-200 rounded-xl px-3 py-2 text-sm font-semibold focus:outline-none focus:border-[#9B59B6] transition" />
             </div>
             <div class="flex flex-col gap-1">
               <label class="text-xs font-black text-[#3D1A78] uppercase tracking-wide">Data de Nascimento</label>
-              <input type="date" value="1995-06-15" class="border-2 border-gray-200 rounded-xl px-3 py-2 text-sm font-semibold focus:outline-none focus:border-[#9B59B6] transition" />
+              <input id="profileBirthdate" type="date" class="border-2 border-gray-200 rounded-xl px-3 py-2 text-sm font-semibold focus:outline-none focus:border-[#9B59B6] transition" />
             </div>
             <div class="sm:col-span-2 flex justify-end mt-2">
               <button type="submit" class="px-6 py-2.5 rounded-full bg-[#9B59B6] text-white font-black text-sm hover:bg-[#7d3fa0] transition">
@@ -334,24 +334,45 @@
   document.addEventListener('DOMContentLoaded', () => {
     const user = getUser();
     if (!user) return;
-    document.querySelectorAll('[data-user-name]').forEach(el => el.textContent = user.name);
-    document.querySelectorAll('[data-user-email]').forEach(el => {
-      el.value !== undefined ? el.value = user.email : el.textContent = user.email;
+
+    // Sidebar
+    const sName  = document.getElementById('sidebarName');
+    const sEmail = document.getElementById('sidebarEmail');
+    if (sName)  sName.textContent  = user.name  || '';
+    if (sEmail) sEmail.textContent = user.email || '';
+
+    // Formulário
+    const f = {
+      profileName:      user.name,
+      profileEmail:     user.email,
+      profilePhone:     user.phone     || '',
+      profileBirthdate: user.birthdate || '',
+    };
+    Object.entries(f).forEach(([id, val]) => {
+      const el = document.getElementById(id);
+      if (el) el.value = val;
     });
-    // Preenche campos de formulário se existirem
-    const nameInput  = document.getElementById('profileName');
-    const emailInput = document.getElementById('profileEmail');
-    if (nameInput)  nameInput.value  = user.name;
-    if (emailInput) emailInput.value = user.email;
+
+    updateAllBadges();
+    updateAuthUI();
   });
 
   // ── Salvar perfil ──────────────────────────────────────────────
   function saveProfile(e) {
     if (e) e.preventDefault();
-    const name  = document.getElementById('profileName')?.value.trim();
-    const email = document.getElementById('profileEmail')?.value.trim();
-    const user  = getUser();
-    if (user && name) { setUser({ ...user, name, email: email || user.email }); }
+    const user      = getUser();
+    const name      = document.getElementById('profileName')?.value.trim();
+    const email     = document.getElementById('profileEmail')?.value.trim();
+    const phone     = document.getElementById('profilePhone')?.value.trim();
+    const birthdate = document.getElementById('profileBirthdate')?.value;
+    if (user && name) {
+      setUser({ ...user, name, email: email || user.email, phone, birthdate });
+      // Atualiza sidebar em tempo real
+      const sName  = document.getElementById('sidebarName');
+      const sEmail = document.getElementById('sidebarEmail');
+      if (sName)  sName.textContent  = name;
+      if (sEmail) sEmail.textContent = email || user.email;
+    }
     showToast('Perfil salvo com sucesso!');
   }
 

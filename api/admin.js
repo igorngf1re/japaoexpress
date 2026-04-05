@@ -74,7 +74,12 @@ async function getFile() {
   );
   if (!resp.ok) throw new Error(`GitHub GET: ${resp.status}`);
   const data = await resp.json();
-  return { content: atob(data.content.replace(/\n/g, '')), sha: data.sha };
+  // Decode base64 → UTF-8 correctly (atob alone gives latin1 bytes, not UTF-8)
+  const binaryStr = atob(data.content.replace(/\n/g, ''));
+  const bytes = new Uint8Array(binaryStr.length);
+  for (let i = 0; i < binaryStr.length; i++) bytes[i] = binaryStr.charCodeAt(i);
+  const content = new TextDecoder('utf-8').decode(bytes);
+  return { content, sha: data.sha };
 }
 
 async function commitFile(sha, newContent, message) {
@@ -116,12 +121,23 @@ function upsertProduct(content, product, replace) {
     content = content.replace(blockRe, '');
   }
 
-  const newContent = content.replace(
-    /const PRODUCTS = \[(\s*\/\/[^\n]*)?\n/,
-    `const PRODUCTS = [\n${productLine}\n`
-  );
+  // Find insertion point: right after "const PRODUCTS = [" + newline
+  // Using simple string search instead of regex to avoid UTF-8 encoding edge cases
+  const needle = 'const PRODUCTS = [';
+  const idx = content.indexOf(needle);
+  if (idx === -1) throw new Error('Não foi possível inserir no array PRODUCTS.');
 
-  if (newContent === content) throw new Error('Não foi possível inserir no array PRODUCTS.');
+  // Insert after the "[" and the newline that follows it
+  const insertAt = idx + needle.length;
+  // Skip any existing newline/whitespace right after "["
+  let afterBracket = insertAt;
+  if (content[afterBracket] === '\n') afterBracket += 1;
+
+  const newContent =
+    content.slice(0, insertAt) + '\n' +
+    productLine + '\n' +
+    content.slice(afterBracket);
+
   return newContent;
 }
 

@@ -360,7 +360,12 @@
 
                     <!-- 3 Imagens do produto -->
                     <div>
-                        <label class="field-label mb-3 block">Imagens do Produto</label>
+                        <label class="field-label mb-1 block">Imagens do Produto</label>
+                        <!-- Aviso CDN bloqueado -->
+                        <div id="imgCdnWarn" class="hidden mb-2 flex items-start gap-1.5 bg-red-50 border border-red-200 rounded-xl px-3 py-2 text-[0.68rem] font-semibold text-red-700">
+                            <i class="fa-solid fa-circle-xmark text-red-400 mt-0.5 flex-shrink-0"></i>
+                            <span>Links da <strong>Amazon</strong> ou <strong>Rakuten</strong> são bloqueados fora desses sites (proteção de hotlink). Use <a href="https://imgbb.com" target="_blank" class="underline font-black">imgbb.com</a> ou <a href="https://imgur.com" target="_blank" class="underline font-black">imgur.com</a> para hospedar as fotos.</span>
+                        </div>
                         <div class="space-y-2">
                             <!-- Imagem 1 principal -->
                             <div class="flex items-center gap-2">
@@ -767,17 +772,31 @@ function onCategoryChange() {
 
 // ── Atualiza os 3 mini-previews de imagem ─────────────
 
+const BLOCKED_CDN = ['media-amazon.com', 'images-amazon.com', 'rakuten.co.jp', 'item.rakuten'];
+
+function isBlockedUrl(url) {
+  return BLOCKED_CDN.some(cdn => url.includes(cdn));
+}
+
 function updateImagePreviews() {
+  let hasBlocked = false;
   [['fImage','imgPrev1'], ['fImage2','imgPrev2'], ['fImage3','imgPrev3']].forEach(([inputId, prevId]) => {
     const url  = document.getElementById(inputId).value.trim();
     const wrap = document.getElementById(prevId);
     if (url) {
-      wrap.innerHTML = `<img src="${url}" class="w-full h-full object-cover"
-        onerror="this.parentElement.innerHTML='<i class=\\'fa-solid fa-triangle-exclamation text-red-300 text-sm\\'></i>'">`;
+      if (isBlockedUrl(url)) {
+        hasBlocked = true;
+        wrap.innerHTML = '<i class="fa-solid fa-ban text-red-300 text-sm" title="Link bloqueado"></i>';
+      } else {
+        wrap.innerHTML = `<img src="${url}" class="w-full h-full object-cover"
+          onerror="this.parentElement.innerHTML='<i class=\\'fa-solid fa-triangle-exclamation text-amber-400 text-sm\\'></i>'">`;
+      }
     } else {
       wrap.innerHTML = '<i class="fa-regular fa-image text-gray-300 text-sm"></i>';
     }
   });
+  const warn = document.getElementById('imgCdnWarn');
+  if (warn) warn.classList.toggle('hidden', !hasBlocked);
   updatePreview();
 }
 

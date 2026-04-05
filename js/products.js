@@ -1,5 +1,5 @@
-// ═══════════════════════════════════════════════════════════
-// Japão Express — Catálogo de Produtos
+// âââââââââââââââââââââââââââââââââââââââââââââââââââââââââââ
+// JapÃ£o Express â CatÃ¡logo de Produtos
 // Produtos adicionados via bot do Telegram ou manualmente.
 // Estrutura de cada produto:
 //   id, name, category, cat, subcategory,
@@ -7,13 +7,34 @@
 //   description, details, origin,
 //   image (URL), badge, badgeBg, stock,
 //   rating, reviews, cardBg, rotate, deco ('tape'|'pin')
-// ═══════════════════════════════════════════════════════════
+// âââââââââââââââââââââââââââââââââââââââââââââââââââââââââââ
 
 const PRODUCTS = [
-  // Adicione produtos aqui ou via bot Telegram
+  {
+    "id": "perfeito-whipped-a-120g",
+    "name": "Perfeito Whipped A 120g",
+    "category": "Cosméticos",
+    "cat": "cosmeticos",
+    "subcategory": "Cuidados de pele",
+    "priceBRL": 0,
+    "priceJPY": 0,
+    "weight": 120,
+    "description": "Cuidados de pele para uma pele macia e radiante",
+    "details": "Comprado em Rakuten 24. Cuidados de pele para uma pele macia e radiante",
+    "origin": "Rakuten 24",
+    "image": "https://tshop.r10s.jp/rakutensokuhaimart/cabinet/rakuten24/wb568/4550516474568.jpg",
+    "badge": null,
+    "badgeBg": "#9B59B6",
+    "stock": 10,
+    "rating": 4.5,
+    "reviews": 0,
+    "cardBg": "bg-[#D6EAF8]",
+    "rotate": "rotate-[2deg]",
+    "deco": "pin"
+  },
 ];
 
-// ── Helpers ───────────────────────────────────────────────
+// ââ Helpers âââââââââââââââââââââââââââââââââââââââââââââââ
 
 function getProductById(id) {
   return PRODUCTS.find(p => p.id === id) || null;
@@ -29,5 +50,5 @@ function formatBRL(value) {
 }
 
 function formatJPY(value) {
-  return '¥' + Math.round(value).toLocaleString('ja-JP');
+  return 'Â¥' + Math.round(value).toLocaleString('ja-JP');
 }

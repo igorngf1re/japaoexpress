@@ -208,22 +208,40 @@
                         <div>
                             <label class="field-label">Categoria *</label>
                             <select id="fCategory" class="field-input" onchange="onCategoryChange()" required>
-                                <option value="Cosméticos">✨ Cosméticos</option>
-                                <option value="Guloseimas">🍬 Guloseimas</option>
-                                <option value="Colecionáveis">⭐ Colecionáveis</option>
-                                <option value="Papelaria">✏️ Papelaria</option>
-                                <option value="Outros">📦 Outros</option>
+                                <optgroup label="💄 Beleza">
+                                    <option value="Cosméticos">✨ Cosméticos & Skincare</option>
+                                    <option value="Maquiagem">💋 Maquiagem</option>
+                                    <option value="Cabelos">💆 Cabelos</option>
+                                    <option value="Fragrâncias">🌸 Fragrâncias & Corpo</option>
+                                    <option value="Higiene & Saúde">💊 Higiene & Saúde</option>
+                                </optgroup>
+                                <optgroup label="🍭 Alimentos">
+                                    <option value="Guloseimas">🍬 Doces & Guloseimas</option>
+                                    <option value="Snacks Salgados">🍿 Snacks Salgados</option>
+                                    <option value="Bebidas">🍵 Bebidas & Chás</option>
+                                </optgroup>
+                                <optgroup label="🎌 Estilo de Vida">
+                                    <option value="Colecionáveis">⭐ Colecionáveis & Figuras</option>
+                                    <option value="Papelaria">✏️ Papelaria & Criatividade</option>
+                                    <option value="Casa & Decoração">🏮 Casa & Decoração</option>
+                                    <option value="Roupas & Acessórios">👘 Roupas & Acessórios</option>
+                                    <option value="Eletrônicos">📱 Eletrônicos & Gadgets</option>
+                                </optgroup>
+                                <optgroup label="📦 Outros">
+                                    <option value="Outros">📦 Outros</option>
+                                </optgroup>
                             </select>
                         </div>
                         <div>
                             <label class="field-label">Subcategoria</label>
-                            <input id="fSubcategory" type="text" class="field-input" placeholder="Limpeza Facial"
-                                   oninput="updatePreview()">
+                            <input id="fSubcategory" type="text" class="field-input" placeholder="ex: Limpeza Facial"
+                                   list="subcatList" oninput="updatePreview()">
+                            <datalist id="subcatList"></datalist>
                         </div>
                     </div>
 
-                    <!-- Preços -->
-                    <div class="grid grid-cols-2 sm:grid-cols-3 gap-4">
+                    <!-- Preços + Peso + Unidades -->
+                    <div class="grid grid-cols-2 sm:grid-cols-4 gap-4">
                         <div>
                             <label class="field-label">Preço JPY ¥ *</label>
                             <input id="fPriceJPY" type="number" min="0" class="field-input" placeholder="474" required
@@ -244,13 +262,45 @@
                             <label class="field-label">Peso (gramas)</label>
                             <input id="fWeight" type="number" min="0" class="field-input" placeholder="120">
                         </div>
+                        <div>
+                            <label class="field-label">Unid. / Embalagem</label>
+                            <input id="fUnits" type="number" min="1" class="field-input" value="1" placeholder="1"
+                                   title="Quantas unidades vêm na embalagem (ex: 5 máscaras)">
+                        </div>
                     </div>
 
-                    <!-- Imagem -->
+                    <!-- 3 Imagens do produto -->
                     <div>
-                        <label class="field-label">URL da Imagem</label>
-                        <input id="fImage" type="url" class="field-input" placeholder="https://…"
-                               oninput="updatePreview()">
+                        <label class="field-label mb-3 block">Imagens do Produto</label>
+                        <div class="space-y-2">
+                            <!-- Imagem 1 principal -->
+                            <div class="flex items-center gap-2">
+                                <span class="text-[10px] font-black text-[#9B59B6] uppercase tracking-wide w-16 shrink-0">Principal</span>
+                                <input id="fImage" type="url" class="field-input flex-1 text-xs py-2" placeholder="https://… (obrigatória)"
+                                       oninput="updateImagePreviews(); updatePreview()">
+                                <div id="imgPrev1" class="w-10 h-10 rounded-lg border-2 border-[#E2D4F0] bg-gray-50 overflow-hidden shrink-0 flex items-center justify-center">
+                                    <i class="fa-regular fa-image text-gray-300 text-sm"></i>
+                                </div>
+                            </div>
+                            <!-- Imagem 2 -->
+                            <div class="flex items-center gap-2">
+                                <span class="text-[10px] font-black text-[#C9B8E8] uppercase tracking-wide w-16 shrink-0">Foto 2</span>
+                                <input id="fImage2" type="url" class="field-input flex-1 text-xs py-2" placeholder="https://… (opcional)"
+                                       oninput="updateImagePreviews()">
+                                <div id="imgPrev2" class="w-10 h-10 rounded-lg border-2 border-[#E2D4F0] bg-gray-50 overflow-hidden shrink-0 flex items-center justify-center">
+                                    <i class="fa-regular fa-image text-gray-300 text-sm"></i>
+                                </div>
+                            </div>
+                            <!-- Imagem 3 -->
+                            <div class="flex items-center gap-2">
+                                <span class="text-[10px] font-black text-[#C9B8E8] uppercase tracking-wide w-16 shrink-0">Foto 3</span>
+                                <input id="fImage3" type="url" class="field-input flex-1 text-xs py-2" placeholder="https://… (opcional)"
+                                       oninput="updateImagePreviews()">
+                                <div id="imgPrev3" class="w-10 h-10 rounded-lg border-2 border-[#E2D4F0] bg-gray-50 overflow-hidden shrink-0 flex items-center justify-center">
+                                    <i class="fa-regular fa-image text-gray-300 text-sm"></i>
+                                </div>
+                            </div>
+                        </div>
                     </div>
 
                     <!-- Descrição curta -->
@@ -392,10 +442,16 @@
                     </div>
                 </div>
 
-                <!-- Description preview -->
-                <div class="mt-4 w-full bg-[#F0E8FF] rounded-xl p-3">
-                    <p class="field-label mb-1">Descrição</p>
-                    <p id="prevDesc" class="text-xs font-semibold text-[#4A3060] leading-relaxed italic">—</p>
+                <!-- Description + units preview -->
+                <div class="mt-4 w-full bg-[#F0E8FF] rounded-xl p-3 space-y-2">
+                    <div>
+                        <p class="field-label mb-1">Descrição</p>
+                        <p id="prevDesc" class="text-xs font-semibold text-[#4A3060] leading-relaxed italic">—</p>
+                    </div>
+                    <div id="prevUnitsWrap" style="display:none">
+                        <p class="field-label mb-0.5">Embalagem</p>
+                        <p id="prevUnits" class="text-xs font-bold text-[#9B59B6]"></p>
+                    </div>
                 </div>
 
                 <!-- Image status -->
@@ -421,11 +477,37 @@
 // ── Config ────────────────────────────────────────────
 
 const CAT_MAP = {
-  'Cosméticos':    { cat: 'cosmeticos',    cardBg: '#D6EAF8' },
-  'Guloseimas':    { cat: 'guloseimas',    cardBg: '#FFF9C4' },
-  'Colecionáveis': { cat: 'colecionaveis', cardBg: '#FADBD8' },
-  'Papelaria':     { cat: 'papelaria',     cardBg: '#D5F5E3' },
-  'Outros':        { cat: 'outros',        cardBg: '#F0F0F0' },
+  'Cosméticos':          { cat: 'cosmeticos',    cardBg: '#D6EAF8' },
+  'Maquiagem':           { cat: 'maquiagem',     cardBg: '#FADADD' },
+  'Cabelos':             { cat: 'cabelos',        cardBg: '#E8F8F5' },
+  'Fragrâncias':         { cat: 'fragrancias',   cardBg: '#FEF9E7' },
+  'Higiene & Saúde':     { cat: 'higiene',        cardBg: '#D1F2EB' },
+  'Guloseimas':          { cat: 'guloseimas',    cardBg: '#FFF9C4' },
+  'Snacks Salgados':     { cat: 'snacks',         cardBg: '#FDF2E9' },
+  'Bebidas':             { cat: 'bebidas',        cardBg: '#EBF5FB' },
+  'Colecionáveis':       { cat: 'colecionaveis', cardBg: '#FADBD8' },
+  'Papelaria':           { cat: 'papelaria',     cardBg: '#D5F5E3' },
+  'Casa & Decoração':    { cat: 'casa',           cardBg: '#FAF0E6' },
+  'Roupas & Acessórios': { cat: 'roupas',         cardBg: '#F9EBF8' },
+  'Eletrônicos':         { cat: 'eletronicos',    cardBg: '#EAF2FF' },
+  'Outros':              { cat: 'outros',         cardBg: '#F0F0F0' },
+};
+
+const SUBCATS = {
+  'Cosméticos':          ['Limpeza Facial','Hidratante','Protetor Solar','Máscara Facial','Sérum','Tônico','Esfoliante','Eye Cream','Loção Corporal','BB Cream','Patch de Olho'],
+  'Maquiagem':           ['Base','Batom','Rímel','Delineador','Blush','Iluminador','Sombra','Corretivo','Primer','Contorno','Gloss'],
+  'Cabelos':             ['Shampoo','Condicionador','Máscara Capilar','Óleo Capilar','Leave-in','Tintura','Tratamento Couro Cabeludo'],
+  'Fragrâncias':         ['Perfume','Colônia','Desodorante','Body Splash','Loção Perfumada'],
+  'Higiene & Saúde':     ['Vitamina','Suplemento','Máscara Descartável','Absorvente','Curativo','Creme Dental','Enxaguante'],
+  'Guloseimas':          ['Chocolate','Biscoito','Gummy / Balas','Wafer','Senbei','Pocky','Kit Kat Especial','Mochi','Dagashi','Caramelo'],
+  'Snacks Salgados':     ['Chips','Crackers','Amendoim','Arroz Frito','Algas Marinhas','Castanha'],
+  'Bebidas':             ['Chá Verde','Chá Gelado','Matcha','Café','Refrigerante','Suco','Amazake','Ramune'],
+  'Colecionáveis':       ['Figura de Ação','Plush / Pelúcia','Keychain','Sticker','Card Colecionável','Gacha / Capsule'],
+  'Papelaria':           ['Caneta','Caderno','Fita Washi','Adesivos','Borracha','Lápis','Envelope','Clip','Marca-página'],
+  'Casa & Decoração':    ['Utensílio de Cozinha','Incenso','Vela','Poster / Quadro','Boneco Decorativo','Têxtil / Toalha'],
+  'Roupas & Acessórios': ['Camiseta','Meias','Bolsa','Chapéu / Boné','Pijama','Chinelo','Máscara Fashion'],
+  'Eletrônicos':         ['Acessório para Celular','Cabo / Carregador','Fone de Ouvido','Case / Capinha','Memória / Pen Drive'],
+  'Outros':              [],
 };
 
 const ROTATES = ['rotate(-1deg)', 'rotate(1deg)', 'rotate(-2deg)', 'rotate(2deg)'];
@@ -484,7 +566,17 @@ function updatePreview() {
   document.getElementById('prevPriceBRL').textContent     = priceBRL ? `R$ ${priceBRL.toFixed(2).replace('.',',')}` : '—';
   document.getElementById('prevPriceJPY').textContent     = priceJPY ? `¥${priceJPY.toLocaleString('ja-JP')}` : '';
   document.getElementById('prevCat').textContent          = [category, sub].filter(Boolean).join(' › ') || '—';
-  document.getElementById('prevDesc').textContent         = desc || '—';
+  document.getElementById('prevDesc').textContent = desc || '—';
+
+  // Unidades por embalagem
+  const units    = parseInt(document.getElementById('fUnits').value) || 1;
+  const unitsWrap = document.getElementById('prevUnitsWrap');
+  if (units > 1) {
+    unitsWrap.style.display = '';
+    document.getElementById('prevUnits').textContent = `${units} unidades na embalagem`;
+  } else {
+    unitsWrap.style.display = 'none';
+  }
 
   // Deco
   const decoEl = document.getElementById('prevDeco');
@@ -521,11 +613,33 @@ function onNameInput() {
 }
 
 function onCategoryChange() {
-  const info = CAT_MAP[document.getElementById('fCategory').value] || CAT_MAP['Outros'];
+  const cat    = document.getElementById('fCategory').value;
+  const info   = CAT_MAP[cat] || CAT_MAP['Outros'];
   const cardBg = document.getElementById('fCardBg');
-  // Only auto-set if user hasn't manually changed it (check against known defaults)
   const knownDefaults = Object.values(CAT_MAP).map(x => x.cardBg);
   if (knownDefaults.includes(cardBg.value)) cardBg.value = info.cardBg;
+
+  // Atualiza sugestões de subcategoria
+  const dl   = document.getElementById('subcatList');
+  const subs = SUBCATS[cat] || [];
+  dl.innerHTML = subs.map(s => `<option value="${s}">`).join('');
+
+  updatePreview();
+}
+
+// ── Atualiza os 3 mini-previews de imagem ─────────────
+
+function updateImagePreviews() {
+  [['fImage','imgPrev1'], ['fImage2','imgPrev2'], ['fImage3','imgPrev3']].forEach(([inputId, prevId]) => {
+    const url  = document.getElementById(inputId).value.trim();
+    const wrap = document.getElementById(prevId);
+    if (url) {
+      wrap.innerHTML = `<img src="${url}" class="w-full h-full object-cover"
+        onerror="this.parentElement.innerHTML='<i class=\\'fa-solid fa-triangle-exclamation text-red-300 text-sm\\'></i>'">`;
+    } else {
+      wrap.innerHTML = '<i class="fa-regular fa-image text-gray-300 text-sm"></i>';
+    }
+  });
   updatePreview();
 }
 
@@ -575,7 +689,12 @@ function newProduct() {
   document.getElementById('fCardBg').value  = '#D6EAF8';
   document.getElementById('fStock').value   = '10';
   document.getElementById('fRating').value  = '4.5';
+  document.getElementById('fUnits').value   = '1';
   delete document.getElementById('fPriceBRL').dataset.manual;
+  // Reset image previews
+  ['imgPrev1','imgPrev2','imgPrev3'].forEach(id => {
+    document.getElementById(id).innerHTML = '<i class="fa-regular fa-image text-gray-300 text-sm"></i>';
+  });
   document.getElementById('formTitle').textContent      = 'Novo Produto';
   document.getElementById('saveBtn').querySelector('span').textContent = 'Publicar Produto';
   document.getElementById('cancelBtn').style.display    = 'none';
@@ -603,8 +722,12 @@ function editProduct(id) {
   document.getElementById('fDescription').value  = p.description || '';
   document.getElementById('fDetails').value      = p.details || '';
   document.getElementById('fOrigin').value       = p.origin || '';
-  document.getElementById('fImage').value        = p.image || '';
+  document.getElementById('fImage').value        = p.image || (p.images?.[0]) || '';
+  document.getElementById('fImage2').value       = p.image2 || (p.images?.[1]) || '';
+  document.getElementById('fImage3').value       = p.image3 || (p.images?.[2]) || '';
+  document.getElementById('fUnits').value        = p.units || 1;
   document.getElementById('fBadge').value        = p.badge || '';
+  updateImagePreviews();
   document.getElementById('fBadgeBg').value      = p.badgeBg || '#F5A623';
   document.getElementById('fStock').value        = p.stock ?? 10;
   document.getElementById('fRating').value       = p.rating || 4.5;
@@ -619,6 +742,11 @@ function editProduct(id) {
   document.getElementById('saveBtn').querySelector('span').textContent = 'Atualizar Produto';
   document.getElementById('cancelBtn').style.display    = '';
   document.getElementById('deleteFormBtn').style.display = '';
+
+  // Popula sugestões de subcategoria
+  onCategoryChange();
+  // Restaura a subcategoria depois (onCategoryChange limpa o campo só pelo evento, não o value)
+  document.getElementById('fSubcategory').value = p.subcategory || '';
 
   renderSidebar(document.getElementById('sidebarSearch').value);
   updatePreview();
@@ -649,6 +777,14 @@ async function saveProduct(e) {
     details:     document.getElementById('fDetails').value.trim(),
     origin:      document.getElementById('fOrigin').value.trim() || 'Japão',
     image:       document.getElementById('fImage').value.trim(),
+    image2:      document.getElementById('fImage2').value.trim() || null,
+    image3:      document.getElementById('fImage3').value.trim() || null,
+    images:      [
+      document.getElementById('fImage').value.trim(),
+      document.getElementById('fImage2').value.trim(),
+      document.getElementById('fImage3').value.trim(),
+    ].filter(Boolean),
+    units:       parseInt(document.getElementById('fUnits').value) || 1,
     badge:       document.getElementById('fBadge').value.trim() || null,
     badgeBg:     document.getElementById('fBadgeBg').value,
     stock:       parseInt(document.getElementById('fStock').value) || 10,

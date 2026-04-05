@@ -250,7 +250,7 @@ async function extractWithAI(messages) {
   }
 }
 
-// ── Envia card do produto ─────────────────────────────────
+// ── Envia card do produto (única mensagem) ────────────────
 
 async function sendProductCard(chatId, p) {
   const nome      = p.nome      || p.name        || 'Produto';
@@ -261,99 +261,91 @@ async function sendProductCard(chatId, p) {
   const origem    = p.origem    || p.origin      || '—';
   const url       = p.url_origem || '';
   const imgUrl    = p.imagem_url || '';
+  const brl       = precoJPY ? 'R$ ' + (precoJPY / 22 * 1.2).toFixed(2).replace('.', ',') : '—';
 
-  const brl = precoJPY ? 'R$ ' + (precoJPY / 22 * 1.2).toFixed(2).replace('.', ',') : '—';
-
-  // JSON do produto para o /publicar
-  const productObj = buildProductObject(p);
-  const productJson = JSON.stringify(productObj, null, 2);
+  // Constrói objeto final e embute JSON no próprio card
+  const productObj  = buildProductObject(p);
+  const productJson = JSON.stringify(productObj);
 
   const card = [
     `📦 *${escMd(nome)}*`,
     ``,
     precoJPY ? `💴 Preço: *¥${precoJPY.toLocaleString('ja-JP')}*` : `💴 Preço: *não encontrado*`,
-    `🇧🇷 Sugestão BRL \\(\\+20%\\): *${escMd(brl)}*`,
-    peso      ? `⚖️ Peso estimado: *${peso}g*` : null,
-    `🏷️ Categoria: ${escMd(categoria)}`,
-    `🏪 Origem: ${escMd(origem)}`,
-    descricao ? `📝 ${escMd(descricao)}` : null,
-    url       ? `🔗 ${escMd(url)}` : null,
+    `🇧🇷 BRL sugerido \\(\\+20%\\): *${escMd(brl)}*`,
+    peso      ? `⚖️ Peso: *${peso}g*`              : null,
+    `🏷️ ${escMd(categoria)}`,
+    `🏪 ${escMd(origem)}`,
+    descricao ? `📝 ${escMd(descricao.slice(0,80))}` : null,
+    url       ? `🔗 ${escMd(url)}`                  : null,
     ``,
-    `─────────────────────`,
-    `✅ Para publicar no site, *responda esta mensagem* com:`,
-    `\`/publicar\``,
+    `─────────────────────────`,
+    `👇 *Responda esta mensagem com /publicar*`,
+    `\`\`\`json`,
+    escMd(productJson),
+    `\`\`\``,
   ].filter(l => l !== null).join('\n');
 
-  // Envia imagem se disponível, senão texto
+  // Tenta com imagem, cai para texto se falhar
   if (imgUrl) {
     try {
-      await fetch(`https://api.telegram.org/bot${BOT_TOKEN}/sendPhoto`, {
+      const r = await fetch(`https://api.telegram.org/bot${BOT_TOKEN}/sendPhoto`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          chat_id:    chatId,
-          photo:      imgUrl,
-          caption:    card,
-          parse_mode: 'MarkdownV2',
-        }),
+        body: JSON.stringify({ chat_id: chatId, photo: imgUrl, caption: card, parse_mode: 'MarkdownV2' }),
       });
-    } catch {
-      // fallback para texto se imagem falhar
-      await sendMessage(chatId, card, { parse_mode: 'MarkdownV2' });
-    }
-  } else {
-    await sendMessage(chatId, card, { parse_mode: 'MarkdownV2' });
+      const rj = await r.json();
+      if (rj.ok) return;
+    } catch {}
   }
-
-  // Envia JSON separado para referência do /publicar
-  await sendMessage(chatId,
-    `📋 *Dados extraídos \\(JSON\\):*\n\`\`\`json\n${escMd(productJson)}\n\`\`\`\n\n_Responda a mensagem acima com /publicar_`,
-    { parse_mode: 'MarkdownV2' }
-  );
+  await sendMessage(chatId, card, { parse_mode: 'MarkdownV2' });
 }
 
 // ── Publica produto no GitHub → Vercel redeploy ───────────
 
 async function handlePublish(chatId, message) {
   if (!GITHUB_TOKEN) {
-    await sendMessage(chatId, '❌ GITHUB\\_TOKEN não configurado nas env vars da Vercel\\.', { parse_mode: 'MarkdownV2' });
+    await sendMessage(chatId, '❌ GITHUB_TOKEN não configurado nas env vars da Vercel.');
     return;
   }
 
-  // Pega o JSON da mensagem respondida
-  const replyText = message.reply_to_message?.text || message.reply_to_message?.caption || '';
+  // Aceita o JSON da mensagem respondida (text OU caption)
+  const replied = message.reply_to_message;
+  const replyText = replied?.text || replied?.caption || '';
+
   if (!replyText) {
-    await sendMessage(chatId, '⚠️ Responda à mensagem do card com /publicar para publicar o produto\\.', { parse_mode: 'MarkdownV2' });
+    await sendMessage(chatId, '⚠️ Responda à mensagem do card com /publicar para publicar o produto.');
     return;
   }
 
-  // Extrai o JSON do bloco de código
+  // Extrai JSON — tenta bloco ```json ... ``` primeiro, depois JSON inline
   let productObj = null;
-
-  // Caso o reply seja no JSON message
-  const jsonBlock = replyText.match(/```json\n([\s\S]+?)\n```/);
+  const jsonBlock = replyText.match(/```json\n?([\s\S]+?)```/);
   if (jsonBlock) {
-    try { productObj = JSON.parse(jsonBlock[1]); } catch {}
+    try { productObj = JSON.parse(jsonBlock[1].trim()); } catch {}
   }
-
-  // Caso o reply seja no card (tenta extrair dados do card)
   if (!productObj) {
-    await sendMessage(chatId, '⚠️ Responda diretamente à mensagem com o JSON do produto\\.', { parse_mode: 'MarkdownV2' });
+    // Tenta encontrar JSON inline (linha com { })
+    const jsonInline = replyText.match(/(\{[\s\S]+\})/);
+    if (jsonInline) {
+      try { productObj = JSON.parse(jsonInline[1]); } catch {}
+    }
+  }
+  if (!productObj) {
+    await sendMessage(chatId, '⚠️ Não encontrei dados do produto na mensagem. Responda ao card que o bot enviou com /publicar.');
     return;
   }
 
-  await sendMessage(chatId, `⏳ Adicionando *${escMd(productObj.name)}* ao catálogo\\.\\.\\.`, { parse_mode: 'MarkdownV2' });
+  await sendMessage(chatId, `⏳ Adicionando "${productObj.name}" ao catálogo...`);
 
   try {
     await addProductToGitHub(productObj);
     await sendMessage(chatId,
-      `✅ *${escMd(productObj.name)}* publicado com sucesso\\!\n\n` +
-      `🚀 A Vercel vai redeployar em \\~1 minuto\\.\n` +
-      `🌐 Confira em: japaoexpress\\.vercel\\.app/produtos\\.html`,
-      { parse_mode: 'MarkdownV2' }
+      `✅ "${productObj.name}" publicado com sucesso!\n\n` +
+      `🚀 A Vercel vai redeployar em ~1 minuto.\n` +
+      `🌐 Confira em: japaoexpress.vercel.app/produtos.html`
     );
   } catch (err) {
-    await sendMessage(chatId, `❌ Erro ao publicar: ${escMd(err.message)}`, { parse_mode: 'MarkdownV2' });
+    await sendMessage(chatId, `❌ Erro ao publicar: ${err.message}`);
   }
 }
 

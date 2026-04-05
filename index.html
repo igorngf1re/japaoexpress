@@ -5,7 +5,6 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Japão Express - Importados do Japão</title>
-    <!-- Favicon & PWA -->
     <link rel="icon" type="image/png" sizes="32x32" href="icons/icon-128.png">
     <link rel="icon" type="image/png" sizes="192x192" href="icons/icon-192.png">
     <link rel="apple-touch-icon" sizes="180x180" href="icons/icon-180.png">
@@ -17,9 +16,7 @@
     <meta name="msapplication-TileImage" content="icons/icon-144.png">
     <meta name="msapplication-TileColor" content="#9B59B6">
     <script src="https://cdn.tailwindcss.com"></script>
-    <link
-        href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Baloo+2:wght@700;800;900&family=Caveat:wght@600;700&family=Nunito:wght@400;600;700;800;900&display=swap"
-        rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Baloo+2:wght@700;800;900&family=Caveat:wght@600;700&family=Nunito:wght@400;600;700;800;900&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 
     <style>
@@ -31,9 +28,7 @@
             font-display: swap;
         }
 
-        * {
-            box-sizing: border-box;
-        }
+        * { box-sizing: border-box; }
 
         body {
             font-family: 'Nunito', sans-serif;
@@ -45,432 +40,1006 @@
             padding: 2rem 1rem;
         }
 
-        .font-hand {
-            font-family: 'Caveat', cursive;
-        }
-
-        .font-hero {
+        .font-hand  { font-family: 'Caveat', cursive; }
+        .font-hero  {
             font-family: 'Sucker Brush', 'Bebas Neue', cursive;
             font-weight: normal !important;
-            font-style: normal !important;
+            font-style:  normal !important;
             letter-spacing: 0.01em;
         }
 
         /* ── Post-it base ── */
         .post-it {
             position: relative;
-            box-shadow: 2px 5px 14px rgba(0, 0, 0, 0.10);
+            box-shadow: 2px 5px 14px rgba(0,0,0,0.10);
             transition: transform 0.2s, box-shadow 0.2s;
         }
-
         .post-it:hover {
             transform: scale(1.04) rotate(0deg) !important;
-            box-shadow: 4px 8px 20px rgba(0, 0, 0, 0.15);
+            box-shadow: 4px 8px 20px rgba(0,0,0,0.15);
             z-index: 10;
         }
 
         /* ── Fita adesiva ── */
         .tape {
             position: absolute;
-            top: -13px;
-            left: 50%;
+            top: -13px; left: 50%;
             transform: translateX(-50%) rotate(-2deg);
-            width: 52px;
-            height: 20px;
-            background-color: rgba(226, 206, 148, 0.82);
-            border-left: 1px solid rgba(0, 0, 0, 0.06);
-            border-right: 1px solid rgba(0, 0, 0, 0.06);
+            width: 52px; height: 20px;
+            background-color: rgba(226,206,148,0.82);
+            border-left: 1px solid rgba(0,0,0,0.06);
+            border-right: 1px solid rgba(0,0,0,0.06);
         }
 
         /* ── Percevejo ── */
         .pin {
             position: absolute;
-            top: 10px;
-            left: 50%;
+            top: 10px; left: 50%;
             transform: translateX(-50%);
-            width: 14px;
-            height: 14px;
+            width: 14px; height: 14px;
             background: radial-gradient(circle at 38% 38%, #ff7e7e, #c0392b);
             border-radius: 50%;
-            box-shadow: inset -2px -2px 4px rgba(0, 0, 0, 0.28), 1px 2px 4px rgba(0, 0, 0, 0.22);
+            box-shadow: inset -2px -2px 4px rgba(0,0,0,0.28), 1px 2px 4px rgba(0,0,0,0.22);
             z-index: 10;
         }
 
         /* ── Estrelas ── */
-        .stars {
-            color: #F5A623;
-            letter-spacing: 1px;
+        .stars { color: #F5A623; letter-spacing: 1px; }
+
+        /* ════════════════════════════════════════════
+           SIDEBAR
+        ════════════════════════════════════════════ */
+        #sidebarOverlay {
+            position: fixed; inset: 0; z-index: 1000;
+            background: rgba(0,0,0,0);
+            pointer-events: none;
+            transition: background .3s;
+        }
+        #sidebarOverlay.open {
+            background: rgba(0,0,0,.45);
+            pointer-events: all;
+        }
+        #sidebarPanel {
+            position: absolute; left: 0; top: 0;
+            height: 100%; width: 285px;
+            background: #FDFAF2;
+            transform: translateX(-100%);
+            transition: transform .32s cubic-bezier(.4,0,.2,1);
+            box-shadow: 4px 0 32px rgba(44,22,84,.2);
+            display: flex; flex-direction: column;
+            overflow-y: auto;
+        }
+        #sidebarOverlay.open #sidebarPanel {
+            transform: translateX(0);
+        }
+        .sidebar-item {
+            display: flex; align-items: center; gap: 12px;
+            padding: 13px 20px;
+            color: #2C1654;
+            font-weight: 700; font-size: 15px;
+            text-decoration: none;
+            border-radius: 10px;
+            margin: 2px 10px;
+            transition: background .15s, color .15s;
+            cursor: pointer;
+        }
+        .sidebar-item:hover { background: #F0E8FF; color: #9B59B6; }
+        .sidebar-item .icon { width: 22px; text-align: center; font-size: 17px; }
+        .sidebar-divider {
+            height: 1px; background: #E8DCFF; margin: 8px 18px;
+        }
+        .sidebar-cats { padding: 0 10px 4px; }
+        .sidebar-cat-item {
+            display: block; padding: 7px 14px 7px 52px;
+            font-size: 13px; font-weight: 600; color: #5D3890;
+            text-decoration: none; border-radius: 8px;
+            transition: background .15s;
+        }
+        .sidebar-cat-item:hover { background: #F0E8FF; }
+
+        /* ════════════════════════════════════════════
+           HERO SLIDER
+        ════════════════════════════════════════════ */
+        .hero-section {
+            position: relative;
+            overflow: hidden;
+            min-height: 300px;
+            background: linear-gradient(135deg, #2C1654 0%, #5D1F8A 55%, #9B59B6 100%);
         }
 
-        /* ── Sakura SVG inline ── */
-        .sakura {
+        /* Sakura petals */
+        .petal {
+            position: absolute;
+            top: -30px;
+            font-size: 16px;
+            opacity: .55;
+            animation: petalFall linear infinite;
+            pointer-events: none;
+            user-select: none;
+        }
+        @keyframes petalFall {
+            0%   { transform: translateY(-30px) rotate(0deg); opacity: .65; }
+            100% { transform: translateY(420px) rotate(540deg); opacity: 0; }
+        }
+
+        /* Individual hero slides */
+        .hero-slide {
+            display: none;
+            flex-direction: row;
+            align-items: center;
+            justify-content: space-between;
+            padding: 36px 28px 56px;
+            gap: 20px;
+            min-height: 300px;
+            animation: heroFadeIn .45s ease;
+        }
+        @keyframes heroFadeIn {
+            from { opacity: 0; transform: translateX(18px); }
+            to   { opacity: 1; transform: translateX(0); }
+        }
+        .hero-slide.active { display: flex; }
+
+        .hero-text-area { flex: 1; max-width: 320px; z-index: 2; }
+        .hero-badge-pill {
             display: inline-block;
+            background: rgba(255,255,255,.18);
+            border: 1px solid rgba(255,255,255,.4);
+            color: #fff;
+            font-size: 10px; font-weight: 800;
+            letter-spacing: 1.5px; text-transform: uppercase;
+            padding: 4px 14px; border-radius: 20px;
+            margin-bottom: 12px;
+        }
+        .hero-title-text {
+            font-family: 'Sucker Brush', 'Bebas Neue', cursive;
+            font-size: clamp(2.2rem, 6vw, 3.4rem);
+            line-height: 1.0;
+            color: #fff;
+            text-shadow: 0 2px 16px rgba(0,0,0,.3);
+            margin-bottom: 10px;
+        }
+        .hero-title-text em { font-style: normal; color: #D7BDE2; }
+        .hero-desc {
+            font-size: 13px; color: rgba(255,255,255,.82);
+            font-weight: 600; line-height: 1.55;
+            margin-bottom: 22px;
+        }
+        .hero-cta {
+            display: inline-block;
+            background: #fff; color: #2C1654;
+            font-weight: 900; font-size: 13px;
+            padding: 11px 24px; border-radius: 50px;
+            text-decoration: none;
+            box-shadow: 0 6px 24px rgba(0,0,0,.2);
+            transition: transform .2s, box-shadow .2s;
+            letter-spacing: .5px;
+        }
+        .hero-cta:hover { transform: translateY(-2px); box-shadow: 0 10px 32px rgba(0,0,0,.3); }
+
+        /* Floating post-it card in hero */
+        .hero-card-wrap { flex-shrink: 0; z-index: 2; }
+        .hero-postit-card {
+            width: 170px;
+            padding: 12px 12px 14px;
+            border-radius: 4px 4px 14px 4px;
+            box-shadow: 4px 4px 0 rgba(0,0,0,.2), 0 12px 32px rgba(0,0,0,.25);
+            animation: heroFloat 3.5s ease-in-out infinite;
+            position: relative;
+            transform-origin: top center;
+        }
+        @keyframes heroFloat {
+            0%,100% { transform: translateY(0) rotate(-2deg); }
+            50%      { transform: translateY(-10px) rotate(1deg); }
+        }
+        .hero-postit-card::before {
+            content: '';
+            position: absolute; top: -11px; left: 50%;
+            transform: translateX(-50%);
+            width: 30px; height: 16px;
+            background: rgba(255,255,255,.35);
+            border-radius: 3px;
+        }
+        .hero-postit-img {
+            width: 100%; height: 110px;
+            object-fit: contain;
+            border-radius: 6px;
+            background: rgba(255,255,255,.7);
+            display: block; margin-bottom: 8px;
+        }
+        .hero-postit-name {
+            font-size: 11px; font-weight: 800;
+            color: #2C1654; line-height: 1.3;
+            margin-bottom: 4px;
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+        }
+        .hero-postit-price {
+            font-size: 16px; font-weight: 900; color: #7D3C98;
+        }
+        .hero-postit-price small {
+            font-size: 10px; color: #888;
+            text-decoration: line-through; font-weight: 400;
+            display: block;
+        }
+
+        /* Hero dots */
+        .hero-dots {
+            position: absolute; bottom: 18px; left: 50%;
+            transform: translateX(-50%);
+            display: flex; gap: 7px; z-index: 5;
+        }
+        .hero-dot {
+            width: 7px; height: 7px;
+            border-radius: 50%;
+            background: rgba(255,255,255,.35);
+            cursor: pointer;
+            transition: all .3s;
+            border: none; padding: 0;
+        }
+        .hero-dot.active {
+            background: #fff;
+            width: 22px; border-radius: 4px;
+        }
+
+        /* ════════════════════════════════════════════
+           DESTAQUES — rotação dinâmica
+        ════════════════════════════════════════════ */
+        .destaques-page { display: none; }
+        .destaques-page.active {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 1rem;
+        }
+        @media(min-width: 1024px) {
+            .destaques-page.active { grid-template-columns: repeat(4, 1fr); }
+        }
+        .dest-dot {
+            width: 8px; height: 8px;
+            border-radius: 50%;
+            background: #C9B8E8;
+            cursor: pointer;
+            transition: all .3s;
+            border: none;
+        }
+        .dest-dot.active { background: #9B59B6; width: 22px; border-radius: 4px; }
+
+        /* ════════════════════════════════════════════
+           RECÉM CHEGADOS grid
+        ════════════════════════════════════════════ */
+        .novidades-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 1rem;
+        }
+        @media(min-width: 768px) { .novidades-grid { grid-template-columns: repeat(4, 1fr); } }
+
+        /* ════════════════════════════════════════════
+           BASTIDORES cards
+        ════════════════════════════════════════════ */
+        .bastidores-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 1.1rem;
+        }
+        @media(min-width: 640px) { .bastidores-grid { grid-template-columns: repeat(4, 1fr); } }
+
+        /* Floating cart button */
+        #floatCartBtn {
+            position: fixed;
+            bottom: 20px; left: 50%;
+            transform: translateX(-50%) translateY(80px);
+            opacity: 0;
+            transition: transform .35s cubic-bezier(.34,1.56,.64,1), opacity .35s;
+            z-index: 500;
+            pointer-events: none;
+        }
+        #floatCartBtn.visible {
+            transform: translateX(-50%) translateY(0);
+            opacity: 1;
+            pointer-events: all;
         }
     </style>
 </head>
 
 <body>
 
-    <div class="bg-[#FDFAF2] w-full max-w-4xl rounded-3xl shadow-2xl overflow-visible border-t-[10px] border-[#9B59B6]">
+<!-- ══════════════════ SIDEBAR (fora do container) ══════════════════ -->
+<div id="sidebarOverlay" onclick="closeSidebar()">
+    <aside id="sidebarPanel" onclick="event.stopPropagation()">
 
-        <!-- ═══════════════════════════════ HEADER ═══════════════════════════════ -->
-        <header class="flex flex-col md:flex-row justify-between items-center px-6 md:px-10 pt-5 pb-4 gap-4">
-            <!-- Logo -->
-            <a href="index.html">
-                <img src="logo.png" onerror="this.src='https://i.imgur.com/lxyYcwX.png'" alt="Japão Express Logo"
-                    class="h-20 md:h-24 object-contain drop-shadow-sm">
+        <!-- Cabeçalho do sidebar -->
+        <div class="flex items-center justify-between px-5 py-4 border-b border-purple-100">
+            <a href="index.html" onclick="closeSidebar()" class="flex items-center gap-2">
+                <img src="logo.png" onerror="this.onerror=null;this.src='https://i.imgur.com/lxyYcwX.png'" alt="Logo" class="h-10 object-contain">
             </a>
-
-            <!-- Nav links + ações -->
-            <div class="flex flex-col items-center gap-3 md:gap-2">
-                <nav class="flex flex-wrap justify-center gap-4 md:gap-8 font-bold text-sm text-[#3D1A78] tracking-wide">
-                    <a href="produtos.html" class="hover:text-[#9B59B6] transition">Produtos</a>
-                    <a href="#como-funciona" class="hover:text-[#9B59B6] transition">Como Funciona</a>
-                    <a href="#unboxing" class="hover:text-[#9B59B6] transition">Unboxing</a>
-                    <a href="#contato" class="hover:text-[#9B59B6] transition">Contato</a>
-                </nav>
-
-                <!-- Ações: carrinho, perfil, login -->
-                <div class="flex items-center gap-4">
-                    <!-- Moeda -->
-                    <button data-currency-toggle onclick="toggleCurrency()"
-                        class="text-[#3D1A78] hover:text-[#9B59B6] transition font-black text-xs border border-[#C9B8E8] rounded-full px-2 py-0.5"
-                        title="Alternar moeda">🇯🇵 JPY</button>
-
-                    <!-- Carrinho -->
-                    <a href="carrinho.html" class="relative text-[#3D1A78] hover:text-[#9B59B6] transition" title="Carrinho">
-                        <i class="fa-solid fa-bag-shopping text-xl"></i>
-                        <span id="cart-badge" style="display:none" class="absolute -top-2 -right-2 bg-[#9B59B6] text-white text-[10px] font-black rounded-full w-4 h-4 flex items-center justify-center leading-none">0</span>
-                    </a>
-
-                    <!-- Favoritos -->
-                    <a href="favoritos.html" class="text-[#3D1A78] hover:text-[#9B59B6] transition" title="Favoritos">
-                        <i class="fa-regular fa-heart text-xl"></i>
-                    </a>
-
-                    <!-- Perfil -->
-                    <a href="perfil.html" data-auth-perfil class="text-[#3D1A78] hover:text-[#9B59B6] transition" title="Minha Conta">
-                        <i class="fa-regular fa-circle-user text-xl"></i>
-                    </a>
-
-                    <!-- Separador -->
-                    <span class="text-[#C9B8E8] font-light select-none">|</span>
-
-                    <!-- Login / Cadastro -->
-                    <a href="login.html" data-auth-entrar class="text-[#3D1A78] hover:text-[#9B59B6] transition font-bold text-xs tracking-wide uppercase">
-                        Entrar
-                    </a>
-                    <a href="login.html#cadastro" data-auth-cadastrar class="bg-[#9B59B6] text-white font-black text-xs px-3 py-1.5 rounded-full hover:bg-[#7D3C98] transition tracking-wide uppercase">
-                        Cadastrar
-                    </a>
-                </div>
-            </div>
-        </header>
-
-        <!-- ═══════════════════════════════ HERO ════════════════════════════════ -->
-        <section
-            class="flex flex-col md:flex-row items-center justify-between px-6 md:px-10 pt-4 pb-12 gap-8 text-center md:text-left">
-
-            <!-- Texto -->
-            <div class="flex-1 max-w-sm flex flex-col items-center md:items-start">
-                <h1 class="font-hero text-[3.4rem] md:text-[3.8rem] leading-[1.05] uppercase text-[#2C1654] mb-5 text-center md:text-left">
-                    Seu pedaço do Japão,<br>direto na sua porta!
-                </h1>
-                <p class="text-[0.95rem] font-semibold text-[#4A3060] mb-8 leading-relaxed">
-                    Os melhores cosméticos, guloseimas<br>
-                    e colecionáveis do Japão, com frete<br>
-                    direto para o Brasil.
-                </p>
-                <a href="produtos.html"
-                    class="inline-block bg-[#9B59B6] text-white font-black py-3 px-7 rounded-full shadow-lg hover:bg-[#7D3C98] transition text-sm tracking-widest uppercase">
-                    CONFIRA NOSSOS PRODUTOS
-                </a>
-            </div>
-
-            <!-- Imagem + decoração -->
-            <div class="flex-1 relative w-[90%] md:w-full max-w-[380px] mt-8 md:mt-0 mx-auto md:mx-0">
-                <!-- Sakura flores decorativas -->
-                <span class="absolute -top-5 -left-8 text-[2.2rem] select-none" style="color:#F5A8C9;">🌸</span>
-                <span class="absolute top-6  -left-5 text-[1.2rem] select-none" style="color:#F5A8C9;">🌸</span>
-                <span class="absolute bottom-10 -left-4 text-[1.5rem] select-none" style="color:#F5A8C9;">🌸</span>
-                <span class="absolute -top-3 right-10 text-[1rem] select-none" style="color:#F5A8C9;">🌸</span>
-
-                <!-- Foto da caixa -->
-                <img src="caixa.jpg" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex'"
-                    alt="Caixa Japão Express"
-                    class="rounded-2xl shadow-2xl w-full object-cover border-4 border-white rotate-[1.5deg]">
-                <!-- Placeholder caso não tenha a imagem -->
-                <div
-                    class="hidden rounded-2xl shadow-2xl w-full h-64 bg-[#E2D4F0] border-4 border-white rotate-[1.5deg] items-center justify-center text-[#9B59B6] font-bold text-sm">
-                    Foto da Caixa Japão Express
-                </div>
-
-                <!-- Sticker unboxing filmável -->
-                <div
-                    class="absolute -bottom-4 -right-4 bg-white p-2.5 rounded-xl shadow-2xl border-2 border-purple-200 rotate-[-6deg]">
-                    <i class="fa-solid fa-camera text-2xl text-[#9B59B6] block text-center mb-1"></i>
-                    <p class="font-hand text-[1.15rem] text-center leading-none text-[#2C1654] font-semibold">
-                        unboxing<br>filmável</p>
-                </div>
-            </div>
-        </section>
-
-        <!-- ══════════════════════════ NOSSAS VANTAGENS ══════════════════════════ -->
-        <section class="px-6 md:px-10 pb-12">
-            <h2 class="font-hand text-[2.4rem] font-bold text-center text-[#2C1654] mb-10">Nossas Vantagens</h2>
-
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
-
-                <!-- Compras no Japão -->
-                <div class="post-it bg-[#FFF3B0] p-6 pt-10 text-center rounded-sm rotate-[-2deg]">
-                    <div class="pin"></div>
-                    <!-- Ícone: loja -->
-                    <div class="flex justify-center mb-4">
-                        <i class="fa-solid fa-store text-4xl mb-4 text-gray-700 mt-2"></i>
-                    </div>
-                    <h3 class="font-black text-xs uppercase tracking-wider mb-2 text-[#2C1654]">COMPRAS NO JAPÃO</h3>
-                    <p class="text-xs font-semibold leading-snug text-[#3D2060]">
-                        Direto em Don Quijote<br>e Matsumoto Kiyoshi.<br>Sem intermediários.
-                    </p>
-                </div>
-
-                <!-- Unboxing Lindo -->
-                <div class="post-it bg-[#FDD5E5] p-6 pt-10 text-center rounded-sm rotate-[2.5deg]">
-                    <div class="pin"></div>
-                    <!-- Ícone: caixa com coração -->
-                    <div class="flex justify-center mb-4 relative">
-                        <i class="fa-solid fa-box-open text-4xl mb-4 text-gray-700 mt-2"></i>
-                        <i class="fa-solid fa-heart text-pink-500 text-base absolute -top-1 -right-1"></i>
-                    </div>
-                    <h3 class="font-black text-xs uppercase tracking-wider mb-2 text-[#2C1654]">UNBOXING LINDO</h3>
-                    <p class="text-xs font-semibold leading-snug text-[#3D2060]">
-                        Cuidamos da<br>embalagem para ser<br>filmável e perfeita!
-                    </p>
-                </div>
-
-                <!-- Conteúdo Autêntico -->
-                <div class="post-it bg-[#E8D5F5] p-6 pt-9 text-center rounded-sm rotate-[-1deg]">
-                    <div class="tape"></div>
-                    <!-- Ícone: Instagram + mapa -->
-                    <div class="flex justify-center items-center gap-1 mb-4 mt-2">
-                        <i class="fa-brands fa-instagram text-4xl text-gray-700"></i>
-                    </div>
-                    <h3 class="font-black text-xs uppercase tracking-wider mb-2 text-[#2C1654]">CONTEÚDO AUTÊNTICO</h3>
-                    <p class="text-xs font-semibold leading-snug text-[#3D2060]">
-                        Veja nossos bastidores<br>nas lojas e dia-a-dia<br>no Japão.
-                    </p>
-                </div>
-            </div>
-        </section>
-
-        <!-- ════════════════════════════ DESTAQUES ═══════════════════════════════ -->
-        <section class="mx-4 md:mx-6 mb-8 bg-[#F4EFE4] rounded-2xl px-4 md:px-8 py-8 shadow-inner">
-            <h2 class="font-hand text-[2.4rem] font-bold text-center text-[#2C1654] mb-7">Destaques</h2>
-
-            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-
-                <!-- Bioré UV -->
-                <a href="produto.html?id=biore-uv"
-                    class="post-it bg-[#D6EAF8] p-4 pt-8 rounded-sm text-center rotate-[1deg] block cursor-pointer hover:scale-[1.03] hover:shadow-xl transition-all">
-                    <div class="tape"></div>
-                    <img src="https://via.placeholder.com/100x130/FFFFFF/9B59B6?text=Bior%C3%A9+UV" alt="Bioré UV"
-                        class="mx-auto mb-2 h-28 object-contain rounded shadow-sm border border-white">
-                    <h4 class="font-black text-xs mb-0.5 text-[#2C1654]">Bioré UV</h4>
-                    <p class="text-[0.65rem] font-semibold text-gray-600 mb-1 leading-snug">Protetor comprado<br>no Matsumoto Kiyoshi.</p>
-                    <p class="text-lg font-black text-[#9B59B6] mb-2" data-price-brl="85">R$ 85,00</p>
-                    <span class="block bg-[#9B59B6] text-white w-full py-1.5 rounded-full font-black text-xs hover:bg-[#7D3C98] transition">Comprar</span>
-                </a>
-
-                <!-- Hada Labo -->
-                <a href="produto.html?id=hada-labo"
-                    class="post-it bg-[#EFEFEF] p-4 pt-8 rounded-sm text-center rotate-[-1.5deg] block cursor-pointer hover:scale-[1.03] hover:shadow-xl transition-all">
-                    <div class="pin"></div>
-                    <img src="https://via.placeholder.com/100x130/FFFFFF/9B59B6?text=Hada+Labo" alt="Hada Labo"
-                        class="mx-auto mb-2 h-28 object-contain rounded shadow-sm border border-white">
-                    <h4 class="font-black text-xs mb-0.5 text-[#2C1654]">Hada Labo</h4>
-                    <p class="text-[0.65rem] font-semibold text-gray-600 mb-1 leading-snug">Hidratante original<br>do Japão.</p>
-                    <p class="text-lg font-black text-[#9B59B6] mb-2" data-price-brl="90">R$ 90,00</p>
-                    <span class="block bg-[#9B59B6] text-white w-full py-1.5 rounded-full font-black text-xs hover:bg-[#7D3C98] transition">Comprar</span>
-                </a>
-
-                <!-- KitKat -->
-                <a href="produto.html?id=kitkat-matcha"
-                    class="post-it bg-[#FDD5E5] p-4 pt-8 rounded-sm text-center rotate-[2deg] block cursor-pointer hover:scale-[1.03] hover:shadow-xl transition-all">
-                    <div class="tape"></div>
-                    <img src="https://via.placeholder.com/100x130/FFFFFF/9B59B6?text=KitKat" alt="KitKat pack"
-                        class="mx-auto mb-2 h-28 object-contain rounded shadow-sm border border-white">
-                    <h4 class="font-black text-xs mb-0.5 text-[#2C1654]">KitKat pack</h4>
-                    <p class="text-[0.65rem] font-semibold text-gray-600 mb-1 leading-snug">Sabores exclusivos<br>em embalagem térmica.</p>
-                    <p class="text-lg font-black text-[#9B59B6] mb-2" data-price-brl="60">R$ 60,00</p>
-                    <span class="block bg-[#9B59B6] text-white w-full py-1.5 rounded-full font-black text-xs hover:bg-[#7D3C98] transition">Comprar</span>
-                </a>
-
-                <!-- Pokémon TCG -->
-                <a href="produto.html?id=pokemon-tcg"
-                    class="post-it bg-[#FFF3B0] p-4 pt-8 rounded-sm text-center rotate-[-1deg] block cursor-pointer hover:scale-[1.03] hover:shadow-xl transition-all">
-                    <div class="pin"></div>
-                    <img src="https://via.placeholder.com/100x130/FFFFFF/9B59B6?text=Pok%C3%A9mon+TCG" alt="Pokémon TCG"
-                        class="mx-auto mb-2 h-28 object-contain rounded shadow-sm border border-white">
-                    <h4 class="font-black text-xs mb-0.5 text-[#2C1654]">Pokémon TCG</h4>
-                    <p class="text-[0.65rem] font-semibold text-gray-600 mb-1 leading-snug">Booster pack raro<br>autêntico do Japão.</p>
-                    <p class="text-lg font-black text-[#9B59B6] mb-2" data-price-brl="75">R$ 75,00</p>
-                    <span class="block bg-[#9B59B6] text-white w-full py-1.5 rounded-full font-black text-xs hover:bg-[#7D3C98] transition">Comprar</span>
-                </a>
-            </div>
-        </section>
-
-        <!-- ════════════════════════ DEPOIMENTOS / REVIEWS ═══════════════════════ -->
-        <section id="unboxing" class="px-6 md:px-10 pb-10">
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
-
-                <!-- Review 1 -->
-                <div class="post-it bg-white p-4 rounded-xl flex gap-3 shadow-md rotate-[-0.8deg]">
-                    <div class="tape"></div>
-                    <img src="https://via.placeholder.com/80x80/E8D5F5/9B59B6?text=📦" alt="Foto review"
-                        class="w-20 h-20 rounded-lg object-cover flex-shrink-0 mt-3 shadow-sm">
-                    <div class="mt-2 flex-1">
-                        <div class="stars text-sm mb-1">★★★★★</div>
-                        <p class="text-xs leading-snug font-semibold text-[#3D2060]">
-                            Amei os cosméticos, tudo chegou perfeitinho e o unboxing ficou incrível!
-                        </p>
-                    </div>
-                </div>
-
-                <!-- Review 2 -->
-                <div class="post-it bg-white p-4 rounded-xl flex gap-3 shadow-md rotate-[1deg]">
-                    <div class="tape"></div>
-                    <img src="https://via.placeholder.com/80x80/FDD5E5/9B59B6?text=🎁" alt="Foto review"
-                        class="w-20 h-20 rounded-lg object-cover flex-shrink-0 mt-3 shadow-sm">
-                    <div class="mt-2 flex-1">
-                        <div class="stars text-sm mb-1">★★★★★</div>
-                        <p class="text-xs leading-snug font-semibold text-[#3D2060]">
-                            Faz essa embalagem o número aos outro porta ao o brasil!! Perfeito!
-                        </p>
-                    </div>
-                </div>
-
-                <!-- Review 3 -->
-                <div class="post-it bg-white p-4 rounded-xl flex gap-3 shadow-md rotate-[0.5deg]">
-                    <div class="pin"></div>
-                    <img src="https://via.placeholder.com/80x80/FFF3B0/9B59B6?text=⭐" alt="Foto review"
-                        class="w-20 h-20 rounded-lg object-cover flex-shrink-0 mt-3 shadow-sm">
-                    <div class="mt-2 flex-1">
-                        <div class="stars text-sm mb-1">★★★★★</div>
-                        <p class="text-xs leading-snug font-semibold text-[#3D2060]">
-                            Minha irmã adorou o unboxing, presentei meu namorado e chegou perfeito!
-                        </p>
-                    </div>
-                </div>
-
-                <!-- Review 4 — card produto -->
-                <div
-                    class="post-it bg-[#FDD5E5] p-4 rounded-xl text-center shadow-md rotate-[-0.5deg] flex flex-col items-center justify-between">
-                    <div class="tape"></div>
-                    <img src="https://via.placeholder.com/110x80/FFFFFF/9B59B6?text=Pok%C3%A9mon" alt="Pokémon"
-                        class="h-16 object-contain mt-3 rounded shadow-sm mb-2">
-                    <p class="text-xs font-bold text-[#2C1654] leading-snug">
-                        Pokémon TCG — comprei um booster, o mais pedido dia-a-dia do Japão.
-                    </p>
-                    <div class="stars text-sm mt-1">★★★★★</div>
-                    <p class="text-[0.6rem] text-gray-400 mt-0.5">...</p>
-                </div>
-            </div>
-        </section>
-
-        <!-- ═══════════════════════════ COMO FUNCIONA ════════════════════════════ -->
-        <section id="como-funciona" class="mx-6 mb-8 bg-[#F4EFE4] rounded-2xl px-8 py-8 shadow-inner">
-            <h2 class="font-hand text-[2.4rem] font-bold text-center text-[#2C1654] mb-7">Como Funciona</h2>
-            <div class="flex flex-col md:flex-row justify-center items-center gap-4 md:gap-8 font-bold text-center">
-                <div>
-                    <i class="fa-solid fa-cart-shopping text-4xl text-[#9370DB] mb-2"></i>
-                    <p>1. Compras</p>
-                </div>
-                <i class="fa-solid fa-arrow-right text-gray-300 hidden md:block"></i>
-
-                <div>
-                    <i class="fa-solid fa-box-open text-4xl text-[#9370DB] mb-2 relative">
-                        <i class="fa-solid fa-heart text-pink-400 absolute -top-1 -right-2 text-xl"></i>
-                    </i>
-                    <p>2. Embalagem</p>
-                </div>
-
-                <i class="fa-solid fa-arrow-right text-gray-300 hidden md:block"></i>
-                <div>
-                    <i class="fa-solid fa-envelopes-bulk text-4xl text-[#9370DB] mb-2"></i>
-                    <p>3. Japan Post</p>
-                </div>
-                <i class="fa-solid fa-arrow-right text-gray-300 hidden md:block"></i>
-                <div>
-                    <i class="fa-solid fa-truck-fast text-4xl text-[#9370DB] mb-2"></i>
-                    <p>4. Entrega</p>
-                </div>
-            </div>
-        </section>
-
-        <!-- ════════════════════════ CTA WHATSAPP ════════════════════════════════ -->
-        <section id="contato"
-            class="flex flex-col md:flex-row items-center justify-center gap-6 md:gap-10 px-6 md:px-10 pb-10 text-center">
-            <a href="https://wa.me/551199999999"
-                class="bg-[#25D366] text-white font-black py-4 px-9 rounded-full shadow-xl hover:bg-[#1EB855] transition flex items-center gap-3 text-sm tracking-widest uppercase">
-                <i class="fa-brands fa-whatsapp text-2xl"></i>
-                FALE NO WHATSAPP BUSINESS
-            </a>
-
-            <div class="post-it bg-[#FFF3B0] px-5 py-4 text-center rotate-[4deg] max-w-[170px] rounded-sm">
-                <div class="tape"></div>
-                <p class="font-hand text-[1.25rem] leading-tight mt-2 text-[#2C1654] font-semibold">
-                    Dúvidas sobre<br>redirecionamento?<br>Nos chame!
-                </p>
-            </div>
-        </section>
-
-        <!-- ══════════════════════════════ FOOTER ════════════════════════════════ -->
-        <footer
-            class="border-t-2 border-gray-200 px-6 md:px-10 pt-8 pb-6 grid grid-cols-1 md:grid-cols-3 gap-8 text-center md:text-left text-sm text-[#4A3060]">
-
-            <div>
-                <h5 class="font-black text-base mb-2 text-[#2C1654]">Japão Express</h5>
-                <p class="text-xs leading-relaxed font-semibold">
-                    
-                    Rua Intotsin<br>
-                    Düreto Sonc 88322
-                </p>
-            </div>
-
-            <div>
-                <h5 class="font-black text-base mb-2 text-[#2C1654]">Quick Links</h5>
-                <ul class="space-y-1 text-xs font-semibold">
-                    <li><a href="produtos.html" class="hover:text-[#9B59B6] transition">Produtos</a></li>
-                    <li><a href="#unboxing" class="hover:text-[#9B59B6] transition">Unboxing</a></li>
-                    <li><a href="#como-funciona" class="hover:text-[#9B59B6] transition">Como Funciona</a></li>
-                    <li><a href="#contato" class="hover:text-[#9B59B6] transition">Contato</a></li>
-                </ul>
-            </div>
-
-            <div>
-                <h5 class="font-black text-base mb-3 text-[#2C1654]">Social Media</h5>
-                <div class="flex justify-center md:justify-start gap-4 text-xl">
-                    <a href="https://www.instagram.com/ojapaoexpress" target="_blank" rel="noopener" class="text-[#2C1654] hover:text-[#9B59B6] transition"><i class="fa-brands fa-instagram"></i></a>
-                    <a href="#" class="text-[#2C1654] hover:text-[#9B59B6] transition"><i class="fa-brands fa-tiktok"></i></a>
-                    <a href="mailto:ojapaoexpress@gmail.com" class="text-[#2C1654] hover:text-[#9B59B6] transition" title="E-mail"><i class="fa-solid fa-envelope"></i></a>
-                </div>
-            </div>
-
-        </footer>
-
-        <div class="text-center text-xs py-4 text-gray-400 border-t border-gray-100 font-semibold">
-            © 2026 Japão Express. Todos os direitos reservados
+            <button onclick="closeSidebar()" class="text-[#9B59B6] hover:text-[#7D3C98] transition text-xl font-black leading-none">&times;</button>
         </div>
 
+        <!-- Itens principais -->
+        <nav class="flex-1 py-3">
+            <a href="produtos.html" class="sidebar-item" onclick="closeSidebar()">
+                <span class="icon"><i class="fa-solid fa-store"></i></span> Produtos
+            </a>
+
+            <!-- Categorias com sub-lista -->
+            <div class="sidebar-item" onclick="toggleSidebarCats(this)" style="justify-content:space-between">
+                <div class="flex items-center gap-3">
+                    <span class="icon"><i class="fa-solid fa-tags"></i></span> Categorias
+                </div>
+                <i class="fa-solid fa-chevron-down text-xs transition-transform" id="catChevron"></i>
+            </div>
+            <div class="sidebar-cats" id="sidebarCats" style="display:none">
+                <a href="produtos.html?cat=cosmeticos"   class="sidebar-cat-item" onclick="closeSidebar()">💄 Cosméticos & Skincare</a>
+                <a href="produtos.html?cat=maquiagem"    class="sidebar-cat-item" onclick="closeSidebar()">💋 Maquiagem</a>
+                <a href="produtos.html?cat=cabelos"      class="sidebar-cat-item" onclick="closeSidebar()">💆 Cabelos</a>
+                <a href="produtos.html?cat=fragrancias"  class="sidebar-cat-item" onclick="closeSidebar()">🌸 Fragrâncias</a>
+                <a href="produtos.html?cat=higiene"      class="sidebar-cat-item" onclick="closeSidebar()">💊 Higiene & Saúde</a>
+                <a href="produtos.html?cat=doces"        class="sidebar-cat-item" onclick="closeSidebar()">🍡 Doces & Snacks</a>
+                <a href="produtos.html?cat=alimentacao"  class="sidebar-cat-item" onclick="closeSidebar()">🍜 Alimentação</a>
+                <a href="produtos.html?cat=games"        class="sidebar-cat-item" onclick="closeSidebar()">🎮 Games</a>
+                <a href="produtos.html?cat=coleciona"    class="sidebar-cat-item" onclick="closeSidebar()">🧸 Colecionáveis</a>
+                <a href="produtos.html?cat=papelaria"    class="sidebar-cat-item" onclick="closeSidebar()">✏️ Papelaria</a>
+                <a href="produtos.html?cat=cultura"      class="sidebar-cat-item" onclick="closeSidebar()">🎌 Cultura Japonesa</a>
+            </div>
+
+            <div class="sidebar-divider"></div>
+
+            <button class="sidebar-item w-full text-left" data-currency-toggle onclick="toggleCurrency()">
+                <span class="icon">💴</span> Alternar Moeda
+                <span class="ml-auto text-xs font-black text-[#9B59B6]" id="sbCurrLabel">JPY</span>
+            </button>
+
+            <a href="carrinho.html" class="sidebar-item" onclick="closeSidebar()">
+                <span class="icon"><i class="fa-solid fa-bag-shopping"></i></span> Carrinho
+                <span id="sb-cart-badge" class="ml-auto bg-[#9B59B6] text-white text-[10px] font-black rounded-full w-5 h-5 items-center justify-center leading-none" style="display:none">0</span>
+            </a>
+
+            <a href="favoritos.html" class="sidebar-item" onclick="closeSidebar()">
+                <span class="icon"><i class="fa-regular fa-heart"></i></span> Favoritos
+            </a>
+
+            <div class="sidebar-divider"></div>
+
+            <a href="#como-funciona" class="sidebar-item" onclick="closeSidebar()">
+                <span class="icon"><i class="fa-solid fa-circle-question"></i></span> Como Funciona
+            </a>
+
+            <a href="#contato" class="sidebar-item" onclick="closeSidebar()">
+                <span class="icon"><i class="fa-solid fa-envelope"></i></span> Contato
+            </a>
+        </nav>
+
+        <!-- Rodapé do sidebar -->
+        <div class="px-5 py-4 border-t border-purple-100 text-xs text-gray-400 font-semibold">
+            © 2026 Japão Express 🌸
+        </div>
+    </aside>
+</div>
+
+<!-- ══════════════════ FLOATING CART BUTTON ══════════════════ -->
+<a href="carrinho.html" id="floatCartBtn"
+    class="bg-[#2C1654] text-white font-black text-sm px-6 py-3 rounded-full shadow-2xl flex items-center gap-3 hover:bg-[#7D3C98] transition-colors whitespace-nowrap">
+    <i class="fa-solid fa-bag-shopping"></i>
+    Carrinho
+    <span id="floatCartBadge" class="bg-[#FF6B6B] text-white text-[11px] font-black w-5 h-5 rounded-full flex items-center justify-center">0</span>
+    <span id="floatCartTotal" class="border-l border-white/30 pl-3 text-[15px]"></span>
+</a>
+
+<!-- ══════════════════ MAIN CONTAINER ══════════════════ -->
+<div class="bg-[#FDFAF2] w-full max-w-4xl rounded-3xl shadow-2xl overflow-visible border-t-[10px] border-[#9B59B6]">
+
+    <!-- ══════════════ HEADER (3 colunas) ══════════════ -->
+    <header class="grid items-center px-4 md:px-6 py-3 border-b border-purple-100 gap-2"
+            style="grid-template-columns: 1fr auto 1fr">
+
+        <!-- Esquerda: hambúrguer -->
+        <div class="flex items-center">
+            <button onclick="openSidebar()"
+                class="flex flex-col gap-[5px] p-2 rounded-xl hover:bg-purple-50 transition group"
+                aria-label="Menu">
+                <span class="block w-6 h-[2.5px] bg-[#2C1654] rounded group-hover:bg-[#9B59B6] transition"></span>
+                <span class="block w-6 h-[2.5px] bg-[#2C1654] rounded group-hover:bg-[#9B59B6] transition"></span>
+                <span class="block w-4 h-[2.5px] bg-[#2C1654] rounded group-hover:bg-[#9B59B6] transition"></span>
+            </button>
+        </div>
+
+        <!-- Centro: logo centralizado -->
+        <div class="flex justify-center">
+            <a href="index.html">
+                <img src="logo.png"
+                     onerror="this.onerror=null;this.src='https://i.imgur.com/lxyYcwX.png'"
+                     alt="Japão Express Logo"
+                     class="h-16 md:h-20 object-contain drop-shadow-sm">
+            </a>
+        </div>
+
+        <!-- Direita: perfil + entrar/sair -->
+        <div class="flex items-center justify-end gap-3">
+            <!-- Ícone de perfil -->
+            <a href="perfil.html" data-auth-perfil
+               class="text-[#3D1A78] hover:text-[#9B59B6] transition"
+               title="Minha Conta">
+                <i class="fa-regular fa-circle-user text-2xl"></i>
+            </a>
+
+            <!-- Entrar / Sair -->
+            <a href="login.html" data-auth-entrar
+               class="text-[#3D1A78] hover:text-[#9B59B6] transition font-bold text-xs tracking-wide uppercase hidden sm:block">
+                Entrar
+            </a>
+
+            <!-- Cadastrar (some quando logado) -->
+            <a href="login.html#cadastro" data-auth-cadastrar
+               class="bg-[#9B59B6] text-white font-black text-xs px-3 py-1.5 rounded-full hover:bg-[#7D3C98] transition tracking-wide uppercase hidden sm:block">
+                Cadastrar
+            </a>
+        </div>
+    </header>
+
+    <!-- ══════════════ HERO DINÂMICO ══════════════ -->
+    <section class="hero-section" id="heroSection">
+        <!-- Sakura -->
+        <div id="sakuraWrap" style="position:absolute;inset:0;pointer-events:none;overflow:hidden;z-index:1"></div>
+
+        <!-- Slides (gerados por JS) -->
+        <div id="heroSlides" style="position:relative;z-index:2"></div>
+
+        <!-- Dots -->
+        <div class="hero-dots" id="heroDots"></div>
+    </section>
+
+    <!-- ══════════════ NOSSAS VANTAGENS ══════════════ -->
+    <section class="px-6 md:px-10 pt-10 pb-12">
+        <h2 class="font-hand text-[2.4rem] font-bold text-center text-[#2C1654] mb-10">Nossas Vantagens</h2>
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+
+            <div class="post-it bg-[#FFF3B0] p-6 pt-10 text-center rounded-sm rotate-[-2deg]">
+                <div class="pin"></div>
+                <div class="flex justify-center mb-4">
+                    <i class="fa-solid fa-store text-4xl mb-4 text-gray-700 mt-2"></i>
+                </div>
+                <h3 class="font-black text-xs uppercase tracking-wider mb-2 text-[#2C1654]">COMPRAS NO JAPÃO</h3>
+                <p class="text-xs font-semibold leading-snug text-[#3D2060]">
+                    Direto em Don Quijote<br>e Matsumoto Kiyoshi.<br>Sem intermediários.
+                </p>
+            </div>
+
+            <div class="post-it bg-[#FDD5E5] p-6 pt-10 text-center rounded-sm rotate-[2.5deg]">
+                <div class="pin"></div>
+                <div class="flex justify-center mb-4 relative">
+                    <i class="fa-solid fa-box-open text-4xl mb-4 text-gray-700 mt-2"></i>
+                    <i class="fa-solid fa-heart text-pink-500 text-base absolute -top-1 -right-1"></i>
+                </div>
+                <h3 class="font-black text-xs uppercase tracking-wider mb-2 text-[#2C1654]">UNBOXING LINDO</h3>
+                <p class="text-xs font-semibold leading-snug text-[#3D2060]">
+                    Cuidamos da<br>embalagem para ser<br>filmável e perfeita!
+                </p>
+            </div>
+
+            <div class="post-it bg-[#E8D5F5] p-6 pt-9 text-center rounded-sm rotate-[-1deg]">
+                <div class="tape"></div>
+                <div class="flex justify-center items-center gap-1 mb-4 mt-2">
+                    <i class="fa-brands fa-instagram text-4xl text-gray-700"></i>
+                </div>
+                <h3 class="font-black text-xs uppercase tracking-wider mb-2 text-[#2C1654]">CONTEÚDO AUTÊNTICO</h3>
+                <p class="text-xs font-semibold leading-snug text-[#3D2060]">
+                    Veja nossos bastidores<br>nas lojas e dia-a-dia<br>no Japão.
+                </p>
+            </div>
+        </div>
+    </section>
+
+    <!-- ══════════════ DESTAQUES DINÂMICOS ══════════════ -->
+    <section class="mx-4 md:mx-6 mb-8 bg-[#F4EFE4] rounded-2xl px-4 md:px-8 py-8 shadow-inner">
+        <div class="flex items-center justify-between mb-6">
+            <h2 class="font-hand text-[2.4rem] font-bold text-[#2C1654]">Destaques</h2>
+            <div class="flex items-center gap-2">
+                <span id="destaquesLabel" class="text-[10px] font-black text-[#9B59B6] uppercase tracking-widest bg-purple-100 px-3 py-1 rounded-full">⭐ Em destaque</span>
+                <a href="produtos.html" class="text-xs font-bold text-[#9B59B6] hover:text-[#7D3C98] transition">Ver todos →</a>
+            </div>
+        </div>
+
+        <!-- Páginas (geradas por JS) -->
+        <div id="destaquesWrap"></div>
+
+        <!-- Dots de navegação -->
+        <div id="destaquesDots" class="flex justify-center gap-2 mt-5"></div>
+    </section>
+
+    <!-- ══════════════ RECÉM CHEGADOS (substituiu Reviews) ══════════════ -->
+    <section class="px-6 md:px-10 pb-10">
+        <div class="flex items-center justify-between mb-6">
+            <h2 class="font-hand text-[2.4rem] font-bold text-[#2C1654]">Recém Chegados 🆕</h2>
+            <a href="produtos.html" class="text-xs font-bold text-[#9B59B6] hover:text-[#7D3C98] transition">Ver todos →</a>
+        </div>
+        <div class="novidades-grid" id="novidadesGrid">
+            <!-- gerado por JS -->
+        </div>
+    </section>
+
+    <!-- ══════════════ BASTIDORES (novo!) ══════════════ -->
+    <section class="mx-4 md:mx-6 mb-10 bg-[#2C1654] rounded-2xl px-5 md:px-8 py-8 overflow-hidden relative">
+        <!-- Fundo decorativo -->
+        <div style="position:absolute;right:-20px;top:-20px;font-size:120px;opacity:.07;pointer-events:none;user-select:none">🗾</div>
+
+        <h2 class="font-hand text-[2.4rem] font-bold text-center text-white mb-2">Da nossa jornada até você</h2>
+        <p class="text-center text-purple-200 text-sm font-semibold mb-7">Autêntico, com cuidado, direto do Japão 🇯🇵</p>
+
+        <div class="bastidores-grid">
+
+            <!-- Card 1: Don Quijote -->
+            <div class="post-it bg-[#FFF3B0] p-4 pt-8 rounded-sm text-center" style="transform:rotate(-2deg)">
+                <div class="tape"></div>
+                <div class="text-4xl mb-2">🏪</div>
+                <h4 class="font-black text-xs uppercase tracking-wide text-[#2C1654] mb-1">Don Quijote</h4>
+                <p class="text-[0.65rem] font-semibold text-[#3D2060] leading-snug">
+                    Fazemos compras pessoalmente nas maiores lojas do Japão.
+                </p>
+            </div>
+
+            <!-- Card 2: Embalagem -->
+            <div class="post-it bg-[#FDD5E5] p-4 pt-10 rounded-sm text-center" style="transform:rotate(2deg)">
+                <div class="pin"></div>
+                <div class="text-4xl mb-2">🎁</div>
+                <h4 class="font-black text-xs uppercase tracking-wide text-[#2C1654] mb-1">Embalagem Especial</h4>
+                <p class="text-[0.65rem] font-semibold text-[#3D2060] leading-snug">
+                    Cada pedido é embalado com carinho para um unboxing incrível.
+                </p>
+            </div>
+
+            <!-- Card 3: Japan Post -->
+            <div class="post-it bg-[#E8D5F5] p-4 pt-8 rounded-sm text-center" style="transform:rotate(-1deg)">
+                <div class="tape"></div>
+                <div class="text-4xl mb-2">✈️</div>
+                <h4 class="font-black text-xs uppercase tracking-wide text-[#2C1654] mb-1">Japan Post</h4>
+                <p class="text-[0.65rem] font-semibold text-[#3D2060] leading-snug">
+                    Enviamos por Japan Post com rastreio até a sua porta.
+                </p>
+            </div>
+
+            <!-- Card 4: Instagram CTA -->
+            <a href="https://www.instagram.com/ojapaoexpress" target="_blank" rel="noopener"
+               class="post-it bg-white p-4 pt-8 rounded-sm text-center block hover:scale-[1.03] transition-transform"
+               style="transform:rotate(1.5deg)">
+                <div class="pin" style="background:radial-gradient(circle at 38% 38%,#E1306C,#833AB4)"></div>
+                <div class="text-4xl mb-2">📲</div>
+                <h4 class="font-black text-xs uppercase tracking-wide text-[#2C1654] mb-1">@ojapaoexpress</h4>
+                <p class="text-[0.65rem] font-semibold text-[#3D2060] leading-snug">
+                    Marque a gente no Insta e apareça aqui!
+                </p>
+                <span class="mt-2 inline-block bg-gradient-to-r from-[#833AB4] to-[#E1306C] text-white text-[10px] font-black px-3 py-1 rounded-full">
+                    Seguir ✨
+                </span>
+            </a>
+        </div>
+    </section>
+
+    <!-- ══════════════ COMO FUNCIONA ══════════════ -->
+    <section id="como-funciona" class="mx-6 mb-8 bg-[#F4EFE4] rounded-2xl px-8 py-8 shadow-inner">
+        <h2 class="font-hand text-[2.4rem] font-bold text-center text-[#2C1654] mb-7">Como Funciona</h2>
+        <div class="flex flex-col md:flex-row justify-center items-center gap-4 md:gap-8 font-bold text-center">
+            <div>
+                <i class="fa-solid fa-cart-shopping text-4xl text-[#9370DB] mb-2"></i>
+                <p>1. Compras</p>
+            </div>
+            <i class="fa-solid fa-arrow-right text-gray-300 hidden md:block"></i>
+            <div>
+                <i class="fa-solid fa-box-open text-4xl text-[#9370DB] mb-2 relative">
+                    <i class="fa-solid fa-heart text-pink-400 absolute -top-1 -right-2 text-xl"></i>
+                </i>
+                <p>2. Embalagem</p>
+            </div>
+            <i class="fa-solid fa-arrow-right text-gray-300 hidden md:block"></i>
+            <div>
+                <i class="fa-solid fa-envelopes-bulk text-4xl text-[#9370DB] mb-2"></i>
+                <p>3. Japan Post</p>
+            </div>
+            <i class="fa-solid fa-arrow-right text-gray-300 hidden md:block"></i>
+            <div>
+                <i class="fa-solid fa-truck-fast text-4xl text-[#9370DB] mb-2"></i>
+                <p>4. Entrega</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- ══════════════ CTA WHATSAPP ══════════════ -->
+    <section id="contato"
+        class="flex flex-col md:flex-row items-center justify-center gap-6 md:gap-10 px-6 md:px-10 pb-10 text-center">
+        <a href="https://wa.me/551199999999"
+            class="bg-[#25D366] text-white font-black py-4 px-9 rounded-full shadow-xl hover:bg-[#1EB855] transition flex items-center gap-3 text-sm tracking-widest uppercase">
+            <i class="fa-brands fa-whatsapp text-2xl"></i>
+            FALE NO WHATSAPP BUSINESS
+        </a>
+        <div class="post-it bg-[#FFF3B0] px-5 py-4 text-center rotate-[4deg] max-w-[170px] rounded-sm">
+            <div class="tape"></div>
+            <p class="font-hand text-[1.25rem] leading-tight mt-2 text-[#2C1654] font-semibold">
+                Dúvidas sobre<br>redirecionamento?<br>Nos chame!
+            </p>
+        </div>
+    </section>
+
+    <!-- ══════════════ FOOTER ══════════════ -->
+    <footer class="border-t-2 border-gray-200 px-6 md:px-10 pt-8 pb-6 grid grid-cols-1 md:grid-cols-3 gap-8 text-center md:text-left text-sm text-[#4A3060]">
+        <div>
+            <h5 class="font-black text-base mb-2 text-[#2C1654]">Japão Express</h5>
+            <p class="text-xs leading-relaxed font-semibold">
+                Rua Intotsin<br>
+                Düreto Sonc 88322
+            </p>
+        </div>
+        <div>
+            <h5 class="font-black text-base mb-2 text-[#2C1654]">Quick Links</h5>
+            <ul class="space-y-1 text-xs font-semibold">
+                <li><a href="produtos.html"   class="hover:text-[#9B59B6] transition">Produtos</a></li>
+                <li><a href="#como-funciona"  class="hover:text-[#9B59B6] transition">Como Funciona</a></li>
+                <li><a href="#contato"        class="hover:text-[#9B59B6] transition">Contato</a></li>
+            </ul>
+        </div>
+        <div>
+            <h5 class="font-black text-base mb-3 text-[#2C1654]">Social Media</h5>
+            <div class="flex justify-center md:justify-start gap-4 text-xl">
+                <a href="https://www.instagram.com/ojapaoexpress" target="_blank" rel="noopener" class="text-[#2C1654] hover:text-[#9B59B6] transition"><i class="fa-brands fa-instagram"></i></a>
+                <a href="#" class="text-[#2C1654] hover:text-[#9B59B6] transition"><i class="fa-brands fa-tiktok"></i></a>
+                <a href="mailto:ojapaoexpress@gmail.com" class="text-[#2C1654] hover:text-[#9B59B6] transition" title="E-mail"><i class="fa-solid fa-envelope"></i></a>
+            </div>
+        </div>
+    </footer>
+
+    <div class="text-center text-xs py-4 text-gray-400 border-t border-gray-100 font-semibold">
+        © 2026 Japão Express. Todos os direitos reservados
     </div>
 
-    <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-app-compat.js"></script>
+</div><!-- /main container -->
+
+<!-- ══════════════════════════════════════════════════════════
+     SCRIPTS
+══════════════════════════════════════════════════════════ -->
+<script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-auth-compat.js"></script>
 <script src="js/firebase-config.js"></script>
 <script src="js/products.js"></script>
-    <script src="js/cart.js"></script>
-    <script src="js/currency.js"></script>
-    <script src="js/auth.js"></script>
-</body>
+<script src="js/cart.js"></script>
+<script src="js/currency.js"></script>
+<script src="js/auth.js"></script>
 
+<script>
+/* ═══════════════════════════════════════════════════════════
+   SIDEBAR
+═══════════════════════════════════════════════════════════ */
+function openSidebar() {
+    document.getElementById('sidebarOverlay').classList.add('open');
+    document.body.style.overflow = 'hidden';
+}
+function closeSidebar() {
+    document.getElementById('sidebarOverlay').classList.remove('open');
+    document.body.style.overflow = '';
+}
+function toggleSidebarCats(el) {
+    const cats = document.getElementById('sidebarCats');
+    const chev = document.getElementById('catChevron');
+    const open = cats.style.display !== 'none';
+    cats.style.display = open ? 'none' : 'block';
+    chev.style.transform = open ? '' : 'rotate(180deg)';
+}
+
+/* ═══════════════════════════════════════════════════════════
+   UTILIDADES
+═══════════════════════════════════════════════════════════ */
+const CARD_COLORS = [
+    { bg: '#FFF3B0', shadow: '#d4b800', deco: 'pin' },
+    { bg: '#FDD5E5', shadow: '#d4889e', deco: 'tape' },
+    { bg: '#E8D5F5', shadow: '#a880cc', deco: 'tape' },
+    { bg: '#D6EAF8', shadow: '#7aadcc', deco: 'tape' },
+    { bg: '#D4EFDF', shadow: '#7abf8e', deco: 'pin' },
+    { bg: '#FDFAF2', shadow: '#ccc',    deco: 'pin' },
+];
+const ROTATIONS = ['-2deg','1.5deg','2.5deg','-1deg','1deg','-1.5deg'];
+const SVG_PH = "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120' viewBox='0 0 120 120'%3E%3Crect width='120' height='120' fill='%23f0e8ff'/%3E%3Ctext x='50%25' y='54%25' dominant-baseline='middle' text-anchor='middle' font-size='40'%3E🌸%3C/text%3E%3C/svg%3E";
+
+function getCardStyle(i) {
+    return CARD_COLORS[i % CARD_COLORS.length];
+}
+
+function fmtBRL(v) {
+    if (!v || isNaN(v)) return 'Sob consulta';
+    return 'R$ ' + Number(v).toFixed(2).replace('.', ',');
+}
+
+/* ── View tracking ── */
+function trackView(id) {
+    try {
+        const v = JSON.parse(localStorage.getItem('je_views') || '{}');
+        v[id] = (v[id] || 0) + 1;
+        localStorage.setItem('je_views', JSON.stringify(v));
+    } catch {}
+}
+
+function getViews() {
+    try { return JSON.parse(localStorage.getItem('je_views') || '{}'); }
+    catch { return {}; }
+}
+
+/* ═══════════════════════════════════════════════════════════
+   SAKURA
+═══════════════════════════════════════════════════════════ */
+function initSakura() {
+    const wrap = document.getElementById('sakuraWrap');
+    if (!wrap) return;
+    const petals = ['🌸','🌺','✿','❀'];
+    for (let i = 0; i < 14; i++) {
+        const p = document.createElement('div');
+        p.className = 'petal';
+        p.textContent = petals[i % petals.length];
+        p.style.left = (Math.random() * 100) + '%';
+        p.style.animationDuration = (4.5 + Math.random() * 5) + 's';
+        p.style.animationDelay = (Math.random() * 7) + 's';
+        p.style.fontSize = (11 + Math.random() * 10) + 'px';
+        wrap.appendChild(p);
+    }
+}
+
+/* ═══════════════════════════════════════════════════════════
+   HERO SLIDER
+═══════════════════════════════════════════════════════════ */
+let heroSlides = [], heroCurrent = 0, heroTimer = null;
+
+function getHeroProducts() {
+    if (typeof PRODUCTS === 'undefined' || !PRODUCTS.length) return [];
+    const featured = PRODUCTS.filter(p => p.featured);
+    return (featured.length >= 2 ? featured : PRODUCTS).slice(0, 5);
+}
+
+function buildHeroSlide(p, i) {
+    const cs = getCardStyle(i);
+    const img = p.image || SVG_PH;
+    const cat = p.category || p.cat || 'Importado do Japão';
+    const badge = p.badge || (i === 0 ? 'Destaque' : cat);
+
+    return `
+    <div class="hero-slide${i === 0 ? ' active' : ''}" data-hero="${i}">
+        <div class="hero-text-area">
+            <div class="hero-badge-pill">✈️ ${badge}</div>
+            <div class="hero-title-text">${formatHeroTitle(p.name)}</div>
+            <p class="hero-desc">${p.description ? p.description.slice(0, 80) + (p.description.length > 80 ? '…' : '') : 'Produto autêntico importado direto do Japão'}</p>
+            <a href="produto.html?id=${p.id}" class="hero-cta" onclick="trackView('${p.id}')">
+                <i class="fa-solid fa-bag-shopping mr-1"></i> Ver produto
+            </a>
+        </div>
+        <div class="hero-card-wrap">
+            <div class="hero-postit-card" style="background:${cs.bg};box-shadow:4px 4px 0 ${cs.shadow},0 12px 32px rgba(0,0,0,.25)">
+                <img class="hero-postit-img"
+                     src="${img}"
+                     alt="${p.name}"
+                     onerror="this.onerror=null;this.src='${SVG_PH}'">
+                <div class="hero-postit-name">${p.name}</div>
+                <div class="hero-postit-price">
+                    ${p.priceBRL ? fmtBRL(p.priceBRL) : 'Ver preço'}
+                </div>
+            </div>
+        </div>
+    </div>`;
+}
+
+function formatHeroTitle(name) {
+    if (!name) return 'Produto<br><em>Japonês</em>';
+    const words = name.trim().split(' ');
+    if (words.length <= 2) return `${words[0]}<br><em>${words.slice(1).join(' ') || '🌸'}</em>`;
+    return `${words[0]}<br><em>${words.slice(1, 3).join(' ')}</em>`;
+}
+
+function initHero() {
+    const prods = getHeroProducts();
+    const slidesEl = document.getElementById('heroSlides');
+    const dotsEl   = document.getElementById('heroDots');
+    if (!slidesEl || !prods.length) return;
+
+    slidesEl.innerHTML = prods.map((p, i) => buildHeroSlide(p, i)).join('');
+
+    // Dots
+    dotsEl.innerHTML = prods.map((_, i) =>
+        `<button class="hero-dot${i === 0 ? ' active' : ''}" onclick="goHeroSlide(${i})"></button>`
+    ).join('');
+
+    heroSlides = prods;
+    heroCurrent = 0;
+    startHeroTimer();
+}
+
+function goHeroSlide(i) {
+    document.querySelectorAll('.hero-slide').forEach((s, idx) => s.classList.toggle('active', idx === i));
+    document.querySelectorAll('.hero-dot').forEach((d, idx) => d.classList.toggle('active', idx === i));
+    heroCurrent = i;
+    startHeroTimer();
+}
+
+function startHeroTimer() {
+    clearInterval(heroTimer);
+    if (heroSlides.length > 1) {
+        heroTimer = setInterval(() => goHeroSlide((heroCurrent + 1) % heroSlides.length), 4500);
+    }
+}
+
+/* ═══════════════════════════════════════════════════════════
+   DESTAQUES DINÂMICOS (featured + mais visitados, 4 por vez)
+═══════════════════════════════════════════════════════════ */
+const PER_PAGE = 4;
+let destPages = [], destCurrent = 0, destTimer = null;
+
+function getDestaquesPool() {
+    if (typeof PRODUCTS === 'undefined') return [];
+    const views = getViews();
+    const featured = PRODUCTS.filter(p => p.featured);
+    const byViews  = [...PRODUCTS]
+        .filter(p => !p.featured && (views[p.id] || 0) > 0)
+        .sort((a, b) => (views[b.id] || 0) - (views[a.id] || 0))
+        .slice(0, 4);
+    // merge, deduplicate
+    const seen = new Set();
+    const pool = [...featured, ...byViews].filter(p => {
+        if (seen.has(p.id)) return false;
+        seen.add(p.id); return true;
+    });
+    // fallback: se menos de 4, completa com primeiros produtos
+    if (pool.length < PER_PAGE) {
+        PRODUCTS.forEach(p => {
+            if (!seen.has(p.id) && pool.length < PER_PAGE + 4) {
+                seen.add(p.id);
+                pool.push(p);
+            }
+        });
+    }
+    return pool;
+}
+
+function buildDestCard(p, colorIdx) {
+    const cs = getCardStyle(colorIdx);
+    const rot = ROTATIONS[colorIdx % ROTATIONS.length];
+    const deco = cs.deco === 'pin'
+        ? `<div class="pin"></div>`
+        : `<div class="tape"></div>`;
+    const img = p.image || SVG_PH;
+    return `
+    <a href="produto.html?id=${p.id}"
+       class="post-it p-4 pt-8 rounded-sm text-center block cursor-pointer hover:scale-[1.03] hover:shadow-xl transition-all"
+       style="background:${cs.bg};box-shadow:3px 3px 0 ${cs.shadow},2px 5px 14px rgba(0,0,0,.10);transform:rotate(${rot})"
+       onclick="trackView('${p.id}')">
+        ${deco}
+        ${p.badge ? `<span class="absolute top-2 right-2 text-white text-[9px] font-black px-2 py-0.5 rounded-full" style="background:${p.badgeBg||'#9B59B6'}">${p.badge}</span>` : ''}
+        <img src="${img}" alt="${p.name}"
+             onerror="this.onerror=null;this.src='${SVG_PH}'"
+             class="mx-auto mb-2 h-28 w-full object-contain rounded shadow-sm border border-white bg-white/60">
+        <h4 class="font-black text-xs mb-0.5 text-[#2C1654] leading-snug line-clamp-2">${p.name}</h4>
+        <p class="text-[0.62rem] font-semibold text-gray-500 mb-1 leading-snug">${p.subcategory || p.category || ''}</p>
+        <p class="text-lg font-black text-[#9B59B6] mb-2">${fmtBRL(p.priceBRL)}</p>
+        <span class="block bg-[#9B59B6] text-white w-full py-1.5 rounded-full font-black text-xs hover:bg-[#7D3C98] transition">
+            <i class="fa-solid fa-bag-shopping mr-1"></i>Comprar
+        </span>
+    </a>`;
+}
+
+function initDestaques() {
+    const pool = getDestaquesPool();
+    const wrap = document.getElementById('destaquesWrap');
+    const dots = document.getElementById('destaquesDots');
+    if (!wrap || !pool.length) return;
+
+    // Dividir em páginas de 4
+    destPages = [];
+    for (let i = 0; i < pool.length; i += PER_PAGE) {
+        destPages.push(pool.slice(i, i + PER_PAGE));
+    }
+
+    // Renderizar páginas
+    wrap.innerHTML = destPages.map((page, pi) => `
+        <div class="destaques-page${pi === 0 ? ' active' : ''}" data-page="${pi}">
+            ${page.map((p, ci) => buildDestCard(p, pi * PER_PAGE + ci)).join('')}
+        </div>
+    `).join('');
+
+    // Dots (só se mais de 1 página)
+    if (destPages.length > 1) {
+        dots.innerHTML = destPages.map((_, i) =>
+            `<button class="dest-dot${i === 0 ? ' active' : ''}" onclick="goDestPage(${i})"></button>`
+        ).join('');
+        destTimer = setInterval(() => goDestPage((destCurrent + 1) % destPages.length), 5000);
+    }
+
+    // Label
+    const hasRealFeatured = PRODUCTS.some(p => p.featured);
+    document.getElementById('destaquesLabel').textContent = hasRealFeatured
+        ? '⭐ Em destaque'
+        : '🔥 Mais visitados';
+}
+
+function goDestPage(i) {
+    document.querySelectorAll('.destaques-page').forEach((p, idx) => p.classList.toggle('active', idx === i));
+    document.querySelectorAll('.dest-dot').forEach((d, idx) => d.classList.toggle('active', idx === i));
+    destCurrent = i;
+    clearInterval(destTimer);
+    if (destPages.length > 1) {
+        destTimer = setInterval(() => goDestPage((destCurrent + 1) % destPages.length), 5000);
+    }
+}
+
+/* ═══════════════════════════════════════════════════════════
+   RECÉM CHEGADOS (últimos 4 adicionados)
+═══════════════════════════════════════════════════════════ */
+function initNovidades() {
+    if (typeof PRODUCTS === 'undefined') return;
+    const grid = document.getElementById('novidadesGrid');
+    if (!grid) return;
+    // Pega os últimos 4 do array (mais recentes)
+    const recent = [...PRODUCTS].slice(-4).reverse();
+    grid.innerHTML = recent.map((p, i) => buildDestCard(p, i + 2)).join('');
+}
+
+/* ═══════════════════════════════════════════════════════════
+   FLOATING CART BUTTON
+═══════════════════════════════════════════════════════════ */
+function updateFloatCart() {
+    try {
+        const cart = JSON.parse(localStorage.getItem('je_cart') || '[]');
+        const btn  = document.getElementById('floatCartBtn');
+        const badge = document.getElementById('floatCartBadge');
+        const total = document.getElementById('floatCartTotal');
+        if (!btn) return;
+        if (cart.length > 0) {
+            const qty   = cart.reduce((s, i) => s + (i.qty || 1), 0);
+            const sum   = cart.reduce((s, i) => s + ((i.priceBRL || 0) * (i.qty || 1)), 0);
+            badge.textContent = qty;
+            total.textContent = 'R$ ' + sum.toFixed(2).replace('.', ',');
+            btn.classList.add('visible');
+        } else {
+            btn.classList.remove('visible');
+        }
+    } catch {}
+}
+
+/* ═══════════════════════════════════════════════════════════
+   SIDEBAR CART BADGE SYNC
+═══════════════════════════════════════════════════════════ */
+function syncSidebarBadges() {
+    try {
+        const cart = JSON.parse(localStorage.getItem('je_cart') || '[]');
+        const qty  = cart.reduce((s, i) => s + (i.qty || 1), 0);
+        const sbBadge = document.getElementById('sb-cart-badge');
+        const headerBadge = document.getElementById('cart-badge');
+        if (sbBadge) {
+            sbBadge.textContent = qty;
+            sbBadge.style.display = qty > 0 ? 'flex' : 'none';
+        }
+        if (headerBadge) {
+            headerBadge.textContent = qty;
+            headerBadge.style.display = qty > 0 ? '' : 'none';
+        }
+        // Moeda label no sidebar
+        const currLabel = document.getElementById('sbCurrLabel');
+        if (currLabel) {
+            const curr = localStorage.getItem('je_currency') || 'BRL';
+            currLabel.textContent = curr === 'JPY' ? '¥ JPY' : 'R$ BRL';
+        }
+    } catch {}
+}
+
+/* ═══════════════════════════════════════════════════════════
+   INIT
+═══════════════════════════════════════════════════════════ */
+document.addEventListener('DOMContentLoaded', () => {
+    initSakura();
+    initHero();
+    initDestaques();
+    initNovidades();
+    updateFloatCart();
+    syncSidebarBadges();
+    // Atualiza ao voltar do carrinho
+    window.addEventListener('storage', () => {
+        updateFloatCart();
+        syncSidebarBadges();
+    });
+});
+</script>
+
+</body>
 </html>

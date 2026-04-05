@@ -269,6 +269,23 @@
                         </div>
                     </div>
 
+                    <!-- Destaque na Homepage -->
+                    <div class="flex items-center gap-3 bg-[#F0E8FF] border border-[#C9B8E8] rounded-xl px-4 py-3 mt-1">
+                        <label class="relative inline-flex items-center cursor-pointer select-none">
+                            <input type="checkbox" id="fFeatured" class="sr-only peer" onchange="updatePreview()">
+                            <div class="w-11 h-6 bg-gray-200 peer-focus:outline-none rounded-full peer
+                                        peer-checked:after:translate-x-full peer-checked:after:border-white
+                                        after:content-[''] after:absolute after:top-[2px] after:left-[2px]
+                                        after:bg-white after:border-gray-300 after:border after:rounded-full
+                                        after:h-5 after:w-5 after:transition-all
+                                        peer-checked:bg-[#9B59B6]"></div>
+                        </label>
+                        <div>
+                            <div class="text-sm font-black text-[#2C1654]">⭐ Destaque na Homepage</div>
+                            <div class="text-[11px] text-[#6C3483] font-semibold">Aparece no hero e na seção de destaques</div>
+                        </div>
+                    </div>
+
                     <!-- 3 Imagens do produto -->
                     <div>
                         <label class="field-label mb-3 block">Imagens do Produto</label>
@@ -684,7 +701,8 @@ function newProduct() {
   document.getElementById('fCardBg').value  = '#D6EAF8';
   document.getElementById('fStock').value   = '10';
   document.getElementById('fRating').value  = '4.5';
-  document.getElementById('fUnits').value   = '1';
+  document.getElementById('fUnits').value    = '1';
+  document.getElementById('fFeatured').checked = false;
   delete document.getElementById('fPriceBRL').dataset.manual;
   // Reset image previews
   ['imgPrev1','imgPrev2','imgPrev3'].forEach(id => {
@@ -721,6 +739,7 @@ function editProduct(id) {
   document.getElementById('fImage2').value       = p.image2 || (p.images?.[1]) || '';
   document.getElementById('fImage3').value       = p.image3 || (p.images?.[2]) || '';
   document.getElementById('fUnits').value        = p.units || 1;
+  document.getElementById('fFeatured').checked  = p.featured === true;
   document.getElementById('fBadge').value        = p.badge || '';
   updateImagePreviews();
   document.getElementById('fBadgeBg').value      = p.badgeBg || '#F5A623';
@@ -780,6 +799,7 @@ async function saveProduct(e) {
       document.getElementById('fImage3').value.trim(),
     ].filter(Boolean),
     units:       parseInt(document.getElementById('fUnits').value) || 1,
+    featured:    document.getElementById('fFeatured').checked || false,
     badge:       document.getElementById('fBadge').value.trim() || null,
     badgeBg:     document.getElementById('fBadgeBg').value,
     stock:       parseInt(document.getElementById('fStock').value) || 10,

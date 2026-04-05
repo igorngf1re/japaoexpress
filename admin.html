@@ -425,9 +425,9 @@
                         <div id="prevBadge" class="prev-badge" style="display:none; background:#F5A623"></div>
                         <!-- Image -->
                         <div class="w-full aspect-[4/5] overflow-hidden bg-white">
-                            <img id="prevImage" src="https://via.placeholder.com/300x375/E2D4F0/2C1654?text=Imagem"
+                            <img id="prevImage" src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 4 5'%3E%3Crect width='4' height='5' fill='%23E2D4F0'/%3E%3C/svg%3E"
                                  alt="preview" class="w-full h-full object-cover"
-                                 onerror="this.src='https://via.placeholder.com/300x375/E2D4F0/2C1654?text=Erro'">
+                                 onerror="this.onerror=null;this.src='data:image/svg+xml,%3Csvg xmlns=\'http://www.w3.org/2000/svg\' viewBox=\'0 0 4 5\'%3E%3Crect width=\'4\' height=\'5\' fill=\'%23E2D4F0\'/%3E%3C/svg%3E'">
                         </div>
                         <!-- Info -->
                         <div class="p-2.5 pt-2">
@@ -593,9 +593,9 @@ function updatePreview() {
   if (image) {
     imgEl.src = image;
     imgEl.onload = () => imgStatus.textContent = '✅ Imagem OK';
-    imgEl.onerror = () => { imgStatus.textContent = '⚠️ URL inválida'; imgEl.src = 'https://via.placeholder.com/300x375/E2D4F0/2C1654?text=Erro'; };
+    imgEl.onerror = () => { imgEl.onerror = null; imgStatus.textContent = '⚠️ URL inválida'; imgEl.src = "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 4 5'%3E%3Crect width='4' height='5' fill='%23E2D4F0'/%3E%3C/svg%3E"; };
   } else {
-    imgEl.src = 'https://via.placeholder.com/300x375/E2D4F0/2C1654?text=Imagem';
+    imgEl.src = "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 4 5'%3E%3Crect width='4' height='5' fill='%23E2D4F0'/%3E%3C/svg%3E";
     imgStatus.textContent = '';
   }
 }
@@ -658,7 +658,7 @@ function renderSidebar(filter = '') {
       <div class="w-10 h-10 rounded-lg overflow-hidden shrink-0 bg-gray-100 border border-[#E2D4F0]">
         <img src="${p.image || ''}" alt="${p.name}" loading="lazy"
              class="w-full h-full object-cover"
-             onerror="this.src='https://via.placeholder.com/40/E2D4F0/2C1654?text=?'">
+             onerror="this.onerror=null;this.src='data:image/svg+xml,%3Csvg xmlns=\'http://www.w3.org/2000/svg\' width=\'40\' height=\'40\'%3E%3Crect width=\'40\' height=\'40\' fill=\'%23E2D4F0\'/%3E%3C/svg%3E'">
       </div>
       <div class="flex-1 min-w-0">
         <p class="font-bold text-[11px] text-[#2C1654] truncate">${p.name}</p>

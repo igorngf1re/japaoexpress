@@ -40,6 +40,8 @@ function getCart() {
 function saveCart(cart) {
   localStorage.setItem(CART_KEY, JSON.stringify(cart));
   updateAllBadges();
+  // Notifica páginas que escutam mudanças no carrinho (ex: float cart no index)
+  window.dispatchEvent(new CustomEvent('je:cartUpdated'));
 }
 
 function addToCart(product, qty = 1) {

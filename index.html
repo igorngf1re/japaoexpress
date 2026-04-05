@@ -331,7 +331,7 @@
         }
         @media(min-width: 640px) { .bastidores-grid { grid-template-columns: repeat(4, 1fr); } }
 
-        /* Floating cart button */
+        /* Floating cart button — apenas desktop */
         #floatCartBtn {
             position: fixed;
             bottom: 20px; left: 50%;
@@ -346,6 +346,7 @@
             opacity: 1;
             pointer-events: all;
         }
+        @media (max-width: 767px) { #floatCartBtn { display: none !important; } }
     </style>
 </head>
 
@@ -428,9 +429,9 @@
 <a href="carrinho.html" id="floatCartBtn"
     class="bg-[#2C1654] text-white font-black text-sm px-6 py-3 rounded-full shadow-2xl flex items-center gap-3 hover:bg-[#7D3C98] transition-colors whitespace-nowrap">
     <i class="fa-solid fa-bag-shopping"></i>
-    Carrinho
-    <span id="floatCartBadge" class="bg-[#FF6B6B] text-white text-[11px] font-black w-5 h-5 rounded-full flex items-center justify-center">0</span>
-    <span id="floatCartTotal" class="border-l border-white/30 pl-3 text-[15px]"></span>
+    Meu Carrinho
+    <span id="floatCartBadge" class="bg-[#FF6B6B] text-white text-[11px] font-black w-5 h-5 rounded-full flex items-center justify-center leading-none"></span>
+    <span id="floatCartTotal" class="border-l border-white/30 pl-3 text-[15px] font-black"></span>
 </a>
 
 <!-- ══════════════════ MAIN CONTAINER ══════════════════ -->
@@ -1049,7 +1050,12 @@ document.addEventListener('DOMContentLoaded', () => {
     initNovidades();
     updateFloatCart();
     syncSidebarBadges();
-    // Atualiza ao voltar do carrinho
+    // Atualiza quando cart.js dispara evento na mesma aba
+    window.addEventListener('je:cartUpdated', () => {
+        updateFloatCart();
+        syncSidebarBadges();
+    });
+    // Atualiza ao voltar do carrinho (outra aba/página)
     window.addEventListener('storage', () => {
         updateFloatCart();
         syncSidebarBadges();

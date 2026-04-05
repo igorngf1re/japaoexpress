@@ -1,0 +1,802 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin — Japão Express</title>
+    <link rel="icon" type="image/png" sizes="32x32" href="icons/icon-128.png">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Caveat:wght@600;700&family=Nunito:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        @font-face {
+            font-family: 'Sucker Brush';
+            src: url('sucker-brush.ttf') format('truetype');
+            font-display: swap;
+        }
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        body { font-family: 'Nunito', sans-serif; background: #E8DEF8; min-height: 100vh; }
+        .font-hand { font-family: 'Caveat', cursive; }
+        .font-hero { font-family: 'Sucker Brush', cursive; }
+
+        /* ── Sidebar ── */
+        #sidebar {
+            width: 280px; min-width: 280px; background: #FDFAF2;
+            border-right: 2px solid #E8DEF8; display: flex; flex-direction: column;
+            height: calc(100vh - 60px); overflow: hidden;
+        }
+        #productList { flex: 1; overflow-y: auto; padding: 8px; }
+        #productList::-webkit-scrollbar { width: 4px; }
+        #productList::-webkit-scrollbar-thumb { background: #C9B8E8; border-radius: 4px; }
+
+        /* ── Main area ── */
+        #mainArea {
+            flex: 1; overflow-y: auto; display: flex; flex-direction: column;
+            height: calc(100vh - 60px);
+        }
+        #mainArea::-webkit-scrollbar { width: 6px; }
+        #mainArea::-webkit-scrollbar-thumb { background: #C9B8E8; border-radius: 4px; }
+
+        /* ── Form ── */
+        .field-label { font-size: 0.7rem; font-weight: 800; color: #7D3C98; text-transform: uppercase; letter-spacing: 0.06em; margin-bottom: 4px; display: block; }
+        .field-input {
+            width: 100%; padding: 8px 12px; border: 2px solid #E2D4F0; border-radius: 10px;
+            font-family: 'Nunito', sans-serif; font-size: 0.85rem; font-weight: 600;
+            color: #2C1654; background: #FDFAF2; outline: none; transition: border-color 0.15s;
+        }
+        .field-input:focus { border-color: #9B59B6; background: #fff; }
+        .field-input::placeholder { color: #BBA8D4; }
+        textarea.field-input { resize: vertical; min-height: 72px; }
+        select.field-input { cursor: pointer; }
+
+        /* ── Preview card ── */
+        .prev-post-it {
+            position: relative;
+            border-radius: 4px;
+            box-shadow: 2px 5px 14px rgba(0,0,0,0.12);
+            overflow: hidden;
+        }
+        .prev-tape {
+            position: absolute; top: -11px; left: 50%; transform: translateX(-50%) rotate(-2deg);
+            width: 48px; height: 18px; background: rgba(226,206,148,0.85);
+            border-left: 1px solid rgba(0,0,0,0.06); border-right: 1px solid rgba(0,0,0,0.06);
+            z-index: 10;
+        }
+        .prev-pin {
+            position: absolute; top: 8px; left: 50%; transform: translateX(-50%);
+            width: 13px; height: 13px;
+            background: radial-gradient(circle at 38% 38%, #ff7e7e, #c0392b);
+            border-radius: 50%;
+            box-shadow: inset -2px -2px 4px rgba(0,0,0,0.28), 1px 2px 4px rgba(0,0,0,0.22);
+            z-index: 10;
+        }
+        .prev-badge {
+            position: absolute; top: -7px; right: -7px;
+            color: #fff; font-size: 0.55rem; font-weight: 900;
+            padding: 2px 7px; border-radius: 9999px; transform: rotate(6deg);
+            box-shadow: 1px 2px 6px rgba(0,0,0,0.2); z-index: 20;
+            letter-spacing: 0.05em; text-transform: uppercase;
+        }
+
+        /* ── Toast ── */
+        #toast {
+            position: fixed; bottom: 24px; right: 24px; z-index: 9999;
+            padding: 12px 20px; border-radius: 16px; font-weight: 800; font-size: 0.85rem;
+            box-shadow: 0 8px 32px rgba(0,0,0,0.2); opacity: 0;
+            transform: translateY(1rem); transition: opacity 0.3s, transform 0.3s;
+            pointer-events: none;
+        }
+
+        /* ── Key modal overlay ── */
+        #keyModal {
+            position: fixed; inset: 0; background: rgba(44,22,84,0.82);
+            display: flex; align-items: center; justify-content: center; z-index: 999;
+        }
+
+        /* ── Responsive ── */
+        @media (max-width: 768px) {
+            #sidebar { width: 100%; min-width: 0; height: auto; border-right: none; border-bottom: 2px solid #E8DEF8; }
+            #layout { flex-direction: column !important; }
+            #mainArea { height: auto; }
+            #previewPanel { display: none; }
+        }
+    </style>
+</head>
+<body>
+
+<!-- ══ KEY MODAL ══════════════════════════════════════ -->
+<div id="keyModal" style="display:none">
+    <div class="bg-[#FDFAF2] rounded-3xl shadow-2xl p-8 w-full max-w-sm mx-4">
+        <div class="text-center mb-6">
+            <div class="text-4xl mb-2">🔐</div>
+            <h2 class="font-hero text-2xl text-[#2C1654]">Área Restrita</h2>
+            <p class="text-xs font-semibold text-[#7D3C98] mt-1">Digite a chave definida em <code class="bg-[#F0E8FF] px-1 rounded">ADMIN_SECRET</code> na Vercel</p>
+        </div>
+        <label class="field-label">Chave de Admin</label>
+        <input id="keyInput" type="password" placeholder="••••••••••••" class="field-input mb-4"
+               onkeydown="if(event.key==='Enter') submitKey()">
+        <button id="testBtn" onclick="submitKey()"
+            class="w-full bg-[#9B59B6] hover:bg-[#7D3C98] text-white font-black py-3 rounded-full text-sm tracking-wide transition">
+            Entrar no Admin
+        </button>
+        <p class="text-xs text-center text-gray-400 font-semibold mt-4">
+            Sem ADMIN_SECRET? <a href="https://vercel.com/dashboard" target="_blank" class="text-[#9B59B6] underline">Configure na Vercel</a>
+        </p>
+    </div>
+</div>
+
+<!-- ══ HEADER ══════════════════════════════════════════ -->
+<header class="bg-[#2C1654] h-[60px] flex items-center justify-between px-5 shadow-lg sticky top-0 z-40">
+    <div class="flex items-center gap-3">
+        <a href="index.html">
+            <img src="logo.png" onerror="this.src='https://i.imgur.com/YZ4IgF9.png'"
+                 alt="Logo" class="h-9 object-contain drop-shadow-sm">
+        </a>
+        <span class="bg-[#9B59B6] text-white text-[10px] font-black px-3 py-1 rounded-full tracking-widest uppercase">Admin</span>
+    </div>
+    <div class="flex items-center gap-4">
+        <span id="adminUserName" class="text-[#C9B8E8] text-xs font-bold hidden sm:block"></span>
+        <a href="produtos.html" target="_blank"
+           class="text-[#C9B8E8] hover:text-white text-xs font-bold transition flex items-center gap-1">
+            <i class="fa-solid fa-arrow-up-right-from-square text-[10px]"></i> Ver Site
+        </a>
+        <button onclick="doLogout()"
+            class="text-[#C9B8E8] hover:text-white text-xs font-bold transition flex items-center gap-1">
+            <i class="fa-solid fa-right-from-bracket"></i> Sair
+        </button>
+    </div>
+</header>
+
+<!-- ══ LAYOUT ═════════════════════════════════════════ -->
+<div id="layout" class="flex" style="height: calc(100vh - 60px)">
+
+    <!-- ── SIDEBAR: Lista de produtos ───────────────── -->
+    <aside id="sidebar">
+        <div class="px-4 py-3 border-b border-[#E8DEF8] flex items-center justify-between">
+            <div>
+                <p class="font-black text-sm text-[#2C1654]">Catálogo</p>
+                <p id="productCount" class="text-[10px] font-bold text-[#9B59B6]">carregando…</p>
+            </div>
+            <button onclick="newProduct()"
+                class="bg-[#9B59B6] hover:bg-[#7D3C98] text-white text-xs font-black px-3 py-1.5 rounded-full transition flex items-center gap-1">
+                <i class="fa-solid fa-plus text-[10px]"></i> Novo
+            </button>
+        </div>
+        <div class="px-3 py-2 border-b border-[#E8DEF8]">
+            <input id="sidebarSearch" type="text" placeholder="Buscar produto…"
+                   oninput="filterSidebar(this.value)"
+                   class="field-input py-1.5 text-xs">
+        </div>
+        <div id="productList"></div>
+    </aside>
+
+    <!-- ── MAIN: Formulário + Preview ───────────────── -->
+    <main id="mainArea" class="bg-[#F7F3FF]">
+        <div class="flex gap-0 min-h-full">
+
+            <!-- ─ FORM ─────────────────────────────── -->
+            <section id="formSection" class="flex-1 p-6 min-w-0">
+                <div class="flex items-center justify-between mb-5">
+                    <h2 id="formTitle" class="font-hero text-[1.6rem] text-[#2C1654]">Novo Produto</h2>
+                    <button id="cancelBtn" onclick="newProduct()" style="display:none"
+                        class="text-xs font-bold text-[#9B59B6] hover:text-[#7D3C98] flex items-center gap-1 transition">
+                        <i class="fa-solid fa-xmark"></i> Cancelar edição
+                    </button>
+                </div>
+
+                <form id="productForm" onsubmit="saveProduct(event)" class="space-y-4">
+
+                    <!-- Nome + ID -->
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                        <div>
+                            <label class="field-label">Nome do Produto *</label>
+                            <input id="fName" type="text" class="field-input" required placeholder="Senka Perfect Whip 120g"
+                                   oninput="onNameInput()">
+                        </div>
+                        <div>
+                            <label class="field-label">ID (slug) *</label>
+                            <div class="relative">
+                                <input id="fId" type="text" class="field-input pr-9" required placeholder="senka-perfect-whip-120g"
+                                       pattern="[a-z0-9\-]+" title="Apenas letras minúsculas, números e hífens">
+                                <button type="button" onclick="regenId()" title="Regenerar do nome"
+                                    class="absolute right-2 top-1/2 -translate-y-1/2 text-[#9B59B6] hover:text-[#7D3C98]">
+                                    <i class="fa-solid fa-rotate text-xs"></i>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Categoria + Subcategoria -->
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                        <div>
+                            <label class="field-label">Categoria *</label>
+                            <select id="fCategory" class="field-input" onchange="onCategoryChange()" required>
+                                <option value="Cosméticos">✨ Cosméticos</option>
+                                <option value="Guloseimas">🍬 Guloseimas</option>
+                                <option value="Colecionáveis">⭐ Colecionáveis</option>
+                                <option value="Papelaria">✏️ Papelaria</option>
+                                <option value="Outros">📦 Outros</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label class="field-label">Subcategoria</label>
+                            <input id="fSubcategory" type="text" class="field-input" placeholder="Limpeza Facial"
+                                   oninput="updatePreview()">
+                        </div>
+                    </div>
+
+                    <!-- Preços -->
+                    <div class="grid grid-cols-2 sm:grid-cols-3 gap-4">
+                        <div>
+                            <label class="field-label">Preço JPY ¥ *</label>
+                            <input id="fPriceJPY" type="number" min="0" class="field-input" placeholder="474" required
+                                   oninput="autoPrice(); updatePreview()">
+                        </div>
+                        <div>
+                            <label class="field-label">Preço BRL R$</label>
+                            <div class="relative">
+                                <input id="fPriceBRL" type="number" min="0" step="0.01" class="field-input pr-8" placeholder="auto"
+                                       oninput="this.dataset.manual='1'; updatePreview()">
+                                <button type="button" onclick="autoPrice(true)" title="Recalcular (+20%)"
+                                    class="absolute right-2 top-1/2 -translate-y-1/2 text-[#9B59B6] hover:text-[#7D3C98]">
+                                    <i class="fa-solid fa-calculator text-xs"></i>
+                                </button>
+                            </div>
+                        </div>
+                        <div>
+                            <label class="field-label">Peso (gramas)</label>
+                            <input id="fWeight" type="number" min="0" class="field-input" placeholder="120">
+                        </div>
+                    </div>
+
+                    <!-- Imagem -->
+                    <div>
+                        <label class="field-label">URL da Imagem</label>
+                        <input id="fImage" type="url" class="field-input" placeholder="https://…"
+                               oninput="updatePreview()">
+                    </div>
+
+                    <!-- Descrição curta -->
+                    <div>
+                        <label class="field-label">Descrição Curta <span id="descCount" class="normal-case font-normal text-gray-400">(0/100)</span></label>
+                        <textarea id="fDescription" class="field-input" maxlength="100"
+                                  placeholder="Espuma de limpeza facial japonesa com proteínas de seda…"
+                                  oninput="document.getElementById('descCount').textContent='('+this.value.length+'/100)'; updatePreview()"></textarea>
+                    </div>
+
+                    <!-- Detalhes completos -->
+                    <div>
+                        <label class="field-label">Detalhes Completos</label>
+                        <textarea id="fDetails" class="field-input" style="min-height:90px"
+                                  placeholder="Fórmula suave com proteínas de seda e vitamina C. Ideal para pele sensível…"></textarea>
+                    </div>
+
+                    <!-- Origem + Estoque + Avaliação -->
+                    <div class="grid grid-cols-3 gap-4">
+                        <div>
+                            <label class="field-label">Origem / Loja</label>
+                            <input id="fOrigin" type="text" class="field-input" placeholder="Rakuten" oninput="updatePreview()">
+                        </div>
+                        <div>
+                            <label class="field-label">Estoque</label>
+                            <input id="fStock" type="number" min="0" class="field-input" value="10">
+                        </div>
+                        <div>
+                            <label class="field-label">Avaliação</label>
+                            <select id="fRating" class="field-input">
+                                <option value="5.0">⭐ 5.0</option>
+                                <option value="4.5" selected>⭐ 4.5</option>
+                                <option value="4.0">⭐ 4.0</option>
+                                <option value="3.5">⭐ 3.5</option>
+                                <option value="3.0">⭐ 3.0</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <!-- Badge + Cor do badge -->
+                    <div class="grid grid-cols-2 gap-4">
+                        <div>
+                            <label class="field-label">Badge (opcional)</label>
+                            <input id="fBadge" type="text" class="field-input" placeholder="NOVO, OFERTA, TOP…"
+                                   oninput="updatePreview()" maxlength="12">
+                        </div>
+                        <div>
+                            <label class="field-label">Cor do Badge</label>
+                            <div class="flex gap-2 items-center">
+                                <input id="fBadgeBg" type="color" value="#F5A623" oninput="updatePreview()"
+                                    class="h-10 w-16 rounded-lg border-2 border-[#E2D4F0] cursor-pointer p-0.5 bg-[#FDFAF2]">
+                                <div class="flex gap-1 flex-wrap">
+                                    <button type="button" onclick="setColor('fBadgeBg','#F5A623')" class="w-6 h-6 rounded-full border-2 border-white shadow" style="background:#F5A623"></button>
+                                    <button type="button" onclick="setColor('fBadgeBg','#E74C3C')" class="w-6 h-6 rounded-full border-2 border-white shadow" style="background:#E74C3C"></button>
+                                    <button type="button" onclick="setColor('fBadgeBg','#27AE60')" class="w-6 h-6 rounded-full border-2 border-white shadow" style="background:#27AE60"></button>
+                                    <button type="button" onclick="setColor('fBadgeBg','#9B59B6')" class="w-6 h-6 rounded-full border-2 border-white shadow" style="background:#9B59B6"></button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Cor do card + Decoração -->
+                    <div class="grid grid-cols-2 gap-4">
+                        <div>
+                            <label class="field-label">Cor do Card (Post-it)</label>
+                            <div class="flex gap-2 items-center flex-wrap">
+                                <input id="fCardBg" type="color" value="#D6EAF8" oninput="updatePreview()"
+                                    class="h-10 w-16 rounded-lg border-2 border-[#E2D4F0] cursor-pointer p-0.5 bg-[#FDFAF2]">
+                                <div class="flex gap-1 flex-wrap">
+                                    <button type="button" onclick="setColor('fCardBg','#D6EAF8')" title="Azul (Cosméticos)" class="w-6 h-6 rounded border-2 border-white shadow" style="background:#D6EAF8"></button>
+                                    <button type="button" onclick="setColor('fCardBg','#FFF9C4')" title="Amarelo (Guloseimas)" class="w-6 h-6 rounded border-2 border-white shadow" style="background:#FFF9C4"></button>
+                                    <button type="button" onclick="setColor('fCardBg','#FADBD8')" title="Rosa (Colecionáveis)" class="w-6 h-6 rounded border-2 border-white shadow" style="background:#FADBD8"></button>
+                                    <button type="button" onclick="setColor('fCardBg','#D5F5E3')" title="Verde (Papelaria)" class="w-6 h-6 rounded border-2 border-white shadow" style="background:#D5F5E3"></button>
+                                    <button type="button" onclick="setColor('fCardBg','#FCF3CF')" title="Creme" class="w-6 h-6 rounded border-2 border-white shadow" style="background:#FCF3CF"></button>
+                                </div>
+                            </div>
+                        </div>
+                        <div>
+                            <label class="field-label">Decoração do Card</label>
+                            <div class="flex gap-4 mt-1">
+                                <label class="flex items-center gap-2 cursor-pointer font-bold text-sm text-[#2C1654]">
+                                    <input type="radio" name="fDeco" value="tape" checked onchange="updatePreview()"
+                                        class="accent-[#9B59B6]"> Fita adesiva
+                                </label>
+                                <label class="flex items-center gap-2 cursor-pointer font-bold text-sm text-[#2C1654]">
+                                    <input type="radio" name="fDeco" value="pin" onchange="updatePreview()"
+                                        class="accent-[#9B59B6]"> Alfinete
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Reviews count (hidden, just meta) -->
+                    <input id="fReviews" type="hidden" value="0">
+
+                    <!-- Buttons -->
+                    <div class="flex gap-3 pt-2">
+                        <button id="saveBtn" type="submit"
+                            class="flex-1 bg-[#9B59B6] hover:bg-[#7D3C98] text-white font-black py-3.5 rounded-2xl text-sm tracking-wide transition shadow-lg hover:shadow-xl flex items-center justify-center gap-2">
+                            <i class="fa-solid fa-floppy-disk"></i>
+                            <span>Publicar Produto</span>
+                        </button>
+                        <button id="deleteFormBtn" type="button" onclick="deleteCurrentProduct()" style="display:none"
+                            class="bg-red-100 hover:bg-red-600 text-red-600 hover:text-white font-black py-3.5 px-5 rounded-2xl text-sm transition flex items-center gap-2">
+                            <i class="fa-solid fa-trash-can"></i>
+                        </button>
+                    </div>
+
+                </form>
+            </section>
+
+            <!-- ─ PREVIEW ──────────────────────────── -->
+            <section id="previewPanel" class="w-[220px] min-w-[220px] p-5 border-l border-[#E8DEF8] bg-[#FDFAF2] flex flex-col items-center">
+                <p class="field-label mb-4 text-center">Preview do Card</p>
+
+                <!-- Post-it card preview -->
+                <div class="mt-4 relative w-[170px]">
+                    <div id="prevCard" class="prev-post-it w-full rounded" style="background:#D6EAF8">
+                        <!-- Decoration -->
+                        <div id="prevDeco" class="prev-tape"></div>
+                        <!-- Badge -->
+                        <div id="prevBadge" class="prev-badge" style="display:none; background:#F5A623"></div>
+                        <!-- Image -->
+                        <div class="w-full aspect-[4/5] overflow-hidden bg-white">
+                            <img id="prevImage" src="https://via.placeholder.com/300x375/E2D4F0/2C1654?text=Imagem"
+                                 alt="preview" class="w-full h-full object-cover"
+                                 onerror="this.src='https://via.placeholder.com/300x375/E2D4F0/2C1654?text=Erro'">
+                        </div>
+                        <!-- Info -->
+                        <div class="p-2.5 pt-2">
+                            <p id="prevName" class="font-hand text-[0.9rem] leading-tight text-[#2C1654] font-bold line-clamp-2 mb-1">Nome do Produto</p>
+                            <p id="prevPriceBRL" class="font-black text-[0.85rem] text-[#9B59B6]">R$ 0,00</p>
+                            <p id="prevPriceJPY" class="text-[0.65rem] font-semibold text-gray-400">¥0</p>
+                            <p id="prevCat" class="text-[0.6rem] font-bold text-[#9B59B6] mt-1 truncate">Categoria</p>
+                            <button class="w-full mt-2 bg-[#9B59B6] text-white text-[0.6rem] font-black py-1.5 rounded-full opacity-70">
+                                + Adicionar
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Description preview -->
+                <div class="mt-4 w-full bg-[#F0E8FF] rounded-xl p-3">
+                    <p class="field-label mb-1">Descrição</p>
+                    <p id="prevDesc" class="text-xs font-semibold text-[#4A3060] leading-relaxed italic">—</p>
+                </div>
+
+                <!-- Image status -->
+                <div id="imgStatus" class="mt-3 text-center text-[10px] font-bold text-gray-400"></div>
+            </section>
+
+        </div>
+    </main>
+</div>
+
+<!-- ══ TOAST ══════════════════════════════════════════ -->
+<div id="toast"></div>
+
+<!-- ══ SCRIPTS ════════════════════════════════════════ -->
+<!-- Firebase SDK -->
+<script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-auth-compat.js"></script>
+<script src="js/firebase-config.js"></script>
+<script src="js/products.js"></script>
+<script src="js/auth.js"></script>
+
+<script>
+// ── Config ────────────────────────────────────────────
+
+const CAT_MAP = {
+  'Cosméticos':    { cat: 'cosmeticos',    cardBg: '#D6EAF8' },
+  'Guloseimas':    { cat: 'guloseimas',    cardBg: '#FFF9C4' },
+  'Colecionáveis': { cat: 'colecionaveis', cardBg: '#FADBD8' },
+  'Papelaria':     { cat: 'papelaria',     cardBg: '#D5F5E3' },
+  'Outros':        { cat: 'outros',        cardBg: '#F0F0F0' },
+};
+
+const ROTATES = ['rotate(-1deg)', 'rotate(1deg)', 'rotate(-2deg)', 'rotate(2deg)'];
+
+let adminKey  = '';
+let editingId = null;
+let _allProducts = []; // cópia local do array
+
+// ── Helpers ───────────────────────────────────────────
+
+function generateId(name) {
+  return name.toLowerCase()
+    .normalize('NFD').replace(/[\u0300-\u036f]/g, '')
+    .replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '')
+    .slice(0, 40);
+}
+
+function setColor(fieldId, hex) {
+  document.getElementById(fieldId).value = hex;
+  updatePreview();
+}
+
+function regenId() {
+  document.getElementById('fId').value = generateId(document.getElementById('fName').value);
+}
+
+// ── Auto-price ────────────────────────────────────────
+
+function autoPrice(force = false) {
+  const jpy = parseFloat(document.getElementById('fPriceJPY').value) || 0;
+  const brlField = document.getElementById('fPriceBRL');
+  if (force || !brlField.dataset.manual) {
+    brlField.value = jpy ? (jpy / 22 * 1.2).toFixed(2) : '';
+    delete brlField.dataset.manual;
+  }
+  updatePreview();
+}
+
+// ── Live preview ──────────────────────────────────────
+
+function updatePreview() {
+  const name     = document.getElementById('fName').value || 'Nome do Produto';
+  const priceBRL = parseFloat(document.getElementById('fPriceBRL').value) || 0;
+  const priceJPY = parseInt(document.getElementById('fPriceJPY').value) || 0;
+  const image    = document.getElementById('fImage').value.trim();
+  const badge    = document.getElementById('fBadge').value.trim();
+  const badgeBg  = document.getElementById('fBadgeBg').value;
+  const deco     = document.querySelector('input[name="fDeco"]:checked')?.value || 'tape';
+  const cardBg   = document.getElementById('fCardBg').value || '#D6EAF8';
+  const category = document.getElementById('fCategory').value;
+  const sub      = document.getElementById('fSubcategory').value.trim();
+  const desc     = document.getElementById('fDescription').value.trim();
+
+  document.getElementById('prevCard').style.background   = cardBg;
+  document.getElementById('prevName').textContent         = name;
+  document.getElementById('prevPriceBRL').textContent     = priceBRL ? `R$ ${priceBRL.toFixed(2).replace('.',',')}` : '—';
+  document.getElementById('prevPriceJPY').textContent     = priceJPY ? `¥${priceJPY.toLocaleString('ja-JP')}` : '';
+  document.getElementById('prevCat').textContent          = [category, sub].filter(Boolean).join(' › ') || '—';
+  document.getElementById('prevDesc').textContent         = desc || '—';
+
+  // Deco
+  const decoEl = document.getElementById('prevDeco');
+  decoEl.className = deco === 'tape' ? 'prev-tape' : 'prev-pin';
+
+  // Badge
+  const badgeEl = document.getElementById('prevBadge');
+  if (badge) {
+    badgeEl.textContent = badge;
+    badgeEl.style.background = badgeBg;
+    badgeEl.style.display = '';
+  } else {
+    badgeEl.style.display = 'none';
+  }
+
+  // Image
+  const imgEl = document.getElementById('prevImage');
+  const imgStatus = document.getElementById('imgStatus');
+  if (image) {
+    imgEl.src = image;
+    imgEl.onload = () => imgStatus.textContent = '✅ Imagem OK';
+    imgEl.onerror = () => { imgStatus.textContent = '⚠️ URL inválida'; imgEl.src = 'https://via.placeholder.com/300x375/E2D4F0/2C1654?text=Erro'; };
+  } else {
+    imgEl.src = 'https://via.placeholder.com/300x375/E2D4F0/2C1654?text=Imagem';
+    imgStatus.textContent = '';
+  }
+}
+
+function onNameInput() {
+  if (!editingId) {
+    document.getElementById('fId').value = generateId(document.getElementById('fName').value);
+  }
+  updatePreview();
+}
+
+function onCategoryChange() {
+  const info = CAT_MAP[document.getElementById('fCategory').value] || CAT_MAP['Outros'];
+  const cardBg = document.getElementById('fCardBg');
+  // Only auto-set if user hasn't manually changed it (check against known defaults)
+  const knownDefaults = Object.values(CAT_MAP).map(x => x.cardBg);
+  if (knownDefaults.includes(cardBg.value)) cardBg.value = info.cardBg;
+  updatePreview();
+}
+
+// ── Sidebar ───────────────────────────────────────────
+
+function renderSidebar(filter = '') {
+  const list  = document.getElementById('productList');
+  const count = document.getElementById('productCount');
+  const f     = filter.toLowerCase();
+  const items = f ? _allProducts.filter(p => p.name.toLowerCase().includes(f) || p.id.includes(f)) : _allProducts;
+
+  count.textContent = `${_allProducts.length} produto${_allProducts.length !== 1 ? 's' : ''}`;
+
+  if (!_allProducts.length) {
+    list.innerHTML = `<div class="text-center text-xs text-gray-400 py-8 font-semibold px-4">Nenhum produto ainda.<br>Crie o primeiro! 🎉</div>`;
+    return;
+  }
+
+  list.innerHTML = items.map(p => `
+    <div class="flex items-center gap-2.5 p-2 rounded-xl hover:bg-[#F0E8FF] transition cursor-pointer group ${editingId === p.id ? 'bg-[#F0E8FF]' : ''}" onclick="editProduct('${p.id}')">
+      <div class="w-10 h-10 rounded-lg overflow-hidden shrink-0 bg-gray-100 border border-[#E2D4F0]">
+        <img src="${p.image || ''}" alt="${p.name}" loading="lazy"
+             class="w-full h-full object-cover"
+             onerror="this.src='https://via.placeholder.com/40/E2D4F0/2C1654?text=?'">
+      </div>
+      <div class="flex-1 min-w-0">
+        <p class="font-bold text-[11px] text-[#2C1654] truncate">${p.name}</p>
+        <p class="text-[10px] text-[#9B59B6] font-semibold">R$ ${parseFloat(p.priceBRL || 0).toFixed(2).replace('.',',')} · ${p.category || '—'}</p>
+      </div>
+      <button onclick="event.stopPropagation(); deleteProduct('${p.id}')"
+        class="shrink-0 w-6 h-6 rounded-full bg-red-50 text-red-400 hover:bg-red-500 hover:text-white text-[10px] transition flex items-center justify-center opacity-0 group-hover:opacity-100">
+        <i class="fa-solid fa-xmark"></i>
+      </button>
+    </div>
+  `).join('') || `<div class="text-center text-xs text-gray-400 py-6">Nenhum resultado</div>`;
+}
+
+function filterSidebar(q) { renderSidebar(q); }
+
+// ── New / Reset form ──────────────────────────────────
+
+function newProduct() {
+  editingId = null;
+  document.getElementById('productForm').reset();
+  document.getElementById('fId').readOnly = false;
+  document.getElementById('fBadgeBg').value = '#F5A623';
+  document.getElementById('fCardBg').value  = '#D6EAF8';
+  document.getElementById('fStock').value   = '10';
+  document.getElementById('fRating').value  = '4.5';
+  delete document.getElementById('fPriceBRL').dataset.manual;
+  document.getElementById('formTitle').textContent      = 'Novo Produto';
+  document.getElementById('saveBtn').querySelector('span').textContent = 'Publicar Produto';
+  document.getElementById('cancelBtn').style.display    = 'none';
+  document.getElementById('deleteFormBtn').style.display = 'none';
+  renderSidebar(document.getElementById('sidebarSearch').value);
+  updatePreview();
+}
+
+// ── Edit product ──────────────────────────────────────
+
+function editProduct(id) {
+  const p = _allProducts.find(x => x.id === id);
+  if (!p) return;
+  editingId = id;
+
+  document.getElementById('fId').value          = p.id;
+  document.getElementById('fId').readOnly        = true;
+  document.getElementById('fName').value         = p.name || '';
+  document.getElementById('fCategory').value     = p.category || 'Cosméticos';
+  document.getElementById('fSubcategory').value  = p.subcategory || '';
+  document.getElementById('fPriceJPY').value     = p.priceJPY || '';
+  document.getElementById('fPriceBRL').value     = p.priceBRL || '';
+  document.getElementById('fPriceBRL').dataset.manual = '1';
+  document.getElementById('fWeight').value       = p.weight || '';
+  document.getElementById('fDescription').value  = p.description || '';
+  document.getElementById('fDetails').value      = p.details || '';
+  document.getElementById('fOrigin').value       = p.origin || '';
+  document.getElementById('fImage').value        = p.image || '';
+  document.getElementById('fBadge').value        = p.badge || '';
+  document.getElementById('fBadgeBg').value      = p.badgeBg || '#F5A623';
+  document.getElementById('fStock').value        = p.stock ?? 10;
+  document.getElementById('fRating').value       = p.rating || 4.5;
+  document.getElementById('fReviews').value      = p.reviews || 0;
+  // cardBg: strip Tailwind class wrapper bg-[#...] → hex
+  const bgHex = (p.cardBg || 'bg-[#D6EAF8]').replace(/^bg-\[(.+)\]$/, '$1');
+  document.getElementById('fCardBg').value = bgHex.startsWith('#') ? bgHex : '#D6EAF8';
+  document.querySelectorAll('input[name="fDeco"]').forEach(r => r.checked = r.value === (p.deco || 'tape'));
+
+  document.getElementById('descCount').textContent = `(${(p.description||'').length}/100)`;
+  document.getElementById('formTitle').textContent = 'Editar Produto';
+  document.getElementById('saveBtn').querySelector('span').textContent = 'Atualizar Produto';
+  document.getElementById('cancelBtn').style.display    = '';
+  document.getElementById('deleteFormBtn').style.display = '';
+
+  renderSidebar(document.getElementById('sidebarSearch').value);
+  updatePreview();
+  document.getElementById('formSection').scrollIntoView({ behavior: 'smooth', block: 'start' });
+}
+
+// ── Save (add or update) ──────────────────────────────
+
+async function saveProduct(e) {
+  e.preventDefault();
+
+  const id       = document.getElementById('fId').value.trim();
+  const name     = document.getElementById('fName').value.trim();
+  const category = document.getElementById('fCategory').value;
+  const catInfo  = CAT_MAP[category] || CAT_MAP['Outros'];
+  const cardBgHex = document.getElementById('fCardBg').value;
+
+  const product = {
+    id,
+    name,
+    category,
+    cat:         catInfo.cat,
+    subcategory: document.getElementById('fSubcategory').value.trim(),
+    priceBRL:    parseFloat(document.getElementById('fPriceBRL').value) || 0,
+    priceJPY:    parseInt(document.getElementById('fPriceJPY').value)   || 0,
+    weight:      parseInt(document.getElementById('fWeight').value)      || 200,
+    description: document.getElementById('fDescription').value.trim(),
+    details:     document.getElementById('fDetails').value.trim(),
+    origin:      document.getElementById('fOrigin').value.trim() || 'Japão',
+    image:       document.getElementById('fImage').value.trim(),
+    badge:       document.getElementById('fBadge').value.trim() || null,
+    badgeBg:     document.getElementById('fBadgeBg').value,
+    stock:       parseInt(document.getElementById('fStock').value) || 10,
+    rating:      parseFloat(document.getElementById('fRating').value) || 4.5,
+    reviews:     parseInt(document.getElementById('fReviews').value)  || 0,
+    cardBg:      `bg-[${cardBgHex}]`,
+    rotate:      ROTATES[Math.floor(Math.random() * ROTATES.length)],
+    deco:        document.querySelector('input[name="fDeco"]:checked')?.value || 'tape',
+  };
+
+  const isEdit   = !!editingId;
+  const saveBtn  = document.getElementById('saveBtn');
+  const saveTxt  = saveBtn.querySelector('span');
+  saveBtn.disabled = true;
+  saveTxt.textContent = isEdit ? 'Atualizando…' : 'Publicando…';
+
+  try {
+    await callApi(isEdit ? 'update' : 'add', { product });
+    showToast(`✅ "${name}" ${isEdit ? 'atualizado' : 'publicado'}! Site atualiza em ~1 min.`, 'success');
+
+    const idx = _allProducts.findIndex(p => p.id === id);
+    if (idx !== -1) _allProducts[idx] = product;
+    else            _allProducts.unshift(product);
+
+    newProduct();
+  } catch (err) {
+    showToast(`❌ ${err.message}`, 'error');
+    saveBtn.disabled = false;
+    saveTxt.textContent = isEdit ? 'Atualizar Produto' : 'Publicar Produto';
+  }
+}
+
+// ── Delete ────────────────────────────────────────────
+
+function deleteCurrentProduct() {
+  if (editingId) deleteProduct(editingId);
+}
+
+async function deleteProduct(id) {
+  const p = _allProducts.find(x => x.id === id);
+  const name = p?.name || id;
+  if (!confirm(`Remover "${name}" do catálogo?\nEsta ação não pode ser desfeita.`)) return;
+
+  try {
+    showToast('Removendo produto…', 'info');
+    await callApi('delete', { productId: id });
+    showToast(`🗑️ "${name}" removido! Site atualiza em ~1 min.`, 'success');
+    _allProducts = _allProducts.filter(x => x.id !== id);
+    if (editingId === id) newProduct();
+    else renderSidebar(document.getElementById('sidebarSearch').value);
+  } catch (err) {
+    showToast(`❌ ${err.message}`, 'error');
+  }
+}
+
+// ── API call ──────────────────────────────────────────
+
+async function callApi(action, data) {
+  if (!adminKey) {
+    document.getElementById('keyModal').style.display = 'flex';
+    throw new Error('Chave de admin necessária');
+  }
+  const resp = await fetch('/api/admin', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${adminKey}` },
+    body: JSON.stringify({ action, ...data }),
+  });
+  const json = await resp.json().catch(() => ({ error: `HTTP ${resp.status}` }));
+  if (!resp.ok || !json.ok) throw new Error(json.error || `HTTP ${resp.status}`);
+  return json;
+}
+
+// ── Admin key modal ───────────────────────────────────
+
+async function submitKey() {
+  const key = document.getElementById('keyInput').value.trim();
+  if (!key) return;
+  adminKey = key;
+
+  const btn = document.getElementById('testBtn');
+  btn.textContent = 'Verificando…';
+  btn.disabled    = true;
+
+  try {
+    await callApi('validate', {});
+    sessionStorage.setItem('je_admin_key', key);
+    document.getElementById('keyModal').style.display = 'none';
+    showToast('✅ Acesso liberado!', 'success');
+  } catch {
+    showToast('❌ Chave incorreta ou ADMIN_SECRET não configurado na Vercel.', 'error');
+    adminKey = '';
+  } finally {
+    btn.textContent = 'Entrar no Admin';
+    btn.disabled    = false;
+  }
+}
+
+// ── Toast ─────────────────────────────────────────────
+
+function showToast(msg, type = 'info') {
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.style.cssText = `
+    position:fixed; bottom:24px; right:24px; z-index:9999;
+    padding:12px 20px; border-radius:16px; font-weight:800; font-size:0.85rem;
+    box-shadow:0 8px 32px rgba(0,0,0,0.2); pointer-events:none;
+    opacity:1; transform:translateY(0); transition:opacity .3s, transform .3s;
+    background:${type==='success'?'#27AE60':type==='error'?'#E74C3C':'#2C1654'}; color:#fff;
+  `;
+  clearTimeout(t._timer);
+  t._timer = setTimeout(() => {
+    t.style.opacity = '0'; t.style.transform = 'translateY(1rem)';
+  }, 4000);
+}
+
+function doLogout() {
+  sessionStorage.removeItem('je_admin_key');
+  if (typeof logout === 'function') logout(); else window.location.href = 'login.html';
+}
+
+// ── Init ──────────────────────────────────────────────
+
+document.addEventListener('DOMContentLoaded', () => {
+  // Auth gate — requires login
+  const user = (typeof getUser === 'function' ? getUser() : null)
+            || JSON.parse(localStorage.getItem('je_user') || 'null');
+  if (!user) {
+    window.location.href = 'login.html';
+    return;
+  }
+  document.getElementById('adminUserName').textContent = user.name || user.email || '';
+
+  // Admin key
+  adminKey = sessionStorage.getItem('je_admin_key') || '';
+  if (!adminKey) {
+    document.getElementById('keyModal').style.display = 'flex';
+  }
+
+  // Load products (from products.js PRODUCTS global)
+  _allProducts = typeof PRODUCTS !== 'undefined' ? [...PRODUCTS] : [];
+
+  renderSidebar();
+  updatePreview();
+});
+</script>
+
+</body>
+</html>

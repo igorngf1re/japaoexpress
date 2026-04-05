@@ -113,7 +113,43 @@ async function extractFromUrl(url) {
     throw new Error('Não consegui acessar essa página (site pode bloquear bots).');
   }
 
-  // ── 1. Tenta JSON-LD (mais confiável para preço) ───────
+  // ── 0. __NEXT_DATA__ (Next.js / Rakuten usa isso) ──────
+  let nextData = '';
+  const nextDataMatch = html.match(/<script[^>]*id=["']__NEXT_DATA__["'][^>]*>([\s\S]*?)<\/script>/i);
+  if (nextDataMatch) {
+    try {
+      const ndStr = nextDataMatch[1];
+      // Busca campos de preço direto no JSON bruto (mais rápido que parsear tudo)
+      const priceFields = [...ndStr.matchAll(
+        /"(?:price|salesPrice|standardPrice|itemPrice|listPrice|regularPrice|normalPrice|taxIncludedPrice|tax_included_price|unitPrice)["\s]*[:\s]+"?([\d,]+)"?/gi
+      )];
+      if (priceFields.length > 0) {
+        nextData = `__NEXT_DATA__ price fields: ${priceFields.slice(0, 8).map(m => m[0]).join(', ')}`;
+      }
+    } catch {}
+  }
+
+  // ── 0b. data-testid / data-price attributes ────────────
+  const dataAttrPrices = [
+    ...html.matchAll(/data-testid=["'][^"']*(?:price|Price)[^"']*["'][^>]*>\s*([¥￥]?\s*[\d,]+)/gi),
+    ...html.matchAll(/data-(?:item-)?price=["']([^"']+)["']/gi),
+    ...html.matchAll(/data-(?:sales|regular|list)-price=["']([^"']+)["']/gi),
+  ].map(m => m[1].trim()).filter(Boolean).join(', ');
+
+  // ── 0c. Inline scripts — busca variáveis de preço ──────
+  let inlineScriptPrices = '';
+  for (const s of html.matchAll(/<script(?![^>]*\bsrc\b)[^>]*>([\s\S]{0,8000}?)<\/script>/gi)) {
+    const sc = s[1];
+    if (!/price|Price|円|¥/i.test(sc)) continue;
+    const hits = [
+      ...sc.matchAll(/["']?(?:price|salesPrice|itemPrice|listPrice|regularPrice|normalPrice|unitPrice)["']?\s*[=:]\s*['""]?([\d,]+)['""]?/gi),
+      ...sc.matchAll(/(?:¥|￥|円)\s*[\d,]+/g),
+    ].slice(0, 6).map(m => m[0]);
+    if (hits.length) inlineScriptPrices += hits.join(' | ') + '  ';
+    if (inlineScriptPrices.length > 600) break;
+  }
+
+  // ── 1. JSON-LD ─────────────────────────────────────────
   const jsonLdMatches = [...html.matchAll(/<script[^>]*type=["']application\/ld\+json["'][^>]*>([\s\S]*?)<\/script>/gi)];
   let jsonLdData = '';
   for (const m of jsonLdMatches) {
@@ -132,7 +168,7 @@ async function extractFromUrl(url) {
     ...html.matchAll(/<meta[^>]*content=["']([^"']+)["'][^>]*(?:property|name)=["'](?:product:price:amount|og:price)[^"']*["']/gi),
   ].map(m => m[1]).join(', ');
 
-  // ── 3. Padrões de preço no texto ───────────────────────
+  // ── 3. Padrões de preço no HTML ────────────────────────
   const pricePatterns = [
     ...html.matchAll(/(?:¥|￥|円|JPY)\s*[\d,]+/g),
     ...html.matchAll(/[\d,]+\s*(?:円|¥|JPY)/g),
@@ -141,42 +177,53 @@ async function extractFromUrl(url) {
     ...html.matchAll(/(?:priceAmount|salesPrice|regularPrice)[^>]*>([\d,¥￥]+)</g),
   ].map(m => m[0]).slice(0, 20).join(' | ');
 
-  // ── 4. Título e texto limpo ────────────────────────────
-  const title = (html.match(/<title[^>]*>([^<]+)<\/title>/i) || [])[1] || '';
+  // ── 4. Título e og tags ────────────────────────────────
+  const title   = (html.match(/<title[^>]*>([^<]+)<\/title>/i) || [])[1] || '';
   const ogTitle = (html.match(/og:title[^>]*content=["']([^"']+)["']/i) || [])[1] || '';
   const ogImage = (html.match(/og:image[^>]*content=["']([^"']+)["']/i) || [])[1] || '';
+  const ogDesc  = (html.match(/og:description[^>]*content=["']([^"']+)["']/i) || [])[1] || '';
 
+  // ── 5. Texto limpo (sem scripts/styles) ───────────────
   const plainText = html
     .replace(/<script[\s\S]*?<\/script>/gi, '')
     .replace(/<style[\s\S]*?<\/style>/gi, '')
     .replace(/<[^>]+>/g, ' ')
     .replace(/\s{2,}/g, ' ')
     .trim()
-    .slice(0, 2000);
+    .slice(0, 3000);
 
   const context = [
-    jsonLdData     ? `=== JSON-LD ===\n${jsonLdData}` : '',
-    metaPrice      ? `=== Meta Price ===\n${metaPrice}` : '',
-    pricePatterns  ? `=== Price Patterns ===\n${pricePatterns}` : '',
-    title || ogTitle ? `=== Título ===\n${ogTitle || title}` : '',
+    nextData           ? `=== __NEXT_DATA__ Prices ===\n${nextData}` : '',
+    dataAttrPrices     ? `=== data-attr Prices ===\n${dataAttrPrices}` : '',
+    inlineScriptPrices ? `=== Inline Script Prices ===\n${inlineScriptPrices.slice(0, 500)}` : '',
+    jsonLdData         ? `=== JSON-LD ===\n${jsonLdData}` : '',
+    metaPrice          ? `=== Meta Price ===\n${metaPrice}` : '',
+    pricePatterns      ? `=== Price Patterns ===\n${pricePatterns}` : '',
+    ogDesc             ? `=== og:description ===\n${ogDesc}` : '',
+    title || ogTitle   ? `=== Título ===\n${ogTitle || title}` : '',
     `=== Texto da Página ===\n${plainText}`,
-  ].filter(Boolean).join('\n\n').slice(0, 5000);
+  ].filter(Boolean).join('\n\n').slice(0, 6000);
 
   const product = await extractWithAI([{
     role: 'user',
     content:
-      `Você é um especialista em e-commerce japonês. Extraia os dados do produto abaixo.\n` +
-      `IMPORTANTE: Para o preço, priorize os dados de JSON-LD e Meta Price acima do texto geral.\n` +
-      `O preço deve ser em YEN (número inteiro, sem símbolo). Ex: se vir "¥1,490" retorne 1490.\n\n` +
+      `Você é um especialista em e-commerce japonês. Extraia os dados do produto abaixo.\n\n` +
+      `PRIORIDADE PARA PREÇO (do mais ao menos confiável):\n` +
+      `1. __NEXT_DATA__ Prices  2. data-attr Prices  3. Inline Script Prices\n` +
+      `4. JSON-LD  5. Meta Price  6. Price Patterns  7. Texto da Página\n` +
+      `O preço DEVE ser em YEN (número inteiro, sem símbolo). "¥474" → 474, "1,490" → 1490.\n` +
+      `Se encontrar apenas o número (ex: 474) perto de palavras como "price" ou "salesPrice", use-o.\n\n` +
+      `Para a DESCRIÇÃO: escreva em português (máx 100 chars), seja atraente e informativo.\n` +
+      `Use informações reais do produto: tamanho, ingredientes principais, uso, benefícios.\n\n` +
       `Retorne SOMENTE JSON válido com estes campos:\n` +
-      `- nome: string (nome do produto em português ou japonês)\n` +
-      `- preco_jpy: número inteiro (preço em iene japonês)\n` +
-      `- peso_gramas: número inteiro (estimativa de peso em gramas)\n` +
+      `- nome: string (nome claro do produto, pode manter japonês para marcas)\n` +
+      `- preco_jpy: número inteiro (preço em iene, 0 só se absolutamente não encontrado)\n` +
+      `- peso_gramas: número inteiro (estimativa)\n` +
       `- categoria: string (Cosméticos | Guloseimas | Colecionáveis)\n` +
       `- subcategoria: string\n` +
-      `- descricao: string (máx 100 chars)\n` +
+      `- descricao: string (máx 100 chars, em português, atraente)\n` +
       `- origem: string (nome da loja/site)\n` +
-      `- imagem_url: string (URL da imagem og:image se disponível)\n` +
+      `- imagem_url: string (URL og:image se disponível)\n` +
       `- url_origem: string\n\n` +
       `URL: ${url}\n\n${context}`,
   }]);

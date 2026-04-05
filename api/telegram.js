@@ -39,11 +39,11 @@ export default async function handler(req, res) {
         `*Como usar:*\n` +
         `• Mande um *link* de produto (Amazon JP, Rakuten, etc.)\n` +
         `• Ou mande um *print* da página do produto\n\n` +
-        `*Para publicar no site:*\n` +
-        `• Após ver o card extraído, *responda* à mensagem com /publicar\n` +
-        `• O produto será adicionado ao catálogo automaticamente\n\n` +
         `*Comandos:*\n` +
-        `/publicar — publica o produto (responder ao card)\n` +
+        `/publicar — adiciona ao catálogo (responder ao card)\n` +
+        `/publicar sim — confirma substituição de produto duplicado\n` +
+        `/apagar — remove do catálogo (responder ao card)\n` +
+        `/apagar [id] — remove pelo ID (ex: /apagar senka-perfect-whip)\n` +
         `/ajuda — mostra esta mensagem`,
         { parse_mode: 'Markdown' }
       );
@@ -53,6 +53,12 @@ export default async function handler(req, res) {
     // ── /publicar (resposta ao card) ──────────────────────
     if (text === '/publicar' || text.startsWith('/publicar')) {
       await handlePublish(chatId, message);
+      return res.status(200).json({ ok: true });
+    }
+
+    // ── /apagar (resposta ao card ou /apagar id) ──────────
+    if (text === '/apagar' || text.startsWith('/apagar ')) {
+      await handleDelete(chatId, message);
       return res.status(200).json({ ok: true });
     }
 
@@ -355,24 +361,27 @@ async function handlePublish(chatId, message) {
     return;
   }
 
-  // Aceita o JSON da mensagem respondida (text OU caption)
-  const replied = message.reply_to_message;
-  const replyText = replied?.text || replied?.caption || '';
+  const force = /^\/publicar\s+sim$/i.test(message.text || '');
 
-  if (!replyText) {
+  // JSON pode estar na mensagem respondida OU na própria mensagem (caso /publicar sim)
+  const replied   = message.reply_to_message;
+  const replyText = replied?.text || replied?.caption || '';
+  const selfText  = message.text || '';
+
+  // Busca JSON no texto respondido primeiro, depois no próprio texto
+  const sourceText = replyText || selfText;
+  if (!sourceText || !replyText) {
     await sendMessage(chatId, '⚠️ Responda à mensagem do card com /publicar para publicar o produto.');
     return;
   }
 
-  // Extrai JSON — tenta bloco ```json ... ``` primeiro, depois JSON inline
   let productObj = null;
-  const jsonBlock = replyText.match(/```json\n?([\s\S]+?)```/);
+  const jsonBlock = sourceText.match(/```json\n?([\s\S]+?)```/);
   if (jsonBlock) {
     try { productObj = JSON.parse(jsonBlock[1].trim()); } catch {}
   }
   if (!productObj) {
-    // Tenta encontrar JSON inline (linha com { })
-    const jsonInline = replyText.match(/(\{[\s\S]+\})/);
+    const jsonInline = sourceText.match(/(\{[\s\S]+\})/);
     if (jsonInline) {
       try { productObj = JSON.parse(jsonInline[1]); } catch {}
     }
@@ -382,28 +391,90 @@ async function handlePublish(chatId, message) {
     return;
   }
 
-  await sendMessage(chatId, `⏳ Adicionando "${productObj.name}" ao catálogo...`);
-
   try {
-    await addProductToGitHub(productObj);
+    // Verifica duplicata antes de publicar
+    const existing = await getProductsFromGitHub();
+    const duplicate = existing.content.includes(`"id": "${productObj.id}"`);
+
+    if (duplicate && !force) {
+      await sendMessage(chatId,
+        `⚠️ Já existe um produto com o ID *${productObj.id}* no catálogo.\n\n` +
+        `Para *substituí-lo* com os novos dados, responda esta mensagem com:\n` +
+        `/publicar sim`,
+        { parse_mode: 'Markdown' }
+      );
+      return;
+    }
+
+    await sendMessage(chatId, `⏳ ${duplicate ? 'Substituindo' : 'Adicionando'} "${productObj.name}"...`);
+    await addProductToGitHub(productObj, existing, duplicate);
     await sendMessage(chatId,
-      `✅ "${productObj.name}" publicado com sucesso!\n\n` +
-      `🚀 A Vercel vai redeployar em ~1 minuto.\n` +
-      `🌐 Confira em: japaoexpress.vercel.app/produtos.html`
+      `✅ "${productObj.name}" ${duplicate ? 'substituído' : 'publicado'} com sucesso!\n\n` +
+      `🚀 Vercel vai redeployar em ~1 minuto.\n` +
+      `🌐 japaoexpress.vercel.app/produtos.html`
     );
   } catch (err) {
     await sendMessage(chatId, `❌ Erro ao publicar: ${err.message}`);
   }
 }
 
-// ── Adiciona produto ao products.js via GitHub API ────────
+// ── Remove produto do catálogo ────────────────────────────
 
-async function addProductToGitHub(product) {
+async function handleDelete(chatId, message) {
+  if (!GITHUB_TOKEN) {
+    await sendMessage(chatId, '❌ GITHUB_TOKEN não configurado.');
+    return;
+  }
+
+  // Pega o ID: /apagar id-aqui  OU  extrai do card respondido
+  const textParts = (message.text || '').trim().split(/\s+/);
+  let productId   = textParts[1] || null; // /apagar [id]
+
+  if (!productId) {
+    // Tenta extrair do card respondido
+    const replyText = message.reply_to_message?.text || message.reply_to_message?.caption || '';
+    const jsonBlock = replyText.match(/```json\n?([\s\S]+?)```/);
+    if (jsonBlock) {
+      try {
+        const obj = JSON.parse(jsonBlock[1].trim());
+        productId = obj.id;
+      } catch {}
+    }
+  }
+
+  if (!productId) {
+    await sendMessage(chatId,
+      `⚠️ Informe o ID do produto:\n` +
+      `/apagar id-do-produto\n\nOu responda ao card do produto com /apagar`
+    );
+    return;
+  }
+
+  try {
+    const existing = await getProductsFromGitHub();
+    if (!existing.content.includes(`"id": "${productId}"`)) {
+      await sendMessage(chatId, `⚠️ Produto com ID *${productId}* não encontrado no catálogo.`, { parse_mode: 'Markdown' });
+      return;
+    }
+
+    await sendMessage(chatId, `⏳ Removendo produto ${productId}...`);
+    await removeProductFromGitHub(productId, existing);
+    await sendMessage(chatId,
+      `🗑️ Produto *${productId}* removido do catálogo.\n\n` +
+      `🚀 Vercel vai redeployar em ~1 minuto.`,
+      { parse_mode: 'Markdown' }
+    );
+  } catch (err) {
+    await sendMessage(chatId, `❌ Erro ao remover: ${err.message}`);
+  }
+}
+
+// ── Lê products.js do GitHub ──────────────────────────────
+
+async function getProductsFromGitHub() {
   const filePath = 'js/products.js';
   const apiBase  = `https://api.github.com/repos/${GITHUB_REPO}/contents/${filePath}`;
-
-  // 1. Lê arquivo atual
-  const getResp = await fetch(`${apiBase}?ref=${GITHUB_BRANCH}`, {
+  const getResp  = await fetch(`${apiBase}?ref=${GITHUB_BRANCH}`, {
     headers: {
       'Authorization': `token ${GITHUB_TOKEN}`,
       'Accept':        'application/vnd.github.v3+json',
@@ -411,21 +482,16 @@ async function addProductToGitHub(product) {
   });
   if (!getResp.ok) throw new Error(`GitHub GET: ${getResp.status}`);
   const fileData = await getResp.json();
-  const currentContent = atob(fileData.content.replace(/\n/g, ''));
-  const sha = fileData.sha;
+  return {
+    content: atob(fileData.content.replace(/\n/g, '')),
+    sha:     fileData.sha,
+    apiBase,
+  };
+}
 
-  // 2. Insere o produto no array
-  const productLine = `  ${JSON.stringify(product, null, 2).split('\n').join('\n  ')},`;
-  const newContent = currentContent.replace(
-    /const PRODUCTS = \[(\s*\/\/[^\n]*)?\n/,
-    `const PRODUCTS = [\n${productLine}\n`
-  );
+// ── Commit de conteúdo novo no GitHub ────────────────────
 
-  if (newContent === currentContent) {
-    throw new Error('Não foi possível inserir o produto no array PRODUCTS.');
-  }
-
-  // 3. Commit
+async function commitToGitHub({ apiBase, sha, newContent, message }) {
   const putResp = await fetch(apiBase, {
     method: 'PUT',
     headers: {
@@ -434,17 +500,77 @@ async function addProductToGitHub(product) {
       'Content-Type':  'application/json',
     },
     body: JSON.stringify({
-      message: `feat: add product "${product.name}" via Telegram bot`,
+      message,
       content: btoa(unescape(encodeURIComponent(newContent))),
       sha,
       branch: GITHUB_BRANCH,
     }),
   });
-
   if (!putResp.ok) {
     const err = await putResp.text();
     throw new Error(`GitHub PUT: ${putResp.status} — ${err.slice(0, 200)}`);
   }
+}
+
+// ── Adiciona (ou substitui) produto no products.js ────────
+
+async function addProductToGitHub(product, existing, replace = false) {
+  const { content, sha, apiBase } = existing || await getProductsFromGitHub();
+
+  const productLine = `  ${JSON.stringify(product, null, 2).split('\n').join('\n  ')},`;
+
+  let newContent;
+  if (replace) {
+    // Substitui o bloco do produto existente com mesmo id
+    const idEscaped = product.id.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+    const blockRe   = new RegExp(
+      `\\s*\\{[^{}]*"id":\\s*"${idEscaped}"[^{}]*(?:\\{[^{}]*\\}[^{}]*)*\\},?`,
+      'g'
+    );
+    newContent = content.replace(blockRe, '');
+    // Insere a versão nova no topo do array
+    newContent = newContent.replace(
+      /const PRODUCTS = \[(\s*\/\/[^\n]*)?\n/,
+      `const PRODUCTS = [\n${productLine}\n`
+    );
+  } else {
+    newContent = content.replace(
+      /const PRODUCTS = \[(\s*\/\/[^\n]*)?\n/,
+      `const PRODUCTS = [\n${productLine}\n`
+    );
+  }
+
+  if (newContent === content) {
+    throw new Error('Não foi possível inserir o produto no array PRODUCTS.');
+  }
+
+  await commitToGitHub({
+    apiBase, sha, newContent,
+    message: `${replace ? 'fix' : 'feat'}: ${replace ? 'update' : 'add'} product "${product.name}" via Telegram bot`,
+  });
+}
+
+// ── Remove produto do products.js ─────────────────────────
+
+async function removeProductFromGitHub(productId, existing) {
+  const { content, sha, apiBase } = existing || await getProductsFromGitHub();
+
+  const idEscaped = productId.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+  // Remove o objeto inteiro (superficial — funciona para objetos planos)
+  const blockRe = new RegExp(
+    `\\s*\\{[^{}]*"id":\\s*"${idEscaped}"[^{}]*(?:\\{[^{}]*\\}[^{}]*)*\\},?`,
+    'g'
+  );
+  const newContent = content.replace(blockRe, '');
+
+  if (newContent === content) {
+    throw new Error(`Produto ${productId} não encontrado no arquivo.`);
+  }
+
+  await commitToGitHub({
+    apiBase, sha, newContent,
+    message: `chore: remove product "${productId}" via Telegram bot`,
+  });
 }
 
 // ── Converte dados extraídos para objeto PRODUCTS ─────────

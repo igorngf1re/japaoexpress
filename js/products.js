@@ -1,5 +1,5 @@
-// âââââââââââââââââââââââââââââââââââââââââââââââââââââââââââ
-// JapÃ£o Express â CatÃ¡logo de Produtos
+// Ã¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂ
+// JapÃÂ£o Express Ã¢ÂÂ CatÃÂ¡logo de Produtos
 // Produtos adicionados via bot do Telegram ou manualmente.
 // Estrutura de cada produto:
 //   id, name, category, cat, subcategory,
@@ -7,13 +7,35 @@
 //   description, details, origin,
 //   image (URL), badge, badgeBg, stock,
 //   rating, reviews, cardBg, rotate, deco ('tape'|'pin')
-// âââââââââââââââââââââââââââââââââââââââââââââââââââââââââââ
+// Ã¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂ
 
 const PRODUCTS = [
   {
+    "id": "a-120g",
+    "name": "センカ パーフェクトホイップa 120g 洗顔フォーム",
+    "category": "Cosméticos",
+    "cat": "cosmeticos",
+    "subcategory": "Skincare",
+    "priceBRL": 25.85,
+    "priceJPY": 474,
+    "weight": 120,
+    "description": "Lavador facial perfumado com micro-burbotas para limpar a pele, deixá-la fresca e suave.",
+    "details": "Comprado em Rakuten (楽天). Lavador facial perfumado com micro-burbotas para limpar a pele, deixá-la fresca ",
+    "origin": "Rakuten (楽天)",
+    "image": "não disponível",
+    "badge": null,
+    "badgeBg": "#9B59B6",
+    "stock": 10,
+    "rating": 4.5,
+    "reviews": 0,
+    "cardBg": "bg-[#D6EAF8]",
+    "rotate": "rotate-[-2deg]",
+    "deco": "pin"
+  },
+  {
     "id": "perfeito-whipped-a-120g",
     "name": "Perfeito Whipped A 120g",
-    "category": "Cosméticos",
+    "category": "CosmÃ©ticos",
     "cat": "cosmeticos",
     "subcategory": "Cuidados de pele",
     "priceBRL": 0,
@@ -34,7 +56,7 @@ const PRODUCTS = [
   },
 ];
 
-// ââ Helpers âââââââââââââââââââââââââââââââââââââââââââââââ
+// Ã¢ÂÂÃ¢ÂÂ Helpers Ã¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂ
 
 function getProductById(id) {
   return PRODUCTS.find(p => p.id === id) || null;
@@ -50,5 +72,5 @@ function formatBRL(value) {
 }
 
 function formatJPY(value) {
-  return 'Â¥' + Math.round(value).toLocaleString('ja-JP');
+  return 'ÃÂ¥' + Math.round(value).toLocaleString('ja-JP');
 }

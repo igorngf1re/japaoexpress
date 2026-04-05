@@ -359,24 +359,38 @@
       document.getElementById('summaryTotal').textContent    = 'R$ ' + subtotal.toFixed(2).replace('.',',');
 
       const weight = getCartWeight();
+      // Get cached exchange rate
+      let _cartRate = 22;
+      try {
+        const _rc = JSON.parse(localStorage.getItem('je_rate') || 'null');
+        if (_rc && _rc.rate) _cartRate = _rc.rate;
+      } catch {}
+
       if (weight > 0) {
         simulator.classList.remove('hidden');
         const box = getBoxInfo(weight);
-        document.getElementById('boxEmoji').textContent      = box.emoji;
-        document.getElementById('boxName').textContent       = box.name;
-        document.getElementById('boxDesc').textContent       = box.desc;
-        document.getElementById('boxPct').textContent        = box.pct + '%';
+        document.getElementById('boxEmoji').textContent       = box.emoji;
+        document.getElementById('boxName').textContent        = box.name;
+        document.getElementById('boxDesc').textContent        = box.desc;
+        document.getElementById('boxPct').textContent         = box.pct + '%';
         document.getElementById('boxTotalWeight').textContent = weight + 'g';
-        document.getElementById('boxRemaining').textContent  = box.remaining > 0 ? box.remaining + 'g livres' : 'Caixa cheia!';
+        document.getElementById('boxRemaining').textContent   = box.remaining > 0 ? box.remaining + 'g livres' : 'Caixa cheia!';
         const bar = document.getElementById('boxBar');
         bar.style.width      = box.pct + '%';
         bar.style.background = box.pct < 60 ? '#27AE60' : box.pct < 90 ? '#F39C12' : '#E74C3C';
         const shippingJPY = getShippingJPY(weight);
-        document.getElementById('boxShipping').textContent    = shippingJPY ? '¥' + shippingJPY.toLocaleString('ja-JP') : 'Acima do limite';
-        document.getElementById('summaryShipping').textContent = shippingJPY ? '¥' + shippingJPY.toLocaleString('ja-JP') + ' (EMS)' : '—';
+        const shippingBRL = shippingJPY ? shippingJPY / _cartRate : 0;
+        document.getElementById('boxShipping').textContent    = shippingJPY
+          ? '¥' + shippingJPY.toLocaleString('ja-JP') + ' ≈ R$' + shippingBRL.toFixed(2).replace('.',',')
+          : 'Acima do limite';
+        document.getElementById('summaryShipping').textContent = shippingJPY
+          ? '≈ R$ ' + shippingBRL.toFixed(2).replace('.',',') + ' (EMS)'
+          : '—';
+        // Update total with shipping
+        document.getElementById('summaryTotal').textContent = 'R$ ' + (subtotal + shippingBRL).toFixed(2).replace('.',',');
         const tip = document.getElementById('boxTip');
         if (box.pct < 70 && box.remaining > 200) {
-          tip.textContent = '💡 Você ainda tem ' + box.remaining + 'g de espaço — adicione mais itens e divida o frete!';
+          tip.textContent = 'Você ainda tem ' + box.remaining + 'g de espaço — adicione mais itens e divida o frete!';
           tip.classList.remove('hidden');
         } else { tip.classList.add('hidden'); }
       }

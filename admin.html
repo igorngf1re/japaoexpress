@@ -240,23 +240,64 @@
                         </div>
                     </div>
 
-                    <!-- Preços + Peso + Unidades -->
-                    <div class="grid grid-cols-2 sm:grid-cols-4 gap-4">
-                        <div>
-                            <label class="field-label">Preço JPY ¥ *</label>
-                            <input id="fPriceJPY" type="number" min="0" class="field-input" placeholder="474" required
-                                   oninput="autoPrice(); updatePreview()">
+                    <!-- Preço + Calculadora de Margem -->
+                    <div class="col-span-full bg-[#F0E8FF] border border-[#C9B8E8] rounded-xl p-4 space-y-3">
+                        <div class="flex items-center gap-2 mb-1">
+                            <i class="fa-solid fa-calculator text-[#9B59B6] text-sm"></i>
+                            <span class="text-xs font-black text-[#2C1654] uppercase tracking-wide">Calculadora de Preço</span>
+                            <span class="ml-auto text-[10px] text-[#9B59B6] font-semibold" id="adminRateInfo"></span>
                         </div>
-                        <div>
-                            <label class="field-label">Preço BRL R$</label>
-                            <div class="relative">
-                                <input id="fPriceBRL" type="number" min="0" step="0.01" class="field-input pr-8" placeholder="auto"
-                                       oninput="this.dataset.manual='1'; updatePreview()">
-                                <button type="button" onclick="autoPrice(true)" title="Recalcular (+20%)"
-                                    class="absolute right-2 top-1/2 -translate-y-1/2 text-[#9B59B6] hover:text-[#7D3C98]">
-                                    <i class="fa-solid fa-calculator text-xs"></i>
-                                </button>
+                        <div class="grid grid-cols-1 sm:grid-cols-3 gap-3">
+                            <!-- Custo de aquisição -->
+                            <div>
+                                <label class="field-label flex items-center gap-1">
+                                    <i class="fa-solid fa-tag text-[0.6rem]"></i> Custo de Compra (R$)
+                                </label>
+                                <input id="fCost" type="number" min="0" step="0.01" class="field-input"
+                                       placeholder="valor pago pelo produto"
+                                       oninput="calcMarkup(); updatePreview()">
                             </div>
+                            <!-- Margem % -->
+                            <div>
+                                <label class="field-label flex items-center gap-1">
+                                    <i class="fa-solid fa-percent text-[0.6rem]"></i> Margem de Lucro %
+                                </label>
+                                <div class="flex items-center gap-2">
+                                    <input id="fMarkup" type="number" min="0" max="999" value="23"
+                                           class="field-input flex-1"
+                                           oninput="calcMarkup(); updatePreview()">
+                                    <span class="text-xs font-black text-[#9B59B6] shrink-0">%</span>
+                                </div>
+                            </div>
+                            <!-- Preço de venda -->
+                            <div>
+                                <label class="field-label flex items-center gap-1">
+                                    <i class="fa-solid fa-brazilian-real-sign text-[0.6rem]"></i> Preço de Venda (R$) *
+                                </label>
+                                <div class="relative">
+                                    <input id="fPriceBRL" type="number" min="0" step="0.01" class="field-input pr-7"
+                                           placeholder="auto" required
+                                           oninput="this.dataset.manual='1'; updatePreview()">
+                                    <button type="button" onclick="calcMarkup(true)" title="Recalcular"
+                                        class="absolute right-2 top-1/2 -translate-y-1/2 text-[#9B59B6] hover:text-[#7D3C98]">
+                                        <i class="fa-solid fa-rotate text-xs"></i>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- Linha de resumo do cálculo -->
+                        <div id="calcSummary" class="hidden text-xs font-semibold text-[#6C3483] bg-white/60 rounded-lg px-3 py-2 flex items-center gap-2">
+                            <i class="fa-solid fa-equals text-[0.6rem]"></i>
+                            <span id="calcSummaryText"></span>
+                        </div>
+                    </div>
+
+                    <!-- Preço JPY + Peso + Unidades -->
+                    <div class="grid grid-cols-3 gap-4 col-span-full">
+                        <div>
+                            <label class="field-label">Preço no Japão (¥)</label>
+                            <input id="fPriceJPY" type="number" min="0" class="field-input" placeholder="474"
+                                   oninput="autoPrice(); updatePreview()">
                         </div>
                         <div>
                             <label class="field-label">Peso (gramas)</label>
@@ -546,14 +587,55 @@ function regenId() {
   document.getElementById('fId').value = generateId(document.getElementById('fName').value);
 }
 
-// ── Auto-price ────────────────────────────────────────
+// ── Câmbio para admin ──────────────────────────────────
+let ADMIN_RATE = 22; // fallback: 1 BRL = 22 JPY
 
+async function loadAdminRate() {
+  try {
+    const cached = JSON.parse(localStorage.getItem('je_rate') || 'null');
+    if (cached && cached.rate && Date.now() - cached.ts < 3600000) {
+      ADMIN_RATE = cached.rate;
+      updateAdminRateInfo();
+      return;
+    }
+    const res  = await fetch('/api/exchange-rate');
+    const data = await res.json();
+    ADMIN_RATE = data.rates?.JPY || 22;
+    localStorage.setItem('je_rate', JSON.stringify({ rate: ADMIN_RATE, ts: Date.now(), date: data.date }));
+  } catch {}
+  updateAdminRateInfo();
+}
+
+function updateAdminRateInfo() {
+  const el = document.getElementById('adminRateInfo');
+  if (el) el.textContent = '¥' + Math.round(ADMIN_RATE) + ' = R$1,00 · cotação atual';
+}
+
+// ── Auto-price (JPY → custo BRL) ─────────────────────
 function autoPrice(force = false) {
   const jpy = parseFloat(document.getElementById('fPriceJPY').value) || 0;
+  const costField = document.getElementById('fCost');
+  if (jpy && costField && !costField.value) {
+    costField.value = (jpy / ADMIN_RATE).toFixed(2);
+  }
+  calcMarkup(force);
+}
+
+// ── Calculadora de margem ─────────────────────────────
+function calcMarkup(force = false) {
+  const cost   = parseFloat(document.getElementById('fCost').value) || 0;
+  const markup = parseFloat(document.getElementById('fMarkup').value) || 23;
   const brlField = document.getElementById('fPriceBRL');
-  if (force || !brlField.dataset.manual) {
-    brlField.value = jpy ? (jpy / 22 * 1.2).toFixed(2) : '';
+  if (cost > 0 && (force || !brlField.dataset.manual)) {
+    const sell = cost * (1 + markup / 100);
+    brlField.value = sell.toFixed(2);
     delete brlField.dataset.manual;
+    const sumEl = document.getElementById('calcSummary');
+    const sumTxt = document.getElementById('calcSummaryText');
+    if (sumEl && sumTxt) {
+      sumEl.classList.remove('hidden');
+      sumTxt.textContent = `R$${cost.toFixed(2).replace('.',',')} + ${markup}% = R$${sell.toFixed(2).replace('.',',')}`;
+    }
   }
   updatePreview();
 }
@@ -702,6 +784,9 @@ function newProduct() {
   document.getElementById('fStock').value   = '10';
   document.getElementById('fRating').value  = '4.5';
   document.getElementById('fUnits').value    = '1';
+  document.getElementById('fCost').value     = '';
+  document.getElementById('fMarkup').value   = '23';
+  document.getElementById('calcSummary').classList.add('hidden');
   document.getElementById('fFeatured').checked = false;
   delete document.getElementById('fPriceBRL').dataset.manual;
   // Reset image previews
@@ -740,6 +825,8 @@ function editProduct(id) {
   document.getElementById('fImage3').value       = p.image3 || (p.images?.[2]) || '';
   document.getElementById('fUnits').value        = p.units || 1;
   document.getElementById('fFeatured').checked  = p.featured === true;
+  document.getElementById('fCost').value    = p.cost || '';
+  document.getElementById('fMarkup').value  = p.markup || '23';
   document.getElementById('fBadge').value        = p.badge || '';
   updateImagePreviews();
   document.getElementById('fBadgeBg').value      = p.badgeBg || '#F5A623';
@@ -800,6 +887,8 @@ async function saveProduct(e) {
     ].filter(Boolean),
     units:       parseInt(document.getElementById('fUnits').value) || 1,
     featured:    document.getElementById('fFeatured').checked || false,
+    cost:        parseFloat(document.getElementById('fCost').value) || null,
+    markup:      parseFloat(document.getElementById('fMarkup').value) || 23,
     badge:       document.getElementById('fBadge').value.trim() || null,
     badgeBg:     document.getElementById('fBadgeBg').value,
     stock:       parseInt(document.getElementById('fStock').value) || 10,
@@ -941,6 +1030,7 @@ document.addEventListener('DOMContentLoaded', () => {
   // Load products (from products.js PRODUCTS global)
   _allProducts = typeof PRODUCTS !== 'undefined' ? [...PRODUCTS] : [];
 
+  loadAdminRate();
   renderSidebar();
   updatePreview();
 });

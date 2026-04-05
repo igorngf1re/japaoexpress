@@ -185,32 +185,30 @@
                 <div class="post-it bg-[#F5F5F5] rounded-2xl p-5 shadow-md sticky top-6">
                     <div class="tape"></div>
                     <h3 class="font-hand text-2xl font-bold text-[#2C1654] mt-3 mb-4">Resumo</h3>
-                    <div class="space-y-2 mb-4">
-                        <div class="flex items-center gap-2 text-xs font-semibold text-[#4A3060]">
-                            <div class="w-8 h-8 bg-white rounded-lg flex items-center justify-center border border-gray-200 flex-shrink-0"><i class="fa-solid fa-droplet text-blue-400 text-sm"></i></div>
-                            <span class="flex-1">Bioré UV Aqua Rich</span><span class="font-black text-[#2C1654]">R$85</span>
-                        </div>
-                        <div class="flex items-center gap-2 text-xs font-semibold text-[#4A3060]">
-                            <div class="w-8 h-8 bg-white rounded-lg flex items-center justify-center border border-gray-200 flex-shrink-0"><i class="fa-solid fa-cookie-bite text-green-500 text-sm"></i></div>
-                            <span class="flex-1">KitKat Matcha Pack</span><span class="font-black text-[#2C1654]">R$60</span>
-                        </div>
-                        <div class="flex items-center gap-2 text-xs font-semibold text-[#4A3060]">
-                            <div class="w-8 h-8 bg-white rounded-lg flex items-center justify-center border border-gray-200 flex-shrink-0"><i class="fa-solid fa-bolt text-yellow-400 text-sm"></i></div>
-                            <span class="flex-1">Pokémon TCG Booster</span><span class="font-black text-[#2C1654]">R$75</span>
-                        </div>
-                    </div>
+                    <!-- Itens dinâmicos -->
+                    <div id="checkoutItems" class="space-y-2 mb-4 max-h-48 overflow-y-auto"></div>
                     <div class="border-t-2 border-dashed border-gray-200 my-3"></div>
                     <div class="space-y-1.5 text-xs font-semibold text-[#4A3060] mb-4">
-                        <div class="flex justify-between"><span>Subtotal</span><span class="font-black">R$ 220</span></div>
-                        <div id="discRow" class="flex justify-between text-[#25D366] font-black"><span>Desconto PIX (5%)</span><span>−R$ 11</span></div>
+                        <div class="flex justify-between">
+                            <span>Subtotal</span>
+                            <span id="ckSubtotal" class="font-black text-[#2C1654]">R$ 0,00</span>
+                        </div>
+                        <div class="flex justify-between text-gray-400">
+                            <span class="flex items-center gap-1"><i class="fa-solid fa-plane-departure text-xs"></i> Frete EMS</span>
+                            <span id="ckShipping" class="font-semibold">—</span>
+                        </div>
+                        <div id="discRow" class="flex justify-between text-[#25D366] font-black hidden">
+                            <span>Desconto PIX (5%)</span>
+                            <span id="ckDisc">−R$ 0,00</span>
+                        </div>
                     </div>
                     <div class="flex justify-between items-baseline mb-5">
                         <span class="font-black text-sm text-[#2C1654]">Total</span>
-                        <span id="totalVal" class="font-black text-2xl text-[#9B59B6]">R$ 209</span>
+                        <span id="totalVal" class="font-black text-2xl text-[#9B59B6]">R$ 0,00</span>
                     </div>
-                    <a href="sucesso.html" class="block bg-[#9B59B6] text-white font-black py-3.5 rounded-full text-center hover:bg-[#7D3C98] transition text-sm tracking-widest uppercase shadow-lg mb-3">
+                    <button onclick="confirmOrder()" class="block w-full bg-[#9B59B6] text-white font-black py-3.5 rounded-full text-center hover:bg-[#7D3C98] transition text-sm tracking-widest uppercase shadow-lg mb-3">
                         <i class="fa-solid fa-lock mr-1 text-xs"></i> CONFIRMAR PEDIDO
-                    </a>
+                    </button>
                     <p class="text-center text-[0.6rem] text-gray-400 font-bold flex items-center justify-center gap-1">
                         <i class="fa-solid fa-shield-halved text-[#25D366]"></i> Compra 100% segura — SSL
                     </p>
@@ -227,14 +225,91 @@
     </footer>
     <div class="text-center text-xs py-4 text-gray-400 border-t border-gray-100 font-semibold">© 2026 Japão Express. Todos os direitos reservados</div>
 </div>
+<script src="js/products.js"></script>
+<script src="js/cart.js"></script>
+<script src="js/currency.js"></script>
+<script src="js/auth.js"></script>
 <script>
-    function updatePayment() {
-        const isPix = document.getElementById('pix').checked;
-        const isCard = document.getElementById('card').checked;
-        document.getElementById('cardFields').classList.toggle('hidden', !isCard);
-        document.getElementById('discRow').classList.toggle('hidden', !isPix);
-        document.getElementById('totalVal').textContent = isPix ? 'R$ 209' : 'R$ 220';
-    }
+/* ── Checkout dinâmico ─────────────────────────── */
+const EMS_RATES_CK = [
+    {maxWeight:500,priceJPY:3500},{maxWeight:1000,priceJPY:4700},{maxWeight:1500,priceJPY:5800},
+    {maxWeight:2000,priceJPY:6800},{maxWeight:2500,priceJPY:7800},{maxWeight:3000,priceJPY:8700},
+    {maxWeight:4000,priceJPY:10500},{maxWeight:5000,priceJPY:12200},{maxWeight:7000,priceJPY:15500},
+    {maxWeight:10000,priceJPY:20500},{maxWeight:15000,priceJPY:28500},{maxWeight:20000,priceJPY:36500},
+];
+function getShippingCK(w) {
+    for (const t of EMS_RATES_CK) if (w <= t.maxWeight) return t.priceJPY;
+    return null;
+}
+
+let _ckSubtotal = 0, _ckShippingJPY = 0, _ckRate = 22;
+
+function fmtBRL(v) { return 'R$ ' + v.toFixed(2).replace('.',','); }
+
+function renderCheckoutSummary() {
+    const cart = JSON.parse(localStorage.getItem('je_cart') || '[]');
+    if (!cart.length) { window.location.href = 'carrinho.html'; return; }
+
+    const itemsEl = document.getElementById('checkoutItems');
+    itemsEl.innerHTML = '';
+    cart.forEach(item => {
+        const div = document.createElement('div');
+        div.className = 'flex items-center gap-2 text-xs font-semibold text-[#4A3060]';
+        div.innerHTML = `
+            <div class="w-8 h-8 bg-white rounded-lg flex items-center justify-center border border-gray-200 flex-shrink-0 overflow-hidden">
+                <img src="${item.image||''}" class="w-full h-full object-contain p-0.5"
+                     onerror="this.onerror=null;this.parentNode.innerHTML='<i class=\\'fa-solid fa-box\\' style=\\'color:#9B59B6\\'></i>'">
+            </div>
+            <span class="flex-1 leading-tight">${item.name}${item.qty > 1 ? ' ×'+item.qty : ''}</span>
+            <span class="font-black text-[#2C1654] shrink-0">${fmtBRL(item.priceBRL * item.qty)}</span>`;
+        itemsEl.appendChild(div);
+    });
+
+    _ckSubtotal = cart.reduce((s,i) => s + i.priceBRL * i.qty, 0);
+    const totalWeight = cart.reduce((s,i) => s + (i.weight||0) * i.qty, 0);
+    _ckShippingJPY = getShippingCK(totalWeight) || 0;
+
+    updateTotals();
+}
+
+function updateTotals() {
+    const isPix  = document.getElementById('pix').checked;
+    const disc   = isPix ? _ckSubtotal * 0.05 : 0;
+    const shippingBRL = _ckShippingJPY ? _ckShippingJPY / _ckRate : 0;
+    const total  = _ckSubtotal - disc + shippingBRL;
+
+    document.getElementById('ckSubtotal').textContent = fmtBRL(_ckSubtotal);
+    document.getElementById('ckShipping').textContent = _ckShippingJPY
+        ? '¥' + _ckShippingJPY.toLocaleString('ja-JP') + ' ≈ ' + fmtBRL(shippingBRL)
+        : 'A combinar';
+    document.getElementById('discRow').classList.toggle('hidden', !isPix);
+    document.getElementById('ckDisc').textContent = '−' + fmtBRL(disc);
+    document.getElementById('totalVal').textContent = fmtBRL(total);
+}
+
+function updatePayment() {
+    const isCard = document.getElementById('card').checked;
+    document.getElementById('cardFields').classList.toggle('hidden', !isCard);
+    updateTotals();
+}
+
+function confirmOrder() {
+    window.location.href = 'sucesso.html';
+}
+
+document.addEventListener('DOMContentLoaded', async () => {
+    // Load exchange rate for shipping conversion
+    try {
+        const cached = JSON.parse(localStorage.getItem('je_rate') || 'null');
+        if (cached && Date.now() - cached.ts < 3600000) { _ckRate = cached.rate; }
+        else {
+            const res = await fetch('/api/exchange-rate');
+            const data = await res.json();
+            _ckRate = data.rates?.JPY || 22;
+        }
+    } catch {}
+    renderCheckoutSummary();
+});
 </script>
 </body>
 </html>

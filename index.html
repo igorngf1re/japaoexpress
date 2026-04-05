@@ -162,22 +162,28 @@
             100% { transform: translateY(420px) rotate(540deg); opacity: 0; }
         }
 
-        /* Individual hero slides */
+        /* Individual hero slides — stacked via CSS grid (no layout jump) */
+        #heroSlides {
+            display: grid;
+            min-height: 340px;
+        }
+        @media (min-width: 640px) { #heroSlides { min-height: 380px; } }
         .hero-slide {
-            display: none;
+            grid-area: 1 / 1;
+            display: flex;
             flex-direction: row;
             align-items: center;
             justify-content: space-between;
-            padding: 36px 28px 56px;
+            padding: 36px 28px 64px;
             gap: 20px;
-            min-height: 300px;
-            animation: heroFadeIn .45s ease;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity .5s ease;
         }
-        @keyframes heroFadeIn {
-            from { opacity: 0; transform: translateX(18px); }
-            to   { opacity: 1; transform: translateX(0); }
+        .hero-slide.active {
+            opacity: 1;
+            pointer-events: all;
         }
-        .hero-slide.active { display: flex; }
 
         .hero-text-area { flex: 1; max-width: 320px; z-index: 2; }
         .hero-badge-pill {
@@ -551,7 +557,9 @@
     <!-- ══════════════ RECÉM CHEGADOS (substituiu Reviews) ══════════════ -->
     <section class="px-6 md:px-10 pb-10">
         <div class="flex items-center justify-between mb-6">
-            <h2 class="font-hand text-[2.4rem] font-bold text-[#2C1654]">Recém Chegados 🆕</h2>
+            <h2 class="font-hand text-[2.4rem] font-bold text-[#2C1654] flex items-center gap-2">
+            <i class="fa-solid fa-star-of-life text-[#9B59B6] text-2xl"></i> Recém Chegados
+        </h2>
             <a href="produtos.html" class="text-xs font-bold text-[#9B59B6] hover:text-[#7D3C98] transition">Ver todos →</a>
         </div>
         <div class="novidades-grid" id="novidadesGrid">
@@ -572,7 +580,9 @@
             <!-- Card 1: Don Quijote -->
             <div class="post-it bg-[#FFF3B0] p-4 pt-8 rounded-sm text-center" style="transform:rotate(-2deg)">
                 <div class="tape"></div>
-                <div class="text-4xl mb-2">🏪</div>
+                <div class="flex justify-center mb-3 mt-1">
+                    <i class="fa-solid fa-store text-3xl text-[#7D3C98]"></i>
+                </div>
                 <h4 class="font-black text-xs uppercase tracking-wide text-[#2C1654] mb-1">Don Quijote</h4>
                 <p class="text-[0.65rem] font-semibold text-[#3D2060] leading-snug">
                     Fazemos compras pessoalmente nas maiores lojas do Japão.
@@ -582,20 +592,24 @@
             <!-- Card 2: Embalagem -->
             <div class="post-it bg-[#FDD5E5] p-4 pt-10 rounded-sm text-center" style="transform:rotate(2deg)">
                 <div class="pin"></div>
-                <div class="text-4xl mb-2">🎁</div>
+                <div class="flex justify-center mb-3 mt-1">
+                    <i class="fa-solid fa-box-heart text-3xl text-[#7D3C98]"></i>
+                </div>
                 <h4 class="font-black text-xs uppercase tracking-wide text-[#2C1654] mb-1">Embalagem Especial</h4>
                 <p class="text-[0.65rem] font-semibold text-[#3D2060] leading-snug">
-                    Cada pedido é embalado com carinho para um unboxing incrível.
+                    Cada pedido embalado com cuidado para um unboxing memorável.
                 </p>
             </div>
 
             <!-- Card 3: Japan Post -->
             <div class="post-it bg-[#E8D5F5] p-4 pt-8 rounded-sm text-center" style="transform:rotate(-1deg)">
                 <div class="tape"></div>
-                <div class="text-4xl mb-2">✈️</div>
-                <h4 class="font-black text-xs uppercase tracking-wide text-[#2C1654] mb-1">Japan Post</h4>
+                <div class="flex justify-center mb-3 mt-1">
+                    <i class="fa-solid fa-plane-departure text-3xl text-[#7D3C98]"></i>
+                </div>
+                <h4 class="font-black text-xs uppercase tracking-wide text-[#2C1654] mb-1">Japan Post EMS</h4>
                 <p class="text-[0.65rem] font-semibold text-[#3D2060] leading-snug">
-                    Enviamos por Japan Post com rastreio até a sua porta.
+                    Enviamos por Japan Post com rastreio completo até você.
                 </p>
             </div>
 
@@ -604,13 +618,15 @@
                class="post-it bg-white p-4 pt-8 rounded-sm text-center block hover:scale-[1.03] transition-transform"
                style="transform:rotate(1.5deg)">
                 <div class="pin" style="background:radial-gradient(circle at 38% 38%,#E1306C,#833AB4)"></div>
-                <div class="text-4xl mb-2">📲</div>
+                <div class="flex justify-center mb-3 mt-1">
+                    <i class="fa-brands fa-instagram text-3xl" style="background:linear-gradient(45deg,#833AB4,#E1306C);-webkit-background-clip:text;-webkit-text-fill-color:transparent"></i>
+                </div>
                 <h4 class="font-black text-xs uppercase tracking-wide text-[#2C1654] mb-1">@ojapaoexpress</h4>
                 <p class="text-[0.65rem] font-semibold text-[#3D2060] leading-snug">
-                    Marque a gente no Insta e apareça aqui!
+                    Compartilhe seu unboxing e apareça no nosso perfil.
                 </p>
                 <span class="mt-2 inline-block bg-gradient-to-r from-[#833AB4] to-[#E1306C] text-white text-[10px] font-black px-3 py-1 rounded-full">
-                    Seguir ✨
+                    Seguir
                 </span>
             </a>
         </div>
@@ -640,6 +656,61 @@
             <div>
                 <i class="fa-solid fa-truck-fast text-4xl text-[#9370DB] mb-2"></i>
                 <p>4. Entrega</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- ══════════════ COTAÇÃO & CALCULADORA ══════════════ -->
+    <section class="px-6 md:px-10 pb-10">
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
+
+            <!-- Cotação ao vivo -->
+            <div class="post-it bg-[#FFF3B0] p-5 pt-9 rounded-sm" style="transform:rotate(-1deg)">
+                <div class="tape"></div>
+                <div class="flex items-center gap-2 mb-3">
+                    <i class="fa-solid fa-chart-line text-[#9B59B6] text-lg"></i>
+                    <h3 class="font-black text-sm text-[#2C1654] uppercase tracking-wide">Cotação Hoje</h3>
+                    <span id="rateDate" class="ml-auto text-[10px] text-gray-400 font-semibold"></span>
+                </div>
+                <div class="text-center py-3">
+                    <p class="text-[0.7rem] font-bold text-gray-500 uppercase tracking-widest mb-1">¥ 100 Ienes =</p>
+                    <p id="rateDisplay" class="font-hero text-4xl text-[#9B59B6]">—</p>
+                    <p class="text-[0.65rem] text-gray-400 font-semibold mt-1" id="rateInverse"></p>
+                </div>
+                <div class="flex items-center gap-1 mt-2">
+                    <div id="rateDot" class="w-2 h-2 rounded-full bg-gray-300"></div>
+                    <span id="rateStatus" class="text-[10px] text-gray-400 font-semibold">Carregando cotação...</span>
+                </div>
+            </div>
+
+            <!-- Calculadora -->
+            <div class="post-it bg-[#E8D5F5] p-5 pt-10 rounded-sm" style="transform:rotate(1deg)">
+                <div class="pin"></div>
+                <div class="flex items-center gap-2 mb-3">
+                    <i class="fa-solid fa-calculator text-[#9B59B6] text-lg"></i>
+                    <h3 class="font-black text-sm text-[#2C1654] uppercase tracking-wide">Calculadora</h3>
+                </div>
+                <div class="space-y-3">
+                    <div>
+                        <label class="text-[0.65rem] font-black text-[#2C1654] uppercase tracking-wide block mb-1">
+                            <i class="fa-solid fa-yen-sign mr-1"></i>Valor em Ienes (¥)
+                        </label>
+                        <input id="calcJPY" type="number" placeholder="ex: 1000"
+                            class="w-full border-2 border-[#C9B8E8] rounded-xl px-3 py-2 text-sm font-bold text-[#2C1654] bg-white/70 focus:border-[#9B59B6] outline-none"
+                            oninput="calcFromJPY(this.value)">
+                        <p id="calcResultBRL" class="text-xs font-black text-[#9B59B6] mt-1 min-h-[1rem]"></p>
+                    </div>
+                    <div class="h-px bg-[#C9B8E8]"></div>
+                    <div>
+                        <label class="text-[0.65rem] font-black text-[#2C1654] uppercase tracking-wide block mb-1">
+                            <i class="fa-solid fa-brazilian-real-sign mr-1"></i>Valor em Reais (R$)
+                        </label>
+                        <input id="calcBRL" type="number" placeholder="ex: 50"
+                            class="w-full border-2 border-[#C9B8E8] rounded-xl px-3 py-2 text-sm font-bold text-[#2C1654] bg-white/70 focus:border-[#9B59B6] outline-none"
+                            oninput="calcFromBRL(this.value)">
+                        <p id="calcResultJPY" class="text-xs font-black text-[#9B59B6] mt-1 min-h-[1rem]"></p>
+                    </div>
+                </div>
             </div>
         </div>
     </section>
@@ -1024,6 +1095,69 @@ function syncSidebarBadges() {
 }
 
 /* ═══════════════════════════════════════════════════════════
+   COTAÇÃO & CALCULADORA
+═══════════════════════════════════════════════════════════ */
+let _widgetRate = null; // JPY per 1 BRL (e.g., 22 = 1BRL = ¥22)
+
+async function initExchangeWidget() {
+    try {
+        // Try cache first
+        const cached = JSON.parse(localStorage.getItem('je_rate') || 'null');
+        if (cached && Date.now() - cached.ts < 3600000) {
+            _widgetRate = cached.rate;
+            renderRateWidget(cached.rate, cached.date, false);
+            return;
+        }
+    } catch {}
+    try {
+        const res  = await fetch('/api/exchange-rate');
+        const data = await res.json();
+        _widgetRate = data.rates?.JPY || 22;
+        renderRateWidget(_widgetRate, data.date, !data.fallback);
+        localStorage.setItem('je_rate', JSON.stringify({ rate: _widgetRate, ts: Date.now(), date: data.date }));
+    } catch {
+        _widgetRate = 22;
+        renderRateWidget(22, null, false);
+    }
+}
+
+function renderRateWidget(rate, date, live) {
+    const brlPer100 = (100 / rate);
+    const display   = document.getElementById('rateDisplay');
+    const inverse   = document.getElementById('rateInverse');
+    const dot       = document.getElementById('rateDot');
+    const status    = document.getElementById('rateStatus');
+    const dateEl    = document.getElementById('rateDate');
+    if (display) display.textContent = 'R$ ' + brlPer100.toFixed(2).replace('.', ',');
+    if (inverse) inverse.textContent = '1 BRL = ¥' + rate.toFixed(1);
+    if (dot)     dot.style.background = live ? '#27AE60' : '#F39C12';
+    if (status)  status.textContent   = live ? 'Cotação ao vivo · ' + (date || '') : 'Cotação estimada (sem conexão)';
+    if (dateEl && date) dateEl.textContent = date;
+}
+
+function calcFromJPY(val) {
+    const jpy = parseFloat(val);
+    const el  = document.getElementById('calcResultBRL');
+    if (!el) return;
+    if (!jpy || !_widgetRate) { el.textContent = ''; return; }
+    const brl = jpy / _widgetRate;
+    el.textContent = '= R$ ' + brl.toFixed(2).replace('.', ',');
+    document.getElementById('calcBRL').value = '';
+    document.getElementById('calcResultJPY').textContent = '';
+}
+
+function calcFromBRL(val) {
+    const brl = parseFloat(val);
+    const el  = document.getElementById('calcResultJPY');
+    if (!el) return;
+    if (!brl || !_widgetRate) { el.textContent = ''; return; }
+    const jpy = brl * _widgetRate;
+    el.textContent = '= ¥' + Math.round(jpy).toLocaleString('ja-JP');
+    document.getElementById('calcJPY').value = '';
+    document.getElementById('calcResultBRL').textContent = '';
+}
+
+/* ═══════════════════════════════════════════════════════════
    INIT
 ═══════════════════════════════════════════════════════════ */
 document.addEventListener('DOMContentLoaded', () => {
@@ -1033,6 +1167,7 @@ document.addEventListener('DOMContentLoaded', () => {
     initNovidades();
     updateFloatCart();
     syncSidebarBadges();
+    initExchangeWidget();
     // Atualiza ao voltar do carrinho
     window.addEventListener('storage', () => {
         updateFloatCart();

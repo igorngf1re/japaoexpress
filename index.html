@@ -660,61 +660,6 @@
         </div>
     </section>
 
-    <!-- ══════════════ COTAÇÃO & CALCULADORA ══════════════ -->
-    <section class="px-6 md:px-10 pb-10">
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
-
-            <!-- Cotação ao vivo -->
-            <div class="post-it bg-[#FFF3B0] p-5 pt-9 rounded-sm" style="transform:rotate(-1deg)">
-                <div class="tape"></div>
-                <div class="flex items-center gap-2 mb-3">
-                    <i class="fa-solid fa-chart-line text-[#9B59B6] text-lg"></i>
-                    <h3 class="font-black text-sm text-[#2C1654] uppercase tracking-wide">Cotação Hoje</h3>
-                    <span id="rateDate" class="ml-auto text-[10px] text-gray-400 font-semibold"></span>
-                </div>
-                <div class="text-center py-3">
-                    <p class="text-[0.7rem] font-bold text-gray-500 uppercase tracking-widest mb-1">¥ 100 Ienes =</p>
-                    <p id="rateDisplay" class="font-hero text-4xl text-[#9B59B6]">—</p>
-                    <p class="text-[0.65rem] text-gray-400 font-semibold mt-1" id="rateInverse"></p>
-                </div>
-                <div class="flex items-center gap-1 mt-2">
-                    <div id="rateDot" class="w-2 h-2 rounded-full bg-gray-300"></div>
-                    <span id="rateStatus" class="text-[10px] text-gray-400 font-semibold">Carregando cotação...</span>
-                </div>
-            </div>
-
-            <!-- Calculadora -->
-            <div class="post-it bg-[#E8D5F5] p-5 pt-10 rounded-sm" style="transform:rotate(1deg)">
-                <div class="pin"></div>
-                <div class="flex items-center gap-2 mb-3">
-                    <i class="fa-solid fa-calculator text-[#9B59B6] text-lg"></i>
-                    <h3 class="font-black text-sm text-[#2C1654] uppercase tracking-wide">Calculadora</h3>
-                </div>
-                <div class="space-y-3">
-                    <div>
-                        <label class="text-[0.65rem] font-black text-[#2C1654] uppercase tracking-wide block mb-1">
-                            <i class="fa-solid fa-yen-sign mr-1"></i>Valor em Ienes (¥)
-                        </label>
-                        <input id="calcJPY" type="number" placeholder="ex: 1000"
-                            class="w-full border-2 border-[#C9B8E8] rounded-xl px-3 py-2 text-sm font-bold text-[#2C1654] bg-white/70 focus:border-[#9B59B6] outline-none"
-                            oninput="calcFromJPY(this.value)">
-                        <p id="calcResultBRL" class="text-xs font-black text-[#9B59B6] mt-1 min-h-[1rem]"></p>
-                    </div>
-                    <div class="h-px bg-[#C9B8E8]"></div>
-                    <div>
-                        <label class="text-[0.65rem] font-black text-[#2C1654] uppercase tracking-wide block mb-1">
-                            <i class="fa-solid fa-brazilian-real-sign mr-1"></i>Valor em Reais (R$)
-                        </label>
-                        <input id="calcBRL" type="number" placeholder="ex: 50"
-                            class="w-full border-2 border-[#C9B8E8] rounded-xl px-3 py-2 text-sm font-bold text-[#2C1654] bg-white/70 focus:border-[#9B59B6] outline-none"
-                            oninput="calcFromBRL(this.value)">
-                        <p id="calcResultJPY" class="text-xs font-black text-[#9B59B6] mt-1 min-h-[1rem]"></p>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-
     <!-- ══════════════ CTA WHATSAPP ══════════════ -->
     <section id="contato"
         class="flex flex-col md:flex-row items-center justify-center gap-6 md:gap-10 px-6 md:px-10 pb-10 text-center">
@@ -1095,69 +1040,6 @@ function syncSidebarBadges() {
 }
 
 /* ═══════════════════════════════════════════════════════════
-   COTAÇÃO & CALCULADORA
-═══════════════════════════════════════════════════════════ */
-let _widgetRate = null; // JPY per 1 BRL (e.g., 22 = 1BRL = ¥22)
-
-async function initExchangeWidget() {
-    try {
-        // Try cache first
-        const cached = JSON.parse(localStorage.getItem('je_rate') || 'null');
-        if (cached && Date.now() - cached.ts < 3600000) {
-            _widgetRate = cached.rate;
-            renderRateWidget(cached.rate, cached.date, false);
-            return;
-        }
-    } catch {}
-    try {
-        const res  = await fetch('/api/exchange-rate');
-        const data = await res.json();
-        _widgetRate = data.rates?.JPY || 22;
-        renderRateWidget(_widgetRate, data.date, !data.fallback);
-        localStorage.setItem('je_rate', JSON.stringify({ rate: _widgetRate, ts: Date.now(), date: data.date }));
-    } catch {
-        _widgetRate = 22;
-        renderRateWidget(22, null, false);
-    }
-}
-
-function renderRateWidget(rate, date, live) {
-    const brlPer100 = (100 / rate);
-    const display   = document.getElementById('rateDisplay');
-    const inverse   = document.getElementById('rateInverse');
-    const dot       = document.getElementById('rateDot');
-    const status    = document.getElementById('rateStatus');
-    const dateEl    = document.getElementById('rateDate');
-    if (display) display.textContent = 'R$ ' + brlPer100.toFixed(2).replace('.', ',');
-    if (inverse) inverse.textContent = '1 BRL = ¥' + rate.toFixed(1);
-    if (dot)     dot.style.background = live ? '#27AE60' : '#F39C12';
-    if (status)  status.textContent   = live ? 'Cotação ao vivo · ' + (date || '') : 'Cotação estimada (sem conexão)';
-    if (dateEl && date) dateEl.textContent = date;
-}
-
-function calcFromJPY(val) {
-    const jpy = parseFloat(val);
-    const el  = document.getElementById('calcResultBRL');
-    if (!el) return;
-    if (!jpy || !_widgetRate) { el.textContent = ''; return; }
-    const brl = jpy / _widgetRate;
-    el.textContent = '= R$ ' + brl.toFixed(2).replace('.', ',');
-    document.getElementById('calcBRL').value = '';
-    document.getElementById('calcResultJPY').textContent = '';
-}
-
-function calcFromBRL(val) {
-    const brl = parseFloat(val);
-    const el  = document.getElementById('calcResultJPY');
-    if (!el) return;
-    if (!brl || !_widgetRate) { el.textContent = ''; return; }
-    const jpy = brl * _widgetRate;
-    el.textContent = '= ¥' + Math.round(jpy).toLocaleString('ja-JP');
-    document.getElementById('calcJPY').value = '';
-    document.getElementById('calcResultBRL').textContent = '';
-}
-
-/* ═══════════════════════════════════════════════════════════
    INIT
 ═══════════════════════════════════════════════════════════ */
 document.addEventListener('DOMContentLoaded', () => {
@@ -1167,7 +1049,6 @@ document.addEventListener('DOMContentLoaded', () => {
     initNovidades();
     updateFloatCart();
     syncSidebarBadges();
-    initExchangeWidget();
     // Atualiza ao voltar do carrinho
     window.addEventListener('storage', () => {
         updateFloatCart();

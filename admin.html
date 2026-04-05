@@ -240,43 +240,78 @@
                         </div>
                     </div>
 
-                    <!-- Preço + Calculadora de Margem -->
-                    <div class="col-span-full bg-[#F0E8FF] border border-[#C9B8E8] rounded-xl p-4 space-y-3">
-                        <div class="flex items-center gap-2 mb-1">
-                            <i class="fa-solid fa-calculator text-[#9B59B6] text-sm"></i>
+                    <!-- ── Calculadora de Preço (fluxo: ¥ → custo R$ → + margem → venda) ── -->
+                    <div class="col-span-full bg-[#F0E8FF] border-2 border-[#C9B8E8] rounded-xl p-4">
+
+                        <!-- Cabeçalho -->
+                        <div class="flex items-center gap-2 mb-4">
+                            <i class="fa-solid fa-calculator text-[#9B59B6]"></i>
                             <span class="text-xs font-black text-[#2C1654] uppercase tracking-wide">Calculadora de Preço</span>
-                            <span class="ml-auto text-[10px] text-[#9B59B6] font-semibold" id="adminRateInfo"></span>
+                            <span class="ml-auto text-[10px] font-semibold bg-white/80 border border-[#C9B8E8] rounded-full px-2 py-0.5" id="adminRateInfo">carregando cotação…</span>
                         </div>
-                        <div class="grid grid-cols-1 sm:grid-cols-3 gap-3">
-                            <!-- Custo de aquisição -->
+
+                        <!-- Linha de campos: 4 colunas com setas indicando o fluxo -->
+                        <div class="grid grid-cols-1 sm:grid-cols-[1fr_auto_1fr_auto_1fr_auto_1fr] items-end gap-2">
+
+                            <!-- 1) Preço no Japão ¥ (PRIMARY input) -->
                             <div>
-                                <label class="field-label flex items-center gap-1">
-                                    <i class="fa-solid fa-tag text-[0.6rem]"></i> Custo de Compra (R$)
+                                <label class="field-label text-[#9B59B6]">
+                                    <i class="fa-solid fa-yen-sign mr-1 text-[0.6rem]"></i>Preço no Japão (¥) *
                                 </label>
-                                <input id="fCost" type="number" min="0" step="0.01" class="field-input"
-                                       placeholder="valor pago pelo produto"
+                                <input id="fPriceJPY" type="number" min="0" class="field-input ring-2 ring-[#C9B8E8] focus:ring-[#9B59B6]"
+                                       placeholder="ex: 1980"
+                                       oninput="autoPrice(); updatePreview()">
+                            </div>
+
+                            <!-- seta -->
+                            <div class="hidden sm:flex items-center justify-center pb-2 text-[#9B59B6] font-black">
+                                <i class="fa-solid fa-arrow-right"></i>
+                            </div>
+
+                            <!-- 2) Custo em R$ (auto-calculado, editável p/ ajuste) -->
+                            <div>
+                                <label class="field-label text-gray-500">
+                                    <i class="fa-solid fa-tag mr-1 text-[0.6rem]"></i>Custo em R$ <span class="text-[9px] normal-case font-semibold text-[#9B59B6]">(auto)</span>
+                                </label>
+                                <input id="fCost" type="number" min="0" step="0.01"
+                                       class="field-input bg-[#F9F5FF] text-[#6C3483]"
+                                       placeholder="calculado"
                                        oninput="calcMarkup(); updatePreview()">
                             </div>
-                            <!-- Margem % -->
+
+                            <!-- seta -->
+                            <div class="hidden sm:flex items-center justify-center pb-2 text-[#9B59B6] font-black">
+                                <i class="fa-solid fa-plus"></i>
+                            </div>
+
+                            <!-- 3) Margem % -->
                             <div>
-                                <label class="field-label flex items-center gap-1">
-                                    <i class="fa-solid fa-percent text-[0.6rem]"></i> Margem de Lucro %
+                                <label class="field-label">
+                                    <i class="fa-solid fa-percent mr-1 text-[0.6rem]"></i>Margem %
                                 </label>
-                                <div class="flex items-center gap-2">
+                                <div class="flex items-center gap-1.5">
                                     <input id="fMarkup" type="number" min="0" max="999" value="23"
                                            class="field-input flex-1"
                                            oninput="calcMarkup(); updatePreview()">
-                                    <span class="text-xs font-black text-[#9B59B6] shrink-0">%</span>
+                                    <span class="text-sm font-black text-[#9B59B6]">%</span>
                                 </div>
                             </div>
-                            <!-- Preço de venda -->
+
+                            <!-- seta -->
+                            <div class="hidden sm:flex items-center justify-center pb-2 text-[#9B59B6] font-black">
+                                <i class="fa-solid fa-equals"></i>
+                            </div>
+
+                            <!-- 4) Preço de venda R$ (resultado) -->
                             <div>
-                                <label class="field-label flex items-center gap-1">
-                                    <i class="fa-solid fa-brazilian-real-sign text-[0.6rem]"></i> Preço de Venda (R$) *
+                                <label class="field-label font-black text-[#27AE60]">
+                                    <i class="fa-solid fa-brazilian-real-sign mr-1 text-[0.6rem]"></i>Preço de Venda *
                                 </label>
                                 <div class="relative">
-                                    <input id="fPriceBRL" type="number" min="0" step="0.01" class="field-input pr-7"
-                                           placeholder="auto" required
+                                    <input id="fPriceBRL" type="number" min="0" step="0.01"
+                                           class="field-input pr-7 ring-2 ring-[#27AE60]/40 focus:ring-[#27AE60]"
+                                           placeholder="resultado"
+                                           required
                                            oninput="this.dataset.manual='1'; updatePreview()">
                                     <button type="button" onclick="calcMarkup(true)" title="Recalcular"
                                         class="absolute right-2 top-1/2 -translate-y-1/2 text-[#9B59B6] hover:text-[#7D3C98]">
@@ -285,20 +320,16 @@
                                 </div>
                             </div>
                         </div>
-                        <!-- Linha de resumo do cálculo -->
-                        <div id="calcSummary" class="hidden text-xs font-semibold text-[#6C3483] bg-white/60 rounded-lg px-3 py-2 flex items-center gap-2">
-                            <i class="fa-solid fa-equals text-[0.6rem]"></i>
+
+                        <!-- Resumo do cálculo (aparece após preencher) -->
+                        <div id="calcSummary" class="hidden mt-3 text-[11px] font-semibold text-[#6C3483] bg-white/70 border border-[#C9B8E8] rounded-lg px-3 py-2 flex items-center gap-2">
+                            <i class="fa-solid fa-circle-info text-[0.6rem] shrink-0"></i>
                             <span id="calcSummaryText"></span>
                         </div>
                     </div>
 
-                    <!-- Preço JPY + Peso + Unidades -->
-                    <div class="grid grid-cols-3 gap-4 col-span-full">
-                        <div>
-                            <label class="field-label">Preço no Japão (¥)</label>
-                            <input id="fPriceJPY" type="number" min="0" class="field-input" placeholder="474"
-                                   oninput="autoPrice(); updatePreview()">
-                        </div>
+                    <!-- Peso + Unidades -->
+                    <div class="grid grid-cols-2 gap-4 col-span-full">
                         <div>
                             <label class="field-label">Peso (gramas)</label>
                             <input id="fWeight" type="number" min="0" class="field-input" placeholder="120">
@@ -595,46 +626,59 @@ async function loadAdminRate() {
     const cached = JSON.parse(localStorage.getItem('je_rate') || 'null');
     if (cached && cached.rate && Date.now() - cached.ts < 3600000) {
       ADMIN_RATE = cached.rate;
-      updateAdminRateInfo();
+      updateAdminRateInfo(cached.date);
       return;
     }
     const res  = await fetch('/api/exchange-rate');
     const data = await res.json();
     ADMIN_RATE = data.rates?.JPY || 22;
     localStorage.setItem('je_rate', JSON.stringify({ rate: ADMIN_RATE, ts: Date.now(), date: data.date }));
-  } catch {}
-  updateAdminRateInfo();
+    updateAdminRateInfo(data.date);
+  } catch {
+    updateAdminRateInfo(null);
+  }
 }
 
-function updateAdminRateInfo() {
+function updateAdminRateInfo(date) {
   const el = document.getElementById('adminRateInfo');
-  if (el) el.textContent = '¥' + Math.round(ADMIN_RATE) + ' = R$1,00 · cotação atual';
+  if (!el) return;
+  el.textContent = '¥' + Math.round(ADMIN_RATE) + ' = R$1,00'
+    + (date ? ' · ' + date : ' · cotação estimada');
 }
 
-// ── Auto-price (JPY → custo BRL) ─────────────────────
+// ── Auto-price: ¥ → custo R$ → margem → venda ────────
+// Fluxo: fPriceJPY → fCost (auto) → fMarkup → fPriceBRL (auto)
 function autoPrice(force = false) {
   const jpy = parseFloat(document.getElementById('fPriceJPY').value) || 0;
   const costField = document.getElementById('fCost');
-  if (jpy && costField && !costField.value) {
-    costField.value = (jpy / ADMIN_RATE).toFixed(2);
+  if (costField) {
+    // Sempre recalcula o custo em R$ a partir do JPY
+    costField.value = jpy ? (jpy / ADMIN_RATE).toFixed(2) : '';
   }
   calcMarkup(force);
 }
 
-// ── Calculadora de margem ─────────────────────────────
+// ── Margem: custo R$ + % → preço de venda R$ ─────────
 function calcMarkup(force = false) {
-  const cost   = parseFloat(document.getElementById('fCost').value) || 0;
-  const markup = parseFloat(document.getElementById('fMarkup').value) || 23;
+  const jpy    = parseFloat(document.getElementById('fPriceJPY').value) || 0;
+  const cost   = parseFloat(document.getElementById('fCost').value)    || 0;
+  const markup = parseFloat(document.getElementById('fMarkup').value)  || 23;
   const brlField = document.getElementById('fPriceBRL');
+
   if (cost > 0 && (force || !brlField.dataset.manual)) {
     const sell = cost * (1 + markup / 100);
     brlField.value = sell.toFixed(2);
     delete brlField.dataset.manual;
-    const sumEl = document.getElementById('calcSummary');
+
+    // Exibe o resumo: ¥1980 ÷ 22 = R$90,00 + 23% = R$110,70
+    const sumEl  = document.getElementById('calcSummary');
     const sumTxt = document.getElementById('calcSummaryText');
     if (sumEl && sumTxt) {
       sumEl.classList.remove('hidden');
-      sumTxt.textContent = `R$${cost.toFixed(2).replace('.',',')} + ${markup}% = R$${sell.toFixed(2).replace('.',',')}`;
+      const parteJPY = jpy
+        ? `¥${jpy.toLocaleString('ja-JP')} ÷ ${Math.round(ADMIN_RATE)} = R$${cost.toFixed(2).replace('.',',')} — `
+        : '';
+      sumTxt.textContent = `${parteJPY}R$${cost.toFixed(2).replace('.',',')} + ${markup}% = R$${sell.toFixed(2).replace('.',',')}`;
     }
   }
   updatePreview();

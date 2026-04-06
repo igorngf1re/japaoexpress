@@ -29,11 +29,11 @@ const PRODUCTS = [
     "description": "Tratamento japonês que repara, hidrata e deixa o cabelo sedoso instantaneamente",
     "details": "Ideal para cabelos ressecados, com química, descoloridos ou expostos ao calor constante, essa máscara entrega um efeito imediato de cabelo mais alinhado, macio e com brilho intenso — como se tivesse saído do salão.",
     "origin": "Japão",
-    "image": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR1ZW2Nr0Ex4Fv2urJ4G_nCCIP8Crn7d_ps-Q&s",
+    "image": "https://cdn.jsdelivr.net/gh/igorngf1re/japaoexpress@main/images/produtos/1775478723920_13003_1.jpg",
     "image2": "https://cdn.jsdelivr.net/gh/igorngf1re/japaoexpress@main/images/produtos/1775478130076_shiseidofinopreiumtouchhairmask230ml__1_.webp",
     "image3": "https://cdn.jsdelivr.net/gh/igorngf1re/japaoexpress@main/images/produtos/1775478175734_fino.webp",
     "images": [
-      "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR1ZW2Nr0Ex4Fv2urJ4G_nCCIP8Crn7d_ps-Q&s",
+      "https://cdn.jsdelivr.net/gh/igorngf1re/japaoexpress@main/images/produtos/1775478723920_13003_1.jpg",
       "https://cdn.jsdelivr.net/gh/igorngf1re/japaoexpress@main/images/produtos/1775478130076_shiseidofinopreiumtouchhairmask230ml__1_.webp",
       "https://cdn.jsdelivr.net/gh/igorngf1re/japaoexpress@main/images/produtos/1775478175734_fino.webp"
     ],

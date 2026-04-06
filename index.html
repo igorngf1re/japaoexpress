@@ -572,6 +572,18 @@ function getCardStyle(i) {
 
 function fmtBRL(v) {
     if (!v || isNaN(v)) return 'Sob consulta';
+    // Respeita a moeda atual (currency.js pode não ter carregado ainda → fallback BRL)
+    const cur = (typeof getCurrency === 'function') ? getCurrency() : (localStorage.getItem('je_currency') || 'BRL');
+    if (cur === 'JPY') {
+        let rate = 22;
+        try { const c = JSON.parse(localStorage.getItem('je_rate')||'null'); if (c?.rate) rate = c.rate; } catch {}
+        return '¥' + Math.round(Number(v) * rate).toLocaleString('ja-JP');
+    }
+    if (cur === 'USD') {
+        let usd = 0.18;
+        try { const c = JSON.parse(localStorage.getItem('je_rate')||'null'); if (c?.usdRate) usd = c.usdRate; } catch {}
+        return '$ ' + (Number(v) * usd).toFixed(2);
+    }
     return 'R$ ' + Number(v).toFixed(2).replace('.', ',');
 }
 
@@ -813,7 +825,7 @@ function updateFloatCart() {
             const qty   = cart.reduce((s, i) => s + (i.qty || 1), 0);
             const sum   = cart.reduce((s, i) => s + ((i.priceBRL || 0) * (i.qty || 1)), 0);
             badge.textContent = qty;
-            total.textContent = 'R$ ' + sum.toFixed(2).replace('.', ',');
+            total.textContent = fmtBRL(sum);
             btn.classList.add('visible');
         } else {
             btn.classList.remove('visible');
@@ -871,6 +883,7 @@ document.addEventListener('DOMContentLoaded', () => {
     window.addEventListener('je:currencyChanged', () => {
         initDestaques();
         initNovidades();
+        updateFloatCart();
     });
 });
 </script>

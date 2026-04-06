@@ -19,7 +19,7 @@ function getProductById(id) {
 const PRODUCTS = [
   {
     "id": "ino-premium-touch-oleo-capilar",
-    "name": "ino Premium Touch Óleo Capilar Concentrado 70ml",
+    "name": "Fino Premium Touch Óleo Capilar Concentrado 70ml",
     "category": "Cabelos",
     "cat": "cabelos",
     "subcategory": "Óleo Capilar",
@@ -45,7 +45,7 @@ const PRODUCTS = [
     "rating": 4.5,
     "reviews": 0,
     "cardBg": "bg-[#d6eaf8]",
-    "rotate": "rotate(2deg)",
+    "rotate": "rotate(1deg)",
     "deco": "tape"
   },
   {

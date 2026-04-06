@@ -444,6 +444,16 @@ function updatePayment() {
     updateTotals();
 }
 
+async function notifyTelegram(order) {
+  try {
+    await fetch('/api/notify-order', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ order })
+    });
+  } catch {}
+}
+
 function confirmOrder() {
   const method  = document.querySelector('input[name="shipping"]:checked')?.value || 'ems';
   const payEl   = document.querySelector('input[name="pay"]:checked');
@@ -451,19 +461,60 @@ function confirmOrder() {
   const shpJPY  = calcShipping(method, _ckWeight);
   const shpBRL  = shpJPY / _ckRate;
   const disc    = payment === 'pix' ? _ckSubtotal * 0.05 : 0;
+  const totalBRL = _ckSubtotal + shpBRL - disc;
+  const cart    = JSON.parse(localStorage.getItem('je_cart') || '[]');
+  const orderId = 'JE-' + Date.now();
 
   const order = {
-    id:       'JP-' + new Date().getFullYear() + '-' + String(Date.now()).slice(-4),
-    date:     new Date().toLocaleDateString('pt-BR'),
-    items:    JSON.parse(localStorage.getItem('je_cart') || '[]'),
-    shipping: { method, label: SHIPPING_LABELS[method], jpy: shpJPY, brl: shpBRL },
+    id:            orderId,
+    date:          new Date().toLocaleDateString('pt-BR'),
+    items:         cart,
+    shipping:      { method, name: SHIPPING_LABELS[method], priceBRL: shpBRL, priceJPY: shpJPY },
     payment,
-    subtotal: _ckSubtotal,
-    discount: disc,
-    total:    _ckSubtotal + shpBRL - disc,
+    subtotal:      _ckSubtotal,
+    subtotalBRL:   _ckSubtotal,
+    discount:      disc,
+    discountBRL:   disc,
+    total:         totalBRL,
+    status:        'pendente',
   };
 
   localStorage.setItem('je_last_order', JSON.stringify(order));
+
+  // Save to Firestore (fire-and-forget)
+  try {
+    const db = firebase.firestore();
+    const user = firebase.auth().currentUser;
+    const fsOrder = {
+      id:            orderId,
+      uid:           user ? user.uid : null,
+      customerName:  user ? (user.displayName || '') : '',
+      customerEmail: user ? (user.email || '') : '',
+      customerPhone: user ? (user.phoneNumber || '') : '',
+      items:         cart,
+      subtotal:      _ckSubtotal,
+      discount:      disc,
+      shipping:      { method, name: SHIPPING_LABELS[method], priceBRL: shpBRL, priceJPY: shpJPY },
+      total:         totalBRL,
+      payment:       payment,
+      status:        'pendente',
+      statusHistory: [{ status: 'pendente', ts: firebase.firestore.FieldValue.serverTimestamp(), note: 'Pedido recebido' }],
+      createdAt:     firebase.firestore.FieldValue.serverTimestamp(),
+    };
+
+    const savePromises = [db.collection('orders').doc(orderId).set(fsOrder)];
+    if (user) {
+      savePromises.push(db.collection('users').doc(user.uid).collection('orders').doc(orderId).set(fsOrder));
+    }
+
+    Promise.all(savePromises)
+      .then(() => {
+        notifyTelegram(fsOrder);
+        if (typeof syncFromFirestore === 'function') syncFromFirestore();
+      })
+      .catch(() => {});
+  } catch (e) {}
+
   localStorage.removeItem('je_cart');
   window.location.href = 'sucesso.html';
 }

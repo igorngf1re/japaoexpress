@@ -49,8 +49,9 @@
           '<span class="icon"><i class="fa-solid fa-bag-shopping"></i></span> Carrinho' +
           '<span id="sb-cart-badge" style="margin-left:auto;background:#9B59B6;color:white;font-size:10px;font-weight:900;border-radius:999px;width:20px;height:20px;display:none;align-items:center;justify-content:center">0</span>' +
         '</a>' +
-        '<a href="favoritos.html" class="je-si" onclick="closeSidebar()"><span class="icon"><i class="fa-regular fa-heart"></i></span> Favoritos</a>' +
-        '<a href="perfil.html"    class="je-si" onclick="closeSidebar()"><span class="icon"><i class="fa-regular fa-circle-user"></i></span> Minha Conta</a>' +
+        '<a href="favoritos.html"   class="je-si" onclick="closeSidebar()"><span class="icon"><i class="fa-regular fa-heart"></i></span> Favoritos</a>' +
+        '<a href="meus-pedidos.html" class="je-si" onclick="closeSidebar()"><span class="icon"><i class="fa-solid fa-receipt"></i></span> Meus Pedidos</a>' +
+        '<a href="perfil.html"      class="je-si" onclick="closeSidebar()"><span class="icon"><i class="fa-regular fa-circle-user"></i></span> Minha Conta</a>' +
         '<div class="je-sdiv"></div>' +
         '<a href="index.html#como-funciona" class="je-si" onclick="closeSidebar()"><span class="icon"><i class="fa-solid fa-circle-question"></i></span> Como Funciona</a>' +
         '<a href="contato.html" class="je-si" onclick="closeSidebar()"><span class="icon"><i class="fa-solid fa-envelope"></i></span> Contato</a>' +

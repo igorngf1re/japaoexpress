@@ -42,6 +42,8 @@ function saveCart(cart) {
   updateAllBadges();
   // Notifica páginas que escutam mudanças no carrinho (ex: float cart no index)
   window.dispatchEvent(new CustomEvent('je:cartUpdated'));
+  // Sincroniza com a conta do usuário no Firestore
+  if (typeof scheduleSyncToCloud === 'function') scheduleSyncToCloud();
 }
 
 function addToCart(product, qty = 1) {
@@ -169,6 +171,8 @@ function toggleFav(id) {
   else favs.splice(idx, 1);
   localStorage.setItem(FAVS_KEY, JSON.stringify(favs));
   updateFavIcons();
+  // Sincroniza favoritos com a conta do usuário no Firestore
+  if (typeof scheduleSyncToCloud === 'function') scheduleSyncToCloud();
   return idx === -1; // true = adicionado
 }
 

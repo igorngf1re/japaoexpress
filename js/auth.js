@@ -131,6 +131,11 @@ document.addEventListener('DOMContentLoaded', () => {
           email: u.email,
           name:  u.displayName || existing.name || u.email.split('@')[0],
         });
+        // Sincroniza carrinho + favoritos + perfil com o Firestore
+        // (mescla dados da nuvem com o que está neste dispositivo)
+        if (typeof syncFromFirestore === 'function') {
+          syncFromFirestore(u.uid);
+        }
       } else {
         // Deslogado no Firebase → limpa localStorage
         _clearUser();

@@ -211,9 +211,11 @@
 <script src="js/header.js"></script>
 <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-firestore-compat.js"></script>
 <script src="js/firebase-config.js"></script>
 <script src="js/products.js"></script>
 <script src="js/cart.js"></script>
+<script src="js/sync.js"></script>
 <script src="js/currency.js"></script>
 <script src="js/auth.js"></script>
 <script>
@@ -262,6 +264,8 @@
       const sEmail = document.getElementById('sidebarEmail');
       if (sName)  sName.textContent  = name;
       if (sEmail) sEmail.textContent = email || user.email;
+      // Salva perfil na nuvem (sincroniza entre dispositivos)
+      if (typeof scheduleSyncToCloud === 'function') scheduleSyncToCloud();
     }
     showToast('Perfil salvo com sucesso!');
   }

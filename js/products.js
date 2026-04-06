@@ -30,12 +30,12 @@ const PRODUCTS = [
     "details": "Ideal para cabelos ressecados, com química, descoloridos ou expostos ao calor constante, essa máscara entrega um efeito imediato de cabelo mais alinhado, macio e com brilho intenso — como se tivesse saído do salão.",
     "origin": "Japão",
     "image": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR1ZW2Nr0Ex4Fv2urJ4G_nCCIP8Crn7d_ps-Q&s",
-    "image2": "https://beautizshop.com/cdn/shop/files/Sanstitre_1000x1000px_841x1189mm_2000x2500px_84.png?v=1711643854&width=1500",
-    "image3": "https://1007int.com/cdn/shop/files/103588e3-ae6a-4add-8c34-7366069f7d5a.png?v=1771216549&width=1445",
+    "image2": "https://cdn.jsdelivr.net/gh/igorngf1re/japaoexpress@main/images/produtos/1775478130076_shiseidofinopreiumtouchhairmask230ml__1_.webp",
+    "image3": "https://cdn.jsdelivr.net/gh/igorngf1re/japaoexpress@main/images/produtos/1775478175734_fino.webp",
     "images": [
       "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR1ZW2Nr0Ex4Fv2urJ4G_nCCIP8Crn7d_ps-Q&s",
-      "https://beautizshop.com/cdn/shop/files/Sanstitre_1000x1000px_841x1189mm_2000x2500px_84.png?v=1711643854&width=1500",
-      "https://1007int.com/cdn/shop/files/103588e3-ae6a-4add-8c34-7366069f7d5a.png?v=1771216549&width=1445"
+      "https://cdn.jsdelivr.net/gh/igorngf1re/japaoexpress@main/images/produtos/1775478130076_shiseidofinopreiumtouchhairmask230ml__1_.webp",
+      "https://cdn.jsdelivr.net/gh/igorngf1re/japaoexpress@main/images/produtos/1775478175734_fino.webp"
     ],
     "units": 1,
     "featured": false,
@@ -47,7 +47,7 @@ const PRODUCTS = [
     "rating": 4.5,
     "reviews": 0,
     "cardBg": "bg-[#fcf3cf]",
-    "rotate": "rotate(-2deg)",
+    "rotate": "rotate(1deg)",
     "deco": "tape"
   },
 ];

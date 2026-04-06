@@ -229,9 +229,9 @@ firebase.auth().onAuthStateChanged(function (user) {
 
   const db = firebase.firestore();
 
+  // Usa apenas where() sem orderBy() para evitar índice composto — ordena no cliente
   _unsubscribe = db.collection('orders')
     .where('uid', '==', user.uid)
-    .orderBy('createdAt', 'desc')
     .onSnapshot(function (snapshot) {
       const loading  = document.getElementById('ordersLoading');
       const empty    = document.getElementById('ordersEmpty');
@@ -246,11 +246,19 @@ firebase.auth().onAuthStateChanged(function (user) {
         return;
       }
 
+      // Ordena do mais recente para o mais antigo no cliente
+      const docs = snapshot.docs
+        .map(d => d.data())
+        .sort((a, b) => {
+          const ta = a.createdAt?.toMillis ? a.createdAt.toMillis() : (a.createdAt?.seconds || 0) * 1000;
+          const tb = b.createdAt?.toMillis ? b.createdAt.toMillis() : (b.createdAt?.seconds || 0) * 1000;
+          return tb - ta;
+        });
+
       empty.classList.add('hidden');
       list.classList.remove('hidden');
-      list.innerHTML = snapshot.docs.map(doc => buildOrderCard(doc.data())).join('');
+      list.innerHTML = docs.map(buildOrderCard).join('');
     }, function (err) {
-      // Handle missing index or permission error gracefully
       const loading = document.getElementById('ordersLoading');
       loading.innerHTML = '<p class="text-sm font-semibold text-red-400">Erro ao carregar pedidos. Tente novamente.</p>';
       console.error('Firestore error:', err);

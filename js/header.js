@@ -1,0 +1,183 @@
+(function () {
+  var CSS_STRING = [
+    '#sidebarOverlay{position:fixed;inset:0;z-index:1000;background:rgba(0,0,0,0);pointer-events:none;transition:background .3s}',
+    '#sidebarOverlay.open{background:rgba(0,0,0,.45);pointer-events:all}',
+    '#sidebarPanel{position:absolute;left:0;top:0;height:100%;width:285px;background:#FDFAF2;transform:translateX(-100%);transition:transform .32s cubic-bezier(.4,0,.2,1);box-shadow:4px 0 32px rgba(44,22,84,.2);display:flex;flex-direction:column;overflow-y:auto}',
+    '#sidebarOverlay.open #sidebarPanel{transform:translateX(0)}',
+    '.je-si{display:flex;align-items:center;gap:12px;padding:13px 20px;color:#2C1654;font-weight:700;font-size:15px;text-decoration:none;border-radius:10px;margin:2px 10px;transition:background .15s,color .15s;cursor:pointer}',
+    '.je-si:hover{background:#F0E8FF;color:#9B59B6}',
+    '.je-si .icon{width:22px;text-align:center;font-size:17px}',
+    '.je-sdiv{height:1px;background:#E8DCFF;margin:8px 18px}',
+    '.je-scats{padding:0 10px 4px}',
+    '.je-scat{display:block;padding:7px 14px 7px 52px;font-size:13px;font-weight:600;color:#5D3890;text-decoration:none;border-radius:8px;transition:background .15s}',
+    '.je-scat:hover{background:#F0E8FF}',
+  ].join('');
+
+  var SIDEBAR_HTML = '<div id="sidebarOverlay" onclick="closeSidebar()">' +
+    '<aside id="sidebarPanel" onclick="event.stopPropagation()">' +
+      '<div style="display:flex;align-items:center;justify-content:space-between;padding:16px 20px;border-bottom:1px solid #EDE0FF">' +
+        '<a href="index.html" onclick="closeSidebar()">' +
+          '<img src="logo.png" onerror="this.onerror=null;this.src=\'https://i.imgur.com/lxyYcwX.png\'" alt="Japão Express" style="height:40px;object-fit:contain">' +
+        '</a>' +
+        '<button onclick="closeSidebar()" style="background:none;border:none;cursor:pointer;color:#9B59B6;font-size:24px;font-weight:900;line-height:1">&times;</button>' +
+      '</div>' +
+      '<nav style="flex:1;padding:12px 0">' +
+        '<a href="produtos.html" class="je-si" onclick="closeSidebar()"><span class="icon"><i class="fa-solid fa-store"></i></span> Produtos</a>' +
+        '<div class="je-si" onclick="toggleSidebarCats(this)" style="justify-content:space-between;user-select:none">' +
+          '<div style="display:flex;align-items:center;gap:12px"><span class="icon"><i class="fa-solid fa-tags"></i></span> Categorias</div>' +
+          '<i class="fa-solid fa-chevron-down" id="je-catChevron" style="font-size:11px;transition:transform .2s"></i>' +
+        '</div>' +
+        '<div id="je-sidebarCats" class="je-scats" style="display:none">' +
+          '<a href="produtos.html?cat=cosmeticos"  class="je-scat" onclick="closeSidebar()">\uD83D\uDC84 Cosméticos & Skincare</a>' +
+          '<a href="produtos.html?cat=maquiagem"   class="je-scat" onclick="closeSidebar()">\uD83D\uDC8B Maquiagem</a>' +
+          '<a href="produtos.html?cat=cabelos"     class="je-scat" onclick="closeSidebar()">\uD83D\uDC86 Cabelos</a>' +
+          '<a href="produtos.html?cat=fragrancias" class="je-scat" onclick="closeSidebar()">\uD83C\uDF38 Fragrâncias</a>' +
+          '<a href="produtos.html?cat=higiene"     class="je-scat" onclick="closeSidebar()">\uD83D\uDC8A Higiene & Saúde</a>' +
+          '<a href="produtos.html?cat=doces"       class="je-scat" onclick="closeSidebar()">\uD83C\uDF61 Doces & Snacks</a>' +
+          '<a href="produtos.html?cat=alimentacao" class="je-scat" onclick="closeSidebar()">\uD83C\uDF5C Alimentação</a>' +
+          '<a href="produtos.html?cat=games"       class="je-scat" onclick="closeSidebar()">\uD83C\uDFAE Games</a>' +
+          '<a href="produtos.html?cat=coleciona"   class="je-scat" onclick="closeSidebar()">\uD83E\uDDF8 Colecionáveis</a>' +
+          '<a href="produtos.html?cat=papelaria"   class="je-scat" onclick="closeSidebar()">\u270F\uFE0F Papelaria</a>' +
+          '<a href="produtos.html?cat=cultura"     class="je-scat" onclick="closeSidebar()">\uD83C\uDEE9 Cultura Japonesa</a>' +
+        '</div>' +
+        '<div class="je-sdiv"></div>' +
+        '<button class="je-si" data-currency-toggle onclick="typeof toggleCurrency===\'function\'&&toggleCurrency()" style="width:calc(100% - 20px);background:none;border:none;text-align:left">' +
+          '<span class="icon">\uD83D\uDCB4</span> Moeda' +
+          '<span style="margin-left:auto;font-size:11px;font-weight:900;color:#9B59B6" id="sbCurrLabel">BRL</span>' +
+        '</button>' +
+        '<a href="carrinho.html" class="je-si" onclick="closeSidebar()">' +
+          '<span class="icon"><i class="fa-solid fa-bag-shopping"></i></span> Carrinho' +
+          '<span id="sb-cart-badge" style="margin-left:auto;background:#9B59B6;color:white;font-size:10px;font-weight:900;border-radius:999px;width:20px;height:20px;display:none;align-items:center;justify-content:center">0</span>' +
+        '</a>' +
+        '<a href="favoritos.html" class="je-si" onclick="closeSidebar()"><span class="icon"><i class="fa-regular fa-heart"></i></span> Favoritos</a>' +
+        '<a href="perfil.html"    class="je-si" onclick="closeSidebar()"><span class="icon"><i class="fa-regular fa-circle-user"></i></span> Minha Conta</a>' +
+        '<div class="je-sdiv"></div>' +
+        '<a href="index.html#como-funciona" class="je-si" onclick="closeSidebar()"><span class="icon"><i class="fa-solid fa-circle-question"></i></span> Como Funciona</a>' +
+        '<a href="contato.html" class="je-si" onclick="closeSidebar()"><span class="icon"><i class="fa-solid fa-envelope"></i></span> Contato</a>' +
+      '</nav>' +
+      '<div style="padding:16px 20px;border-top:1px solid #EDE0FF;font-size:12px;color:#9B8FBB;font-weight:600">\u00A9 2026 Japão Express \uD83C\uDF38</div>' +
+    '</aside>' +
+  '</div>';
+
+  var HEADER_HTML = '' +
+    '<!-- col esquerda: hamburguer -->' +
+    '<div style="display:flex;align-items:center">' +
+      '<button onclick="openSidebar()" aria-label="Menu" style="display:flex;flex-direction:column;gap:5px;padding:8px 10px;border-radius:12px;background:none;border:none;cursor:pointer" onmouseover="this.style.background=\'#F5F0FF\'" onmouseout="this.style.background=\'none\'">' +
+        '<span style="display:block;width:24px;height:2.5px;background:#2C1654;border-radius:2px"></span>' +
+        '<span style="display:block;width:24px;height:2.5px;background:#2C1654;border-radius:2px"></span>' +
+        '<span style="display:block;width:16px;height:2.5px;background:#2C1654;border-radius:2px"></span>' +
+      '</button>' +
+    '</div>' +
+    '<!-- col centro: logo -->' +
+    '<div style="display:flex;justify-content:center">' +
+      '<a href="index.html">' +
+        '<img src="logo.png" onerror="this.onerror=null;this.src=\'https://i.imgur.com/lxyYcwX.png\'" alt="Japão Express" style="height:64px;object-fit:contain;filter:drop-shadow(0 1px 3px rgba(0,0,0,.1))">' +
+      '</a>' +
+    '</div>' +
+    '<!-- col direita: moeda + perfil + carrinho -->' +
+    '<div style="display:flex;align-items:center;justify-content:flex-end;gap:10px">' +
+      '<button data-currency-toggle onclick="typeof toggleCurrency===\'function\'&&toggleCurrency()"' +
+        ' style="display:flex;align-items:center;gap:5px;background:#2C1654;color:white;font-weight:900;font-size:11px;padding:5px 11px;border-radius:999px;border:none;cursor:pointer;letter-spacing:.05em;box-shadow:0 1px 4px rgba(0,0,0,.2)"' +
+        ' title="Alternar moeda">' +
+        '<span>\uD83C\uDDE7\uD83C\uDDF7</span><span data-currency-toggle-label>BRL</span>' +
+      '</button>' +
+      '<a href="perfil.html" data-auth-perfil style="color:#3D1A78;text-decoration:none" title="Minha Conta">' +
+        '<i class="fa-regular fa-circle-user" style="font-size:22px"></i>' +
+      '</a>' +
+      '<a href="carrinho.html" style="position:relative;color:#3D1A78;text-decoration:none" title="Carrinho">' +
+        '<i class="fa-solid fa-bag-shopping" style="font-size:20px"></i>' +
+        '<span data-cart-badge style="position:absolute;top:-7px;right:-7px;background:#9B59B6;color:white;font-size:9px;font-weight:900;border-radius:999px;width:15px;height:15px;display:none;align-items:center;justify-content:center;line-height:1"></span>' +
+      '</a>' +
+    '</div>';
+
+  window.openSidebar = function () {
+    var ov = document.getElementById('sidebarOverlay');
+    if (ov) ov.classList.add('open');
+  };
+
+  window.closeSidebar = function () {
+    var ov = document.getElementById('sidebarOverlay');
+    if (ov) ov.classList.remove('open');
+  };
+
+  window.toggleSidebarCats = function () {
+    var cats = document.getElementById('je-sidebarCats');
+    var chev = document.getElementById('je-catChevron');
+    if (!cats) return;
+    var open = cats.style.display === 'none' || cats.style.display === '';
+    cats.style.display = open ? 'block' : 'none';
+    if (chev) chev.style.transform = open ? 'rotate(180deg)' : '';
+  };
+
+  function _inject() {
+    // Inject CSS
+    var style = document.createElement('style');
+    style.textContent = CSS_STRING;
+    document.head.appendChild(style);
+
+    // Inject sidebar only if not already present
+    if (!document.getElementById('sidebarOverlay')) {
+      var tmp = document.createElement('template');
+      tmp.innerHTML = SIDEBAR_HTML.trim();
+      document.body.insertBefore(tmp.content.firstChild, document.body.firstChild);
+    }
+
+    // Replace header content (only if not already processed)
+    var header = document.querySelector('header');
+    if (header && !header.getAttribute('data-je-done')) {
+      header.setAttribute('data-je-done', '1');
+      header.innerHTML = HEADER_HTML;
+      header.style.cssText = 'display:grid;align-items:center;padding:10px 16px;border-bottom:1px solid #EDE0FF;gap:8px;grid-template-columns:1fr auto 1fr';
+    }
+
+    // Atualiza badge do carrinho assim que o header existir
+    // (cart.js pode ainda não ter carregado, então tentamos novamente)
+    _syncBadge();
+    _syncCurrency();
+  }
+
+  function _syncBadge() {
+    if (typeof getCartCount === 'function') {
+      var count = getCartCount();
+      document.querySelectorAll('[data-cart-badge]').forEach(function(el) {
+        el.textContent = count;
+        el.style.display = count > 0 ? 'flex' : 'none';
+      });
+    }
+  }
+
+  function _syncCurrency() {
+    if (typeof updateToggleBtn === 'function') {
+      updateToggleBtn();
+    } else {
+      // currency.js ainda não carregou — atualiza o label com o valor do localStorage
+      try {
+        var cur = localStorage.getItem('je_currency') || 'BRL';
+        var icons = { BRL: '🇧🇷', JPY: '🇯🇵', USD: '🇺🇸' };
+        document.querySelectorAll('[data-currency-toggle]').forEach(function(el) {
+          var lbl = el.querySelector('[data-currency-toggle-label]');
+          if (lbl) {
+            el.querySelector('span:first-child').textContent = icons[cur] || '🇧🇷';
+            lbl.textContent = cur;
+          } else {
+            el.innerHTML = '<span>' + (icons[cur] || '🇧🇷') + '</span> ' + cur;
+          }
+        });
+        var sb = document.getElementById('sbCurrLabel');
+        if (sb) sb.textContent = cur;
+      } catch(e) {}
+    }
+  }
+
+  // Após todos os scripts carregarem, re-sincroniza badge e moeda
+  window.addEventListener('load', function() {
+    _syncBadge();
+    _syncCurrency();
+  });
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', _inject);
+  } else {
+    _inject();
+  }
+})();

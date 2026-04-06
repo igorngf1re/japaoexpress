@@ -16,7 +16,7 @@
     <meta name="msapplication-TileImage" content="icons/icon-144.png">
     <meta name="msapplication-TileColor" content="#9B59B6">
     <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Caveat:wght@600;700&family=Nunito:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Baloo+2:wght@700;800;900&family=Caveat:wght@600;700&family=Nunito:wght@400;600;700;800;900&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
         @font-face { font-family:'Sucker Brush'; src:url('sucker-brush.ttf') format('truetype'); font-display:swap; }
@@ -42,31 +42,7 @@
 <div class="bg-[#FDFAF2] w-full max-w-4xl rounded-3xl shadow-2xl overflow-visible border-t-[10px] border-[#9B59B6]">
 
     <!-- HEADER -->
-    <header class="flex flex-col md:flex-row justify-between items-center px-6 md:px-10 pt-5 pb-4 gap-4">
-        <a href="index.html"><img src="logo.png" onerror="this.src='https://i.imgur.com/YZ4IgF9.png'" alt="Japão Express Logo" class="h-20 md:h-24 object-contain drop-shadow-sm"></a>
-        <div class="flex flex-col items-center gap-3 md:gap-2">
-            <nav class="flex flex-wrap justify-center gap-4 md:gap-8 font-bold text-sm text-[#3D1A78] tracking-wide">
-                <a href="produtos.html" class="hover:text-[#9B59B6] transition">Produtos</a>
-                <a href="index.html#como-funciona" class="hover:text-[#9B59B6] transition">Como Funciona</a>
-                <a href="index.html#contato" class="hover:text-[#9B59B6] transition">Contato</a>
-            </nav>
-            <div class="flex items-center gap-4">
-                <a href="carrinho.html" class="relative text-[#3D1A78] hover:text-[#9B59B6] transition" title="Carrinho">
-                    <i class="fa-solid fa-bag-shopping text-xl"></i>
-                    <span id="cart-badge" data-cart-badge class="absolute -top-2 -right-2 bg-[#9B59B6] text-white text-[10px] font-black rounded-full w-4 h-4 flex items-center justify-center leading-none" style="display:none"></span>
-                </a>
-                <a href="favoritos.html" class="text-[#3D1A78] hover:text-[#9B59B6] transition" title="Favoritos">
-                    <i class="fa-regular fa-heart text-xl"></i>
-                </a>
-                <a href="perfil.html" class="text-[#3D1A78] hover:text-[#9B59B6] transition" title="Minha Conta">
-                    <i class="fa-regular fa-circle-user text-xl"></i>
-                </a>
-                <span class="text-[#C9B8E8] font-light select-none">|</span>
-                <a href="login.html" class="text-[#3D1A78] hover:text-[#9B59B6] transition font-bold text-xs tracking-wide uppercase">Entrar</a>
-                <a href="login.html#cadastro" class="bg-[#9B59B6] text-white font-black text-xs px-3 py-1.5 rounded-full hover:bg-[#7D3C98] transition tracking-wide uppercase">Cadastrar</a>
-            </div>
-        </div>
-    </header>
+    <header></header>
 
     <!-- BREADCRUMB + STEPS -->
     <div class="px-6 md:px-10 pt-3 pb-4 border-b border-gray-100">
@@ -134,10 +110,68 @@
                     </div>
                 </div>
 
-                <!-- 3. Pagamento -->
+                <!-- 3. Método de Envio -->
+                <div class="bg-[#F0EBF8] rounded-2xl p-5 shadow-sm border border-purple-100" id="shippingSection">
+                    <h3 class="font-black text-sm text-[#2C1654] mb-1 flex items-center gap-2">
+                        <span class="w-6 h-6 bg-[#9B59B6] text-white rounded-full flex items-center justify-center text-xs">3</span>
+                        Método de Envio
+                    </h3>
+                    <p class="text-[0.7rem] text-[#7D3C98] font-semibold mb-4 pl-8">Japan Post — frete calculado pelo peso total do pedido</p>
+
+                    <div class="space-y-3" id="shippingOptions">
+
+                        <!-- Airmail -->
+                        <div>
+                            <input type="radio" name="shipping" id="ship_airmail" value="airmail" class="pay-radio" onchange="updateShipping()">
+                            <label for="ship_airmail" class="pay-label">
+                                <div class="pay-dot"></div>
+                                <div class="w-9 h-9 rounded-xl bg-blue-100 flex items-center justify-center flex-shrink-0 text-lg">✈️</div>
+                                <div class="flex-1 min-w-0">
+                                    <span class="block font-black text-[#2C1654] text-xs">Airmail</span>
+                                    <span class="text-[0.68rem] text-gray-400 font-semibold">30–60 dias · Sem rastreio</span>
+                                </div>
+                                <span class="font-black text-[#2C1654] text-sm shrink-0" id="price_airmail">—</span>
+                            </label>
+                        </div>
+
+                        <!-- Airmail Registrado -->
+                        <div>
+                            <input type="radio" name="shipping" id="ship_registered" value="registered" class="pay-radio" onchange="updateShipping()">
+                            <label for="ship_registered" class="pay-label">
+                                <div class="pay-dot"></div>
+                                <div class="w-9 h-9 rounded-xl bg-amber-100 flex items-center justify-center flex-shrink-0 text-lg">📮</div>
+                                <div class="flex-1 min-w-0">
+                                    <span class="block font-black text-[#2C1654] text-xs">Airmail Registrado</span>
+                                    <span class="text-[0.68rem] text-gray-400 font-semibold">25–50 dias · Rastreio básico</span>
+                                </div>
+                                <span class="font-black text-[#2C1654] text-sm shrink-0" id="price_registered">—</span>
+                            </label>
+                        </div>
+
+                        <!-- EMS -->
+                        <div>
+                            <input type="radio" name="shipping" id="ship_ems" value="ems" class="pay-radio" checked onchange="updateShipping()">
+                            <label for="ship_ems" class="pay-label">
+                                <div class="pay-dot"></div>
+                                <div class="w-9 h-9 rounded-xl bg-purple-100 flex items-center justify-center flex-shrink-0 text-lg">🚀</div>
+                                <div class="flex-1 min-w-0">
+                                    <span class="block font-black text-[#2C1654] text-xs">EMS <span class="text-[#9B59B6]">— Expresso</span></span>
+                                    <span class="text-[0.68rem] text-gray-400 font-semibold">7–20 dias · Rastreio completo</span>
+                                </div>
+                                <span class="font-black text-[#9B59B6] text-sm shrink-0" id="price_ems">—</span>
+                            </label>
+                        </div>
+
+                    </div>
+
+                    <!-- peso calculado -->
+                    <p class="mt-3 text-[0.65rem] text-gray-400 font-semibold text-right" id="weightInfo"></p>
+                </div>
+
+                <!-- 4. Pagamento -->
                 <div class="bg-white rounded-2xl p-5 shadow-sm border border-gray-100">
                     <h3 class="font-black text-sm text-[#2C1654] mb-4 flex items-center gap-2">
-                        <span class="w-6 h-6 bg-[#9B59B6] text-white rounded-full flex items-center justify-center text-xs">3</span>
+                        <span class="w-6 h-6 bg-[#9B59B6] text-white rounded-full flex items-center justify-center text-xs">4</span>
                         Forma de Pagamento
                     </h3>
                     <div class="space-y-2">
@@ -179,7 +213,7 @@
                     </div>
                 </div>
 
-                <!-- 4. Aviso de importação / tributação -->
+                <!-- 5. Aviso de importação / tributação -->
                 <details class="bg-amber-50 border border-amber-200 rounded-2xl p-4 cursor-pointer group">
                     <summary class="font-black text-xs text-amber-800 flex items-center gap-2 select-none list-none">
                         <i class="fa-solid fa-box-open text-amber-500 flex-shrink-0"></i>
@@ -207,7 +241,7 @@
                             <p>Recomendamos acompanhar o rastreio do seu pedido. O não pagamento das taxas pode resultar no <strong>retorno ou descarte da mercadoria</strong> pela alfândega.</p>
                         </div>
 
-                        <a href="https://www.gov.br/receitafederal/pt-br/assuntos/aduana-e-comercio-exterior/mala-direta/remessa-para-pessoa-fisica" target="_blank" rel="noopener noreferrer" class="inline-flex items-center gap-1.5 text-[#9B59B6] font-black hover:underline">
+                        <a href="https://www.gov.br/receitafederal/pt-br/assuntos/aduana-e-comercio-exterior/mala-direta" target="_blank" rel="noopener noreferrer" class="inline-flex items-center gap-1.5 text-[#9B59B6] font-black hover:underline">
                             <i class="fa-solid fa-arrow-up-right-from-square text-[0.6rem]"></i> Saiba mais no site da Receita Federal
                         </a>
                     </div>
@@ -228,7 +262,7 @@
                             <span id="ckSubtotal" class="font-black text-[#2C1654]">R$ 0,00</span>
                         </div>
                         <div class="flex justify-between text-gray-400">
-                            <span class="flex items-center gap-1"><i class="fa-solid fa-plane-departure text-xs"></i> Frete EMS</span>
+                            <span class="flex items-center gap-1"><i class="fa-solid fa-plane-departure text-xs"></i> <span id="ckShippingLabel">Frete</span></span>
                             <span id="ckShipping" class="font-semibold">—</span>
                         </div>
                         <div id="discRow" class="flex justify-between text-[#25D366] font-black hidden">
@@ -259,27 +293,67 @@
     </footer>
     <div class="text-center text-xs py-4 text-gray-400 border-t border-gray-100 font-semibold">© 2026 Japão Express. Todos os direitos reservados</div>
 </div>
+<script src="js/header.js"></script>
 <script src="js/products.js"></script>
 <script src="js/cart.js"></script>
 <script src="js/currency.js"></script>
 <script src="js/auth.js"></script>
 <script>
-/* ── Checkout dinâmico ─────────────────────────── */
-const EMS_RATES_CK = [
-    {maxWeight:500,priceJPY:3500},{maxWeight:1000,priceJPY:4700},{maxWeight:1500,priceJPY:5800},
-    {maxWeight:2000,priceJPY:6800},{maxWeight:2500,priceJPY:7800},{maxWeight:3000,priceJPY:8700},
-    {maxWeight:4000,priceJPY:10500},{maxWeight:5000,priceJPY:12200},{maxWeight:7000,priceJPY:15500},
-    {maxWeight:10000,priceJPY:20500},{maxWeight:15000,priceJPY:28500},{maxWeight:20000,priceJPY:36500},
-];
-function getShippingCK(w) {
-    for (const t of EMS_RATES_CK) if (w <= t.maxWeight) return t.priceJPY;
-    return null;
+/* ══════════════════════════════════════════════════
+   Checkout — Japão Express
+   Seleção de método de envio Japan Post + totais
+══════════════════════════════════════════════════ */
+
+// ── Tabelas de frete Japan Post (para o Brasil, em JPY) ──
+const SHIPPING_TABLES = {
+    airmail: [
+        {maxWeight:500,  jpy:2150},
+        {maxWeight:1000, jpy:3000},
+        {maxWeight:1500, jpy:3850},
+        {maxWeight:2000, jpy:4700},
+    ],
+    registered: [
+        {maxWeight:500,  jpy:2580},
+        {maxWeight:1000, jpy:3430},
+        {maxWeight:1500, jpy:4280},
+        {maxWeight:2000, jpy:5130},
+    ],
+    ems: [
+        {maxWeight:500,  jpy:3500},
+        {maxWeight:1000, jpy:4700},
+        {maxWeight:1500, jpy:5800},
+        {maxWeight:2000, jpy:6800},
+        {maxWeight:2500, jpy:7800},
+        {maxWeight:3000, jpy:8700},
+        {maxWeight:4000, jpy:10500},
+        {maxWeight:5000, jpy:12200},
+        {maxWeight:7000, jpy:15500},
+        {maxWeight:10000,jpy:20500},
+        {maxWeight:15000,jpy:28500},
+        {maxWeight:20000,jpy:36500},
+    ],
+};
+
+const SHIPPING_LABELS = {
+    airmail:    'Airmail',
+    registered: 'Airmail Registrado',
+    ems:        'EMS Expresso',
+};
+
+function calcShipping(method, weightG) {
+    const table = SHIPPING_TABLES[method] || SHIPPING_TABLES.ems;
+    for (const t of table) if (weightG <= t.maxWeight) return t.jpy;
+    // acima do máximo da tabela → usa EMS com peso maior
+    return SHIPPING_TABLES.ems[SHIPPING_TABLES.ems.length - 1].jpy;
 }
 
-let _ckSubtotal = 0, _ckShippingJPY = 0, _ckRate = 22;
+let _ckSubtotal  = 0;
+let _ckWeight    = 0;
+let _ckRate      = 22;
 
 function fmtBRL(v) { return 'R$ ' + v.toFixed(2).replace('.',','); }
 
+// ── Renderiza itens e calcula frete de todas as opções ──
 function renderCheckoutSummary() {
     const cart = JSON.parse(localStorage.getItem('je_cart') || '[]');
     if (!cart.length) { window.location.href = 'carrinho.html'; return; }
@@ -300,25 +374,63 @@ function renderCheckoutSummary() {
     });
 
     _ckSubtotal = cart.reduce((s,i) => s + i.priceBRL * i.qty, 0);
-    const totalWeight = cart.reduce((s,i) => s + (i.weight||0) * i.qty, 0);
-    _ckShippingJPY = getShippingCK(totalWeight) || 0;
+    _ckWeight   = cart.reduce((s,i) => s + (i.weight||0) * i.qty, 0);
+
+    // Mostra peso e atualiza preços de cada opção
+    document.getElementById('weightInfo').textContent =
+        'Peso total estimado: ' + (_ckWeight >= 1000
+            ? (_ckWeight/1000).toFixed(2) + ' kg'
+            : _ckWeight + ' g');
+
+    // Calcula e exibe preço de cada método
+    ['airmail','registered','ems'].forEach(method => {
+        const jpy = calcShipping(method, _ckWeight);
+        const brl = jpy / _ckRate;
+        const el  = document.getElementById('price_' + method);
+        if (el) el.textContent = '¥' + jpy.toLocaleString('ja-JP') + ' ≈ ' + fmtBRL(brl);
+    });
+
+    // Airmail só aceita até 2kg
+    const airmailInput = document.getElementById('ship_airmail');
+    const airmailLabel = document.querySelector('label[for="ship_airmail"]');
+    if (_ckWeight > 2000) {
+        airmailInput.disabled = true;
+        if (airmailLabel) {
+            airmailLabel.style.opacity = '0.45';
+            airmailLabel.title = 'Disponível apenas para pedidos até 2 kg';
+        }
+        document.getElementById('price_airmail').textContent = 'Indisponível';
+        const regInput = document.getElementById('ship_registered');
+        const regLabel = document.querySelector('label[for="ship_registered"]');
+        if (_ckWeight > 2000) {
+            regInput.disabled = true;
+            if (regLabel) { regLabel.style.opacity = '0.45'; regLabel.title = 'Disponível apenas para pedidos até 2 kg'; }
+            document.getElementById('price_registered').textContent = 'Indisponível';
+        }
+        // Força EMS
+        document.getElementById('ship_ems').checked = true;
+    }
 
     updateTotals();
 }
 
-function updateTotals() {
-    const isPix  = document.getElementById('pix').checked;
-    const disc   = isPix ? _ckSubtotal * 0.05 : 0;
-    const shippingBRL = _ckShippingJPY ? _ckShippingJPY / _ckRate : 0;
-    const total  = _ckSubtotal - disc + shippingBRL;
+function updateShipping() { updateTotals(); }
 
-    document.getElementById('ckSubtotal').textContent = fmtBRL(_ckSubtotal);
-    document.getElementById('ckShipping').textContent = _ckShippingJPY
-        ? '¥' + _ckShippingJPY.toLocaleString('ja-JP') + ' ≈ ' + fmtBRL(shippingBRL)
-        : 'A combinar';
+function updateTotals() {
+    const method  = document.querySelector('input[name="shipping"]:checked')?.value || 'ems';
+    const isPix   = document.getElementById('pix').checked;
+    const shpJPY  = calcShipping(method, _ckWeight);
+    const shpBRL  = shpJPY / _ckRate;
+    const disc    = isPix ? _ckSubtotal * 0.05 : 0;
+    const total   = _ckSubtotal - disc + shpBRL;
+
+    document.getElementById('ckSubtotal').textContent    = fmtBRL(_ckSubtotal);
+    document.getElementById('ckShippingLabel').textContent = SHIPPING_LABELS[method] || 'Frete';
+    document.getElementById('ckShipping').textContent    =
+        '¥' + shpJPY.toLocaleString('ja-JP') + ' ≈ ' + fmtBRL(shpBRL);
     document.getElementById('discRow').classList.toggle('hidden', !isPix);
-    document.getElementById('ckDisc').textContent = '−' + fmtBRL(disc);
-    document.getElementById('totalVal').textContent = fmtBRL(total);
+    document.getElementById('ckDisc').textContent        = '−' + fmtBRL(disc);
+    document.getElementById('totalVal').textContent      = fmtBRL(total);
 }
 
 function updatePayment() {
@@ -328,16 +440,37 @@ function updatePayment() {
 }
 
 function confirmOrder() {
-    window.location.href = 'sucesso.html';
+  const method  = document.querySelector('input[name="shipping"]:checked')?.value || 'ems';
+  const payEl   = document.querySelector('input[name="pay"]:checked');
+  const payment = payEl?.value || 'pix';
+  const shpJPY  = calcShipping(method, _ckWeight);
+  const shpBRL  = shpJPY / _ckRate;
+  const disc    = payment === 'pix' ? _ckSubtotal * 0.05 : 0;
+
+  const order = {
+    id:       'JP-' + new Date().getFullYear() + '-' + String(Date.now()).slice(-4),
+    date:     new Date().toLocaleDateString('pt-BR'),
+    items:    JSON.parse(localStorage.getItem('je_cart') || '[]'),
+    shipping: { method, label: SHIPPING_LABELS[method], jpy: shpJPY, brl: shpBRL },
+    payment,
+    subtotal: _ckSubtotal,
+    discount: disc,
+    total:    _ckSubtotal + shpBRL - disc,
+  };
+
+  localStorage.setItem('je_last_order', JSON.stringify(order));
+  localStorage.removeItem('je_cart');
+  window.location.href = 'sucesso.html';
 }
 
 document.addEventListener('DOMContentLoaded', async () => {
-    // Load exchange rate for shipping conversion
+    // Carrega taxa de câmbio
     try {
         const cached = JSON.parse(localStorage.getItem('je_rate') || 'null');
-        if (cached && Date.now() - cached.ts < 3600000) { _ckRate = cached.rate; }
-        else {
-            const res = await fetch('/api/exchange-rate');
+        if (cached && cached.rate && Date.now() - cached.ts < 3600000) {
+            _ckRate = cached.rate;
+        } else {
+            const res  = await fetch('/api/exchange-rate');
             const data = await res.json();
             _ckRate = data.rates?.JPY || 22;
         }

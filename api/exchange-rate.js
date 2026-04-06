@@ -7,7 +7,7 @@ export default async function handler(req, res) {
   res.setHeader('Access-Control-Allow-Origin', '*');
 
   try {
-    const response = await fetch('https://api.frankfurter.app/latest?from=BRL&to=JPY', {
+    const response = await fetch('https://api.frankfurter.app/latest?from=BRL&to=JPY,USD', {
       signal: AbortSignal.timeout(5000),
     });
 
@@ -24,7 +24,7 @@ export default async function handler(req, res) {
   } catch {
     // Fallback: média histórica aproximada
     return res.status(200).json({
-      rates: { JPY: 22 },
+      rates: { JPY: 22, USD: 0.18 },
       base:  'BRL',
       date:  new Date().toISOString().split('T')[0],
       fallback: true,

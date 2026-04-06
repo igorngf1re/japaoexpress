@@ -84,57 +84,6 @@
         .stars { color: #F5A623; letter-spacing: 1px; }
 
         /* ════════════════════════════════════════════
-           SIDEBAR
-        ════════════════════════════════════════════ */
-        #sidebarOverlay {
-            position: fixed; inset: 0; z-index: 1000;
-            background: rgba(0,0,0,0);
-            pointer-events: none;
-            transition: background .3s;
-        }
-        #sidebarOverlay.open {
-            background: rgba(0,0,0,.45);
-            pointer-events: all;
-        }
-        #sidebarPanel {
-            position: absolute; left: 0; top: 0;
-            height: 100%; width: 285px;
-            background: #FDFAF2;
-            transform: translateX(-100%);
-            transition: transform .32s cubic-bezier(.4,0,.2,1);
-            box-shadow: 4px 0 32px rgba(44,22,84,.2);
-            display: flex; flex-direction: column;
-            overflow-y: auto;
-        }
-        #sidebarOverlay.open #sidebarPanel {
-            transform: translateX(0);
-        }
-        .sidebar-item {
-            display: flex; align-items: center; gap: 12px;
-            padding: 13px 20px;
-            color: #2C1654;
-            font-weight: 700; font-size: 15px;
-            text-decoration: none;
-            border-radius: 10px;
-            margin: 2px 10px;
-            transition: background .15s, color .15s;
-            cursor: pointer;
-        }
-        .sidebar-item:hover { background: #F0E8FF; color: #9B59B6; }
-        .sidebar-item .icon { width: 22px; text-align: center; font-size: 17px; }
-        .sidebar-divider {
-            height: 1px; background: #E8DCFF; margin: 8px 18px;
-        }
-        .sidebar-cats { padding: 0 10px 4px; }
-        .sidebar-cat-item {
-            display: block; padding: 7px 14px 7px 52px;
-            font-size: 13px; font-weight: 600; color: #5D3890;
-            text-decoration: none; border-radius: 8px;
-            transition: background .15s;
-        }
-        .sidebar-cat-item:hover { background: #F0E8FF; }
-
-        /* ════════════════════════════════════════════
            HERO SLIDER
         ════════════════════════════════════════════ */
         .hero-section {
@@ -349,78 +298,6 @@
 
 <body>
 
-<!-- ══════════════════ SIDEBAR (fora do container) ══════════════════ -->
-<div id="sidebarOverlay" onclick="closeSidebar()">
-    <aside id="sidebarPanel" onclick="event.stopPropagation()">
-
-        <!-- Cabeçalho do sidebar -->
-        <div class="flex items-center justify-between px-5 py-4 border-b border-purple-100">
-            <a href="index.html" onclick="closeSidebar()" class="flex items-center gap-2">
-                <img src="logo.png" onerror="this.onerror=null;this.src='https://i.imgur.com/lxyYcwX.png'" alt="Logo" class="h-10 object-contain">
-            </a>
-            <button onclick="closeSidebar()" class="text-[#9B59B6] hover:text-[#7D3C98] transition text-xl font-black leading-none">&times;</button>
-        </div>
-
-        <!-- Itens principais -->
-        <nav class="flex-1 py-3">
-            <a href="produtos.html" class="sidebar-item" onclick="closeSidebar()">
-                <span class="icon"><i class="fa-solid fa-store"></i></span> Produtos
-            </a>
-
-            <!-- Categorias com sub-lista -->
-            <div class="sidebar-item" onclick="toggleSidebarCats(this)" style="justify-content:space-between">
-                <div class="flex items-center gap-3">
-                    <span class="icon"><i class="fa-solid fa-tags"></i></span> Categorias
-                </div>
-                <i class="fa-solid fa-chevron-down text-xs transition-transform" id="catChevron"></i>
-            </div>
-            <div class="sidebar-cats" id="sidebarCats" style="display:none">
-                <a href="produtos.html?cat=cosmeticos"   class="sidebar-cat-item" onclick="closeSidebar()">💄 Cosméticos & Skincare</a>
-                <a href="produtos.html?cat=maquiagem"    class="sidebar-cat-item" onclick="closeSidebar()">💋 Maquiagem</a>
-                <a href="produtos.html?cat=cabelos"      class="sidebar-cat-item" onclick="closeSidebar()">💆 Cabelos</a>
-                <a href="produtos.html?cat=fragrancias"  class="sidebar-cat-item" onclick="closeSidebar()">🌸 Fragrâncias</a>
-                <a href="produtos.html?cat=higiene"      class="sidebar-cat-item" onclick="closeSidebar()">💊 Higiene & Saúde</a>
-                <a href="produtos.html?cat=doces"        class="sidebar-cat-item" onclick="closeSidebar()">🍡 Doces & Snacks</a>
-                <a href="produtos.html?cat=alimentacao"  class="sidebar-cat-item" onclick="closeSidebar()">🍜 Alimentação</a>
-                <a href="produtos.html?cat=games"        class="sidebar-cat-item" onclick="closeSidebar()">🎮 Games</a>
-                <a href="produtos.html?cat=coleciona"    class="sidebar-cat-item" onclick="closeSidebar()">🧸 Colecionáveis</a>
-                <a href="produtos.html?cat=papelaria"    class="sidebar-cat-item" onclick="closeSidebar()">✏️ Papelaria</a>
-                <a href="produtos.html?cat=cultura"      class="sidebar-cat-item" onclick="closeSidebar()">🎌 Cultura Japonesa</a>
-            </div>
-
-            <div class="sidebar-divider"></div>
-
-            <button class="sidebar-item w-full text-left" data-currency-toggle onclick="toggleCurrency()">
-                <span class="icon">💴</span> Alternar Moeda
-                <span class="ml-auto text-xs font-black text-[#9B59B6]" id="sbCurrLabel">JPY</span>
-            </button>
-
-            <a href="carrinho.html" class="sidebar-item" onclick="closeSidebar()">
-                <span class="icon"><i class="fa-solid fa-bag-shopping"></i></span> Carrinho
-                <span id="sb-cart-badge" class="ml-auto bg-[#9B59B6] text-white text-[10px] font-black rounded-full w-5 h-5 items-center justify-center leading-none" style="display:none">0</span>
-            </a>
-
-            <a href="favoritos.html" class="sidebar-item" onclick="closeSidebar()">
-                <span class="icon"><i class="fa-regular fa-heart"></i></span> Favoritos
-            </a>
-
-            <div class="sidebar-divider"></div>
-
-            <a href="#como-funciona" class="sidebar-item" onclick="closeSidebar()">
-                <span class="icon"><i class="fa-solid fa-circle-question"></i></span> Como Funciona
-            </a>
-
-            <a href="#contato" class="sidebar-item" onclick="closeSidebar()">
-                <span class="icon"><i class="fa-solid fa-envelope"></i></span> Contato
-            </a>
-        </nav>
-
-        <!-- Rodapé do sidebar -->
-        <div class="px-5 py-4 border-t border-purple-100 text-xs text-gray-400 font-semibold">
-            © 2026 Japão Express 🌸
-        </div>
-    </aside>
-</div>
 
 <!-- ══════════════════ FLOATING CART BUTTON ══════════════════ -->
 <a href="carrinho.html" id="floatCartBtn"
@@ -435,52 +312,7 @@
 <div class="bg-[#FDFAF2] w-full max-w-4xl rounded-3xl shadow-2xl overflow-visible border-t-[10px] border-[#9B59B6]">
 
     <!-- ══════════════ HEADER (3 colunas) ══════════════ -->
-    <header class="grid items-center px-4 md:px-6 py-3 border-b border-purple-100 gap-2"
-            style="grid-template-columns: 1fr auto 1fr">
-
-        <!-- Esquerda: hambúrguer -->
-        <div class="flex items-center">
-            <button onclick="openSidebar()"
-                class="flex flex-col gap-[5px] p-2 rounded-xl hover:bg-purple-50 transition group"
-                aria-label="Menu">
-                <span class="block w-6 h-[2.5px] bg-[#2C1654] rounded group-hover:bg-[#9B59B6] transition"></span>
-                <span class="block w-6 h-[2.5px] bg-[#2C1654] rounded group-hover:bg-[#9B59B6] transition"></span>
-                <span class="block w-4 h-[2.5px] bg-[#2C1654] rounded group-hover:bg-[#9B59B6] transition"></span>
-            </button>
-        </div>
-
-        <!-- Centro: logo centralizado -->
-        <div class="flex justify-center">
-            <a href="index.html">
-                <img src="logo.png"
-                     onerror="this.onerror=null;this.src='https://i.imgur.com/lxyYcwX.png'"
-                     alt="Japão Express Logo"
-                     class="h-16 md:h-20 object-contain drop-shadow-sm">
-            </a>
-        </div>
-
-        <!-- Direita: perfil + entrar/sair -->
-        <div class="flex items-center justify-end gap-3">
-            <!-- Ícone de perfil -->
-            <a href="perfil.html" data-auth-perfil
-               class="text-[#3D1A78] hover:text-[#9B59B6] transition"
-               title="Minha Conta">
-                <i class="fa-regular fa-circle-user text-2xl"></i>
-            </a>
-
-            <!-- Entrar / Sair -->
-            <a href="login.html" data-auth-entrar
-               class="text-[#3D1A78] hover:text-[#9B59B6] transition font-bold text-xs tracking-wide uppercase hidden sm:block">
-                Entrar
-            </a>
-
-            <!-- Cadastrar (some quando logado) -->
-            <a href="login.html#cadastro" data-auth-cadastrar
-               class="bg-[#9B59B6] text-white font-black text-xs px-3 py-1.5 rounded-full hover:bg-[#7D3C98] transition tracking-wide uppercase hidden sm:block">
-                Cadastrar
-            </a>
-        </div>
-    </header>
+    <header></header>
 
     <!-- ══════════════ HERO DINÂMICO ══════════════ -->
     <section class="hero-section" id="heroSection">
@@ -496,7 +328,7 @@
 
     <!-- ══════════════ NOSSAS VANTAGENS ══════════════ -->
     <section class="px-6 md:px-10 pt-10 pb-12">
-        <h2 class="font-hand text-[2.4rem] font-bold text-center text-[#2C1654] mb-10">Nossas Vantagens</h2>
+        <h2 class="font-hero text-[2.8rem] font-bold text-center text-[#1A0A2E] mb-10">Nossas Vantagens</h2>
         <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
 
             <div class="post-it bg-[#FFF3B0] p-6 pt-10 text-center rounded-sm rotate-[-2deg]">
@@ -538,7 +370,7 @@
     <!-- ══════════════ DESTAQUES DINÂMICOS ══════════════ -->
     <section class="mx-4 md:mx-6 mb-8 bg-[#F4EFE4] rounded-2xl px-4 md:px-8 py-8 shadow-inner">
         <div class="flex items-center justify-between mb-6">
-            <h2 class="font-hand text-[2.4rem] font-bold text-[#2C1654]">Destaques</h2>
+            <h2 class="font-hero text-[2.8rem] font-bold text-[#1A0A2E]">Destaques</h2>
             <div class="flex items-center gap-2">
                 <span id="destaquesLabel" class="text-[10px] font-black text-[#9B59B6] uppercase tracking-widest bg-purple-100 px-3 py-1 rounded-full">⭐ Em destaque</span>
                 <a href="produtos.html" class="text-xs font-bold text-[#9B59B6] hover:text-[#7D3C98] transition">Ver todos →</a>
@@ -555,7 +387,7 @@
     <!-- ══════════════ RECÉM CHEGADOS (substituiu Reviews) ══════════════ -->
     <section class="px-6 md:px-10 pb-10">
         <div class="flex items-center justify-between mb-6">
-            <h2 class="font-hand text-[2.4rem] font-bold text-[#2C1654] flex items-center gap-2">
+            <h2 class="font-hero text-[2.8rem] font-bold text-[#1A0A2E] flex items-center gap-2">
             <i class="fa-solid fa-star-of-life text-[#9B59B6] text-2xl"></i> Recém Chegados
         </h2>
             <a href="produtos.html" class="text-xs font-bold text-[#9B59B6] hover:text-[#7D3C98] transition">Ver todos →</a>
@@ -570,7 +402,7 @@
         <!-- Fundo decorativo -->
         <div style="position:absolute;right:-20px;top:-20px;font-size:120px;opacity:.07;pointer-events:none;user-select:none">🗾</div>
 
-        <h2 class="font-hand text-[2.4rem] font-bold text-center text-white mb-2">Da nossa jornada até você</h2>
+        <h2 class="font-hero text-[2.8rem] font-bold text-center text-white mb-2">Da nossa jornada até você</h2>
         <p class="text-center text-purple-200 text-sm font-semibold mb-7">Autêntico, com cuidado, direto do Japão 🇯🇵</p>
 
         <div class="bastidores-grid">
@@ -632,7 +464,7 @@
 
     <!-- ══════════════ COMO FUNCIONA ══════════════ -->
     <section id="como-funciona" class="mx-6 mb-8 bg-[#F4EFE4] rounded-2xl px-8 py-8 shadow-inner">
-        <h2 class="font-hand text-[2.4rem] font-bold text-center text-[#2C1654] mb-7">Como Funciona</h2>
+        <h2 class="font-hero text-[2.8rem] font-bold text-center text-[#1A0A2E] mb-7">Como Funciona</h2>
         <div class="flex flex-col md:flex-row justify-center items-center gap-4 md:gap-8 font-bold text-center">
             <div>
                 <i class="fa-solid fa-cart-shopping text-4xl text-[#9370DB] mb-2"></i>
@@ -710,6 +542,7 @@
 <!-- ══════════════════════════════════════════════════════════
      SCRIPTS
 ══════════════════════════════════════════════════════════ -->
+<script src="js/header.js"></script>
 <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-auth-compat.js"></script>
 <script src="js/firebase-config.js"></script>
@@ -719,25 +552,6 @@
 <script src="js/auth.js"></script>
 
 <script>
-/* ═══════════════════════════════════════════════════════════
-   SIDEBAR
-═══════════════════════════════════════════════════════════ */
-function openSidebar() {
-    document.getElementById('sidebarOverlay').classList.add('open');
-    document.body.style.overflow = 'hidden';
-}
-function closeSidebar() {
-    document.getElementById('sidebarOverlay').classList.remove('open');
-    document.body.style.overflow = '';
-}
-function toggleSidebarCats(el) {
-    const cats = document.getElementById('sidebarCats');
-    const chev = document.getElementById('catChevron');
-    const open = cats.style.display !== 'none';
-    cats.style.display = open ? 'none' : 'block';
-    chev.style.transform = open ? '' : 'rotate(180deg)';
-}
-
 /* ═══════════════════════════════════════════════════════════
    UTILIDADES
 ═══════════════════════════════════════════════════════════ */

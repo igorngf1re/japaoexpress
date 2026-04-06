@@ -93,31 +93,7 @@
   <div class="bg-[#FDFAF2] w-full max-w-4xl rounded-3xl shadow-2xl border-t-[10px] border-[#9B59B6] overflow-visible relative z-10">
 
     <!-- Header -->
-    <header class="flex flex-col md:flex-row justify-between items-center px-6 md:px-10 pt-5 pb-4 gap-4">
-      <a href="index.html"><img src="logo.png" onerror="this.src='https://i.imgur.com/YZ4IgF9.png'" alt="Japão Express Logo" class="h-20 md:h-24 object-contain drop-shadow-sm"></a>
-      <div class="flex flex-col items-center gap-3 md:gap-2">
-          <nav class="flex flex-wrap justify-center gap-4 md:gap-8 font-bold text-sm text-[#3D1A78] tracking-wide">
-              <a href="produtos.html" class="hover:text-[#9B59B6] transition">Produtos</a>
-              <a href="index.html#como-funciona" class="hover:text-[#9B59B6] transition">Como Funciona</a>
-              <a href="index.html#contato" class="hover:text-[#9B59B6] transition">Contato</a>
-          </nav>
-          <div class="flex items-center gap-4">
-              <a href="carrinho.html" class="relative text-[#3D1A78] hover:text-[#9B59B6] transition" title="Carrinho">
-                  <i class="fa-solid fa-bag-shopping text-xl"></i>
-                  <span id="cart-badge" data-cart-badge class="absolute -top-2 -right-2 bg-[#9B59B6] text-white text-[10px] font-black rounded-full w-4 h-4 flex items-center justify-center leading-none" style="display:none"></span>
-              </a>
-              <a href="favoritos.html" class="text-[#3D1A78] hover:text-[#9B59B6] transition" title="Favoritos">
-                  <i class="fa-regular fa-heart text-xl"></i>
-              </a>
-              <a href="perfil.html" class="text-[#3D1A78] hover:text-[#9B59B6] transition" title="Minha Conta">
-                  <i class="fa-regular fa-circle-user text-xl"></i>
-              </a>
-              <span class="text-[#C9B8E8] font-light select-none">|</span>
-              <a href="login.html" class="text-[#3D1A78] hover:text-[#9B59B6] transition font-bold text-xs tracking-wide uppercase">Entrar</a>
-              <a href="login.html#cadastro" class="bg-[#9B59B6] text-white font-black text-xs px-3 py-1.5 rounded-full hover:bg-[#7D3C98] transition tracking-wide uppercase">Cadastrar</a>
-          </div>
-      </div>
-    </header>
+    <header></header>
 
     <div class="px-6 md:px-10 pb-10">
 
@@ -144,7 +120,7 @@
 
         <!-- Número do pedido -->
         <span class="inline-block bg-[#E2D4F0] rounded-full px-4 py-1 font-black text-[#9B59B6] text-sm tracking-wide">
-          Pedido #JP-2026-0042
+          <span id="orderNumber">Pedido #...</span>
         </span>
       </section>
 
@@ -159,60 +135,35 @@
           <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-4 text-sm">
             <div>
               <p class="text-gray-500 font-semibold text-xs uppercase tracking-wide mb-1">Data</p>
-              <p class="font-bold text-[#2C1654]">28/03/2026</p>
+              <p class="font-bold text-[#2C1654]" id="orderDate">—</p>
             </div>
             <div>
-              <p class="text-gray-500 font-semibold text-xs uppercase tracking-wide mb-1">Endereço de Entrega</p>
-              <p class="font-bold text-[#2C1654]">Rua das Cerejeiras, 42<br>São Paulo — SP, 01310-100</p>
+              <p class="text-gray-500 font-semibold text-xs uppercase tracking-wide mb-1">Método de Envio</p>
+              <p class="font-bold text-[#2C1654]" id="orderShipping">—</p>
             </div>
             <div>
               <p class="text-gray-500 font-semibold text-xs uppercase tracking-wide mb-1">Pagamento</p>
-              <p class="font-bold text-[#2C1654] flex items-center gap-1">
-                <span class="inline-block w-5 h-5 rounded bg-[#32BCAD] flex items-center justify-center text-white text-xs font-black">P</span>
-                PIX — Confirmado
-              </p>
+              <p class="font-bold text-[#2C1654]" id="orderPayment">—</p>
             </div>
           </div>
 
-          <div class="border-t border-gray-200 pt-4 space-y-3">
-            <!-- Produto 1 -->
-            <div class="flex items-center justify-between">
-              <div class="flex items-center gap-3">
-                <span class="text-lg">🧴</span>
-                <div>
-                  <p class="font-bold text-[#2C1654] text-sm">Bioré UV Aqua Rich SPF 50+</p>
-                  <p class="text-xs text-gray-500 font-semibold">Qtd: 1</p>
-                </div>
-              </div>
-              <p class="font-black text-[#9B59B6] text-sm">R$ 85,00</p>
-            </div>
-            <!-- Produto 2 -->
-            <div class="flex items-center justify-between">
-              <div class="flex items-center gap-3">
-                <span class="text-lg">🍫</span>
-                <div>
-                  <p class="font-bold text-[#2C1654] text-sm">KitKat Matcha Japonês (caixa)</p>
-                  <p class="text-xs text-gray-500 font-semibold">Qtd: 1</p>
-                </div>
-              </div>
-              <p class="font-black text-[#9B59B6] text-sm">R$ 60,00</p>
-            </div>
-            <!-- Produto 3 -->
-            <div class="flex items-center justify-between">
-              <div class="flex items-center gap-3">
-                <span class="text-lg">🎴</span>
-                <div>
-                  <p class="font-bold text-[#2C1654] text-sm">Pokémon TCG — Booster Pack SV</p>
-                  <p class="text-xs text-gray-500 font-semibold">Qtd: 1</p>
-                </div>
-              </div>
-              <p class="font-black text-[#9B59B6] text-sm">R$ 75,00</p>
-            </div>
+          <div class="border-t border-gray-200 pt-4 space-y-3" id="orderItems">
+            <!-- preenchido por JS -->
           </div>
 
-          <div class="border-t border-gray-200 mt-4 pt-4 flex justify-between items-center">
-            <p class="font-black text-[#2C1654] text-base">Total</p>
-            <p class="font-black text-[#9B59B6] text-xl">R$ 220,00</p>
+          <div class="border-t border-gray-200 mt-4 pt-4 space-y-1.5 text-sm">
+            <div class="flex justify-between text-gray-500 font-semibold">
+              <span>Subtotal</span>
+              <span id="orderSubtotal">—</span>
+            </div>
+            <div id="orderDiscRow" class="hidden flex justify-between text-[#25D366] font-black">
+              <span>Desconto PIX (5%)</span>
+              <span id="orderDisc">—</span>
+            </div>
+            <div class="flex justify-between items-center pt-1 border-t border-gray-100 mt-1">
+              <p class="font-black text-[#2C1654] text-base">Total</p>
+              <p class="font-black text-[#9B59B6] text-xl" id="orderTotal">—</p>
+            </div>
           </div>
         </div>
       </div>
@@ -341,8 +292,10 @@
 
   </div><!-- /card -->
 
+  <script src="js/header.js"></script>
+  <script src="js/cart.js"></script>
+  <script src="js/currency.js"></script>
   <script>
-    // Confetti
     const container = document.getElementById('confetti-container');
     const colors = ['#9B59B6','#E2D4F0','#F1C40F','#E74C3C','#2ECC71','#3498DB','#FF69B4','#FFB347'];
 
@@ -363,12 +316,64 @@
       }
     }
 
-    createConfetti();
-    setTimeout(createConfetti, 1500);
+    document.addEventListener('DOMContentLoaded', function() {
+      const order = JSON.parse(localStorage.getItem('je_last_order') || 'null');
 
-    // Re-trigger fadeInUp elements
-    document.querySelectorAll('.anim-fadeinup').forEach(el => {
-      el.style.animationFillMode = 'forwards';
+      // Número do pedido
+      if (order && order.id) {
+        document.getElementById('orderNumber').textContent = 'Pedido #' + order.id;
+      }
+
+      // Data
+      if (order && order.date) {
+        document.getElementById('orderDate').textContent = order.date;
+      }
+
+      // Pagamento
+      const payLabels = { pix: 'PIX — Confirmado', card: 'Cartão de Crédito', boleto: 'Boleto Bancário' };
+      if (order && order.payment) {
+        document.getElementById('orderPayment').textContent = payLabels[order.payment] || order.payment;
+      }
+
+      // Itens
+      if (order && order.items && order.items.length) {
+        const itemsEl = document.getElementById('orderItems');
+        itemsEl.innerHTML = order.items.map(item => `
+          <div class="flex items-center justify-between">
+            <div class="flex items-center gap-3">
+              <div class="w-10 h-10 bg-white rounded-xl border border-gray-100 flex items-center justify-center overflow-hidden flex-shrink-0">
+                <img src="${item.image||''}" class="w-full h-full object-contain p-1" onerror="this.onerror=null;this.parentNode.innerHTML='<i class=\\'fa-solid fa-box\\' style=\\'color:#9B59B6\\'></i>'">
+              </div>
+              <div>
+                <p class="font-bold text-[#2C1654] text-sm leading-tight">${item.name}</p>
+                <p class="text-xs text-gray-500 font-semibold">Qtd: ${item.qty || 1}</p>
+              </div>
+            </div>
+            <p class="font-black text-[#9B59B6] text-sm">R$ ${((item.priceBRL||0) * (item.qty||1)).toFixed(2).replace('.',',')}</p>
+          </div>`).join('');
+      }
+
+      // Envio
+      if (order && order.shipping) {
+        const shpEl = document.getElementById('orderShipping');
+        if (shpEl) shpEl.textContent = order.shipping.label + ' — ¥' + order.shipping.jpy.toLocaleString('ja-JP');
+      }
+
+      // Total
+      if (order) {
+        const fmtBRL = v => 'R$ ' + v.toFixed(2).replace('.',',');
+        document.getElementById('orderSubtotal').textContent = fmtBRL(order.subtotal || 0);
+        if (order.discount > 0) {
+          document.getElementById('orderDiscRow').classList.remove('hidden');
+          document.getElementById('orderDisc').textContent = '−' + fmtBRL(order.discount);
+        }
+        document.getElementById('orderTotal').textContent = fmtBRL(order.total || 0);
+      }
+
+      // Confetti
+      createConfetti();
+      setTimeout(createConfetti, 1500);
+      document.querySelectorAll('.anim-fadeinup').forEach(el => { el.style.animationFillMode = 'forwards'; });
     });
   </script>
 </body>

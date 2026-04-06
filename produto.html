@@ -120,6 +120,27 @@
         .accordion-content.open {
             max-height: 300px;
         }
+
+        /* ── Fita adesiva ── */
+        .tape {
+            position: absolute;
+            top: -13px; left: 50%;
+            transform: translateX(-50%) rotate(-2deg);
+            width: 52px; height: 20px;
+            background: rgba(226,206,148,0.82);
+            border-radius: 2px;
+        }
+
+        /* ── Percevejo ── */
+        .pin {
+            position: absolute;
+            top: 10px; left: 50%;
+            transform: translateX(-50%);
+            width: 14px; height: 14px;
+            border-radius: 50%;
+            background: radial-gradient(circle at 38% 38%, #b0b0b0, #606060);
+            box-shadow: 0 2px 4px rgba(0,0,0,0.3);
+        }
     </style>
 </head>
 
@@ -180,6 +201,7 @@
 
                 <!-- Imagem principal -->
                 <div class="post-it bg-white rounded-2xl p-6 relative border-4 border-white shadow-xl rotate-[0.5deg]">
+                    <div class="tape"></div>
                     <span id="productBadge" class="badge-top hidden"></span>
 
                     <!-- Área de imagem (ícone como placeholder) -->
@@ -196,7 +218,8 @@
 
                 <!-- Origem -->
                 <div class="post-it bg-white rounded-xl p-4 text-center rotate-[-1deg]">
-                    <p class="text-xs font-black text-[#2C1654] uppercase tracking-wide">Comprado em</p>
+                    <div class="pin"></div>
+                    <p class="text-xs font-black text-[#2C1654] uppercase tracking-wide mt-3">Comprado em</p>
                     <p id="productOrigin" class="font-hand text-xl font-bold text-[#9B59B6] mt-1">—</p>
                     <p class="text-[0.65rem] font-semibold text-gray-500 mt-0.5">Autêntico do Japão 🇯🇵</p>
                 </div>
@@ -334,7 +357,8 @@
         <div class="grid grid-cols-1 md:grid-cols-3 gap-5">
 
             <div class="post-it bg-white rounded-xl p-4 shadow-md rotate-[-0.5deg]">
-                <div class="stars text-sm mb-1">★★★★★</div>
+                <div class="tape"></div>
+                <div class="stars text-sm mb-1 mt-3">★★★★★</div>
                 <p class="text-xs font-semibold text-[#3D2060] leading-snug mb-2">
                     "Chegou perfeito, embalagem incrível e o produto é idêntico ao original do Japão! Já comprei 3 vezes."
                 </p>
@@ -342,7 +366,8 @@
             </div>
 
             <div class="post-it bg-white rounded-xl p-4 shadow-md rotate-[1deg]">
-                <div class="stars text-sm mb-1">★★★★★</div>
+                <div class="pin"></div>
+                <div class="stars text-sm mb-1 mt-5">★★★★★</div>
                 <p class="text-xs font-semibold text-[#3D2060] leading-snug mb-2">
                     "O unboxing ficou tão lindo que postei nos stories! Produto autêntico, vim de volta comprar mais."
                 </p>
@@ -350,7 +375,8 @@
             </div>
 
             <div class="post-it bg-white rounded-xl p-4 shadow-md rotate-[-0.8deg]">
-                <div class="stars text-sm mb-1">★★★★★</div>
+                <div class="tape"></div>
+                <div class="stars text-sm mb-1 mt-3">★★★★★</div>
                 <p class="text-xs font-semibold text-[#3D2060] leading-snug mb-2">
                     "Presentei minha namorada e ela amou! Chegou bem antes do prazo e muito bem embalado. 10/10!"
                 </p>
@@ -375,7 +401,8 @@
             FALE NO WHATSAPP BUSINESS
         </a>
         <div class="post-it bg-white px-5 py-4 text-center rotate-[4deg] max-w-[170px] rounded-sm">
-            <p class="font-hand text-[1.2rem] leading-tight text-[#2C1654] font-semibold">
+            <div class="tape"></div>
+            <p class="font-hand text-[1.2rem] leading-tight text-[#2C1654] font-semibold mt-2">
                 Dúvidas sobre redirecionamento? Nos chame!
             </p>
         </div>

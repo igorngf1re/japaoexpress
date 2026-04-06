@@ -11,6 +11,11 @@
 //   cardBg, rotate, deco ('tape'|'pin')
 // ═══════════════════════════════════════════════════════════
 
+// ── Helpers ───────────────────────────────────────────────
+function getProductById(id) {
+  return PRODUCTS.find(p => p.id === id) || null;
+}
+
 const PRODUCTS = [
   {
     "id": "fino-premium-touch-mascara-capilar-230g",

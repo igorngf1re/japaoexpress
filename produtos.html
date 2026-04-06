@@ -55,6 +55,27 @@
             z-index: 10;
         }
 
+        /* ── Fita adesiva ── */
+        .tape {
+            position: absolute;
+            top: -13px; left: 50%;
+            transform: translateX(-50%) rotate(-2deg);
+            width: 52px; height: 20px;
+            background: rgba(226,206,148,0.82);
+            border-radius: 2px;
+        }
+
+        /* ── Percevejo ── */
+        .pin {
+            position: absolute;
+            top: 10px; left: 50%;
+            transform: translateX(-50%);
+            width: 14px; height: 14px;
+            border-radius: 50%;
+            background: radial-gradient(circle at 38% 38%, #b0b0b0, #606060);
+            box-shadow: 0 2px 4px rgba(0,0,0,0.3);
+        }
+
         /* Filtro de categorias */
         .cat-btn {
             padding: 0.45rem 1.2rem;
@@ -204,7 +225,8 @@
             FALE NO WHATSAPP BUSINESS
         </a>
         <div class="post-it bg-white px-5 py-4 text-center rotate-[4deg] max-w-[170px] rounded-sm">
-            <p class="font-hand text-[1.2rem] leading-tight text-[#2C1654] font-semibold">
+            <div class="tape"></div>
+            <p class="font-hand text-[1.2rem] leading-tight text-[#2C1654] font-semibold mt-2">
                 Não achou o que quer? Nos chame!
             </p>
         </div>

@@ -55,31 +55,6 @@
             z-index: 10;
         }
 
-        .tape {
-            position: absolute;
-            top: -13px;
-            left: 50%;
-            transform: translateX(-50%) rotate(-2deg);
-            width: 52px;
-            height: 20px;
-            background-color: rgba(226, 206, 148, 0.82);
-            border-left:  1px solid rgba(0,0,0,0.06);
-            border-right: 1px solid rgba(0,0,0,0.06);
-        }
-
-        .pin {
-            position: absolute;
-            top: 10px;
-            left: 50%;
-            transform: translateX(-50%);
-            width: 14px;
-            height: 14px;
-            background: radial-gradient(circle at 38% 38%, #ff7e7e, #c0392b);
-            border-radius: 50%;
-            box-shadow: inset -2px -2px 4px rgba(0,0,0,0.28), 1px 2px 4px rgba(0,0,0,0.22);
-            z-index: 10;
-        }
-
         /* Filtro de categorias */
         .cat-btn {
             padding: 0.45rem 1.2rem;
@@ -229,8 +204,7 @@
             FALE NO WHATSAPP BUSINESS
         </a>
         <div class="post-it bg-white px-5 py-4 text-center rotate-[4deg] max-w-[170px] rounded-sm">
-            <div class="tape"></div>
-            <p class="font-hand text-[1.2rem] leading-tight mt-2 text-[#2C1654] font-semibold">
+            <p class="font-hand text-[1.2rem] leading-tight text-[#2C1654] font-semibold">
                 Não achou o que quer? Nos chame!
             </p>
         </div>
@@ -284,18 +258,14 @@
 
     // ── Gera HTML de um card a partir do catálogo ─────────────────
     function renderCard(p) {
-        const deco = p.deco === 'pin'
-            ? `<div class="pin"></div>`
-            : `<div class="tape"></div>`;
         const badge = p.badge
             ? `<span class="badge" style="background:${p.badgeBg || '#F5A623'}">${p.badge}</span>`
             : '';
         const favActive = isFav(p.id) ? 'fa-solid text-[#E74C3C]' : 'fa-regular text-[#9B59B6]';
         return `
-        <div class="product-card post-it ${p.cardBg} p-4 pt-9 rounded-sm text-center ${p.rotate} cursor-pointer"
+        <div class="product-card post-it ${p.cardBg} p-4 pt-4 rounded-sm text-center ${p.rotate} cursor-pointer"
              data-cat="${p.cat}" data-name="${p.name.toLowerCase()} ${p.category.toLowerCase()}"
              onclick="window.location='produto.html?id=${p.id}'">
-            ${deco}
             ${badge}
             <div class="relative w-full h-32 bg-white rounded mb-2 border border-gray-100 shadow-sm overflow-hidden">
                 <img src="${p.image}" alt="${p.name}"

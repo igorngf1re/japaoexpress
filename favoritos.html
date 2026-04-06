@@ -187,10 +187,10 @@
   const DECOS = ['tape', 'pin', 'tape', 'pin'];
 
   function renderFavCard(p, idx) {
-    const deco = (p.deco || DECOS[idx % DECOS.length]) === 'pin'
-      ? `<div class="pin"></div>`
+    const deco = (p.deco || DECOS[idx % DECOS.length]) === 'NEVER_PIN'
+      ? `<div class="tape"></div>`
       : `<div class="tape"></div>`;
-    const pt = (p.deco || DECOS[idx % DECOS.length]) === 'pin' ? 'pt-10' : 'pt-8';
+    const pt = (p.deco || DECOS[idx % DECOS.length]) === 'NEVER_PIN' ? 'pt-10' : 'pt-8';
     const priceStr = formatBRL(p.priceBRL);
     return `
       <div class="fav-card relative ${p.cardBg || 'bg-[#EFEFEF]'} p-4 ${pt} rounded-sm shadow-md ${p.rotate || ''}" data-fav-id="${p.id}">

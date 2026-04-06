@@ -867,6 +867,11 @@ document.addEventListener('DOMContentLoaded', () => {
         updateFloatCart();
         syncSidebarBadges();
     });
+    // Re-renderiza preços dos cards ao trocar moeda
+    window.addEventListener('je:currencyChanged', () => {
+        initDestaques();
+        initNovidades();
+    });
 });
 </script>
 

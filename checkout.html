@@ -475,6 +475,13 @@ document.addEventListener('DOMContentLoaded', async () => {
             _ckRate = data.rates?.JPY || 22;
         }
     } catch {}
+
+    // Pré-seleciona método de envio escolhido no carrinho
+    const savedMethod = localStorage.getItem('je_shipping_method') || 'ems';
+    const savedInput  = document.getElementById('ship_' + savedMethod);
+    if (savedInput && !savedInput.disabled) savedInput.checked = true;
+    else document.getElementById('ship_ems').checked = true;
+
     renderCheckoutSummary();
 });
 </script>

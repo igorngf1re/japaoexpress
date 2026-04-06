@@ -79,22 +79,31 @@
       color: white;
     }
     .remove-btn {
-      width: 26px;
-      height: 26px;
-      border-radius: 50%;
-      background: #fee2e2;
-      color: #e74c3c;
-      border: none;
-      font-size: 0.75rem;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      cursor: pointer;
+      width: 26px; height: 26px; border-radius: 50%;
+      background: #fee2e2; color: #e74c3c; border: none;
+      font-size: 0.75rem; display: flex; align-items: center;
+      justify-content: center; cursor: pointer;
       transition: background 0.15s, color 0.15s;
     }
-    .remove-btn:hover {
-      background: #e74c3c;
-      color: white;
+    .remove-btn:hover { background: #e74c3c; color: white; }
+    /* shipping radio */
+    .pay-radio { display: none; }
+    .pay-label {
+      display: flex; align-items: center; gap: 8px;
+      padding: 10px 12px; border: 2px solid #e5e7eb;
+      border-radius: 12px; cursor: pointer;
+      transition: border-color 0.15s, background 0.15s;
+      font-weight: 700; font-size: 0.82rem;
+    }
+    .pay-radio:checked + .pay-label { border-color: #9B59B6; background: #F7F3FF; }
+    .pay-dot {
+      width: 15px; height: 15px; border-radius: 50%;
+      border: 2px solid #d1d5db; flex-shrink: 0;
+      transition: all 0.15s;
+    }
+    .pay-radio:checked + .pay-label .pay-dot {
+      border-color: #9B59B6; background: #9B59B6;
+      box-shadow: inset 0 0 0 3px white;
     }
   </style>
 </head>
@@ -205,6 +214,56 @@
             </details>
           </div>
 
+          <!-- MÉTODO DE ENVIO -->
+          <div id="cartShippingSection" class="mt-4 bg-[#F0EBF8] rounded-2xl p-4 border border-purple-100 hidden">
+            <h3 class="font-black text-sm text-[#2C1654] mb-1 flex items-center gap-2">
+              <i class="fa-solid fa-plane-departure text-[#9B59B6]"></i> Método de Envio
+            </h3>
+            <p class="text-[0.68rem] text-[#7D3C98] font-semibold mb-3">Japan Post — calculado pelo peso total</p>
+            <div class="space-y-2">
+
+              <div>
+                <input type="radio" name="cart_shipping" id="cs_airmail" value="airmail" class="pay-radio" onchange="selectCartShipping('airmail')">
+                <label for="cs_airmail" class="pay-label">
+                  <div class="pay-dot"></div>
+                  <span class="text-lg">✈️</span>
+                  <div class="flex-1">
+                    <span class="block font-black text-[#2C1654] text-xs">Airmail</span>
+                    <span class="text-[0.65rem] text-gray-400 font-semibold">30–60 dias · Sem rastreio</span>
+                  </div>
+                  <span class="font-black text-[#2C1654] text-xs shrink-0" id="cs_price_airmail">—</span>
+                </label>
+              </div>
+
+              <div>
+                <input type="radio" name="cart_shipping" id="cs_registered" value="registered" class="pay-radio" onchange="selectCartShipping('registered')">
+                <label for="cs_registered" class="pay-label">
+                  <div class="pay-dot"></div>
+                  <span class="text-lg">📮</span>
+                  <div class="flex-1">
+                    <span class="block font-black text-[#2C1654] text-xs">Airmail Registrado</span>
+                    <span class="text-[0.65rem] text-gray-400 font-semibold">25–50 dias · Rastreio básico</span>
+                  </div>
+                  <span class="font-black text-[#2C1654] text-xs shrink-0" id="cs_price_registered">—</span>
+                </label>
+              </div>
+
+              <div>
+                <input type="radio" name="cart_shipping" id="cs_ems" value="ems" class="pay-radio" onchange="selectCartShipping('ems')">
+                <label for="cs_ems" class="pay-label">
+                  <div class="pay-dot"></div>
+                  <span class="text-lg">🚀</span>
+                  <div class="flex-1">
+                    <span class="block font-black text-[#2C1654] text-xs">EMS <span class="text-[#9B59B6]">— Expresso</span></span>
+                    <span class="text-[0.65rem] text-gray-400 font-semibold">7–20 dias · Rastreio completo</span>
+                  </div>
+                  <span class="font-black text-[#9B59B6] text-xs shrink-0" id="cs_price_ems">—</span>
+                </label>
+              </div>
+
+            </div>
+          </div>
+
           <!-- CUPOM -->
           <div class="mt-2 flex gap-2">
             <input type="text" placeholder="Código de cupom..." class="flex-1 border-2 border-gray-200 rounded-xl px-4 py-2.5 text-sm font-semibold text-[#4A3060] focus:border-[#9B59B6] outline-none bg-white" />
@@ -225,7 +284,7 @@
                 <span id="summarySubtotal" class="font-black text-[#2C1654]">R$ 0,00</span>
               </div>
               <div class="flex justify-between">
-                <span>Frete EMS</span>
+                <span id="summaryShippingLabel">Frete EMS</span>
                 <span id="summaryShipping" class="font-semibold text-xs text-gray-400">Calculado acima</span>
               </div>
               <div class="flex justify-between">
@@ -306,111 +365,206 @@
   <script src="js/currency.js"></script>
   <script src="js/auth.js"></script>
   <script>
-    function renderItem(item) {
-      const row = document.createElement('div');
-      row.className = 'item-row bg-[#EFEFEF] rounded-xl p-4 flex gap-3 shadow-sm relative';
-      row.dataset.id = item.id;
-      row.innerHTML = `
-        <button class="remove-btn absolute top-3 right-3" onclick="doRemove('${item.id}')">
-          <i class="fa-solid fa-xmark"></i>
-        </button>
-        <div class="w-14 h-14 bg-white rounded-lg flex items-center justify-center border border-gray-200 flex-shrink-0 overflow-hidden">
-          <img src="${item.image}" class="w-full h-full object-contain p-1" onerror="this.style.display='none'">
+  // ── Tabelas de frete Japan Post (Brasil, JPY) ──────────────
+  const CART_SHIPPING_TABLES = {
+    airmail:    [{max:500,jpy:2150},{max:1000,jpy:3000},{max:1500,jpy:3850},{max:2000,jpy:4700}],
+    registered: [{max:500,jpy:2580},{max:1000,jpy:3430},{max:1500,jpy:4280},{max:2000,jpy:5130}],
+    ems:        [{max:500,jpy:3500},{max:1000,jpy:4700},{max:1500,jpy:5800},{max:2000,jpy:6800},
+                 {max:2500,jpy:7800},{max:3000,jpy:8700},{max:4000,jpy:10500},{max:5000,jpy:12200},
+                 {max:7000,jpy:15500},{max:10000,jpy:20500},{max:15000,jpy:28500},{max:20000,jpy:36500}],
+  };
+  function calcCartShipping(method, weightG) {
+    const table = CART_SHIPPING_TABLES[method] || CART_SHIPPING_TABLES.ems;
+    for (const t of table) if (weightG <= t.max) return t.jpy;
+    return CART_SHIPPING_TABLES.ems[CART_SHIPPING_TABLES.ems.length - 1].jpy;
+  }
+  function getCartRate() {
+    try { const c = JSON.parse(localStorage.getItem('je_rate')||'null'); return c?.rate||22; } catch { return 22; }
+  }
+  function getCartUsdRate() {
+    try { const c = JSON.parse(localStorage.getItem('je_rate')||'null'); return c?.usdRate||0.18; } catch { return 0.18; }
+  }
+
+  // ── Formata preço respeitando moeda atual ──────────────────
+  function fmtCart(brl) {
+    const cur = (typeof getCurrency === 'function') ? getCurrency() : (localStorage.getItem('je_currency') || 'BRL');
+    if (cur === 'JPY') return '¥' + Math.round(brl * getCartRate()).toLocaleString('ja-JP');
+    if (cur === 'USD') return '$ ' + (brl * getCartUsdRate()).toFixed(2);
+    return 'R$ ' + brl.toFixed(2).replace('.',',');
+  }
+
+  // ── Seleção de envio ───────────────────────────────────────
+  function getSelectedShipping() {
+    return localStorage.getItem('je_shipping_method') || 'ems';
+  }
+  function selectCartShipping(method) {
+    localStorage.setItem('je_shipping_method', method);
+    updateShippingSummary();
+  }
+
+  function renderShippingOptions(weight) {
+    const section = document.getElementById('cartShippingSection');
+    if (!section) return;
+    const method = getSelectedShipping();
+    const rate   = getCartRate();
+
+    // desabilita airmail/registered se > 2kg
+    ['airmail','registered'].forEach(m => {
+      const inp = document.getElementById('cs_' + m);
+      const lbl = document.querySelector('label[for="cs_' + m + '"]');
+      if (weight > 2000) {
+        inp.disabled = true;
+        if (lbl) { lbl.style.opacity = '0.4'; lbl.title = 'Disponível apenas para pedidos até 2 kg'; }
+        document.getElementById('cs_price_' + m).textContent = 'Indisponível';
+      } else {
+        inp.disabled = false;
+        if (lbl) { lbl.style.opacity = ''; lbl.title = ''; }
+        const jpy = calcCartShipping(m, weight);
+        const brl = jpy / rate;
+        document.getElementById('cs_price_' + m).textContent = '¥' + jpy.toLocaleString('ja-JP') + ' ≈ ' + fmtCart(brl);
+      }
+    });
+
+    const emsJPY = calcCartShipping('ems', weight);
+    document.getElementById('cs_price_ems').textContent = '¥' + emsJPY.toLocaleString('ja-JP') + ' ≈ ' + fmtCart(emsJPY / rate);
+
+    // força EMS se método salvo não disponível
+    let active = method;
+    if (weight > 2000 && (method === 'airmail' || method === 'registered')) {
+      active = 'ems';
+      localStorage.setItem('je_shipping_method', 'ems');
+    }
+    const el = document.getElementById('cs_' + active);
+    if (el) el.checked = true;
+
+    section.classList.remove('hidden');
+  }
+
+  function updateShippingSummary() {
+    const weight = getCartWeight();
+    const method = getSelectedShipping();
+    const rate   = getCartRate();
+    const shpJPY = calcCartShipping(method, weight);
+    const shpBRL = shpJPY / rate;
+    const subtotal = getCartTotal();
+    const total    = subtotal + shpBRL;
+
+    const LABELS = { airmail:'Airmail', registered:'Airmail Reg.', ems:'EMS Expresso' };
+
+    const shippingEl = document.getElementById('summaryShipping');
+    if (shippingEl) {
+      shippingEl.textContent  = '¥' + shpJPY.toLocaleString('ja-JP') + ' ≈ ' + fmtCart(shpBRL);
+      shippingEl.dataset.priceBrl = shpBRL;
+    }
+    const labelEl = document.getElementById('summaryShippingLabel');
+    if (labelEl) labelEl.textContent = LABELS[method] || 'Frete';
+
+    // subtotal
+    const subEl = document.getElementById('summarySubtotal');
+    if (subEl) { subEl.textContent = fmtCart(subtotal); subEl.dataset.priceBrl = subtotal; }
+
+    // total
+    const totEl = document.getElementById('summaryTotal');
+    if (totEl) { totEl.textContent = fmtCart(total); totEl.dataset.priceBrl = total; }
+
+    // box simulator (EMS apenas)
+    const boxShEl = document.getElementById('boxShipping');
+    if (boxShEl) boxShEl.textContent = '¥' + shpJPY.toLocaleString('ja-JP') + ' ≈ ' + fmtCart(shpBRL);
+  }
+
+  // ── Renderiza item ─────────────────────────────────────────
+  function renderItem(item) {
+    const row = document.createElement('div');
+    row.className = 'item-row bg-[#EFEFEF] rounded-xl p-4 flex gap-3 shadow-sm relative';
+    row.dataset.id = item.id;
+    row.innerHTML = `
+      <button class="remove-btn absolute top-3 right-3" onclick="doRemove('${item.id}')">
+        <i class="fa-solid fa-xmark"></i>
+      </button>
+      <div class="w-14 h-14 bg-white rounded-lg flex items-center justify-center border border-gray-200 flex-shrink-0 overflow-hidden">
+        <img src="${item.image}" class="w-full h-full object-contain p-1" onerror="this.style.display='none'">
+      </div>
+      <div class="flex-1 min-w-0 pr-6">
+        <p class="font-black text-sm text-[#2C1654] leading-tight">${item.name}</p>
+        <p class="text-xs text-[#9B59B6] font-semibold mt-0.5">${item.category} · ${item.weight}g</p>
+        <p class="text-xs text-gray-400 font-semibold mt-0.5">Preço unit.:
+          <span class="text-[#4A3060]" data-price-brl="${item.priceBRL}">${fmtCart(item.priceBRL)}</span>
+        </p>
+        <div class="flex items-center gap-3 mt-2">
+          <button class="qty-btn" onclick="doQty('${item.id}',-1)">−</button>
+          <span class="font-black text-sm text-[#2C1654] w-6 text-center" id="qty-${item.id}">${item.qty}</span>
+          <button class="qty-btn" onclick="doQty('${item.id}',1)">+</button>
+          <span class="ml-auto font-black text-base text-[#9B59B6]"
+                data-price-brl="${item.priceBRL * item.qty}">${fmtCart(item.priceBRL * item.qty)}</span>
         </div>
-        <div class="flex-1 min-w-0 pr-6">
-          <p class="font-black text-sm text-[#2C1654] leading-tight">${item.name}</p>
-          <p class="text-xs text-[#9B59B6] font-semibold mt-0.5">${item.category} · ${item.weight}g</p>
-          <p class="text-xs text-gray-400 font-semibold mt-0.5">Preço unit.:
-            <span class="text-[#4A3060]" data-price-brl="${item.priceBRL}">R$ ${item.priceBRL.toFixed(2).replace('.',',')}</span>
-          </p>
-          <div class="flex items-center gap-3 mt-2">
-            <button class="qty-btn" onclick="doQty('${item.id}',-1)">−</button>
-            <span class="font-black text-sm text-[#2C1654] w-6 text-center" id="qty-${item.id}">${item.qty}</span>
-            <button class="qty-btn" onclick="doQty('${item.id}',1)">+</button>
-            <span class="ml-auto font-black text-base text-[#9B59B6]" id="total-${item.id}"
-                  data-price-brl="${item.priceBRL * item.qty}">
-              R$ ${(item.priceBRL * item.qty).toFixed(2).replace('.',',')}
-            </span>
-          </div>
-        </div>`;
-      return row;
+      </div>`;
+    return row;
+  }
+
+  // ── Render principal ───────────────────────────────────────
+  function refreshCart() {
+    const cart      = getCart();
+    const list      = document.getElementById('itemsList');
+    const empty     = document.getElementById('emptyState');
+    const content   = document.getElementById('cartContent');
+    const simulator = document.getElementById('boxSimulator');
+
+    list.innerHTML = '';
+    if (cart.length === 0) {
+      empty.style.display   = 'flex';
+      content.style.display = 'none';
+      simulator.classList.add('hidden');
+      document.getElementById('cartShippingSection')?.classList.add('hidden');
+      return;
+    }
+    empty.style.display   = 'none';
+    content.style.display = 'flex';
+    cart.forEach(item => list.appendChild(renderItem(item)));
+
+    const weight = getCartWeight();
+    const rate   = getCartRate();
+
+    if (weight > 0) {
+      simulator.classList.remove('hidden');
+      const box = getBoxInfo(weight);
+      document.getElementById('boxEmoji').textContent       = box.emoji;
+      document.getElementById('boxName').textContent        = box.name;
+      document.getElementById('boxDesc').textContent        = box.desc;
+      document.getElementById('boxPct').textContent         = box.pct + '%';
+      document.getElementById('boxTotalWeight').textContent = weight >= 1000 ? (weight/1000).toFixed(2)+'kg' : weight+'g';
+      document.getElementById('boxRemaining').textContent   = box.remaining > 0 ? box.remaining+'g livres' : 'Caixa cheia!';
+      const bar = document.getElementById('boxBar');
+      bar.style.width      = box.pct + '%';
+      bar.style.background = box.pct < 60 ? '#27AE60' : box.pct < 90 ? '#F39C12' : '#E74C3C';
+      const tip = document.getElementById('boxTip');
+      if (box.pct < 70 && box.remaining > 200) {
+        tip.textContent = 'Ainda tem ' + box.remaining + 'g de espaço — adicione mais itens e divida o frete!';
+        tip.classList.remove('hidden');
+      } else { tip.classList.add('hidden'); }
     }
 
-    function refreshCart() {
-      const cart      = getCart();
-      const list      = document.getElementById('itemsList');
-      const empty     = document.getElementById('emptyState');
-      const content   = document.getElementById('cartContent');
-      const simulator = document.getElementById('boxSimulator');
+    // Opções de envio + resumo
+    renderShippingOptions(weight);
+    updateShippingSummary();
+  }
 
-      list.innerHTML = '';
-      if (cart.length === 0) {
-        empty.style.display   = 'flex';
-        content.style.display = 'none';
-        simulator.classList.add('hidden');
-        return;
-      }
-      empty.style.display   = 'none';
-      content.style.display = 'flex';
-      cart.forEach(item => list.appendChild(renderItem(item)));
-
-      const subtotal = getCartTotal();
-      document.getElementById('summarySubtotal').textContent = 'R$ ' + subtotal.toFixed(2).replace('.',',');
-      document.getElementById('summaryTotal').textContent    = 'R$ ' + subtotal.toFixed(2).replace('.',',');
-
-      const weight = getCartWeight();
-      // Get cached exchange rate
-      let _cartRate = 22;
-      try {
-        const _rc = JSON.parse(localStorage.getItem('je_rate') || 'null');
-        if (_rc && _rc.rate) _cartRate = _rc.rate;
-      } catch {}
-
-      if (weight > 0) {
-        simulator.classList.remove('hidden');
-        const box = getBoxInfo(weight);
-        document.getElementById('boxEmoji').textContent       = box.emoji;
-        document.getElementById('boxName').textContent        = box.name;
-        document.getElementById('boxDesc').textContent        = box.desc;
-        document.getElementById('boxPct').textContent         = box.pct + '%';
-        document.getElementById('boxTotalWeight').textContent = weight + 'g';
-        document.getElementById('boxRemaining').textContent   = box.remaining > 0 ? box.remaining + 'g livres' : 'Caixa cheia!';
-        const bar = document.getElementById('boxBar');
-        bar.style.width      = box.pct + '%';
-        bar.style.background = box.pct < 60 ? '#27AE60' : box.pct < 90 ? '#F39C12' : '#E74C3C';
-        const shippingJPY = getShippingJPY(weight);
-        const shippingBRL = shippingJPY ? shippingJPY / _cartRate : 0;
-        document.getElementById('boxShipping').textContent    = shippingJPY
-          ? '¥' + shippingJPY.toLocaleString('ja-JP') + ' ≈ R$' + shippingBRL.toFixed(2).replace('.',',')
-          : 'Acima do limite';
-        document.getElementById('summaryShipping').textContent = shippingJPY
-          ? '≈ R$ ' + shippingBRL.toFixed(2).replace('.',',') + ' (EMS)'
-          : '—';
-        // Update total with shipping
-        document.getElementById('summaryTotal').textContent = 'R$ ' + (subtotal + shippingBRL).toFixed(2).replace('.',',');
-        const tip = document.getElementById('boxTip');
-        if (box.pct < 70 && box.remaining > 200) {
-          tip.textContent = 'Você ainda tem ' + box.remaining + 'g de espaço — adicione mais itens e divida o frete!';
-          tip.classList.remove('hidden');
-        } else { tip.classList.add('hidden'); }
-      }
-      refreshAllPrices();
+  function doRemove(id) {
+    const row = document.querySelector('.item-row[data-id="' + id + '"]');
+    if (row) {
+      row.style.transition = 'opacity 0.25s, transform 0.25s';
+      row.style.opacity = '0'; row.style.transform = 'translateX(20px)';
+      setTimeout(() => { removeFromCart(id); refreshCart(); }, 250);
     }
+  }
 
-    function doRemove(id) {
-      const row = document.querySelector('.item-row[data-id="' + id + '"]');
-      if (row) {
-        row.style.transition = 'opacity 0.25s, transform 0.25s';
-        row.style.opacity = '0'; row.style.transform = 'translateX(20px)';
-        setTimeout(() => { removeFromCart(id); refreshCart(); }, 250);
-      }
-    }
+  function doQty(id, delta) {
+    const item = getCart().find(i => i.id === id);
+    if (item) { updateCartQty(id, item.qty + delta); refreshCart(); }
+  }
 
-    function doQty(id, delta) {
-      const item = getCart().find(i => i.id === id);
-      if (item) { updateCartQty(id, item.qty + delta); refreshCart(); }
-    }
+  // Re-renderiza quando a moeda muda
+  window.addEventListener('je:currencyChanged', () => refreshCart());
 
-    refreshCart();
+  refreshCart();
   </script>
 </html>

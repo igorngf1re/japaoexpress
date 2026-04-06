@@ -317,6 +317,9 @@
     });
 
     renderAll();
+
+    // Re-renderiza preços ao trocar moeda
+    window.addEventListener('je:currencyChanged', () => renderAll());
 </script>
 
 </body>

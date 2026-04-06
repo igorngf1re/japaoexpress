@@ -19,6 +19,8 @@ function setCurrency(c) {
   localStorage.setItem(CURRENCY_KEY, c);
   refreshAllPrices();
   updateToggleBtn();
+  // Avisa páginas dinâmicas (carrinho, produto, etc.) para se re-renderizar
+  window.dispatchEvent(new CustomEvent('je:currencyChanged', { detail: { currency: c } }));
 }
 
 function toggleCurrency() {

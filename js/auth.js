@@ -122,8 +122,15 @@ document.addEventListener('DOMContentLoaded', () => {
   if (_hasFirebase()) {
     firebase.auth().onAuthStateChanged(u => {
       if (u) {
-        // Usuário logado no Firebase → sincroniza localStorage
-        setUser({ uid: u.uid, email: u.email, name: u.displayName || u.email.split('@')[0] });
+        // Mescla com dados locais já salvos (phone, birthdate, etc.)
+        // para não apagar informações que o usuário editou no perfil
+        const existing = getUser() || {};
+        setUser({
+          ...existing,
+          uid:   u.uid,
+          email: u.email,
+          name:  u.displayName || existing.name || u.email.split('@')[0],
+        });
       } else {
         // Deslogado no Firebase → limpa localStorage
         _clearUser();

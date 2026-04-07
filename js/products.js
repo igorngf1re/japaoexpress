@@ -18,6 +18,37 @@ function getProductById(id) {
 
 const PRODUCTS = [
   {
+    "id": "kit-2-pecas-moroccan-beauty-deep-moist-s",
+    "name": "Kit 2 peças Moroccan Beauty Deep Moist Shampoo + Tratamento",
+    "category": "Cabelos",
+    "cat": "cabelos",
+    "subcategory": "Shampoo",
+    "priceBRL": 128.58,
+    "priceJPY": 1980,
+    "weight": 900,
+    "description": "Kit hidratante com óleo de argan para cabelos macios e brilhantes.",
+    "details": "O Moroccan Beauty Deep Moist Shampoo + Tratamento é um kit premium japonês desenvolvido para hidratação profunda e reparação capilar. Enriquecido com óleo de argan, conhecido como 'ouro líquido', proporciona nutrição intensa, brilho e maciez desde a primeira aplicação.",
+    "origin": "Japão",
+    "image": "https://cdn.jsdelivr.net/gh/igorngf1re/japaoexpress@main/images/produtos/1775568685026_moroccan.jpg",
+    "image2": null,
+    "image3": null,
+    "images": [
+      "https://cdn.jsdelivr.net/gh/igorngf1re/japaoexpress@main/images/produtos/1775568685026_moroccan.jpg"
+    ],
+    "units": 1,
+    "featured": false,
+    "cost": 64.29,
+    "markup": 100,
+    "badge": "Favorito JP",
+    "badgeBg": "#9b59b6",
+    "stock": 10,
+    "rating": 4.5,
+    "reviews": 0,
+    "cardBg": "bg-[#fadbd8]",
+    "rotate": "rotate(1deg)",
+    "deco": "tape"
+  },
+  {
     "id": "ino-premium-touch-oleo-capilar",
     "name": "Fino Premium Touch Óleo Capilar Concentrado 70ml",
     "category": "Cabelos",

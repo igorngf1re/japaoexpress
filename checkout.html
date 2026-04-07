@@ -482,15 +482,19 @@ function confirmOrder() {
   localStorage.setItem('je_last_order', JSON.stringify(order));
 
   // Save to Firestore (fire-and-forget)
+  // Usa localStorage como fonte confiável pois currentUser pode ser null durante inicialização
   try {
-    const db = firebase.firestore();
-    const user = firebase.auth().currentUser;
+    const db        = firebase.firestore();
+    const localUser = (typeof getUser === 'function') ? getUser() : null;
+    const fbUser    = firebase.auth().currentUser;
+    const uid       = fbUser?.uid || localUser?.uid || null;
+
     const fsOrder = {
       id:            orderId,
-      uid:           user ? user.uid : null,
-      customerName:  user ? (user.displayName || '') : '',
-      customerEmail: user ? (user.email || '') : '',
-      customerPhone: user ? (user.phoneNumber || '') : '',
+      uid:           uid,
+      customerName:  localUser?.name  || fbUser?.displayName || '',
+      customerEmail: localUser?.email || fbUser?.email       || '',
+      customerPhone: localUser?.phone || '',
       items:         cart,
       subtotal:      _ckSubtotal,
       discount:      disc,
@@ -503,17 +507,19 @@ function confirmOrder() {
     };
 
     const savePromises = [db.collection('orders').doc(orderId).set(fsOrder)];
-    if (user) {
-      savePromises.push(db.collection('users').doc(user.uid).collection('orders').doc(orderId).set(fsOrder));
+    if (uid) {
+      savePromises.push(
+        db.collection('users').doc(uid).collection('orders').doc(orderId).set(fsOrder)
+      );
     }
 
     Promise.all(savePromises)
       .then(() => {
         notifyTelegram(fsOrder);
-        if (typeof syncFromFirestore === 'function') syncFromFirestore();
+        if (typeof syncFromFirestore === 'function') syncFromFirestore(uid);
       })
-      .catch(() => {});
-  } catch (e) {}
+      .catch(err => console.warn('[JE] Firestore order save failed:', err));
+  } catch (e) { console.warn('[JE] confirmOrder Firestore error:', e); }
 
   localStorage.removeItem('je_cart');
   window.location.href = 'sucesso.html';

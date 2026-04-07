@@ -18,6 +18,37 @@ function getProductById(id) {
 
 const PRODUCTS = [
   {
+    "id": "ino-premium-touch-oleo-capilar",
+    "name": "Fino Premium Touch Óleo Capilar Concentrado 70ml",
+    "category": "Cabelos",
+    "cat": "cabelos",
+    "subcategory": "Óleo Capilar",
+    "priceBRL": 63.64,
+    "priceJPY": 980,
+    "weight": 120,
+    "description": "Óleo japonês que repara danos e deixa o cabelo sedoso e brilhante.",
+    "details": "Fino Premium Touch Óleo Capilar é um tratamento intensivo sem enxágue desenvolvido no Japão para restaurar cabelos danificados.\n\nBenefícios principais:\n• Repara profundamente fios danificados\n• Proporciona brilho intenso e toque sedoso\n• Reduz frizz e pontas duplas\n• Textura leve, não oleosa\n• Perfume floral elegante japonês",
+    "origin": "Japão",
+    "image": "https://cdn.jsdelivr.net/gh/igorngf1re/japaoexpress@main/images/produtos/1775479346447_244833_1_800.jpg",
+    "image2": null,
+    "image3": null,
+    "images": [
+      "https://cdn.jsdelivr.net/gh/igorngf1re/japaoexpress@main/images/produtos/1775479346447_244833_1_800.jpg"
+    ],
+    "units": 1,
+    "featured": false,
+    "cost": 31.82,
+    "markup": 100,
+    "badge": null,
+    "badgeBg": "#f5a623",
+    "stock": 10,
+    "rating": 4.5,
+    "reviews": 0,
+    "cardBg": "bg-[#d6eaf8]",
+    "rotate": "rotate(2deg)",
+    "deco": "tape"
+  },
+  {
     "id": "fino-premium-touch-mascara-capilar-230g",
     "name": "Fino Premium Touch Máscara Capilar 230g",
     "category": "Cabelos",
@@ -81,37 +112,6 @@ const PRODUCTS = [
     "reviews": 0,
     "cardBg": "bg-[#d6eaf8]",
     "rotate": "rotate(-1deg)",
-    "deco": "tape"
-  },
-  {
-    "id": "ino-premium-touch-oleo-capilar",
-    "name": "Fino Premium Touch Óleo Capilar Concentrado 70ml",
-    "category": "Cabelos",
-    "cat": "cabelos",
-    "subcategory": "Óleo Capilar",
-    "priceBRL": 47.73,
-    "priceJPY": 980,
-    "weight": 120,
-    "description": "Óleo japonês que repara danos e deixa o cabelo sedoso e brilhante.",
-    "details": "Fino Premium Touch Óleo Capilar é um tratamento intensivo sem enxágue desenvolvido no Japão para restaurar cabelos danificados.\n\nBenefícios principais:\n• Repara profundamente fios danificados\n• Proporciona brilho intenso e toque sedoso\n• Reduz frizz e pontas duplas\n• Textura leve, não oleosa\n• Perfume floral elegante japonês",
-    "origin": "Japão",
-    "image": "https://cdn.jsdelivr.net/gh/igorngf1re/japaoexpress@main/images/produtos/1775479346447_244833_1_800.jpg",
-    "image2": null,
-    "image3": null,
-    "images": [
-      "https://cdn.jsdelivr.net/gh/igorngf1re/japaoexpress@main/images/produtos/1775479346447_244833_1_800.jpg"
-    ],
-    "units": 1,
-    "featured": false,
-    "cost": 31.82,
-    "markup": 50,
-    "badge": null,
-    "badgeBg": "#f5a623",
-    "stock": 10,
-    "rating": 4.5,
-    "reviews": 0,
-    "cardBg": "bg-[#d6eaf8]",
-    "rotate": "rotate(1deg)",
     "deco": "tape"
   },
 ];

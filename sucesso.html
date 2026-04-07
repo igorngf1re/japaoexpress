@@ -124,6 +124,41 @@
         </span>
       </section>
 
+      <!-- WISE: instruções de pagamento (oculto por padrão) -->
+      <div id="wiseSection" class="hidden mb-8 anim-fadeinup" style="animation-delay:0.15s; opacity:0;">
+        <div class="bg-[#F0FFF4] border-2 border-green-300 rounded-2xl p-5 shadow-sm">
+          <h2 class="font-black text-lg text-green-800 mb-3 flex items-center gap-2">
+            <i class="fa-solid fa-building-columns text-green-600"></i> Dados para Pagamento via Wise
+          </h2>
+          <p class="text-xs font-semibold text-green-700 mb-4">Realize a transferência para a conta abaixo e envie o comprovante. Seu pedido será processado após confirmação (1–2 dias úteis).</p>
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 text-sm">
+            <div class="bg-white rounded-xl p-3 border border-green-200">
+              <p class="text-[0.65rem] font-black text-green-600 uppercase tracking-wider mb-1">Titular</p>
+              <p class="font-black text-[#2C1654]">Japão Express</p>
+            </div>
+            <div class="bg-white rounded-xl p-3 border border-green-200">
+              <p class="text-[0.65rem] font-black text-green-600 uppercase tracking-wider mb-1">Email Wise</p>
+              <p class="font-black text-[#2C1654] break-all">ojapaoexpress@gmail.com</p>
+            </div>
+            <div class="bg-white rounded-xl p-3 border border-green-200 sm:col-span-2">
+              <p class="text-[0.65rem] font-black text-green-600 uppercase tracking-wider mb-1">Valor a pagar</p>
+              <p class="font-black text-[#9B59B6] text-lg" id="wiseTotalDisplay">—</p>
+              <p class="text-[0.65rem] text-gray-400 font-semibold mt-0.5">Envie em BRL ou JPY conforme disponibilidade na sua conta Wise</p>
+            </div>
+          </div>
+          <div class="mt-4 flex flex-col sm:flex-row gap-3">
+            <a href="https://wa.me/551199999999" target="_blank"
+               class="flex items-center justify-center gap-2 bg-[#25D366] text-white font-black py-2.5 px-5 rounded-full text-sm hover:bg-[#1ebe5a] transition">
+              <i class="fa-brands fa-whatsapp text-lg"></i> Enviar Comprovante pelo WhatsApp
+            </a>
+            <a href="mailto:ojapaoexpress@gmail.com"
+               class="flex items-center justify-center gap-2 border-2 border-green-400 text-green-700 font-black py-2.5 px-5 rounded-full text-sm hover:bg-green-50 transition">
+              <i class="fa-solid fa-envelope"></i> Enviar por E-mail
+            </a>
+          </div>
+        </div>
+      </div>
+
       <!-- ===== RESUMO DO PEDIDO (post-it) ===== -->
       <div class="relative mb-8 anim-fadeinup" style="animation-delay:0.2s; opacity:0;">
         <div class="tape"></div>
@@ -392,12 +427,27 @@
 
       const params     = new URLSearchParams(window.location.search);
       const sessionId  = params.get('session_id');
+      const isWise     = params.get('wise') === '1';
       const order      = JSON.parse(localStorage.getItem('je_last_order') || 'null');
 
       // Renderiza dados do localStorage imediatamente (UX rápida)
       renderOrderUI(order);
       createConfetti();
       setTimeout(createConfetti, 1500);
+
+      // Wise: mostra instruções de transferência
+      if (isWise && order) {
+        const wiseSection = document.getElementById('wiseSection');
+        if (wiseSection) wiseSection.classList.remove('hidden');
+        const wiseTotalEl = document.getElementById('wiseTotalDisplay');
+        if (wiseTotalEl && order.total) {
+          wiseTotalEl.textContent = 'R$ ' + Number(order.total).toFixed(2).replace('.', ',');
+        }
+        // Wise é manual — limpa carrinho e encerra
+        localStorage.removeItem('je_cart');
+        window.dispatchEvent(new CustomEvent('je:cartUpdated'));
+        return;
+      }
 
       // Se vier do Stripe, verifica o pagamento e salva no Firestore
       if (sessionId && order) {

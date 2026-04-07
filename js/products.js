@@ -18,6 +18,37 @@ function getProductById(id) {
 
 const PRODUCTS = [
   {
+    "id": "moroccan-beauty-deep-moist-hidratante-re",
+    "name": "Moroccan Beauty Deep Moist Hidratante Refil 400ml",
+    "category": "Cabelos",
+    "cat": "cabelos",
+    "subcategory": "Condicionador",
+    "priceBRL": 78.58,
+    "priceJPY": 1210,
+    "weight": 420,
+    "description": "Hidratante japonês com óleo de argan para cabelos macios e brilhantes.",
+    "details": "O Moroccan Beauty Deep Moist é um hidratante japonês premium desenvolvido para hidratar profundamente os fios, deixando-os macios, brilhantes e saudáveis.",
+    "origin": "Japão",
+    "image": "https://cdn.jsdelivr.net/gh/igorngf1re/japaoexpress@main/images/produtos/1775570917177_61fw2kd0rvl._ac_sx679_.jpg",
+    "image2": null,
+    "image3": null,
+    "images": [
+      "https://cdn.jsdelivr.net/gh/igorngf1re/japaoexpress@main/images/produtos/1775570917177_61fw2kd0rvl._ac_sx679_.jpg"
+    ],
+    "units": 1,
+    "featured": false,
+    "cost": 39.29,
+    "markup": 100,
+    "badge": null,
+    "badgeBg": "#f5a623",
+    "stock": 10,
+    "rating": 4.5,
+    "reviews": 0,
+    "cardBg": "bg-[#fadbd8]",
+    "rotate": "rotate(2deg)",
+    "deco": "tape"
+  },
+  {
     "id": "moroccan-beauty-hydro-repair-shampoo-tra",
     "name": "Moroccan Beauty Hydro Repair Shampoo + Tratamento",
     "category": "Cabelos",

@@ -292,9 +292,15 @@
 
   </div><!-- /card -->
 
+  <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-auth-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-firestore-compat.js"></script>
+  <script src="js/firebase-config.js"></script>
   <script src="js/header.js"></script>
   <script src="js/cart.js"></script>
+  <script src="js/sync.js"></script>
   <script src="js/currency.js"></script>
+  <script src="js/auth.js"></script>
   <script>
     const container = document.getElementById('confetti-container');
     const colors = ['#9B59B6','#E2D4F0','#F1C40F','#E74C3C','#2ECC71','#3498DB','#FF69B4','#FFB347'];
@@ -316,29 +322,17 @@
       }
     }
 
-    document.addEventListener('DOMContentLoaded', function() {
-      const order = JSON.parse(localStorage.getItem('je_last_order') || 'null');
+    function renderOrderUI(order) {
+      if (!order) return;
 
-      // Número do pedido
-      if (order && order.id) {
-        document.getElementById('orderNumber').textContent = 'Pedido #' + order.id;
-      }
+      if (order.id)   document.getElementById('orderNumber').textContent = 'Pedido #' + order.id;
+      if (order.date) document.getElementById('orderDate').textContent   = order.date;
 
-      // Data
-      if (order && order.date) {
-        document.getElementById('orderDate').textContent = order.date;
-      }
+      const payLabels = { pix: 'PIX — Confirmado ✅', card: 'Cartão de Crédito', boleto: 'Boleto Bancário' };
+      if (order.payment) document.getElementById('orderPayment').textContent = payLabels[order.payment] || order.payment;
 
-      // Pagamento
-      const payLabels = { pix: 'PIX — Confirmado', card: 'Cartão de Crédito', boleto: 'Boleto Bancário' };
-      if (order && order.payment) {
-        document.getElementById('orderPayment').textContent = payLabels[order.payment] || order.payment;
-      }
-
-      // Itens
-      if (order && order.items && order.items.length) {
-        const itemsEl = document.getElementById('orderItems');
-        itemsEl.innerHTML = order.items.map(item => `
+      if (order.items?.length) {
+        document.getElementById('orderItems').innerHTML = order.items.map(item => `
           <div class="flex items-center justify-between">
             <div class="flex items-center gap-3">
               <div class="w-10 h-10 bg-white rounded-xl border border-gray-100 flex items-center justify-center overflow-hidden flex-shrink-0">
@@ -349,31 +343,100 @@
                 <p class="text-xs text-gray-500 font-semibold">Qtd: ${item.qty || 1}</p>
               </div>
             </div>
-            <p class="font-black text-[#9B59B6] text-sm">R$ ${((item.priceBRL||0) * (item.qty||1)).toFixed(2).replace('.',',')}</p>
+            <p class="font-black text-[#9B59B6] text-sm">R$ ${((item.priceBRL||0)*(item.qty||1)).toFixed(2).replace('.',',')}</p>
           </div>`).join('');
       }
 
-      // Envio
-      if (order && order.shipping) {
+      if (order.shipping) {
         const shpEl = document.getElementById('orderShipping');
-        if (shpEl) shpEl.textContent = order.shipping.label + ' — ¥' + order.shipping.jpy.toLocaleString('ja-JP');
+        if (shpEl) shpEl.textContent = (order.shipping.label || order.shipping.name || '') +
+          (order.shipping.jpy ? ' — ¥' + Number(order.shipping.jpy).toLocaleString('ja-JP') : '');
       }
 
-      // Total
-      if (order) {
-        const fmtBRL = v => 'R$ ' + v.toFixed(2).replace('.',',');
-        document.getElementById('orderSubtotal').textContent = fmtBRL(order.subtotal || 0);
-        if (order.discount > 0) {
-          document.getElementById('orderDiscRow').classList.remove('hidden');
-          document.getElementById('orderDisc').textContent = '−' + fmtBRL(order.discount);
-        }
-        document.getElementById('orderTotal').textContent = fmtBRL(order.total || 0);
+      const fmtBRL = v => 'R$ ' + Number(v||0).toFixed(2).replace('.',',');
+      document.getElementById('orderSubtotal').textContent = fmtBRL(order.subtotal);
+      if (order.discount > 0) {
+        document.getElementById('orderDiscRow').classList.remove('hidden');
+        document.getElementById('orderDisc').textContent = '−' + fmtBRL(order.discount);
       }
+      document.getElementById('orderTotal').textContent = fmtBRL(order.total);
+    }
 
-      // Confetti
+    // Salva pedido confirmado no Firestore
+    async function saveConfirmedOrder(order, stripeSessionId) {
+      try {
+        const db = firebase.firestore();
+        const fsOrder = {
+          ...order,
+          status:        'confirmado',
+          stripeSessionId: stripeSessionId || '',
+          statusHistory: [
+            { status: 'pendente',   ts: firebase.firestore.FieldValue.serverTimestamp(), note: 'Pedido recebido' },
+            { status: 'confirmado', ts: firebase.firestore.FieldValue.serverTimestamp(), note: 'Pagamento confirmado via Stripe' },
+          ],
+          createdAt: firebase.firestore.FieldValue.serverTimestamp(),
+        };
+        const saves = [db.collection('orders').doc(order.id).set(fsOrder)];
+        if (order.uid) saves.push(db.collection('users').doc(order.uid).collection('orders').doc(order.id).set(fsOrder));
+        await Promise.all(saves);
+        // Notificação Telegram
+        fetch('/api/notify-order', {
+          method: 'POST', headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ order: { ...fsOrder, customerName: order.customerName || '', customerEmail: order.customerEmail || '' } })
+        }).catch(() => {});
+      } catch (e) { console.warn('[JE] saveConfirmedOrder error:', e); }
+    }
+
+    document.addEventListener('DOMContentLoaded', async function() {
+      document.querySelectorAll('.anim-fadeinup').forEach(el => { el.style.animationFillMode = 'forwards'; });
+
+      const params     = new URLSearchParams(window.location.search);
+      const sessionId  = params.get('session_id');
+      const order      = JSON.parse(localStorage.getItem('je_last_order') || 'null');
+
+      // Renderiza dados do localStorage imediatamente (UX rápida)
+      renderOrderUI(order);
       createConfetti();
       setTimeout(createConfetti, 1500);
-      document.querySelectorAll('.anim-fadeinup').forEach(el => { el.style.animationFillMode = 'forwards'; });
+
+      // Se vier do Stripe, verifica o pagamento e salva no Firestore
+      if (sessionId && order) {
+        try {
+          const r    = await fetch('/api/verify-session?session_id=' + encodeURIComponent(sessionId));
+          const data = await r.json();
+
+          if (data.paid) {
+            // Atualiza status localmente
+            order.status  = 'confirmado';
+            order.stripeSessionId = sessionId;
+            // Usa email/nome do Stripe se disponíveis
+            if (data.customerEmail) order.customerEmail = data.customerEmail;
+            if (data.customerName)  order.customerName  = data.customerName;
+            localStorage.setItem('je_last_order', JSON.stringify(order));
+
+            // Salva no Firestore + notifica Telegram
+            await saveConfirmedOrder(order, sessionId);
+
+            // Limpa carrinho
+            localStorage.removeItem('je_cart');
+            window.dispatchEvent(new CustomEvent('je:cartUpdated'));
+
+          } else if (data.paid === false) {
+            // Pagamento pendente (ex: boleto aguardando)
+            document.getElementById('orderNumber').textContent += ' — Aguardando pagamento';
+          }
+        } catch (e) {
+          console.warn('[JE] verify-session error:', e);
+          // Se verificação falhar, ainda salva como pendente no Firestore
+          if (order && order.id) saveConfirmedOrder(order, sessionId);
+          localStorage.removeItem('je_cart');
+          window.dispatchEvent(new CustomEvent('je:cartUpdated'));
+        }
+      } else if (order && order.status === 'aguardando_pagamento') {
+        // Chegou sem session_id (fallback do fluxo manual)
+        localStorage.removeItem('je_cart');
+        window.dispatchEvent(new CustomEvent('je:cartUpdated'));
+      }
     });
   </script>
 </body>

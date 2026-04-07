@@ -18,6 +18,37 @@ function getProductById(id) {
 
 const PRODUCTS = [
   {
+    "id": "moroccan-beauty-hydro-repair-shampoo-tra",
+    "name": "Moroccan Beauty Hydro Repair Shampoo + Tratamento",
+    "category": "Cabelos",
+    "cat": "cabelos",
+    "subcategory": "Shampoo",
+    "priceBRL": 128.58,
+    "priceJPY": 1980,
+    "weight": 900,
+    "description": "Reparação intensa com hidratação profunda para cabelos danificados.",
+    "details": "O Moroccan Beauty Hydro Repair Shampoo + Tratamento é um kit japonês avançado desenvolvido para reparar profundamente cabelos danificados, ressecados ou quimicamente tratados. Sua fórmula combina hidratação intensa com tecnologia de reconstrução capilar, restaurando a saúde e o brilho dos fios.",
+    "origin": "Japão",
+    "image": "https://cdn.jsdelivr.net/gh/igorngf1re/japaoexpress@main/images/produtos/1775569436385______.jpg",
+    "image2": null,
+    "image3": null,
+    "images": [
+      "https://cdn.jsdelivr.net/gh/igorngf1re/japaoexpress@main/images/produtos/1775569436385______.jpg"
+    ],
+    "units": 1,
+    "featured": false,
+    "cost": 64.29,
+    "markup": 100,
+    "badge": null,
+    "badgeBg": "#f5a623",
+    "stock": 10,
+    "rating": 4.5,
+    "reviews": 0,
+    "cardBg": "bg-[#fcf3cf]",
+    "rotate": "rotate(1deg)",
+    "deco": "tape"
+  },
+  {
     "id": "kit-2-pecas-moroccan-beauty-golden-moist",
     "name": "Kit 2 peças Moroccan Beauty Golden Moist EX Shampoo + Tratamento",
     "category": "Cabelos",

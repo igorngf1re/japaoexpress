@@ -27,7 +27,7 @@ const PRODUCTS = [
     "priceJPY": 990,
     "weight": 170,
     "description": "Loção japonesa premium que clareia e hidrata profundamente a pele.",
-    "details": "A Loção Facial Clareadora Hada Labo Shirojyun Premium da Rohto é um cosmético japonês de alta qualidade desenvolvido para hidratar profundamente e combater manchas e tonalidade irregular da pele.\\n\\nBenefícios principais:\\n• Clareia e uniformiza o tom da pele\\n• Hidratação intensa com ácido hialurônico\\n• Ajuda a prevenir manchas e sardas\\n• Ação calmante e anti-inflamatória\\n\\nIngredientes principais:\\n• Ácido Tranexâmico (clareador)\\n• Ácido Hialurônico (hidratação profunda)\\n• Derivado de Vitamina C\\n• Vitamina E\\n• Ácido Glicirrízico\\n\\nModo de uso:\\nApós a limpeza do rosto, aplique uma quantidade adequada nas mãos ou algodão e espalhe suavemente pelo rosto até completa absorção.\\n\\nDiferenciais japoneses:\\n• Fórmula livre de álcool, fragrância e corantes\\n• Tecnologia de penetração profunda na pele\\n• Textura leve tipo essência\\n• Qualidade dermatologicamente testada no Japão\\n\\nIdeal para quem busca uma pele mais clara, hidratada e saudável com padrão japonês de skincare.",
+    "details": "A Loção Facial Clareadora Hada Labo Shirojyun Premium da Rohto é um cosmético japonês de alta qualidade desenvolvido para hidratar profundamente e combater manchas e tonalidade irregular da pele.\nBenefícios principais:\n• Clareia e uniformiza o tom da pele\n• Hidratação intensa com ácido hialurônico\n• Ajuda a prevenir manchas e sardas\n• Ação calmante e anti-inflamatória",
     "origin": "Donki",
     "image": "https://donki-ec-static-1306051524.cos.ap-hongkong.myqcloud.com/images/4987241168491-1.jpg",
     "image2": "https://donki-ec-static-1306051524.cos.ap-hongkong.myqcloud.com/images/4987241168491-2.jpg",
@@ -47,7 +47,7 @@ const PRODUCTS = [
     "rating": 4.5,
     "reviews": 0,
     "cardBg": "bg-[#d6eaf8]",
-    "rotate": "rotate(-2deg)",
+    "rotate": "rotate(-1deg)",
     "deco": "tape"
   },
   {

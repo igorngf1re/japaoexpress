@@ -129,7 +129,9 @@ document.addEventListener('DOMContentLoaded', () => {
           ...existing,
           uid:   u.uid,
           email: u.email,
-          name:  u.displayName || existing.name || u.email.split('@')[0],
+          // existing.name tem prioridade: preserva o nome editado no perfil.
+          // Só usa displayName do Firebase Auth se não houver nome salvo localmente.
+          name:  existing.name || u.displayName || u.email.split('@')[0],
         });
         // Sincroniza carrinho + favoritos + perfil com o Firestore
         // (mescla dados da nuvem com o que está neste dispositivo)

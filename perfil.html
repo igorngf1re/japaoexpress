@@ -184,15 +184,52 @@
 
       <!-- TAB: ENDEREÇOS -->
       <div id="tab-enderecos" class="tab-content">
-        <h1 class="font-hero text-[2rem] text-[#2C1654] mb-5 leading-none">Endereços</h1>
-        <div class="flex flex-col items-center justify-center py-14 text-center gap-4 bg-white rounded-2xl border border-gray-100 shadow-sm mb-4">
-          <i class="fa-solid fa-location-dot text-[#E2D4F0] text-5xl"></i>
-          <p class="font-hand text-2xl text-[#4A3060]">Nenhum endereço salvo</p>
-          <p class="text-sm text-gray-400 font-semibold max-w-xs">Adicione seu endereço de entrega para facilitar o checkout.</p>
+        <h1 class="font-hero text-[2rem] text-[#2C1654] mb-5 leading-none">Endereço de Entrega</h1>
+        <div class="bg-white rounded-2xl p-6 shadow-sm border border-gray-100">
+          <form onsubmit="saveAddress(event)" class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            <div class="flex flex-col gap-1">
+              <label class="text-xs font-black text-[#3D1A78] uppercase tracking-wide">CEP</label>
+              <input id="addrCep" type="text" maxlength="9" placeholder="00000-000"
+                class="border-2 border-gray-200 rounded-xl px-3 py-2 text-sm font-semibold focus:outline-none focus:border-[#9B59B6] transition"
+                oninput="formatCep(this)" onblur="fetchCep(this.value)" />
+            </div>
+            <div class="flex flex-col gap-1">
+              <label class="text-xs font-black text-[#3D1A78] uppercase tracking-wide">Estado</label>
+              <input id="addrState" type="text" maxlength="2" placeholder="SP"
+                class="border-2 border-gray-200 rounded-xl px-3 py-2 text-sm font-semibold focus:outline-none focus:border-[#9B59B6] transition" />
+            </div>
+            <div class="flex flex-col gap-1">
+              <label class="text-xs font-black text-[#3D1A78] uppercase tracking-wide">Cidade</label>
+              <input id="addrCity" type="text" placeholder="São Paulo"
+                class="border-2 border-gray-200 rounded-xl px-3 py-2 text-sm font-semibold focus:outline-none focus:border-[#9B59B6] transition" />
+            </div>
+            <div class="flex flex-col gap-1">
+              <label class="text-xs font-black text-[#3D1A78] uppercase tracking-wide">Bairro</label>
+              <input id="addrNeighborhood" type="text" placeholder="Centro"
+                class="border-2 border-gray-200 rounded-xl px-3 py-2 text-sm font-semibold focus:outline-none focus:border-[#9B59B6] transition" />
+            </div>
+            <div class="flex flex-col gap-1 sm:col-span-2">
+              <label class="text-xs font-black text-[#3D1A78] uppercase tracking-wide">Rua / Avenida</label>
+              <input id="addrStreet" type="text" placeholder="Rua das Flores"
+                class="border-2 border-gray-200 rounded-xl px-3 py-2 text-sm font-semibold focus:outline-none focus:border-[#9B59B6] transition" />
+            </div>
+            <div class="flex flex-col gap-1">
+              <label class="text-xs font-black text-[#3D1A78] uppercase tracking-wide">Número</label>
+              <input id="addrNumber" type="text" placeholder="123"
+                class="border-2 border-gray-200 rounded-xl px-3 py-2 text-sm font-semibold focus:outline-none focus:border-[#9B59B6] transition" />
+            </div>
+            <div class="flex flex-col gap-1">
+              <label class="text-xs font-black text-[#3D1A78] uppercase tracking-wide">Complemento</label>
+              <input id="addrComplement" type="text" placeholder="Apto 42 (opcional)"
+                class="border-2 border-gray-200 rounded-xl px-3 py-2 text-sm font-semibold focus:outline-none focus:border-[#9B59B6] transition" />
+            </div>
+            <div class="sm:col-span-2 flex justify-end mt-2">
+              <button type="submit" class="px-6 py-2.5 rounded-full bg-[#9B59B6] text-white font-black text-sm hover:bg-[#7d3fa0] transition">
+                <i class="fa-solid fa-floppy-disk mr-1"></i>Salvar Endereço
+              </button>
+            </div>
+          </form>
         </div>
-        <button class="w-full border-2 border-dashed border-[#9B59B6] rounded-2xl py-4 text-[#9B59B6] font-black text-sm hover:bg-[#E2D4F0] transition flex items-center justify-center gap-2">
-          <i class="fa-solid fa-plus"></i> Adicionar Endereço
-        </button>
       </div>
 
     </section>
@@ -233,7 +270,7 @@
     if (sName)  sName.textContent  = user.name  || '';
     if (sEmail) sEmail.textContent = user.email || '';
 
-    // Formulário
+    // Formulário de perfil
     const f = {
       profileName:      user.name,
       profileEmail:     user.email,
@@ -241,6 +278,22 @@
       profileBirthdate: user.birthdate || '',
     };
     Object.entries(f).forEach(([id, val]) => {
+      const el = document.getElementById(id);
+      if (el) el.value = val;
+    });
+
+    // Formulário de endereço
+    const addr = user.address || {};
+    const addrFields = {
+      addrCep:          addr.cep          || '',
+      addrState:        addr.state        || '',
+      addrCity:         addr.city         || '',
+      addrNeighborhood: addr.neighborhood || '',
+      addrStreet:       addr.street       || '',
+      addrNumber:       addr.number       || '',
+      addrComplement:   addr.complement   || '',
+    };
+    Object.entries(addrFields).forEach(([id, val]) => {
       const el = document.getElementById(id);
       if (el) el.value = val;
     });
@@ -268,6 +321,47 @@
       if (typeof scheduleSyncToCloud === 'function') scheduleSyncToCloud();
     }
     showToast('Perfil salvo com sucesso!');
+  }
+
+  // ── Salvar endereço ────────────────────────────────────────────
+  function saveAddress(e) {
+    if (e) e.preventDefault();
+    const user = getUser();
+    if (!user) return;
+    const address = {
+      cep:          document.getElementById('addrCep')?.value.trim()          || '',
+      state:        document.getElementById('addrState')?.value.trim()        || '',
+      city:         document.getElementById('addrCity')?.value.trim()         || '',
+      neighborhood: document.getElementById('addrNeighborhood')?.value.trim() || '',
+      street:       document.getElementById('addrStreet')?.value.trim()       || '',
+      number:       document.getElementById('addrNumber')?.value.trim()        || '',
+      complement:   document.getElementById('addrComplement')?.value.trim()   || '',
+    };
+    setUser({ ...user, address });
+    if (typeof scheduleSyncToCloud === 'function') scheduleSyncToCloud();
+    showToast('Endereço salvo com sucesso!');
+  }
+
+  // ── Auto-preenchimento por CEP (ViaCEP) ───────────────────────
+  function formatCep(input) {
+    let v = input.value.replace(/\D/g, '').slice(0, 8);
+    if (v.length > 5) v = v.slice(0, 5) + '-' + v.slice(5);
+    input.value = v;
+  }
+
+  async function fetchCep(cep) {
+    const digits = cep.replace(/\D/g, '');
+    if (digits.length !== 8) return;
+    try {
+      const r = await fetch('https://viacep.com.br/ws/' + digits + '/json/');
+      const d = await r.json();
+      if (d.erro) return;
+      if (d.logradouro) document.getElementById('addrStreet').value       = d.logradouro;
+      if (d.bairro)     document.getElementById('addrNeighborhood').value = d.bairro;
+      if (d.localidade) document.getElementById('addrCity').value         = d.localidade;
+      if (d.uf)         document.getElementById('addrState').value        = d.uf;
+      document.getElementById('addrNumber').focus();
+    } catch {}
   }
 
   function showToast(msg) {

@@ -41,6 +41,7 @@ async function _writeToFirestore(uid) {
         phone:     user.phone     || '',
         birthdate: user.birthdate || '',
         email:     user.email     || '',
+        address:   user.address   || {},
       },
       updatedAt: firebase.firestore.FieldValue.serverTimestamp(),
     }, { merge: true });
@@ -80,8 +81,12 @@ async function syncFromFirestore(uid) {
     if (data.profile) {
       const localUser = _localUser() || {};
       const merged = {
-        ...data.profile,    // base da nuvem
-        ...localUser,       // local tem prioridade (edições recentes neste dispositivo)
+        ...data.profile,           // base da nuvem
+        address: {
+          ...(data.profile.address || {}),   // endereço da nuvem
+          ...(localUser.address    || {}),   // edições locais têm prioridade
+        },
+        ...localUser,              // restante do local tem prioridade
         uid,
       };
       localStorage.setItem('je_user', JSON.stringify(merged));

@@ -18,6 +18,37 @@ function getProductById(id) {
 
 const PRODUCTS = [
   {
+    "id": "moroccan-beauty-golden-moist-ex-shampoo-",
+    "name": "Moroccan Beauty Golden Moist EX Shampoo + Tratamento",
+    "category": "Cabelos",
+    "cat": "cabelos",
+    "subcategory": "Shampoo",
+    "priceBRL": 228.58,
+    "priceJPY": 3520,
+    "weight": 900,
+    "description": "Hidratação intensa premium com óleo de argan para brilho e maciez extrema.",
+    "details": "O Moroccan Beauty Golden Moist EX Shampoo + Tratamento é um kit premium japonês desenvolvido para proporcionar hidratação intensa e nutrição profunda aos cabelos. Sua fórmula avançada com óleo de argan e ingredientes nutritivos penetra profundamente nos fios, restaurando danos, reduzindo o frizz e deixando o cabelo extremamente macio e brilhante.",
+    "origin": "Japão",
+    "image": "https://cdn.jsdelivr.net/gh/igorngf1re/japaoexpress@main/images/produtos/1775569187857_gold.jpg",
+    "image2": null,
+    "image3": null,
+    "images": [
+      "https://cdn.jsdelivr.net/gh/igorngf1re/japaoexpress@main/images/produtos/1775569187857_gold.jpg"
+    ],
+    "units": 1,
+    "featured": false,
+    "cost": 114.29,
+    "markup": 100,
+    "badge": null,
+    "badgeBg": "#f5a623",
+    "stock": 10,
+    "rating": 4.5,
+    "reviews": 0,
+    "cardBg": "bg-[#d6eaf8]",
+    "rotate": "rotate(2deg)",
+    "deco": "tape"
+  },
+  {
     "id": "moroccan-beauty-shampoo-hidratante-refil",
     "name": "Moroccan Beauty Shampoo Hidratante Refil Óleo de Argan 400ml",
     "category": "Cabelos",
@@ -108,37 +139,6 @@ const PRODUCTS = [
     "reviews": 0,
     "cardBg": "bg-[#fcf3cf]",
     "rotate": "rotate(1deg)",
-    "deco": "tape"
-  },
-  {
-    "id": "moroccan-beauty-golden-moist-ex-shampoo-",
-    "name": "Moroccan Beauty Golden Moist EX Shampoo + Tratamento",
-    "category": "Cabelos",
-    "cat": "cabelos",
-    "subcategory": "Shampoo",
-    "priceBRL": 228.58,
-    "priceJPY": 3520,
-    "weight": 900,
-    "description": "Hidratação intensa premium com óleo de argan para brilho e maciez extrema.",
-    "details": "O Moroccan Beauty Golden Moist EX Shampoo + Tratamento é um kit premium japonês desenvolvido para proporcionar hidratação intensa e nutrição profunda aos cabelos. Sua fórmula avançada com óleo de argan e ingredientes nutritivos penetra profundamente nos fios, restaurando danos, reduzindo o frizz e deixando o cabelo extremamente macio e brilhante.",
-    "origin": "Japão",
-    "image": "https://cdn.jsdelivr.net/gh/igorngf1re/japaoexpress@main/images/produtos/1775569187857_gold.jpg",
-    "image2": null,
-    "image3": null,
-    "images": [
-      "https://cdn.jsdelivr.net/gh/igorngf1re/japaoexpress@main/images/produtos/1775569187857_gold.jpg"
-    ],
-    "units": 1,
-    "featured": false,
-    "cost": 114.29,
-    "markup": 100,
-    "badge": null,
-    "badgeBg": "#f5a623",
-    "stock": 10,
-    "rating": 4.5,
-    "reviews": 0,
-    "cardBg": "bg-[#fadbd8]",
-    "rotate": "rotate(-2deg)",
     "deco": "tape"
   },
   {

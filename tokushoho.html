@@ -1,0 +1,333 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>特定商取引法に基づく表記 — Japão Express</title>
+  <!-- Favicon & PWA -->
+  <link rel="icon" type="image/png" sizes="32x32" href="icons/icon-128.png">
+  <link rel="icon" type="image/png" sizes="192x192" href="icons/icon-192.png">
+  <link rel="apple-touch-icon" sizes="180x180" href="icons/icon-180.png">
+  <link rel="manifest" href="manifest.json">
+  <meta name="theme-color" content="#9B59B6">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="apple-mobile-web-app-title" content="Japão Express">
+  <meta name="msapplication-TileImage" content="icons/icon-144.png">
+  <meta name="msapplication-TileColor" content="#9B59B6">
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Baloo+2:wght@700;800;900&family=Caveat:wght@600;700&family=Nunito:wght@400;600;700;800;900&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            brand: '#9B59B6',
+            'brand-dark': '#2C1654',
+          }
+        }
+      }
+    }
+  </script>
+  <style>
+    .font-hand { font-family: 'Caveat', cursive; }
+    .font-hero { font-family: 'Baloo 2', 'Nunito', sans-serif; font-weight: 800 !important; }
+    body {
+      font-family: 'Nunito', sans-serif;
+      background: #E8DEF8;
+      min-height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: flex-start;
+      padding: 2rem 1rem;
+    }
+    .tokusho-table td:first-child {
+      width: 40%;
+      background: #F5F0FF;
+      font-weight: 900;
+      color: #2C1654;
+      vertical-align: top;
+    }
+    .tokusho-table td {
+      padding: 10px 14px;
+      font-size: 0.8rem;
+      font-weight: 600;
+      color: #3D1A78;
+      border-bottom: 1px solid #EDE0FF;
+      line-height: 1.6;
+    }
+    .tokusho-table tr:last-child td {
+      border-bottom: none;
+    }
+  </style>
+</head>
+<body>
+  <div class="bg-[#FDFAF2] w-full max-w-4xl rounded-3xl shadow-2xl border-t-[10px] border-[#9B59B6] overflow-visible">
+
+    <!-- HEADER -->
+    <header></header>
+
+    <!-- MAIN CONTENT -->
+    <main class="px-6 md:px-10 pb-10">
+
+      <!-- BREADCRUMB -->
+      <div class="flex items-center gap-2 text-xs font-semibold text-[#7B5EA0] mb-6">
+        <a href="index.html" class="hover:text-[#9B59B6] transition">Home</a>
+        <i class="fa-solid fa-chevron-right text-[10px]"></i>
+        <span class="text-[#2C1654]">特定商取引法に基づく表記</span>
+      </div>
+
+      <!-- PAGE HEADER -->
+      <div class="mb-8">
+        <h1 class="font-hero text-[2.2rem] md:text-[2.8rem] text-[#2C1654] leading-none">特定商取引法に基づく表記</h1>
+        <p class="text-[#7B5EA0] font-semibold mt-1 text-sm">Tokushoho — Divulgações Legais Obrigatórias (Japão)</p>
+      </div>
+
+      <!-- NOTICE BOX -->
+      <div class="bg-[#F0E8FF] border-l-4 border-[#9B59B6] rounded-xl p-4 mb-8 text-xs font-semibold text-[#3D1A78]">
+        <i class="fa-solid fa-circle-info text-[#9B59B6] mr-1"></i>
+        この表記は特定商取引法（特商法）第11条に基づき、通信販売業者として必要な情報を開示するものです。
+      </div>
+
+      <!-- ══════════════════════════════════════
+           JAPANESE TABLE
+      ══════════════════════════════════════ -->
+      <div class="bg-white rounded-2xl shadow-md overflow-hidden mb-8">
+        <div class="bg-[#2C1654] px-5 py-3">
+          <h2 class="font-hero text-white text-lg">特定商取引法に基づく表記</h2>
+        </div>
+        <table class="w-full tokusho-table">
+          <tbody>
+            <tr>
+              <td>販売業者</td>
+              <td>ジャパン・エクスプレス / Japão Express</td>
+            </tr>
+            <tr>
+              <td>運営責任者</td>
+              <td>[要記入 — 代表者氏名]</td>
+            </tr>
+            <tr>
+              <td>所在地</td>
+              <td>[要記入 — 事業所住所]</td>
+            </tr>
+            <tr>
+              <td>電話番号</td>
+              <td>
+                [要記入 — 電話番号]<br>
+                <span class="text-gray-500 text-xs">※ メールでのお問い合わせをお願いしております</span>
+              </td>
+            </tr>
+            <tr>
+              <td>メールアドレス</td>
+              <td><a href="mailto:ojapaoexpress@gmail.com" class="text-[#9B59B6] hover:underline">ojapaoexpress@gmail.com</a></td>
+            </tr>
+            <tr>
+              <td>URL</td>
+              <td><a href="https://japaoexpress.vercel.app" target="_blank" rel="noopener" class="text-[#9B59B6] hover:underline">https://japaoexpress.vercel.app</a></td>
+            </tr>
+            <tr>
+              <td>販売価格</td>
+              <td>各商品ページに表示の価格（BRL または JPY）<br><span class="text-gray-500 text-xs">※ 為替レートは毎日更新されます</span></td>
+            </tr>
+            <tr>
+              <td>商品代金以外の必要料金</td>
+              <td>
+                <strong>送料：</strong>重量・配送方法により異なります（商品ページ・カートにて表示）<br>
+                <strong>輸入税：</strong>ブラジルの税関規則により、輸入税・関税が別途発生する場合があります（お客様負担）
+              </td>
+            </tr>
+            <tr>
+              <td>支払方法</td>
+              <td>
+                <ul class="space-y-1">
+                  <li>クレジットカード（Stripe — Visa, Mastercard, Amex等）</li>
+                  <li>Pix（ブラジル即時決済）</li>
+                  <li>Wise送金</li>
+                </ul>
+              </td>
+            </tr>
+            <tr>
+              <td>支払時期</td>
+              <td>注文確定時に即時決済</td>
+            </tr>
+            <tr>
+              <td>商品引き渡し時期</td>
+              <td>
+                支払い確認後1〜3営業日以内に発送。配送期間の目安：<br>
+                <ul class="mt-1 space-y-0.5">
+                  <li>• 航空便：約30〜60日</li>
+                  <li>• 書留航空便：約30〜60日（追跡あり）</li>
+                  <li>• EMS：約7〜14日</li>
+                </ul>
+                <span class="text-gray-500 text-xs mt-1 block">※ ブラジル税関での滞留により遅延が生じる場合があります</span>
+              </td>
+            </tr>
+            <tr>
+              <td>返品・キャンセルについて</td>
+              <td>
+                商品到着後<strong>8日以内</strong>であれば、未使用・未開封の商品に限り返品可能。<br>
+                返送料はお客様負担（商品不良・当社誤出荷の場合は当社負担）。<br>
+                お客様のご都合による返品の場合、返金は返品商品の受取後<strong>10営業日以内</strong>に、お支払い方法と同じ方法で行います。<br><br>
+                <span class="text-gray-500 text-xs">返品申請：注文番号と写真を添えて <a href="mailto:ojapaoexpress@gmail.com" class="text-[#9B59B6] hover:underline">ojapaoexpress@gmail.com</a> までご連絡ください。</span>
+              </td>
+            </tr>
+            <tr>
+              <td>不良品について</td>
+              <td>
+                商品到着時に破損・不良があった場合は、到着後<strong>8日以内</strong>にメールにてご連絡ください。<br>
+                交換または全額返金いたします（返送料当社負担）。
+              </td>
+            </tr>
+            <tr>
+              <td>動作環境</td>
+              <td>モダンブラウザ（Chrome、Safari、Firefox、Edge）最新版推奨</td>
+            </tr>
+            <tr>
+              <td>販売数量</td>
+              <td>在庫のある商品のみ販売します。在庫がなくなり次第、販売を終了します。</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <!-- ══════════════════════════════════════
+           PORTUGUESE REFERENCE SECTION
+      ══════════════════════════════════════ -->
+      <div class="bg-white rounded-2xl shadow-md overflow-hidden mb-6">
+        <div class="bg-[#3D1A78] px-5 py-3 flex items-center gap-2">
+          <span class="text-white font-hero text-lg">Informações Legais</span>
+          <span class="text-xs text-purple-200 font-semibold">(Tradução de referência — Tokushoho)</span>
+        </div>
+        <table class="w-full tokusho-table">
+          <tbody>
+            <tr>
+              <td>Empresa</td>
+              <td>Japão Express / ジャパン・エクスプレス</td>
+            </tr>
+            <tr>
+              <td>Responsável</td>
+              <td>[A preencher — nome do responsável]</td>
+            </tr>
+            <tr>
+              <td>Endereço</td>
+              <td>[A preencher — endereço do estabelecimento]</td>
+            </tr>
+            <tr>
+              <td>Telefone</td>
+              <td>
+                [A preencher]<br>
+                <span class="text-gray-500 text-xs">Preferimos contato por e-mail</span>
+              </td>
+            </tr>
+            <tr>
+              <td>E-mail</td>
+              <td><a href="mailto:ojapaoexpress@gmail.com" class="text-[#9B59B6] hover:underline">ojapaoexpress@gmail.com</a></td>
+            </tr>
+            <tr>
+              <td>Site</td>
+              <td><a href="https://japaoexpress.vercel.app" target="_blank" rel="noopener" class="text-[#9B59B6] hover:underline">https://japaoexpress.vercel.app</a></td>
+            </tr>
+            <tr>
+              <td>Preços</td>
+              <td>Exibidos em BRL e JPY em cada página de produto (câmbio atualizado diariamente)</td>
+            </tr>
+            <tr>
+              <td>Custos adicionais</td>
+              <td>
+                <strong>Frete:</strong> calculado por peso e método de envio (exibido no carrinho)<br>
+                <strong>Impostos:</strong> impostos de importação brasileiros são de responsabilidade do comprador
+              </td>
+            </tr>
+            <tr>
+              <td>Formas de pagamento</td>
+              <td>Cartão de crédito (Stripe), Pix, Wise</td>
+            </tr>
+            <tr>
+              <td>Cobrança</td>
+              <td>No ato da confirmação do pedido</td>
+            </tr>
+            <tr>
+              <td>Prazo de entrega</td>
+              <td>
+                Enviado em 1–3 dias úteis após confirmação do pagamento:<br>
+                <ul class="mt-1 space-y-0.5">
+                  <li>• Airmail: ~30–60 dias</li>
+                  <li>• Airmail Registrado: ~30–60 dias (com rastreio)</li>
+                  <li>• EMS: ~7–14 dias</li>
+                </ul>
+              </td>
+            </tr>
+            <tr>
+              <td>Devoluções e cancelamentos</td>
+              <td>
+                7 dias corridos após recebimento (CDC, art. 49). Produto sem uso, embalagem original.<br>
+                Frete de retorno por conta do cliente, exceto em defeito ou erro nosso.<br>
+                Reembolso em até 10 dias úteis.
+              </td>
+            </tr>
+            <tr>
+              <td>Produtos com defeito</td>
+              <td>Contato em até 8 dias do recebimento. Troca ou reembolso integral sem custo.</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <!-- CONTACT CTA -->
+      <div class="bg-[#F0E8FF] rounded-2xl p-5 flex flex-col sm:flex-row items-center justify-between gap-4">
+        <div>
+          <p class="font-black text-[#2C1654]">お問い合わせ / Dúvidas?</p>
+          <p class="text-xs font-semibold text-[#7B5EA0]">ojapaoexpress@gmail.com までお気軽にどうぞ</p>
+        </div>
+        <a href="mailto:ojapaoexpress@gmail.com"
+          class="inline-flex items-center gap-2 bg-[#9B59B6] hover:bg-[#7D3C98] text-white font-black text-sm uppercase tracking-widest rounded-xl px-5 py-3 transition shadow-lg whitespace-nowrap">
+          <i class="fa-solid fa-envelope"></i>
+          Contato / お問い合わせ
+        </a>
+      </div>
+
+    </main>
+
+    <!-- FOOTER -->
+    <footer class="border-t-2 border-gray-200 px-6 md:px-10 pt-8 pb-6 grid grid-cols-1 md:grid-cols-3 gap-8 text-center md:text-left text-sm text-[#4A3060]">
+      <div>
+        <h5 class="font-black text-base mb-2 text-[#2C1654]">Japão Express</h5>
+        <p class="text-xs leading-relaxed font-semibold">Direto do Japão para o Brasil.</p>
+      </div>
+      <div>
+        <h5 class="font-black text-base mb-2 text-[#2C1654]">Quick Links</h5>
+        <ul class="space-y-1 text-xs font-semibold">
+          <li><a href="produtos.html" class="hover:text-[#9B59B6]">Produtos</a></li>
+          <li><a href="institucional.html" class="hover:text-[#9B59B6]">Sobre Nós</a></li>
+          <li><a href="contato.html" class="hover:text-[#9B59B6]">Contato</a></li>
+          <li><a href="politicas.html" class="hover:text-[#9B59B6]">Políticas</a></li>
+          <li><a href="tokushoho.html" class="hover:text-[#9B59B6]">特定商取引法</a></li>
+        </ul>
+      </div>
+      <div>
+        <h5 class="font-black text-base mb-3 text-[#2C1654]">Social Media</h5>
+        <div class="flex justify-center md:justify-start gap-4 text-xl">
+          <a href="https://www.instagram.com/ojapaoexpress" target="_blank" rel="noopener" class="text-[#2C1654] hover:text-[#9B59B6]"><i class="fa-brands fa-instagram"></i></a>
+          <a href="#" class="text-[#2C1654] hover:text-[#9B59B6]"><i class="fa-brands fa-tiktok"></i></a>
+        </div>
+      </div>
+    </footer>
+    <div class="text-center text-xs py-4 text-gray-400 border-t border-gray-100 font-semibold">© 2026 Japão Express. Todos os direitos reservados</div>
+
+  </div>
+
+  <script src="js/header.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-auth-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore-compat.js"></script>
+  <script src="js/firebase-config.js"></script>
+  <script src="js/products.js"></script>
+  <script src="js/cart.js"></script>
+  <script src="js/sync.js"></script>
+  <script src="js/currency.js"></script>
+  <script src="js/auth.js"></script>
+</body>
+</html>

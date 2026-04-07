@@ -181,4 +181,62 @@
   } else {
     _inject();
   }
+
+  // ── Cookie Consent Banner (LGPD) ──────────────────────────────────
+  (function () {
+    var CONSENT_KEY = 'je_cookie_consent';
+
+    function _showBanner() {
+      if (localStorage.getItem(CONSENT_KEY)) return; // already chosen
+
+      var banner = document.createElement('div');
+      banner.id = 'je-cookie-banner';
+      banner.style.cssText = [
+        'position:fixed',
+        'bottom:0',
+        'left:0',
+        'right:0',
+        'z-index:9999',
+        'background:#2C1654',
+        'color:#fff',
+        'font-family:Nunito,sans-serif',
+        'font-size:13px',
+        'font-weight:600',
+        'padding:14px 20px',
+        'display:flex',
+        'align-items:center',
+        'justify-content:space-between',
+        'flex-wrap:wrap',
+        'gap:12px',
+        'box-shadow:0 -4px 24px rgba(44,22,84,.35)',
+      ].join(';');
+
+      banner.innerHTML =
+        '<span style="flex:1;min-width:220px;line-height:1.5">' +
+          'Usamos cookies para melhorar sua experiência. Ao continuar, você concorda com nossa ' +
+          '<a href="politicas.html" style="color:#D7B8FF;text-decoration:underline">Política de Cookies</a>.' +
+        '</span>' +
+        '<div style="display:flex;gap:10px;flex-shrink:0">' +
+          '<button id="je-cookie-essential" style="background:none;border:2px solid #9B59B6;color:#D7B8FF;font-family:Nunito,sans-serif;font-weight:900;font-size:12px;letter-spacing:.05em;padding:7px 16px;border-radius:10px;cursor:pointer">Apenas Essenciais</button>' +
+          '<button id="je-cookie-accept" style="background:#9B59B6;border:none;color:#fff;font-family:Nunito,sans-serif;font-weight:900;font-size:12px;letter-spacing:.05em;padding:7px 16px;border-radius:10px;cursor:pointer">Aceitar Todos</button>' +
+        '</div>';
+
+      document.body.appendChild(banner);
+
+      document.getElementById('je-cookie-accept').addEventListener('click', function () {
+        localStorage.setItem(CONSENT_KEY, 'all');
+        banner.remove();
+      });
+      document.getElementById('je-cookie-essential').addEventListener('click', function () {
+        localStorage.setItem(CONSENT_KEY, 'essential');
+        banner.remove();
+      });
+    }
+
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', _showBanner);
+    } else {
+      _showBanner();
+    }
+  })();
 })();

@@ -1,0 +1,759 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Políticas — Japão Express</title>
+  <!-- Favicon & PWA -->
+  <link rel="icon" type="image/png" sizes="32x32" href="icons/icon-128.png">
+  <link rel="icon" type="image/png" sizes="192x192" href="icons/icon-192.png">
+  <link rel="apple-touch-icon" sizes="180x180" href="icons/icon-180.png">
+  <link rel="manifest" href="manifest.json">
+  <meta name="theme-color" content="#9B59B6">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="apple-mobile-web-app-title" content="Japão Express">
+  <meta name="msapplication-TileImage" content="icons/icon-144.png">
+  <meta name="msapplication-TileColor" content="#9B59B6">
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Baloo+2:wght@700;800;900&family=Caveat:wght@600;700&family=Nunito:wght@400;600;700;800;900&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            brand: '#9B59B6',
+            'brand-dark': '#2C1654',
+          }
+        }
+      }
+    }
+  </script>
+  <style>
+    .font-hand { font-family: 'Caveat', cursive; }
+    .font-hero { font-family: 'Baloo 2', 'Nunito', sans-serif; font-weight: 800 !important; }
+    body {
+      font-family: 'Nunito', sans-serif;
+      background: #E8DEF8;
+      min-height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: flex-start;
+      padding: 2rem 1rem;
+    }
+    .policy-section {
+      border-left: 4px solid #9B59B6;
+      padding-left: 1rem;
+      margin-bottom: 0.5rem;
+    }
+    .lang-jp { display: none; }
+  </style>
+</head>
+<body>
+  <div class="bg-[#FDFAF2] w-full max-w-4xl rounded-3xl shadow-2xl border-t-[10px] border-[#9B59B6] overflow-visible">
+
+    <!-- HEADER -->
+    <header></header>
+
+    <!-- MAIN CONTENT -->
+    <main class="px-6 md:px-10 pb-10">
+
+      <!-- BREADCRUMB -->
+      <div class="flex items-center gap-2 text-xs font-semibold text-[#7B5EA0] mb-6">
+        <a href="index.html" class="hover:text-[#9B59B6] transition">Home</a>
+        <i class="fa-solid fa-chevron-right text-[10px]"></i>
+        <span class="text-[#2C1654]">Políticas</span>
+      </div>
+
+      <!-- PAGE HEADER -->
+      <div class="mb-6">
+        <h1 class="font-hero text-[2.8rem] text-[#2C1654] leading-none lang-pt">Políticas</h1>
+        <h1 class="font-hero text-[2.8rem] text-[#2C1654] leading-none lang-jp">ポリシー</h1>
+        <p class="text-[#7B5EA0] font-semibold mt-1 lang-pt">Privacidade, Termos, Devolução, Envio e Cookies</p>
+        <p class="text-[#7B5EA0] font-semibold mt-1 lang-jp">プライバシー、利用規約、返品、配送、Cookie</p>
+      </div>
+
+      <!-- LANGUAGE TOGGLE -->
+      <div class="flex gap-3 mb-8">
+        <button id="btn-pt" onclick="setLang('pt')"
+          class="flex items-center gap-2 px-5 py-2 rounded-xl font-black text-sm transition bg-[#9B59B6] text-white">
+          🇧🇷 Português
+        </button>
+        <button id="btn-jp" onclick="setLang('jp')"
+          class="flex items-center gap-2 px-5 py-2 rounded-xl font-black text-sm transition border-2 border-[#9B59B6] text-[#9B59B6]">
+          🇯🇵 日本語
+        </button>
+      </div>
+
+      <!-- ══════════════════════════════════════════
+           SECTION 1: PRIVACIDADE / プライバシーポリシー
+      ══════════════════════════════════════════ -->
+      <div class="bg-white rounded-2xl shadow-md p-6 mb-6">
+
+        <!-- PT -->
+        <div data-lang="pt" class="lang-pt">
+          <div class="policy-section mb-4">
+            <h2 class="font-hero text-2xl text-[#2C1654]">Política de Privacidade</h2>
+            <p class="text-xs font-semibold text-[#7B5EA0]">Última atualização: abril de 2026</p>
+          </div>
+
+          <div class="space-y-4 text-sm font-semibold text-[#3D1A78] leading-relaxed">
+
+            <div>
+              <h3 class="font-black text-[#2C1654] mb-1">1. Responsável pelo Tratamento</h3>
+              <p>Japão Express — <a href="mailto:ojapaoexpress@gmail.com" class="text-[#9B59B6] hover:underline">ojapaoexpress@gmail.com</a></p>
+            </div>
+
+            <div>
+              <h3 class="font-black text-[#2C1654] mb-1">2. Dados Coletados</h3>
+              <ul class="list-disc list-inside space-y-1 text-xs">
+                <li>Nome completo</li>
+                <li>Endereço de e-mail</li>
+                <li>Endereço de entrega</li>
+                <li>Número de telefone / WhatsApp</li>
+                <li>Dados de pagamento (processados diretamente pela Stripe — não armazenamos dados de cartão)</li>
+              </ul>
+            </div>
+
+            <div>
+              <h3 class="font-black text-[#2C1654] mb-1">3. Finalidade do Tratamento</h3>
+              <ul class="list-disc list-inside space-y-1 text-xs">
+                <li>Processamento e envio de pedidos</li>
+                <li>Comunicação sobre o status do pedido</li>
+                <li>Atendimento ao cliente</li>
+                <li>Melhorias do serviço e análise de uso</li>
+              </ul>
+            </div>
+
+            <div>
+              <h3 class="font-black text-[#2C1654] mb-1">4. Base Legal (LGPD)</h3>
+              <ul class="list-disc list-inside space-y-1 text-xs">
+                <li>Execução de contrato (Art. 7º, V)</li>
+                <li>Legítimo interesse (Art. 7º, IX)</li>
+                <li>Consentimento (Art. 7º, I) — para comunicações de marketing</li>
+              </ul>
+            </div>
+
+            <div>
+              <h3 class="font-black text-[#2C1654] mb-1">5. Compartilhamento de Dados</h3>
+              <ul class="list-disc list-inside space-y-1 text-xs">
+                <li><strong>Stripe</strong> — processamento de pagamentos (PCI DSS)</li>
+                <li><strong>Japan Post</strong> — dados de endereço para envio</li>
+                <li><strong>Firebase / Google</strong> — infraestrutura e autenticação</li>
+              </ul>
+              <p class="text-xs mt-1 text-gray-500">Não vendemos seus dados a terceiros.</p>
+            </div>
+
+            <div>
+              <h3 class="font-black text-[#2C1654] mb-1">6. Transferência Internacional</h3>
+              <p class="text-xs">Seus dados podem ser processados no Japão (servidores do operador) e nos EUA (Stripe, Firebase/Google), sempre com salvaguardas adequadas.</p>
+            </div>
+
+            <div>
+              <h3 class="font-black text-[#2C1654] mb-1">7. Seus Direitos (LGPD)</h3>
+              <ul class="list-disc list-inside space-y-1 text-xs">
+                <li>Confirmação da existência de tratamento</li>
+                <li>Acesso aos seus dados</li>
+                <li>Correção de dados incompletos ou incorretos</li>
+                <li>Anonimização, bloqueio ou eliminação de dados desnecessários</li>
+                <li>Portabilidade dos dados</li>
+                <li>Eliminação dos dados tratados com consentimento</li>
+                <li>Informação sobre compartilhamento</li>
+                <li>Revogação do consentimento a qualquer momento</li>
+                <li>Oposição ao tratamento</li>
+              </ul>
+              <p class="text-xs mt-1">Para exercer seus direitos: <a href="mailto:ojapaoexpress@gmail.com" class="text-[#9B59B6] hover:underline">ojapaoexpress@gmail.com</a></p>
+            </div>
+
+            <div>
+              <h3 class="font-black text-[#2C1654] mb-1">8. Retenção de Dados</h3>
+              <ul class="list-disc list-inside space-y-1 text-xs">
+                <li>Dados de pedidos: 5 anos (obrigação fiscal)</li>
+                <li>Dados de conta: enquanto a conta estiver ativa</li>
+              </ul>
+            </div>
+
+            <div>
+              <h3 class="font-black text-[#2C1654] mb-1">9. Encarregado (DPO)</h3>
+              <p class="text-xs">Contato: <a href="mailto:ojapaoexpress@gmail.com" class="text-[#9B59B6] hover:underline">ojapaoexpress@gmail.com</a></p>
+            </div>
+
+            <div>
+              <h3 class="font-black text-[#2C1654] mb-1">10. Cookies</h3>
+              <ul class="list-disc list-inside space-y-1 text-xs">
+                <li><strong>Cookies essenciais</strong>: necessários para funcionamento (carrinho, login, preferências de idioma/moeda). Não requerem consentimento.</li>
+                <li><strong>Cookies analíticos</strong>: Google Analytics / Firebase Analytics para melhorar o serviço. Requerem seu consentimento.</li>
+              </ul>
+              <p class="text-xs mt-1">Você pode desativar cookies não essenciais nas configurações do navegador a qualquer momento.</p>
+            </div>
+
+          </div>
+        </div>
+
+        <!-- JP -->
+        <div data-lang="jp" class="lang-jp">
+          <div class="policy-section mb-4">
+            <h2 class="font-hero text-2xl text-[#2C1654]">プライバシーポリシー</h2>
+            <p class="text-xs font-semibold text-[#7B5EA0]">最終更新日：2026年4月</p>
+          </div>
+
+          <div class="space-y-4 text-sm font-semibold text-[#3D1A78] leading-relaxed">
+
+            <div>
+              <h3 class="font-black text-[#2C1654] mb-1">1. 事業者名</h3>
+              <p>ジャパン・エクスプレス — <a href="mailto:ojapaoexpress@gmail.com" class="text-[#9B59B6] hover:underline">ojapaoexpress@gmail.com</a></p>
+            </div>
+
+            <div>
+              <h3 class="font-black text-[#2C1654] mb-1">2. 収集する個人情報</h3>
+              <ul class="list-disc list-inside space-y-1 text-xs">
+                <li>氏名</li>
+                <li>メールアドレス</li>
+                <li>配送先住所</li>
+                <li>電話番号</li>
+                <li>決済情報（Stripeが直接処理 — カード情報は当社では保存しません）</li>
+              </ul>
+            </div>
+
+            <div>
+              <h3 class="font-black text-[#2C1654] mb-1">3. 利用目的</h3>
+              <ul class="list-disc list-inside space-y-1 text-xs">
+                <li>注文の処理および発送</li>
+                <li>注文状況のご連絡</li>
+                <li>顧客サポート</li>
+                <li>サービスの改善および利用状況の分析</li>
+              </ul>
+            </div>
+
+            <div>
+              <h3 class="font-black text-[#2C1654] mb-1">4. 第三者提供</h3>
+              <ul class="list-disc list-inside space-y-1 text-xs">
+                <li><strong>Stripe</strong> — 決済処理（PCI DSS準拠）</li>
+                <li><strong>日本郵便</strong> — 配送のための住所情報</li>
+                <li><strong>Firebase / Google</strong> — インフラおよび認証</li>
+              </ul>
+              <p class="text-xs mt-1 text-gray-500">個人情報を第三者に販売することはありません。</p>
+            </div>
+
+            <div>
+              <h3 class="font-black text-[#2C1654] mb-1">5. 保有期間</h3>
+              <ul class="list-disc list-inside space-y-1 text-xs">
+                <li>注文データ：5年間（税務上の義務）</li>
+                <li>アカウントデータ：アカウント有効期間中</li>
+              </ul>
+            </div>
+
+            <div>
+              <h3 class="font-black text-[#2C1654] mb-1">6. 開示・訂正・削除の請求</h3>
+              <p class="text-xs">個人情報の開示・訂正・削除をご希望の場合は、<a href="mailto:ojapaoexpress@gmail.com" class="text-[#9B59B6] hover:underline">ojapaoexpress@gmail.com</a> までご連絡ください。</p>
+            </div>
+
+            <div>
+              <h3 class="font-black text-[#2C1654] mb-1">7. Cookieの使用</h3>
+              <ul class="list-disc list-inside space-y-1 text-xs">
+                <li><strong>必須Cookie</strong>：サービス運営に必要（カート、ログイン、設定）</li>
+                <li><strong>分析Cookie</strong>：Firebase Analyticsによるサービス改善（同意が必要）</li>
+              </ul>
+              <p class="text-xs mt-1">ブラウザ設定でいつでも非必須Cookieを無効にできます。</p>
+            </div>
+
+          </div>
+        </div>
+
+      </div>
+
+      <!-- ══════════════════════════════════════════
+           SECTION 2: TERMOS DE USO / 利用規約
+      ══════════════════════════════════════════ -->
+      <div class="bg-white rounded-2xl shadow-md p-6 mb-6">
+
+        <!-- PT -->
+        <div data-lang="pt" class="lang-pt">
+          <div class="policy-section mb-4">
+            <h2 class="font-hero text-2xl text-[#2C1654]">Termos de Uso</h2>
+            <p class="text-xs font-semibold text-[#7B5EA0]">Última atualização: abril de 2026</p>
+          </div>
+
+          <div class="space-y-4 text-sm font-semibold text-[#3D1A78] leading-relaxed">
+
+            <div>
+              <h3 class="font-black text-[#2C1654] mb-1">1. Aceitação</h3>
+              <p class="text-xs">Ao acessar e usar o site Japão Express, você concorda com estes Termos de Uso. Se não concordar, não utilize o serviço.</p>
+            </div>
+
+            <div>
+              <h3 class="font-black text-[#2C1654] mb-1">2. Produtos</h3>
+              <p class="text-xs">Todos os produtos são importados do Japão. O comprador é responsável pelo pagamento de eventuais impostos de importação e taxas alfandegárias exigidas pelo Brasil.</p>
+            </div>
+
+            <div>
+              <h3 class="font-black text-[#2C1654] mb-1">3. Pagamentos</h3>
+              <p class="text-xs">Pagamentos são processados com segurança pela Stripe (PCI DSS). Aceitamos cartão de crédito/débito e Pix. Os preços são exibidos em BRL (Real Brasileiro) e JPY (Iene Japonês), com câmbio atualizado diariamente.</p>
+            </div>
+
+            <div>
+              <h3 class="font-black text-[#2C1654] mb-1">4. Propriedade Intelectual</h3>
+              <p class="text-xs">Todo o conteúdo do site (textos, imagens, logotipo, design) é propriedade da Japão Express e protegido por direitos autorais. É proibida a reprodução sem autorização prévia.</p>
+            </div>
+
+            <div>
+              <h3 class="font-black text-[#2C1654] mb-1">5. Limitação de Responsabilidade</h3>
+              <p class="text-xs">A Japão Express não se responsabiliza por: taxas alfandegárias e impostos de importação; atrasos causados pelos Correios ou alfândega brasileira; danos causados pelo mau uso dos produtos.</p>
+            </div>
+
+            <div>
+              <h3 class="font-black text-[#2C1654] mb-1">6. Lei Aplicável</h3>
+              <p class="text-xs">Estes termos são regidos pela lei brasileira (Código de Defesa do Consumidor, LGPD) e pela lei japonesa, no que se aplicar. Foro: Brasil.</p>
+            </div>
+
+          </div>
+        </div>
+
+        <!-- JP -->
+        <div data-lang="jp" class="lang-jp">
+          <div class="policy-section mb-4">
+            <h2 class="font-hero text-2xl text-[#2C1654]">利用規約</h2>
+            <p class="text-xs font-semibold text-[#7B5EA0]">最終更新日：2026年4月</p>
+          </div>
+
+          <div class="space-y-4 text-sm font-semibold text-[#3D1A78] leading-relaxed">
+
+            <div>
+              <h3 class="font-black text-[#2C1654] mb-1">1. 同意</h3>
+              <p class="text-xs">ジャパン・エクスプレスのサイトにアクセスし利用することで、これらの利用規約に同意したものとみなされます。</p>
+            </div>
+
+            <div>
+              <h3 class="font-black text-[#2C1654] mb-1">2. 商品について</h3>
+              <p class="text-xs">すべての商品は日本から輸入されます。ブラジルの輸入税・関税はお客様の負担となります。</p>
+            </div>
+
+            <div>
+              <h3 class="font-black text-[#2C1654] mb-1">3. 支払い</h3>
+              <p class="text-xs">支払いはStripeにより安全に処理されます（PCI DSS準拠）。価格はBRL（ブラジルレアル）およびJPY（日本円）で表示され、為替レートは毎日更新されます。</p>
+            </div>
+
+            <div>
+              <h3 class="font-black text-[#2C1654] mb-1">4. 知的財産</h3>
+              <p class="text-xs">サイトのすべてのコンテンツ（テキスト、画像、ロゴ、デザイン）はジャパン・エクスプレスに帰属し、著作権により保護されています。無断転載・複製を禁じます。</p>
+            </div>
+
+            <div>
+              <h3 class="font-black text-[#2C1654] mb-1">5. 免責事項</h3>
+              <p class="text-xs">当社は以下について責任を負いません：輸入税・関税、郵便・税関による遅延、商品の誤使用による損害。</p>
+            </div>
+
+          </div>
+        </div>
+
+      </div>
+
+      <!-- ══════════════════════════════════════════
+           SECTION 3: DEVOLUÇÃO / 返金・返品
+      ══════════════════════════════════════════ -->
+      <div class="bg-white rounded-2xl shadow-md p-6 mb-6">
+
+        <!-- PT -->
+        <div data-lang="pt" class="lang-pt">
+          <div class="policy-section mb-4">
+            <h2 class="font-hero text-2xl text-[#2C1654]">Política de Devolução e Reembolso</h2>
+          </div>
+
+          <div class="space-y-4 text-sm font-semibold text-[#3D1A78] leading-relaxed">
+
+            <div>
+              <h3 class="font-black text-[#2C1654] mb-1">1. Prazo para Devolução</h3>
+              <p class="text-xs">7 dias corridos após o recebimento do produto (direito de arrependimento — CDC, art. 49).</p>
+            </div>
+
+            <div>
+              <h3 class="font-black text-[#2C1654] mb-1">2. Condições</h3>
+              <ul class="list-disc list-inside space-y-1 text-xs">
+                <li>Produto sem uso e sem sinais de violação</li>
+                <li>Na embalagem original, com todos os acessórios e manuais</li>
+              </ul>
+            </div>
+
+            <div>
+              <h3 class="font-black text-[#2C1654] mb-1">3. Como Solicitar</h3>
+              <p class="text-xs">Envie um e-mail para <a href="mailto:ojapaoexpress@gmail.com" class="text-[#9B59B6] hover:underline">ojapaoexpress@gmail.com</a> com: número do pedido, motivo da devolução e fotos do produto.</p>
+            </div>
+
+            <div>
+              <h3 class="font-black text-[#2C1654] mb-1">4. Frete de Devolução</h3>
+              <p class="text-xs">O custo do envio de devolução é de responsabilidade do cliente, exceto em casos de produto defeituoso ou erro de nossa parte.</p>
+            </div>
+
+            <div>
+              <h3 class="font-black text-[#2C1654] mb-1">5. Reembolso</h3>
+              <p class="text-xs">Processado em até 10 dias úteis após o recebimento do produto devolvido, pelo mesmo método de pagamento utilizado.</p>
+            </div>
+
+            <div>
+              <h3 class="font-black text-[#2C1654] mb-1">6. Produtos Defeituosos</h3>
+              <p class="text-xs">Em caso de defeito de fabricação ou dano no transporte, oferecemos troca ou reembolso integral sem custo ao cliente.</p>
+            </div>
+
+            <div>
+              <h3 class="font-black text-[#2C1654] mb-1">7. Produtos Não Elegíveis</h3>
+              <ul class="list-disc list-inside space-y-1 text-xs">
+                <li>Produtos abertos ou utilizados</li>
+                <li>Produtos sem embalagem original</li>
+                <li>Produtos danificados pelo cliente</li>
+              </ul>
+            </div>
+
+          </div>
+        </div>
+
+        <!-- JP -->
+        <div data-lang="jp" class="lang-jp">
+          <div class="policy-section mb-4">
+            <h2 class="font-hero text-2xl text-[#2C1654]">返金・返品ポリシー</h2>
+          </div>
+
+          <div class="space-y-4 text-sm font-semibold text-[#3D1A78] leading-relaxed">
+
+            <div>
+              <h3 class="font-black text-[#2C1654] mb-1">1. 返品期限</h3>
+              <p class="text-xs">商品受取後8日以内（特定商取引法に基づくクーリングオフ）。</p>
+            </div>
+
+            <div>
+              <h3 class="font-black text-[#2C1654] mb-1">2. 返品条件</h3>
+              <ul class="list-disc list-inside space-y-1 text-xs">
+                <li>未使用・未開封であること</li>
+                <li>元の包装のまま、すべての付属品・説明書が揃っていること</li>
+              </ul>
+            </div>
+
+            <div>
+              <h3 class="font-black text-[#2C1654] mb-1">3. 返品申請方法</h3>
+              <p class="text-xs"><a href="mailto:ojapaoexpress@gmail.com" class="text-[#9B59B6] hover:underline">ojapaoexpress@gmail.com</a> まで、注文番号・返品理由・商品の写真を添えてメールでご連絡ください。</p>
+            </div>
+
+            <div>
+              <h3 class="font-black text-[#2C1654] mb-1">4. 返送料</h3>
+              <p class="text-xs">返送料はお客様負担となります。ただし、商品不良・当社の誤出荷の場合は当社が負担します。</p>
+            </div>
+
+            <div>
+              <h3 class="font-black text-[#2C1654] mb-1">5. 返金</h3>
+              <p class="text-xs">返品商品の受取後10営業日以内に、お支払い方法と同じ方法で返金いたします。</p>
+            </div>
+
+            <div>
+              <h3 class="font-black text-[#2C1654] mb-1">6. 不良品</h3>
+              <p class="text-xs">製造上の欠陥または輸送中の破損があった場合は、全額返金または交換にて対応いたします（送料当社負担）。</p>
+            </div>
+
+          </div>
+        </div>
+
+      </div>
+
+      <!-- ══════════════════════════════════════════
+           SECTION 4: ENVIO / 配送ポリシー
+      ══════════════════════════════════════════ -->
+      <div class="bg-white rounded-2xl shadow-md p-6 mb-6">
+
+        <!-- PT -->
+        <div data-lang="pt" class="lang-pt">
+          <div class="policy-section mb-4">
+            <h2 class="font-hero text-2xl text-[#2C1654]">Política de Envio</h2>
+          </div>
+
+          <div class="space-y-4 text-sm font-semibold text-[#3D1A78] leading-relaxed">
+
+            <div>
+              <h3 class="font-black text-[#2C1654] mb-1">1. Métodos de Envio</h3>
+              <div class="overflow-x-auto">
+                <table class="w-full text-xs border-collapse mt-1">
+                  <thead>
+                    <tr class="bg-[#F0E8FF]">
+                      <th class="text-left p-2 font-black text-[#2C1654] rounded-tl-lg">Método</th>
+                      <th class="text-left p-2 font-black text-[#2C1654]">Prazo estimado</th>
+                      <th class="text-left p-2 font-black text-[#2C1654] rounded-tr-lg">Rastreamento</th>
+                    </tr>
+                  </thead>
+                  <tbody class="divide-y divide-gray-100">
+                    <tr>
+                      <td class="p-2">Airmail</td>
+                      <td class="p-2">30–60 dias</td>
+                      <td class="p-2 text-gray-400">Não</td>
+                    </tr>
+                    <tr>
+                      <td class="p-2">Airmail Registrado</td>
+                      <td class="p-2">30–60 dias</td>
+                      <td class="p-2 text-green-600 font-black">Sim</td>
+                    </tr>
+                    <tr>
+                      <td class="p-2">EMS (Expresso)</td>
+                      <td class="p-2">7–14 dias</td>
+                      <td class="p-2 text-green-600 font-black">Sim</td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+
+            <div>
+              <h3 class="font-black text-[#2C1654] mb-1">2. Cálculo do Frete</h3>
+              <p class="text-xs">Baseado no peso total do pedido, conforme a tabela da Japan Post para o Brasil. O valor é exibido no carrinho antes da finalização.</p>
+            </div>
+
+            <div>
+              <h3 class="font-black text-[#2C1654] mb-1">3. Prazo de Preparação</h3>
+              <p class="text-xs">Após a confirmação do pagamento, preparamos o pedido em 1–3 dias úteis. O prazo de entrega começa a contar após o despacho.</p>
+            </div>
+
+            <div>
+              <h3 class="font-black text-[#2C1654] mb-1">4. Importação e Impostos</h3>
+              <p class="text-xs">Pedidos acima de USD 50 podem ser tributados pela Receita Federal Brasileira (ICMS ~17–20% + outros encargos). O pagamento de impostos é de responsabilidade exclusiva do comprador. A Japão Express não tem controle sobre a tributação alfandegária.</p>
+            </div>
+
+            <div>
+              <h3 class="font-black text-[#2C1654] mb-1">5. Retenção na Alfândega</h3>
+              <p class="text-xs">Pedidos podem ser retidos na alfândega por 30 dias ou mais. Esse processo está fora do nosso controle e não justifica cancelamento ou reembolso automático.</p>
+            </div>
+
+            <div>
+              <h3 class="font-black text-[#2C1654] mb-1">6. Endereço Incorreto</h3>
+              <p class="text-xs">O cliente é responsável por informar o endereço correto. Em caso de devolução por endereço incorreto, o reenvio será cobrado.</p>
+            </div>
+
+          </div>
+        </div>
+
+        <!-- JP -->
+        <div data-lang="jp" class="lang-jp">
+          <div class="policy-section mb-4">
+            <h2 class="font-hero text-2xl text-[#2C1654]">配送ポリシー</h2>
+          </div>
+
+          <div class="space-y-4 text-sm font-semibold text-[#3D1A78] leading-relaxed">
+
+            <div>
+              <h3 class="font-black text-[#2C1654] mb-1">1. 配送方法</h3>
+              <div class="overflow-x-auto">
+                <table class="w-full text-xs border-collapse mt-1">
+                  <thead>
+                    <tr class="bg-[#F0E8FF]">
+                      <th class="text-left p-2 font-black text-[#2C1654]">配送方法</th>
+                      <th class="text-left p-2 font-black text-[#2C1654]">目安日数</th>
+                      <th class="text-left p-2 font-black text-[#2C1654]">追跡</th>
+                    </tr>
+                  </thead>
+                  <tbody class="divide-y divide-gray-100">
+                    <tr>
+                      <td class="p-2">航空便</td>
+                      <td class="p-2">約30〜60日</td>
+                      <td class="p-2 text-gray-400">なし</td>
+                    </tr>
+                    <tr>
+                      <td class="p-2">書留航空便</td>
+                      <td class="p-2">約30〜60日</td>
+                      <td class="p-2 text-green-600 font-black">あり</td>
+                    </tr>
+                    <tr>
+                      <td class="p-2">EMS</td>
+                      <td class="p-2">約7〜14日</td>
+                      <td class="p-2 text-green-600 font-black">あり</td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+
+            <div>
+              <h3 class="font-black text-[#2C1654] mb-1">2. 送料計算</h3>
+              <p class="text-xs">注文の総重量に基づき、日本郵便のブラジル向け料金表で計算されます。カート画面で確認できます。</p>
+            </div>
+
+            <div>
+              <h3 class="font-black text-[#2C1654] mb-1">3. 発送準備</h3>
+              <p class="text-xs">支払い確認後1〜3営業日以内に発送準備を行います。</p>
+            </div>
+
+            <div>
+              <h3 class="font-black text-[#2C1654] mb-1">4. ブラジル税関・輸入税</h3>
+              <p class="text-xs">50米ドルを超える注文にはブラジルの輸入税（ICMS約17〜20%等）が課される場合があります。税金はお客様の負担です。当社は課税内容を管理できません。</p>
+            </div>
+
+            <div>
+              <h3 class="font-black text-[#2C1654] mb-1">5. 通関遅延</h3>
+              <p class="text-xs">税関手続きにより30日以上の遅延が生じる場合があります。これは当社の管理外であり、自動的なキャンセル・返金の対象にはなりません。</p>
+            </div>
+
+          </div>
+        </div>
+
+      </div>
+
+      <!-- ══════════════════════════════════════════
+           SECTION 5: COOKIES / Cookieポリシー
+      ══════════════════════════════════════════ -->
+      <div class="bg-white rounded-2xl shadow-md p-6 mb-6">
+
+        <!-- PT -->
+        <div data-lang="pt" class="lang-pt">
+          <div class="policy-section mb-4">
+            <h2 class="font-hero text-2xl text-[#2C1654]">Política de Cookies</h2>
+          </div>
+
+          <div class="space-y-4 text-sm font-semibold text-[#3D1A78] leading-relaxed">
+
+            <div>
+              <h3 class="font-black text-[#2C1654] mb-1">Cookies Essenciais</h3>
+              <p class="text-xs">Necessários para o funcionamento básico do site: carrinho de compras, login, preferências de idioma e moeda. Não requerem consentimento pois são indispensáveis ao serviço.</p>
+            </div>
+
+            <div>
+              <h3 class="font-black text-[#2C1654] mb-1">Cookies Analíticos</h3>
+              <p class="text-xs">Utilizados pelo Firebase Analytics (Google) para entender como os usuários interagem com o site e melhorar a experiência. Requerem seu consentimento.</p>
+            </div>
+
+            <div>
+              <h3 class="font-black text-[#2C1654] mb-1">Gerenciamento de Cookies</h3>
+              <p class="text-xs">Você pode aceitar ou recusar cookies analíticos ao visitar o site pela primeira vez. Pode também alterar sua preferência nas configurações do navegador a qualquer momento.</p>
+            </div>
+
+            <div>
+              <h3 class="font-black text-[#2C1654] mb-1">Cookies de Terceiros</h3>
+              <ul class="list-disc list-inside space-y-1 text-xs">
+                <li><strong>Google / Firebase</strong>: analytics e autenticação</li>
+                <li><strong>Stripe</strong>: processamento seguro de pagamentos</li>
+              </ul>
+            </div>
+
+          </div>
+        </div>
+
+        <!-- JP -->
+        <div data-lang="jp" class="lang-jp">
+          <div class="policy-section mb-4">
+            <h2 class="font-hero text-2xl text-[#2C1654]">Cookieポリシー</h2>
+          </div>
+
+          <div class="space-y-4 text-sm font-semibold text-[#3D1A78] leading-relaxed">
+
+            <div>
+              <h3 class="font-black text-[#2C1654] mb-1">必須Cookie</h3>
+              <p class="text-xs">サービス運営に必要なCookie（カート、ログイン、言語・通貨設定）。同意不要です。</p>
+            </div>
+
+            <div>
+              <h3 class="font-black text-[#2C1654] mb-1">分析Cookie</h3>
+              <p class="text-xs">Firebase Analytics（Google）を使用して、サイトの利用状況を把握し改善に役立てます。ご同意が必要です。</p>
+            </div>
+
+            <div>
+              <h3 class="font-black text-[#2C1654] mb-1">管理方法</h3>
+              <p class="text-xs">初回訪問時に分析Cookieの同意を選択できます。ブラウザ設定からいつでも変更可能です。</p>
+            </div>
+
+            <div>
+              <h3 class="font-black text-[#2C1654] mb-1">第三者Cookie</h3>
+              <ul class="list-disc list-inside space-y-1 text-xs">
+                <li><strong>Google / Firebase</strong>：分析・認証</li>
+                <li><strong>Stripe</strong>：安全な決済処理</li>
+              </ul>
+            </div>
+
+          </div>
+        </div>
+
+      </div>
+
+      <!-- CONTACT CTA -->
+      <div class="bg-[#F0E8FF] rounded-2xl p-5 flex flex-col sm:flex-row items-center justify-between gap-4">
+        <div>
+          <p class="font-black text-[#2C1654] lang-pt">Dúvidas sobre nossas políticas?</p>
+          <p class="font-black text-[#2C1654] lang-jp">ポリシーについてご不明な点は？</p>
+          <p class="text-xs font-semibold text-[#7B5EA0] lang-pt">Entre em contato conosco</p>
+          <p class="text-xs font-semibold text-[#7B5EA0] lang-jp">お気軽にお問い合わせください</p>
+        </div>
+        <a href="mailto:ojapaoexpress@gmail.com"
+          class="inline-flex items-center gap-2 bg-[#9B59B6] hover:bg-[#7D3C98] text-white font-black text-sm uppercase tracking-widest rounded-xl px-5 py-3 transition shadow-lg whitespace-nowrap">
+          <i class="fa-solid fa-envelope"></i>
+          <span class="lang-pt">Falar Conosco</span>
+          <span class="lang-jp">メールで問い合わせ</span>
+        </a>
+      </div>
+
+    </main>
+
+    <!-- FOOTER -->
+    <footer class="border-t-2 border-gray-200 px-6 md:px-10 pt-8 pb-6 grid grid-cols-1 md:grid-cols-3 gap-8 text-center md:text-left text-sm text-[#4A3060]">
+      <div>
+        <h5 class="font-black text-base mb-2 text-[#2C1654]">Japão Express</h5>
+        <p class="text-xs leading-relaxed font-semibold">Direto do Japão para o Brasil.</p>
+      </div>
+      <div>
+        <h5 class="font-black text-base mb-2 text-[#2C1654]">Quick Links</h5>
+        <ul class="space-y-1 text-xs font-semibold">
+          <li><a href="produtos.html" class="hover:text-[#9B59B6]">Produtos</a></li>
+          <li><a href="institucional.html" class="hover:text-[#9B59B6]">Sobre Nós</a></li>
+          <li><a href="contato.html" class="hover:text-[#9B59B6]">Contato</a></li>
+          <li><a href="politicas.html" class="hover:text-[#9B59B6]">Políticas</a></li>
+          <li><a href="tokushoho.html" class="hover:text-[#9B59B6]">特定商取引法</a></li>
+        </ul>
+      </div>
+      <div>
+        <h5 class="font-black text-base mb-3 text-[#2C1654]">Social Media</h5>
+        <div class="flex justify-center md:justify-start gap-4 text-xl">
+          <a href="https://www.instagram.com/ojapaoexpress" target="_blank" rel="noopener" class="text-[#2C1654] hover:text-[#9B59B6]"><i class="fa-brands fa-instagram"></i></a>
+          <a href="#" class="text-[#2C1654] hover:text-[#9B59B6]"><i class="fa-brands fa-tiktok"></i></a>
+        </div>
+      </div>
+    </footer>
+    <div class="text-center text-xs py-4 text-gray-400 border-t border-gray-100 font-semibold">© 2026 Japão Express. Todos os direitos reservados</div>
+
+  </div>
+
+  <script src="js/header.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-auth-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore-compat.js"></script>
+  <script src="js/firebase-config.js"></script>
+  <script src="js/products.js"></script>
+  <script src="js/cart.js"></script>
+  <script src="js/sync.js"></script>
+  <script src="js/currency.js"></script>
+  <script src="js/auth.js"></script>
+
+  <script>
+    function setLang(lang) {
+      // Toggle content visibility
+      document.querySelectorAll('.lang-pt').forEach(function(el) {
+        el.style.display = lang === 'pt' ? '' : 'none';
+      });
+      document.querySelectorAll('.lang-jp').forEach(function(el) {
+        el.style.display = lang === 'jp' ? '' : 'none';
+      });
+
+      // Toggle button styles
+      var btnPt = document.getElementById('btn-pt');
+      var btnJp = document.getElementById('btn-jp');
+      if (lang === 'pt') {
+        btnPt.className = 'flex items-center gap-2 px-5 py-2 rounded-xl font-black text-sm transition bg-[#9B59B6] text-white';
+        btnJp.className = 'flex items-center gap-2 px-5 py-2 rounded-xl font-black text-sm transition border-2 border-[#9B59B6] text-[#9B59B6]';
+      } else {
+        btnJp.className = 'flex items-center gap-2 px-5 py-2 rounded-xl font-black text-sm transition bg-[#9B59B6] text-white';
+        btnPt.className = 'flex items-center gap-2 px-5 py-2 rounded-xl font-black text-sm transition border-2 border-[#9B59B6] text-[#9B59B6]';
+      }
+
+      localStorage.setItem('je_policy_lang', lang);
+    }
+
+    // Init: restore saved language or default PT
+    (function() {
+      var saved = localStorage.getItem('je_policy_lang') || 'pt';
+      setLang(saved);
+    })();
+  </script>
+</body>
+</html>

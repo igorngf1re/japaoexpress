@@ -248,7 +248,7 @@
                     <button id="favBtn"
                        class="bg-white border-2 border-[#9B59B6] text-[#9B59B6] font-black py-3.5 px-5 rounded-full shadow-lg hover:bg-[#F7F3FF] transition text-sm flex items-center justify-center gap-2">
                         <i class="fa-regular fa-heart"></i>
-                        <span class="favBtnLabel">FAVORITAR</span>
+                        <span class="favBtnLabel sm:hidden">FAVORITAR</span>
                     </button>
                     <a href="https://wa.me/5511999999999"
                        class="flex-1 bg-[#25D366] text-white font-black py-3.5 px-6 rounded-full shadow-lg hover:bg-[#1EB855] transition text-sm tracking-widest uppercase text-center flex items-center justify-center gap-2">
@@ -575,8 +575,8 @@
         if (!btn) return;
         const faved = isFav(id);
         btn.innerHTML = faved
-            ? '<i class="fa-solid fa-heart text-[#E74C3C]"></i><span class="favBtnLabel">FAVORITADO</span>'
-            : '<i class="fa-regular fa-heart"></i><span class="favBtnLabel">FAVORITAR</span>';
+            ? '<i class="fa-solid fa-heart text-[#E74C3C]"></i><span class="favBtnLabel sm:hidden">FAVORITADO</span>'
+            : '<i class="fa-regular fa-heart"></i><span class="favBtnLabel sm:hidden">FAVORITAR</span>';
         btn.classList.toggle('bg-[#FFF0F0]', faved);
         btn.classList.toggle('border-[#E74C3C]', faved);
         btn.classList.toggle('text-[#E74C3C]', faved);

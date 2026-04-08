@@ -558,7 +558,7 @@ async function _saveOrderToFirestore(orderId, cart, method, shpBRL, shpJPY, paym
             total:         totalBRL,
             payment:       payment,
             status:        'pendente',
-            statusHistory: [{ status: 'pendente', ts: firebase.firestore.FieldValue.serverTimestamp(), note: 'Pedido recebido' }],
+            statusHistory: [{ status: 'pendente', ts: new Date().toISOString(), note: 'Pedido recebido' }],
             createdAt:     firebase.firestore.FieldValue.serverTimestamp(),
         };
         const saves = [db.collection('orders').doc(orderId).set(fsOrder)];

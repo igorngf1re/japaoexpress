@@ -397,6 +397,29 @@
       document.getElementById('orderTotal').textContent = fmtBRL(order.total);
     }
 
+    // Salva pedido Wise no Firestore (status pendente) + notifica Telegram
+    async function saveWiseOrder(order) {
+      try {
+        const db = firebase.firestore();
+        const fsOrder = {
+          ...order,
+          status: 'pendente',
+          payment: 'wise',
+          statusHistory: [
+            { status: 'pendente', ts: new Date().toISOString(), note: 'Pedido Wise — aguardando transferência' },
+          ],
+          createdAt: firebase.firestore.FieldValue.serverTimestamp(),
+        };
+        const saves = [db.collection('orders').doc(order.id).set(fsOrder)];
+        if (order.uid) saves.push(db.collection('users').doc(order.uid).collection('orders').doc(order.id).set(fsOrder));
+        await Promise.all(saves);
+        fetch('/api/notify-order', {
+          method: 'POST', headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ order: { ...fsOrder, customerName: order.customerName || '', customerEmail: order.customerEmail || '' } })
+        }).catch(() => {});
+      } catch (e) { console.warn('[JE] saveWiseOrder error:', e); }
+    }
+
     // Salva pedido confirmado no Firestore
     async function saveConfirmedOrder(order, stripeSessionId) {
       try {
@@ -406,8 +429,8 @@
           status:        'confirmado',
           stripeSessionId: stripeSessionId || '',
           statusHistory: [
-            { status: 'pendente',   ts: firebase.firestore.FieldValue.serverTimestamp(), note: 'Pedido recebido' },
-            { status: 'confirmado', ts: firebase.firestore.FieldValue.serverTimestamp(), note: 'Pagamento confirmado via Stripe' },
+            { status: 'pendente',   ts: new Date().toISOString(), note: 'Pedido recebido' },
+            { status: 'confirmado', ts: new Date().toISOString(), note: 'Pagamento confirmado via Stripe' },
           ],
           createdAt: firebase.firestore.FieldValue.serverTimestamp(),
         };
@@ -443,6 +466,8 @@
         if (wiseTotalEl && order.total) {
           wiseTotalEl.textContent = 'R$ ' + Number(order.total).toFixed(2).replace('.', ',');
         }
+        // Salva no Firestore + notifica Telegram (safety net caso checkout.html tenha falhado)
+        await saveWiseOrder(order);
         // Wise é manual — limpa carrinho e encerra
         localStorage.removeItem('je_cart');
         window.dispatchEvent(new CustomEvent('je:cartUpdated'));

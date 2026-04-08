@@ -4,7 +4,6 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Checkout — Japão Express</title>
-    <!-- Favicon & PWA -->
     <link rel="icon" type="image/png" sizes="32x32" href="icons/icon-128.png">
     <link rel="icon" type="image/png" sizes="192x192" href="icons/icon-192.png">
     <link rel="apple-touch-icon" sizes="180x180" href="icons/icon-180.png">
@@ -41,10 +40,8 @@
 <body>
 <div class="bg-[#FDFAF2] w-full max-w-4xl rounded-3xl shadow-2xl overflow-visible border-t-[10px] border-[#9B59B6]">
 
-    <!-- HEADER -->
     <header></header>
 
-    <!-- BREADCRUMB + STEPS -->
     <div class="px-6 md:px-10 pt-3 pb-4 border-b border-gray-100">
         <p class="text-xs font-semibold text-[#9B59B6] tracking-wide mb-4">
             <a href="index.html" class="hover:underline">Home</a>
@@ -62,16 +59,13 @@
         </div>
     </div>
 
-    <!-- CONTEÚDO -->
     <section class="px-6 md:px-10 py-6">
         <h1 class="font-hero text-[2.6rem] text-[#2C1654] leading-none mb-6">Finalizar Pedido</h1>
 
         <div class="flex flex-col lg:flex-row gap-6">
 
-            <!-- FORMULÁRIO -->
             <div class="flex-1 space-y-4">
 
-                <!-- 1. Dados pessoais -->
                 <div class="bg-[#F5F5F5] rounded-2xl p-5 shadow-sm">
                     <h3 class="font-black text-sm text-[#2C1654] mb-4 flex items-center gap-2">
                         <span class="w-6 h-6 bg-[#9B59B6] text-white rounded-full flex items-center justify-center text-xs">1</span>
@@ -80,24 +74,23 @@
                     <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
                         <div class="sm:col-span-2"><label class="fl">Nome completo *</label><input id="ck-name" class="fi" type="text" placeholder="Seu nome completo" required></div>
                         <div><label class="fl">Email *</label><input id="ck-email" class="fi" type="email" placeholder="seu@email.com" required></div>
-                        <div><label class="fl">WhatsApp</label><input id="ck-phone" class="fi" type="tel" placeholder="+55 11 99999-9999"></div>
-                        <div><label class="fl">CPF</label><input id="ck-cpf" class="fi" type="text" placeholder="000.000.000-00"></div>
+                        <div><label class="fl">WhatsApp *</label><input id="ck-phone" class="fi" type="tel" placeholder="+55 11 99999-9999" required></div>
+                        <div><label class="fl">CPF *</label><input id="ck-cpf" class="fi" type="text" placeholder="000.000.000-00" maxlength="14" oninput="maskCpf(this)" required></div>
                     </div>
                 </div>
 
-                <!-- 2. Endereço -->
                 <div class="bg-[#EFEFEF] rounded-2xl p-5 shadow-sm">
                     <h3 class="font-black text-sm text-[#2C1654] mb-4 flex items-center gap-2">
                         <span class="w-6 h-6 bg-[#9B59B6] text-white rounded-full flex items-center justify-center text-xs">2</span>
                         Endereço de Entrega
                     </h3>
                     <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
-                        <div><label class="fl">CEP *</label><input id="ck-cep" class="fi" type="text" placeholder="00000-000" maxlength="9" oninput="maskCep(this)" onblur="fetchCepCk(this.value)"></div>
+                        <div><label class="fl">CEP *</label><input id="ck-cep" class="fi" type="text" placeholder="00000-000" maxlength="9" oninput="maskCep(this)" onblur="fetchCepCk(this.value)" required></div>
                         <div id="ck-cep-status" class="flex items-center text-xs font-semibold text-[#9B59B6] hidden"><i class="fa-solid fa-spinner fa-spin mr-1"></i> Buscando CEP...</div>
                         <div class="sm:col-span-2"><label class="fl">Rua / Avenida *</label><input id="ck-street" class="fi" type="text" placeholder="Nome da rua" required></div>
                         <div><label class="fl">Número *</label><input id="ck-number" class="fi" type="text" placeholder="123" required></div>
                         <div><label class="fl">Complemento</label><input id="ck-complement" class="fi" type="text" placeholder="Apto (opcional)"></div>
-                        <div><label class="fl">Bairro</label><input id="ck-district" class="fi" type="text" placeholder="Seu bairro"></div>
+                        <div><label class="fl">Bairro *</label><input id="ck-district" class="fi" type="text" placeholder="Seu bairro" required></div>
                         <div><label class="fl">Cidade *</label><input id="ck-city" class="fi" type="text" placeholder="Sua cidade" required></div>
                         <div>
                             <label class="fl">Estado *</label>
@@ -115,7 +108,6 @@
                     </div>
                 </div>
 
-                <!-- 3. Método de Envio -->
                 <div class="bg-[#F0EBF8] rounded-2xl p-5 shadow-sm border border-purple-100" id="shippingSection">
                     <h3 class="font-black text-sm text-[#2C1654] mb-1 flex items-center gap-2">
                         <span class="w-6 h-6 bg-[#9B59B6] text-white rounded-full flex items-center justify-center text-xs">3</span>
@@ -124,8 +116,6 @@
                     <p class="text-[0.7rem] text-[#7D3C98] font-semibold mb-4 pl-8">Japan Post — frete calculado pelo peso total do pedido</p>
 
                     <div class="space-y-3" id="shippingOptions">
-
-                        <!-- Airmail -->
                         <div>
                             <input type="radio" name="shipping" id="ship_airmail" value="airmail" class="pay-radio" onchange="updateShipping()">
                             <label for="ship_airmail" class="pay-label">
@@ -138,8 +128,6 @@
                                 <span class="font-black text-[#2C1654] text-sm shrink-0" id="price_airmail">—</span>
                             </label>
                         </div>
-
-                        <!-- Airmail Registrado -->
                         <div>
                             <input type="radio" name="shipping" id="ship_registered" value="registered" class="pay-radio" onchange="updateShipping()">
                             <label for="ship_registered" class="pay-label">
@@ -152,8 +140,6 @@
                                 <span class="font-black text-[#2C1654] text-sm shrink-0" id="price_registered">—</span>
                             </label>
                         </div>
-
-                        <!-- EMS -->
                         <div>
                             <input type="radio" name="shipping" id="ship_ems" value="ems" class="pay-radio" checked onchange="updateShipping()">
                             <label for="ship_ems" class="pay-label">
@@ -166,14 +152,11 @@
                                 <span class="font-black text-[#9B59B6] text-sm shrink-0" id="price_ems">—</span>
                             </label>
                         </div>
-
                     </div>
 
-                    <!-- peso calculado -->
                     <p class="mt-3 text-[0.65rem] text-gray-400 font-semibold text-right" id="weightInfo"></p>
                 </div>
 
-                <!-- 4. Pagamento -->
                 <div class="bg-white rounded-2xl p-5 shadow-sm border border-gray-100">
                     <h3 class="font-black text-sm text-[#2C1654] mb-4 flex items-center gap-2">
                         <span class="w-6 h-6 bg-[#9B59B6] text-white rounded-full flex items-center justify-center text-xs">4</span>
@@ -215,7 +198,6 @@
                                 <span class="ml-auto text-[0.65rem] font-bold text-gray-400">Manual</span>
                             </label>
                         </div>
-                        <!-- Informações Wise (ocultas) -->
                         <div id="wiseInfo" class="hidden bg-[#F0FFF4] border border-green-200 rounded-xl p-4 text-xs font-semibold text-[#2C1654] space-y-1.5">
                             <p class="font-black text-green-700 flex items-center gap-1.5"><i class="fa-solid fa-circle-info text-green-500"></i> Como pagar com Wise</p>
                             <p>1. Confirme o pedido — você verá os dados bancários na próxima tela.</p>
@@ -226,7 +208,6 @@
                     </div>
                 </div>
 
-                <!-- 5. Aviso de importação / tributação -->
                 <details class="bg-amber-50 border border-amber-200 rounded-2xl p-4 cursor-pointer group">
                     <summary class="font-black text-xs text-amber-800 flex items-center gap-2 select-none list-none">
                         <i class="fa-solid fa-box-open text-amber-500 flex-shrink-0"></i>
@@ -234,72 +215,36 @@
                         <i class="fa-solid fa-chevron-down text-amber-400 ml-auto text-[0.6rem] transition-transform group-open:rotate-180"></i>
                     </summary>
                     <div class="mt-3 text-xs text-[#4A3060] space-y-3 font-semibold leading-relaxed">
-
-                        <div class="flex gap-2">
-                            <i class="fa-solid fa-circle-info text-amber-500 mt-0.5 flex-shrink-0"></i>
-                            <p>A taxa de importação <strong>não está incluída</strong> no valor do pedido. Ela é cobrada separadamente pela Receita Federal quando o pacote chega ao Brasil — você será avisado pelo rastreio para efetuar o pagamento.</p>
-                        </div>
-
-                        <div class="flex gap-2">
-                            <i class="fa-solid fa-scale-balanced text-amber-500 mt-0.5 flex-shrink-0"></i>
-                            <div>
-                                <p class="mb-1.5">O valor cobrado segue a legislação brasileira:</p>
-                                <p class="mb-1"><i class="fa-solid fa-circle-dot text-[#9B59B6] mr-1.5"></i><strong>60%</strong> de Imposto de Importação sobre o valor total do pedido</p>
-                                <p><i class="fa-solid fa-circle-dot text-[#9B59B6] mr-1.5"></i><strong>ICMS</strong> adicional, que varia conforme o seu estado</p>
-                            </div>
-                        </div>
-
-                        <div class="flex gap-2">
-                            <i class="fa-solid fa-magnifying-glass text-amber-500 mt-0.5 flex-shrink-0"></i>
-                            <p>Recomendamos acompanhar o rastreio do seu pedido. O não pagamento das taxas pode resultar no <strong>retorno ou descarte da mercadoria</strong> pela alfândega.</p>
-                        </div>
-
-                        <a href="https://www.gov.br/receitafederal/pt-br/assuntos/aduana-e-comercio-exterior/mala-direta" target="_blank" rel="noopener noreferrer" class="inline-flex items-center gap-1.5 text-[#9B59B6] font-black hover:underline">
-                            <i class="fa-solid fa-arrow-up-right-from-square text-[0.6rem]"></i> Saiba mais no site da Receita Federal
-                        </a>
+                        <div class="flex gap-2"><i class="fa-solid fa-circle-info text-amber-500 mt-0.5 flex-shrink-0"></i><p>A taxa de importação <strong>não está incluída</strong> no valor do pedido. Ela é cobrada separadamente pela Receita Federal quando o pacote chega ao Brasil — você será avisado pelo rastreio para efetuar o pagamento.</p></div>
+                        <div class="flex gap-2"><i class="fa-solid fa-scale-balanced text-amber-500 mt-0.5 flex-shrink-0"></i><div><p class="mb-1.5">O valor cobrado segue a legislação brasileira:</p><p class="mb-1"><i class="fa-solid fa-circle-dot text-[#9B59B6] mr-1.5"></i><strong>60%</strong> de Imposto de Importação</p><p><i class="fa-solid fa-circle-dot text-[#9B59B6] mr-1.5"></i><strong>ICMS</strong> adicional, que varia conforme o seu estado</p></div></div>
+                        <div class="flex gap-2"><i class="fa-solid fa-magnifying-glass text-amber-500 mt-0.5 flex-shrink-0"></i><p>Recomendamos acompanhar o rastreio do seu pedido. O não pagamento das taxas pode resultar no <strong>retorno ou descarte da mercadoria</strong>.</p></div>
+                        <a href="https://www.gov.br/receitafederal/pt-br/assuntos/aduana-e-comercio-exterior/mala-direta" target="_blank" rel="noopener noreferrer" class="inline-flex items-center gap-1.5 text-[#9B59B6] font-black hover:underline"><i class="fa-solid fa-arrow-up-right-from-square text-[0.6rem]"></i> Saiba mais no site da Receita Federal</a>
                     </div>
                 </details>
             </div>
 
-            <!-- RESUMO -->
             <div class="lg:w-72 flex-shrink-0">
                 <div class="post-it bg-[#F5F5F5] rounded-2xl p-5 shadow-md sticky top-6">
                     <div class="tape"></div>
                     <h3 class="font-hand text-2xl font-bold text-[#2C1654] mt-3 mb-4">Resumo</h3>
-                    <!-- Itens dinâmicos -->
                     <div id="checkoutItems" class="space-y-2 mb-4 max-h-48 overflow-y-auto"></div>
                     <div class="border-t-2 border-dashed border-gray-200 my-3"></div>
                     <div class="space-y-1.5 text-xs font-semibold text-[#4A3060] mb-4">
-                        <div class="flex justify-between">
-                            <span>Subtotal</span>
-                            <span id="ckSubtotal" class="font-black text-[#2C1654]">R$ 0,00</span>
-                        </div>
-                        <div class="flex justify-between text-gray-400">
-                            <span class="flex items-center gap-1"><i class="fa-solid fa-plane-departure text-xs"></i> <span id="ckShippingLabel">Frete</span></span>
-                            <span id="ckShipping" class="font-semibold">—</span>
-                        </div>
-                        <div id="discRow" class="flex justify-between text-[#25D366] font-black hidden">
-                            <span>Desconto PIX (5%)</span>
-                            <span id="ckDisc">−R$ 0,00</span>
-                        </div>
+                        <div class="flex justify-between"><span>Subtotal</span><span id="ckSubtotal" class="font-black text-[#2C1654]">R$ 0,00</span></div>
+                        <div class="flex justify-between text-gray-400"><span class="flex items-center gap-1"><i class="fa-solid fa-plane-departure text-xs"></i> <span id="ckShippingLabel">Frete</span></span><span id="ckShipping" class="font-semibold">—</span></div>
+                        <div id="discRow" class="flex justify-between text-[#25D366] font-black hidden"><span>Desconto PIX (5%)</span><span id="ckDisc">−R$ 0,00</span></div>
                     </div>
-                    <div class="flex justify-between items-baseline mb-5">
-                        <span class="font-black text-sm text-[#2C1654]">Total</span>
-                        <span id="totalVal" class="font-black text-2xl text-[#9B59B6]">R$ 0,00</span>
-                    </div>
+                    <div class="flex justify-between items-baseline mb-5"><span class="font-black text-sm text-[#2C1654]">Total</span><span id="totalVal" class="font-black text-2xl text-[#9B59B6]">R$ 0,00</span></div>
                     <button id="payBtn" onclick="confirmOrder()" class="block w-full bg-[#9B59B6] text-white font-black py-3.5 rounded-full text-center hover:bg-[#7D3C98] transition text-sm tracking-widest uppercase shadow-lg mb-3">
                         <i class="fa-solid fa-lock mr-1 text-xs"></i> <span id="payBtnText">PAGAR COM STRIPE</span>
                     </button>
-                    <p class="text-center text-[0.6rem] text-gray-400 font-bold flex items-center justify-center gap-1 mb-1">
-                        <i class="fa-solid fa-shield-halved text-[#25D366]"></i> Pagamento 100% seguro via Stripe
-                    </p>
+                    <p class="text-center text-[0.6rem] text-gray-400 font-bold flex items-center justify-center gap-1 mb-1"><i class="fa-solid fa-shield-halved text-[#25D366]"></i> Pagamento 100% seguro via Stripe</p>
                     <p class="text-center text-[0.55rem] text-gray-300 font-semibold">Você será redirecionado para a página segura do Stripe</p>
                 </div>
             </div>
         </div>
     </section>
 
-    <!-- FOOTER -->
     <footer class="border-t-2 border-gray-200 px-6 md:px-10 pt-8 pb-6 grid grid-cols-1 md:grid-cols-3 gap-8 text-center md:text-left text-sm text-[#4A3060]">
         <div><h5 class="font-black text-base mb-2 text-[#2C1654]">Japão Express</h5><p class="text-xs leading-relaxed font-semibold">Direto do Japão para o Brasil.</p></div>
         <div><h5 class="font-black text-base mb-2 text-[#2C1654]">Quick Links</h5><ul class="space-y-1 text-xs font-semibold"><li><a href="produtos.html" class="hover:text-[#9B59B6]">Produtos</a></li><li><a href="contato.html" class="hover:text-[#9B59B6]">Contato</a></li><li><a href="politicas.html" class="hover:text-[#9B59B6]">Políticas</a></li><li><a href="tokushoho.html" class="hover:text-[#9B59B6]">特定商取引法</a></li></ul></div>
@@ -307,6 +252,7 @@
     </footer>
     <div class="text-center text-xs py-4 text-gray-400 border-t border-gray-100 font-semibold">© 2026 Japão Express. Todos os direitos reservados</div>
 </div>
+
 <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-auth-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-firestore-compat.js"></script>
@@ -326,43 +272,23 @@
 // ── Tabelas de frete Japan Post (para o Brasil, em JPY) ──
 const SHIPPING_TABLES = {
     airmail: [
-        {maxWeight:500,  jpy:2150},
-        {maxWeight:1000, jpy:3000},
-        {maxWeight:1500, jpy:3850},
-        {maxWeight:2000, jpy:4700},
+        {maxWeight:500,  jpy:2150}, {maxWeight:1000, jpy:3000}, {maxWeight:1500, jpy:3850}, {maxWeight:2000, jpy:4700},
     ],
     registered: [
-        {maxWeight:500,  jpy:2580},
-        {maxWeight:1000, jpy:3430},
-        {maxWeight:1500, jpy:4280},
-        {maxWeight:2000, jpy:5130},
+        {maxWeight:500,  jpy:2580}, {maxWeight:1000, jpy:3430}, {maxWeight:1500, jpy:4280}, {maxWeight:2000, jpy:5130},
     ],
     ems: [
-        {maxWeight:500,  jpy:3500},
-        {maxWeight:1000, jpy:4700},
-        {maxWeight:1500, jpy:5800},
-        {maxWeight:2000, jpy:6800},
-        {maxWeight:2500, jpy:7800},
-        {maxWeight:3000, jpy:8700},
-        {maxWeight:4000, jpy:10500},
-        {maxWeight:5000, jpy:12200},
-        {maxWeight:7000, jpy:15500},
-        {maxWeight:10000,jpy:20500},
-        {maxWeight:15000,jpy:28500},
-        {maxWeight:20000,jpy:36500},
+        {maxWeight:500,  jpy:3500}, {maxWeight:1000, jpy:4700}, {maxWeight:1500, jpy:5800}, {maxWeight:2000, jpy:6800},
+        {maxWeight:2500, jpy:7800}, {maxWeight:3000, jpy:8700}, {maxWeight:4000, jpy:10500}, {maxWeight:5000, jpy:12200},
+        {maxWeight:7000, jpy:15500}, {maxWeight:10000,jpy:20500}, {maxWeight:15000,jpy:28500}, {maxWeight:20000,jpy:36500},
     ],
 };
 
-const SHIPPING_LABELS = {
-    airmail:    'Airmail',
-    registered: 'Airmail Registrado',
-    ems:        'EMS Expresso',
-};
+const SHIPPING_LABELS = { airmail: 'Airmail', registered: 'Airmail Registrado', ems: 'EMS Expresso' };
 
 function calcShipping(method, weightG) {
     const table = SHIPPING_TABLES[method] || SHIPPING_TABLES.ems;
     for (const t of table) if (weightG <= t.maxWeight) return t.jpy;
-    // acima do máximo da tabela → usa EMS com peso maior
     return SHIPPING_TABLES.ems[SHIPPING_TABLES.ems.length - 1].jpy;
 }
 
@@ -395,13 +321,9 @@ function renderCheckoutSummary() {
     _ckSubtotal = cart.reduce((s,i) => s + i.priceBRL * i.qty, 0);
     _ckWeight   = cart.reduce((s,i) => s + (i.weight||0) * i.qty, 0);
 
-    // Mostra peso e atualiza preços de cada opção
     document.getElementById('weightInfo').textContent =
-        'Peso total estimado: ' + (_ckWeight >= 1000
-            ? (_ckWeight/1000).toFixed(2) + ' kg'
-            : _ckWeight + ' g');
+        'Peso total estimado: ' + (_ckWeight >= 1000 ? (_ckWeight/1000).toFixed(2) + ' kg' : _ckWeight + ' g');
 
-    // Calcula e exibe preço de cada método
     ['airmail','registered','ems'].forEach(method => {
         const jpy = calcShipping(method, _ckWeight);
         const brl = jpy / _ckRate;
@@ -409,15 +331,11 @@ function renderCheckoutSummary() {
         if (el) el.textContent = '¥' + jpy.toLocaleString('ja-JP') + ' ≈ ' + fmtBRL(brl);
     });
 
-    // Airmail só aceita até 2kg
     const airmailInput = document.getElementById('ship_airmail');
     const airmailLabel = document.querySelector('label[for="ship_airmail"]');
     if (_ckWeight > 2000) {
         airmailInput.disabled = true;
-        if (airmailLabel) {
-            airmailLabel.style.opacity = '0.45';
-            airmailLabel.title = 'Disponível apenas para pedidos até 2 kg';
-        }
+        if (airmailLabel) { airmailLabel.style.opacity = '0.45'; airmailLabel.title = 'Disponível apenas para pedidos até 2 kg'; }
         document.getElementById('price_airmail').textContent = 'Indisponível';
         const regInput = document.getElementById('ship_registered');
         const regLabel = document.querySelector('label[for="ship_registered"]');
@@ -426,7 +344,6 @@ function renderCheckoutSummary() {
             if (regLabel) { regLabel.style.opacity = '0.45'; regLabel.title = 'Disponível apenas para pedidos até 2 kg'; }
             document.getElementById('price_registered').textContent = 'Indisponível';
         }
-        // Força EMS
         document.getElementById('ship_ems').checked = true;
     }
 
@@ -445,8 +362,7 @@ function updateTotals() {
 
     document.getElementById('ckSubtotal').textContent    = fmtBRL(_ckSubtotal);
     document.getElementById('ckShippingLabel').textContent = SHIPPING_LABELS[method] || 'Frete';
-    document.getElementById('ckShipping').textContent    =
-        '¥' + shpJPY.toLocaleString('ja-JP') + ' ≈ ' + fmtBRL(shpBRL);
+    document.getElementById('ckShipping').textContent    = '¥' + shpJPY.toLocaleString('ja-JP') + ' ≈ ' + fmtBRL(shpBRL);
     document.getElementById('discRow').classList.toggle('hidden', !isPix);
     document.getElementById('ckDisc').textContent        = '−' + fmtBRL(disc);
     document.getElementById('totalVal').textContent      = fmtBRL(total);
@@ -456,13 +372,21 @@ function updatePayment() {
     const isWise = document.getElementById('wise').checked;
     document.getElementById('wiseInfo').classList.toggle('hidden', !isWise);
     const payBtnText = document.getElementById('payBtnText');
-    if (payBtnText) {
-        payBtnText.textContent = isWise ? 'CONFIRMAR PEDIDO' : 'PAGAR COM STRIPE';
-    }
+    if (payBtnText) payBtnText.textContent = isWise ? 'CONFIRMAR PEDIDO' : 'PAGAR COM STRIPE';
     updateTotals();
 }
 
-// ── CEP auto-fill ─────────────────────────────────────────
+// ── Máscaras e CEP ─────────────────────────────────────────
+function maskCpf(input) {
+    let v = input.value.replace(/\D/g, '');
+    if (v.length <= 11) {
+        v = v.replace(/(\d{3})(\d)/, "$1.$2");
+        v = v.replace(/(\d{3})(\d)/, "$1.$2");
+        v = v.replace(/(\d{3})(\d{1,2})$/, "$1-$2");
+    }
+    input.value = v;
+}
+
 function maskCep(input) {
     let v = input.value.replace(/\D/g, '').slice(0, 8);
     if (v.length > 5) v = v.slice(0,5) + '-' + v.slice(5);
@@ -490,17 +414,48 @@ async function fetchCepCk(raw) {
     if (status) status.classList.add('hidden');
 }
 
-// ── Confirmar pedido → redirecionar para Stripe ────────────
+// ── Confirmar pedido ───────────────────────────────────────
 async function confirmOrder() {
     const name  = document.getElementById('ck-name')?.value.trim();
     const email = document.getElementById('ck-email')?.value.trim();
-    const city  = document.getElementById('ck-city')?.value.trim();
-    const state = document.getElementById('ck-state')?.value;
+    const phone = document.getElementById('ck-phone')?.value.trim();
+    const cpf   = document.getElementById('ck-cpf')?.value.trim();
+    
+    const cep      = document.getElementById('ck-cep')?.value.trim();
+    const street   = document.getElementById('ck-street')?.value.trim();
+    const number   = document.getElementById('ck-number')?.value.trim();
+    const complement = document.getElementById('ck-complement')?.value.trim();
+    const district = document.getElementById('ck-district')?.value.trim();
+    const city     = document.getElementById('ck-city')?.value.trim();
+    const state    = document.getElementById('ck-state')?.value;
 
+    // Validações rigorosas antes do pagamento
     if (!name)  { alert('Por favor, informe seu nome completo.'); document.getElementById('ck-name')?.focus(); return; }
     if (!email) { alert('Por favor, informe seu e-mail.'); document.getElementById('ck-email')?.focus(); return; }
+    if (!phone) { alert('Por favor, informe seu celular/WhatsApp.'); document.getElementById('ck-phone')?.focus(); return; }
+    if (!cpf || cpf.length < 14) { alert('Por favor, insira um CPF válido com 11 dígitos.'); document.getElementById('ck-cpf')?.focus(); return; }
+    if (!cep || cep.length < 9)  { alert('Por favor, insira um CEP válido.'); document.getElementById('ck-cep')?.focus(); return; }
+    if (!street) { alert('Por favor, informe a rua do endereço.'); document.getElementById('ck-street')?.focus(); return; }
+    if (!number) { alert('Por favor, informe o número do endereço.'); document.getElementById('ck-number')?.focus(); return; }
+    if (!district){ alert('Por favor, informe o bairro.'); document.getElementById('ck-district')?.focus(); return; }
     if (!city)  { alert('Por favor, informe a cidade de entrega.'); document.getElementById('ck-city')?.focus(); return; }
     if (!state) { alert('Por favor, selecione o estado.'); document.getElementById('ck-state')?.focus(); return; }
+
+    // SALVAR DADOS NO PERFIL DO USUÁRIO AUTOMATICAMENTE
+    if (typeof getUser === 'function' && typeof setUser === 'function') {
+        const currentUser = getUser();
+        if (currentUser) {
+            setUser({
+                ...currentUser, 
+                name, 
+                email: email || currentUser.email, 
+                phone, 
+                cpf,
+                address: { cep, street, number, complement, district, city, state }
+            });
+            if (typeof scheduleSyncToCloud === 'function') scheduleSyncToCloud();
+        }
+    }
 
     const method  = document.querySelector('input[name="shipping"]:checked')?.value || 'ems';
     const payment = document.querySelector('input[name="pay"]:checked')?.value || 'pix';
@@ -514,6 +469,9 @@ async function confirmOrder() {
     const localUser = (typeof getUser === 'function') ? getUser() : null;
     const uid = localUser?.uid || firebase.auth().currentUser?.uid || null;
 
+    // Objeto completo de endereço para embutir no pedido
+    const shippingAddress = { cep, street, number, complement, district, city, state };
+
     // Salva pré-pedido no localStorage (exibido em sucesso.html)
     const preOrder = {
         id:       orderId,
@@ -526,6 +484,8 @@ async function confirmOrder() {
         total:       totalBRL,
         status:      'aguardando_pagamento',
         uid,
+        customerCpf: cpf,
+        shippingAddress: shippingAddress
     };
     localStorage.setItem('je_last_order', JSON.stringify(preOrder));
 
@@ -537,7 +497,7 @@ async function confirmOrder() {
 
     // ── Wise: transferência manual, sem Stripe ────────────
     if (payment === 'wise') {
-        await _saveOrderToFirestore(orderId, cart, method, shpBRL, shpJPY, payment, disc, totalBRL, uid, name, email);
+        await _saveOrderToFirestore(orderId, cart, method, shpBRL, shpJPY, payment, disc, totalBRL, uid, name, email, phone, cpf, shippingAddress);
         localStorage.removeItem('je_cart');
         window.location.href = 'sucesso.html?wise=1';
         return;
@@ -551,7 +511,8 @@ async function confirmOrder() {
             body: JSON.stringify({
                 cart,
                 shipping: { method, name: SHIPPING_LABELS[method], priceBRL: shpBRL, priceJPY: shpJPY },
-                customer: { name, email, phone: document.getElementById('ck-phone')?.value.trim() || '', uid },
+                customer: { name, email, phone, cpf, uid },
+                address: shippingAddress,
                 payment,
                 orderId,
                 subtotal: _ckSubtotal,
@@ -561,16 +522,13 @@ async function confirmOrder() {
         const data = await res.json();
 
         if (data.fallback) {
-            // Stripe não configurado: salva pedido e redireciona normalmente
-            await _saveOrderToFirestore(orderId, cart, method, shpBRL, shpJPY, payment, disc, totalBRL, uid, name, email);
+            await _saveOrderToFirestore(orderId, cart, method, shpBRL, shpJPY, payment, disc, totalBRL, uid, name, email, phone, cpf, shippingAddress);
             localStorage.removeItem('je_cart');
             window.location.href = 'sucesso.html';
             return;
         }
 
         if (data.error) throw new Error(data.error);
-
-        // Redireciona para o checkout do Stripe
         window.location.href = data.url;
 
     } catch (e) {
@@ -581,8 +539,8 @@ async function confirmOrder() {
     }
 }
 
-// ── Salva pedido no Firestore (fallback sem Stripe) ────────
-async function _saveOrderToFirestore(orderId, cart, method, shpBRL, shpJPY, payment, disc, totalBRL, uid, name, email) {
+// ── Salva pedido no Firestore ────────
+async function _saveOrderToFirestore(orderId, cart, method, shpBRL, shpJPY, payment, disc, totalBRL, uid, name, email, phone, cpf, address) {
     try {
         const db = firebase.firestore();
         const fsOrder = {
@@ -590,7 +548,9 @@ async function _saveOrderToFirestore(orderId, cart, method, shpBRL, shpJPY, paym
             uid:           uid,
             customerName:  name,
             customerEmail: email,
-            customerPhone: document.getElementById('ck-phone')?.value.trim() || '',
+            customerPhone: phone,
+            customerCpf:   cpf,
+            shippingAddress: address,
             items:         cart,
             subtotal:      _ckSubtotal,
             discount:      disc,
@@ -604,31 +564,23 @@ async function _saveOrderToFirestore(orderId, cart, method, shpBRL, shpJPY, paym
         const saves = [db.collection('orders').doc(orderId).set(fsOrder)];
         if (uid) saves.push(db.collection('users').doc(uid).collection('orders').doc(orderId).set(fsOrder));
         await Promise.all(saves);
-        // Telegram
         fetch('/api/notify-order', { method:'POST', headers:{'Content-Type':'application/json'}, body: JSON.stringify({ order: fsOrder }) }).catch(()=>{});
     } catch (e) { console.warn('[JE] _saveOrderToFirestore error:', e); }
 }
 
 document.addEventListener('DOMContentLoaded', async () => {
-    // Carrega taxa de câmbio
     try {
         const cached = JSON.parse(localStorage.getItem('je_rate') || 'null');
-        if (cached && cached.rate && Date.now() - cached.ts < 3600000) {
-            _ckRate = cached.rate;
-        } else {
-            const res  = await fetch('/api/exchange-rate');
-            const data = await res.json();
-            _ckRate = data.rates?.JPY || 22;
-        }
+        if (cached && cached.rate && Date.now() - cached.ts < 3600000) { _ckRate = cached.rate; } 
+        else { const res = await fetch('/api/exchange-rate'); const data = await res.json(); _ckRate = data.rates?.JPY || 22; }
     } catch {}
 
-    // Pré-seleciona método de envio escolhido no carrinho
     const savedMethod = localStorage.getItem('je_shipping_method') || 'ems';
     const savedInput  = document.getElementById('ship_' + savedMethod);
     if (savedInput && !savedInput.disabled) savedInput.checked = true;
     else document.getElementById('ship_ems').checked = true;
 
-    // Pré-preenche formulário com dados do perfil salvo
+    // Pré-preenche com dados do perfil salvo (com as novas chaves sincronizadas)
     const user = (typeof getUser === 'function') ? getUser() : null;
     if (user) {
         const set = (id, val) => { const el = document.getElementById(id); if (el && val) el.value = val; };
@@ -641,7 +593,7 @@ document.addEventListener('DOMContentLoaded', async () => {
             set('ck-street',     user.address.street);
             set('ck-number',     user.address.number);
             set('ck-complement', user.address.complement);
-            set('ck-district',   user.address.district);
+            set('ck-district',   user.address.district); // Agora sincronizado com o perfil.html!
             set('ck-city',       user.address.city);
             const st = document.getElementById('ck-state');
             if (st && user.address.state) st.value = user.address.state;

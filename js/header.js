@@ -15,11 +15,11 @@
 
   var SIDEBAR_HTML = '<div id="sidebarOverlay" onclick="closeSidebar()">' +
     '<aside id="sidebarPanel" onclick="event.stopPropagation()">' +
-      '<div style="display:flex;align-items:center;justify-content:space-between;padding:16px 20px;border-bottom:1px solid #EDE0FF">' +
+      '<div style="display:flex;align-items:center;justify-content:center;padding:18px 20px;border-bottom:1px solid #EDE0FF;position:relative">' +
         '<a href="index.html" onclick="closeSidebar()">' +
-          '<img src="logo.png" onerror="this.onerror=null;this.src=\'https://i.imgur.com/lxyYcwX.png\'" alt="Japão Express" style="height:48px;object-fit:contain">' +
+          '<img src="logo.png" onerror="this.onerror=null;this.src=\'https://i.imgur.com/lxyYcwX.png\'" alt="Japão Express" style="height:80px;object-fit:contain;display:block">' +
         '</a>' +
-        '<button onclick="closeSidebar()" style="background:none;border:none;cursor:pointer;color:#9B59B6;font-size:24px;font-weight:900;line-height:1">&times;</button>' +
+        '<button onclick="closeSidebar()" style="position:absolute;right:14px;top:50%;transform:translateY(-50%);background:none;border:none;cursor:pointer;color:#9B59B6;font-size:26px;font-weight:900;line-height:1">&times;</button>' +
       '</div>' +
       '<div style="padding:12px 14px 4px">' +
         '<form onsubmit="event.preventDefault();var q=this.querySelector(\'input\').value.trim();if(q){closeSidebar();window.location=\'produtos.html?search=\'+encodeURIComponent(q);}" style="position:relative">' +
@@ -78,7 +78,7 @@
     '<!-- col centro: logo -->' +
     '<div style="display:flex;justify-content:center">' +
       '<a href="index.html">' +
-        '<img src="logo.png" onerror="this.onerror=null;this.src=\'https://i.imgur.com/lxyYcwX.png\'" alt="Japão Express" style="height:80px;object-fit:contain;filter:drop-shadow(0 1px 3px rgba(0,0,0,.1))">' +
+        '<img src="logo.png" onerror="this.onerror=null;this.src=\'https://i.imgur.com/lxyYcwX.png\'" alt="Japão Express" style="height:96px;object-fit:contain;filter:drop-shadow(0 1px 3px rgba(0,0,0,.1))">' +
       '</a>' +
     '</div>' +
     '<!-- col direita: perfil + carrinho -->' +

@@ -55,6 +55,7 @@ async function firebaseRegister(email, password, name) {
  * Logout Firebase + limpa localStorage.
  */
 async function logout() {
+  if (typeof stopRealtimeSync === 'function') stopRealtimeSync();
   if (_hasFirebase()) {
     try { await firebase.auth().signOut(); } catch {}
   }
@@ -133,10 +134,10 @@ document.addEventListener('DOMContentLoaded', () => {
           // Só usa displayName do Firebase Auth se não houver nome salvo localmente.
           name:  existing.name || u.displayName || u.email.split('@')[0],
         });
-        // Sincroniza carrinho + favoritos + perfil com o Firestore
-        // (mescla dados da nuvem com o que está neste dispositivo)
-        if (typeof syncFromFirestore === 'function') {
-          syncFromFirestore(u.uid);
+        // Inicia listener em tempo real: qualquer mudança no Firestore
+        // (de qualquer dispositivo) atualiza este dispositivo instantaneamente
+        if (typeof startRealtimeSync === 'function') {
+          startRealtimeSync(u.uid);
         }
       } else {
         // Deslogado no Firebase → limpa localStorage

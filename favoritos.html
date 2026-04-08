@@ -258,6 +258,8 @@
   }
 
   document.addEventListener('DOMContentLoaded', renderFavorites);
+  // Re-renderiza quando dados chegam do Firestore (outro dispositivo ou primeiro sync)
+  window.addEventListener('je:syncUpdated', renderFavorites);
 </script>
 
 </body>

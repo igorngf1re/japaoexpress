@@ -154,18 +154,17 @@
         <!-- Filtros de categoria -->
         <div class="flex flex-wrap gap-2 mt-5">
             <button class="cat-btn active" data-cat="todos">Todos</button>
-            <button class="cat-btn" data-cat="cosmeticos">
-                <i class="fa-solid fa-sparkles mr-1"></i>Cosméticos
-            </button>
-            <button class="cat-btn" data-cat="guloseimas">
-                <i class="fa-solid fa-candy-cane mr-1"></i>Guloseimas
-            </button>
-            <button class="cat-btn" data-cat="colecionaveis">
-                <i class="fa-solid fa-star mr-1"></i>Colecionáveis
-            </button>
-            <button class="cat-btn" data-cat="papelaria">
-                <i class="fa-solid fa-pen-nib mr-1"></i>Papelaria
-            </button>
+            <button class="cat-btn" data-cat="cosmeticos"><i class="fa-solid fa-sparkles mr-1"></i>Cosméticos</button>
+            <button class="cat-btn" data-cat="cabelos"><i class="fa-solid fa-scissors mr-1"></i>Cabelos</button>
+            <button class="cat-btn" data-cat="maquiagem"><i class="fa-solid fa-wand-magic-sparkles mr-1"></i>Maquiagem</button>
+            <button class="cat-btn" data-cat="fragrancias"><i class="fa-solid fa-bottle-droplet mr-1"></i>Fragrâncias</button>
+            <button class="cat-btn" data-cat="higiene"><i class="fa-solid fa-hand-sparkles mr-1"></i>Higiene & Saúde</button>
+            <button class="cat-btn" data-cat="doces"><i class="fa-solid fa-candy-cane mr-1"></i>Doces & Snacks</button>
+            <button class="cat-btn" data-cat="alimentacao"><i class="fa-solid fa-bowl-rice mr-1"></i>Alimentação</button>
+            <button class="cat-btn" data-cat="games"><i class="fa-solid fa-gamepad mr-1"></i>Games</button>
+            <button class="cat-btn" data-cat="coleciona"><i class="fa-solid fa-star mr-1"></i>Colecionáveis</button>
+            <button class="cat-btn" data-cat="papelaria"><i class="fa-solid fa-pen-nib mr-1"></i>Papelaria</button>
+            <button class="cat-btn" data-cat="cultura"><i class="fa-solid fa-torii-gate mr-1"></i>Cultura Japonesa</button>
         </div>
     </section>
 
@@ -250,8 +249,15 @@
     const countEl   = document.getElementById('productCount');
     const emptyEl   = document.getElementById('emptyState');
 
-    let activeCat  = 'todos';
+    // Lê categoria da URL (?cat=xxx) — usado pelo sidebar
+    const _urlCat = new URLSearchParams(window.location.search).get('cat');
+    let activeCat  = _urlCat || 'todos';
     let searchTerm = '';
+
+    // Ativa o botão correspondente à categoria da URL
+    if (_urlCat) {
+        catBtns.forEach(b => b.classList.toggle('active', b.dataset.cat === _urlCat));
+    }
 
     // ── Gera HTML de um card a partir do catálogo ─────────────────
     function renderCard(p) {

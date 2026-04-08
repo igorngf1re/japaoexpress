@@ -17,7 +17,7 @@
     '<aside id="sidebarPanel" onclick="event.stopPropagation()">' +
       '<div style="display:flex;align-items:center;justify-content:space-between;padding:16px 20px;border-bottom:1px solid #EDE0FF">' +
         '<a href="index.html" onclick="closeSidebar()">' +
-          '<img src="logo.png" onerror="this.onerror=null;this.src=\'https://i.imgur.com/lxyYcwX.png\'" alt="Japão Express" style="height:40px;object-fit:contain">' +
+          '<img src="logo.png" onerror="this.onerror=null;this.src=\'https://i.imgur.com/lxyYcwX.png\'" alt="Japão Express" style="height:48px;object-fit:contain">' +
         '</a>' +
         '<button onclick="closeSidebar()" style="background:none;border:none;cursor:pointer;color:#9B59B6;font-size:24px;font-weight:900;line-height:1">&times;</button>' +
       '</div>' +
@@ -72,7 +72,7 @@
     '<!-- col centro: logo -->' +
     '<div style="display:flex;justify-content:center">' +
       '<a href="index.html">' +
-        '<img src="logo.png" onerror="this.onerror=null;this.src=\'https://i.imgur.com/lxyYcwX.png\'" alt="Japão Express" style="height:64px;object-fit:contain;filter:drop-shadow(0 1px 3px rgba(0,0,0,.1))">' +
+        '<img src="logo.png" onerror="this.onerror=null;this.src=\'https://i.imgur.com/lxyYcwX.png\'" alt="Japão Express" style="height:80px;object-fit:contain;filter:drop-shadow(0 1px 3px rgba(0,0,0,.1))">' +
       '</a>' +
     '</div>' +
     '<!-- col direita: moeda + perfil + carrinho -->' +

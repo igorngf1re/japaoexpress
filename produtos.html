@@ -143,28 +143,37 @@
                     Autênticos do Japão, enviados direto para você 🌸
                 </p>
             </div>
-            <!-- Busca rápida -->
-            <div class="relative max-w-xs w-full">
-                <i class="fa-solid fa-magnifying-glass absolute left-3 top-1/2 -translate-y-1/2 text-[#9B59B6] text-sm"></i>
-                <input id="searchInput" type="text" placeholder="Buscar produto..."
-                    class="w-full pl-9 pr-4 py-2 rounded-full border-2 border-[#E2D4F0] focus:border-[#9B59B6] outline-none text-sm font-semibold text-[#2C1654] bg-[#F7F3FF]">
+            <!-- Busca + Filtro -->
+            <div class="flex items-center gap-2 w-full max-w-sm">
+                <div class="relative flex-1">
+                    <i class="fa-solid fa-magnifying-glass absolute left-3 top-1/2 -translate-y-1/2 text-[#9B59B6] text-sm"></i>
+                    <input id="searchInput" type="text" placeholder="Buscar produto..."
+                        class="w-full pl-9 pr-4 py-2 rounded-full border-2 border-[#E2D4F0] focus:border-[#9B59B6] outline-none text-sm font-semibold text-[#2C1654] bg-[#F7F3FF]">
+                </div>
+                <div class="relative" id="filterWrapper">
+                    <button id="filterBtn"
+                        onclick="document.getElementById('filterDropdown').classList.toggle('hidden')"
+                        class="flex items-center gap-1.5 bg-[#9B59B6] hover:bg-[#7D3C98] text-white font-black text-xs py-2 px-3.5 rounded-full transition whitespace-nowrap shadow-md"
+                        title="Filtrar por categoria">
+                        <i class="fa-solid fa-sliders"></i>
+                        <span id="filterCatLabel">Todos</span>
+                    </button>
+                    <div id="filterDropdown" class="hidden absolute right-0 top-full mt-2 bg-white rounded-2xl shadow-xl border border-[#E2D4F0] z-50 py-2 overflow-hidden" style="min-width:200px">
+                        <button class="fcat w-full text-left px-4 py-2 text-sm font-black text-[#2C1654] hover:bg-[#F3EAFC] transition" data-cat="todos">✨ Todos</button>
+                        <button class="fcat w-full text-left px-4 py-2 text-sm font-semibold text-[#4A3060] hover:bg-[#F3EAFC] transition" data-cat="cosmeticos">💄 Cosméticos & Skincare</button>
+                        <button class="fcat w-full text-left px-4 py-2 text-sm font-semibold text-[#4A3060] hover:bg-[#F3EAFC] transition" data-cat="cabelos">✂️ Cabelos</button>
+                        <button class="fcat w-full text-left px-4 py-2 text-sm font-semibold text-[#4A3060] hover:bg-[#F3EAFC] transition" data-cat="maquiagem">💋 Maquiagem</button>
+                        <button class="fcat w-full text-left px-4 py-2 text-sm font-semibold text-[#4A3060] hover:bg-[#F3EAFC] transition" data-cat="fragrancias">🌸 Fragrâncias</button>
+                        <button class="fcat w-full text-left px-4 py-2 text-sm font-semibold text-[#4A3060] hover:bg-[#F3EAFC] transition" data-cat="higiene">💊 Higiene & Saúde</button>
+                        <button class="fcat w-full text-left px-4 py-2 text-sm font-semibold text-[#4A3060] hover:bg-[#F3EAFC] transition" data-cat="doces">🍡 Doces & Snacks</button>
+                        <button class="fcat w-full text-left px-4 py-2 text-sm font-semibold text-[#4A3060] hover:bg-[#F3EAFC] transition" data-cat="alimentacao">🍜 Alimentação</button>
+                        <button class="fcat w-full text-left px-4 py-2 text-sm font-semibold text-[#4A3060] hover:bg-[#F3EAFC] transition" data-cat="games">🎮 Games</button>
+                        <button class="fcat w-full text-left px-4 py-2 text-sm font-semibold text-[#4A3060] hover:bg-[#F3EAFC] transition" data-cat="coleciona">🧸 Colecionáveis</button>
+                        <button class="fcat w-full text-left px-4 py-2 text-sm font-semibold text-[#4A3060] hover:bg-[#F3EAFC] transition" data-cat="papelaria">✏️ Papelaria</button>
+                        <button class="fcat w-full text-left px-4 py-2 text-sm font-semibold text-[#4A3060] hover:bg-[#F3EAFC] transition" data-cat="cultura">🏯 Cultura Japonesa</button>
+                    </div>
+                </div>
             </div>
-        </div>
-
-        <!-- Filtros de categoria -->
-        <div class="flex flex-wrap gap-2 mt-5">
-            <button class="cat-btn active" data-cat="todos">Todos</button>
-            <button class="cat-btn" data-cat="cosmeticos"><i class="fa-solid fa-sparkles mr-1"></i>Cosméticos</button>
-            <button class="cat-btn" data-cat="cabelos"><i class="fa-solid fa-scissors mr-1"></i>Cabelos</button>
-            <button class="cat-btn" data-cat="maquiagem"><i class="fa-solid fa-wand-magic-sparkles mr-1"></i>Maquiagem</button>
-            <button class="cat-btn" data-cat="fragrancias"><i class="fa-solid fa-bottle-droplet mr-1"></i>Fragrâncias</button>
-            <button class="cat-btn" data-cat="higiene"><i class="fa-solid fa-hand-sparkles mr-1"></i>Higiene & Saúde</button>
-            <button class="cat-btn" data-cat="doces"><i class="fa-solid fa-candy-cane mr-1"></i>Doces & Snacks</button>
-            <button class="cat-btn" data-cat="alimentacao"><i class="fa-solid fa-bowl-rice mr-1"></i>Alimentação</button>
-            <button class="cat-btn" data-cat="games"><i class="fa-solid fa-gamepad mr-1"></i>Games</button>
-            <button class="cat-btn" data-cat="coleciona"><i class="fa-solid fa-star mr-1"></i>Colecionáveis</button>
-            <button class="cat-btn" data-cat="papelaria"><i class="fa-solid fa-pen-nib mr-1"></i>Papelaria</button>
-            <button class="cat-btn" data-cat="cultura"><i class="fa-solid fa-torii-gate mr-1"></i>Cultura Japonesa</button>
         </div>
     </section>
 
@@ -243,20 +252,25 @@
 <script src="js/currency.js"></script>
 <script src="js/auth.js"></script>
 <script>
-    const grid      = document.getElementById('productsGrid');
-    const catBtns   = document.querySelectorAll('.cat-btn');
+    const grid        = document.getElementById('productsGrid');
     const searchInput = document.getElementById('searchInput');
-    const countEl   = document.getElementById('productCount');
-    const emptyEl   = document.getElementById('emptyState');
+    const countEl     = document.getElementById('productCount');
+    const emptyEl     = document.getElementById('emptyState');
+    const fcatItems   = document.querySelectorAll('.fcat');
+    const filterLabel = document.getElementById('filterCatLabel');
 
-    // Lê categoria da URL (?cat=xxx) — usado pelo sidebar
-    const _urlCat = new URLSearchParams(window.location.search).get('cat');
+    // Lê parâmetros da URL (?cat=xxx e ?search=xxx) — usados pelo sidebar e busca global
+    const _params    = new URLSearchParams(window.location.search);
+    const _urlCat    = _params.get('cat');
+    const _urlSearch = _params.get('search');
     let activeCat  = _urlCat || 'todos';
-    let searchTerm = '';
+    let searchTerm = _urlSearch ? _urlSearch.toLowerCase().trim() : '';
 
-    // Ativa o botão correspondente à categoria da URL
-    if (_urlCat) {
-        catBtns.forEach(b => b.classList.toggle('active', b.dataset.cat === _urlCat));
+    // Aplica estado inicial da URL na UI
+    if (_urlSearch) searchInput.value = _urlSearch;
+    if (_urlCat && filterLabel) {
+        const match = [...fcatItems].find(i => i.dataset.cat === _urlCat);
+        if (match) filterLabel.textContent = match.textContent.trim().replace(/^.+?\s/, ''); // remove emoji
     }
 
     // ── Gera HTML de um card a partir do catálogo ─────────────────
@@ -312,13 +326,22 @@
         refreshAllPrices();
     }
 
-    catBtns.forEach(btn => {
-        btn.addEventListener('click', () => {
-            catBtns.forEach(b => b.classList.remove('active'));
-            btn.classList.add('active');
-            activeCat = btn.dataset.cat;
+    // Dropdown de filtro por categoria
+    fcatItems.forEach(item => {
+        item.addEventListener('click', () => {
+            activeCat = item.dataset.cat;
+            if (filterLabel) filterLabel.textContent = item.textContent.trim().replace(/^\S+\s/, '');
+            document.getElementById('filterDropdown').classList.add('hidden');
             renderAll();
         });
+    });
+
+    // Fecha dropdown ao clicar fora
+    document.addEventListener('click', function(e) {
+        var wrapper = document.getElementById('filterWrapper');
+        if (wrapper && !wrapper.contains(e.target)) {
+            document.getElementById('filterDropdown')?.classList.add('hidden');
+        }
     });
 
     searchInput.addEventListener('input', () => {

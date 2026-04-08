@@ -21,7 +21,13 @@
         '</a>' +
         '<button onclick="closeSidebar()" style="background:none;border:none;cursor:pointer;color:#9B59B6;font-size:24px;font-weight:900;line-height:1">&times;</button>' +
       '</div>' +
-      '<nav style="flex:1;padding:12px 0">' +
+      '<div style="padding:12px 14px 4px">' +
+        '<form onsubmit="event.preventDefault();var q=this.querySelector(\'input\').value.trim();if(q){closeSidebar();window.location=\'produtos.html?search=\'+encodeURIComponent(q);}" style="position:relative">' +
+          '<i class="fa-solid fa-magnifying-glass" style="position:absolute;left:10px;top:50%;transform:translateY(-50%);color:#9B59B6;font-size:12px;pointer-events:none"></i>' +
+          '<input type="text" placeholder="Buscar produtos..." style="width:100%;padding:8px 12px 8px 30px;border-radius:20px;border:2px solid #E8DCFF;font-family:Nunito,sans-serif;font-size:13px;font-weight:600;color:#2C1654;background:#F7F3FF;outline:none;box-sizing:border-box">' +
+        '</form>' +
+      '</div>' +
+      '<nav style="flex:1;padding:8px 0">' +
         '<a href="produtos.html" class="je-si" onclick="closeSidebar()"><span class="icon"><i class="fa-solid fa-store"></i></span> Produtos</a>' +
         '<div class="je-si" onclick="toggleSidebarCats(this)" style="justify-content:space-between;user-select:none">' +
           '<div style="display:flex;align-items:center;gap:12px"><span class="icon"><i class="fa-solid fa-tags"></i></span> Categorias</div>' +
@@ -75,13 +81,8 @@
         '<img src="logo.png" onerror="this.onerror=null;this.src=\'https://i.imgur.com/lxyYcwX.png\'" alt="Japão Express" style="height:80px;object-fit:contain;filter:drop-shadow(0 1px 3px rgba(0,0,0,.1))">' +
       '</a>' +
     '</div>' +
-    '<!-- col direita: moeda + perfil + carrinho -->' +
-    '<div style="display:flex;align-items:center;justify-content:flex-end;gap:10px">' +
-      '<button data-currency-toggle onclick="typeof toggleCurrency===\'function\'&&toggleCurrency()"' +
-        ' style="display:flex;align-items:center;gap:5px;background:#2C1654;color:white;font-weight:900;font-size:11px;padding:5px 11px;border-radius:999px;border:none;cursor:pointer;letter-spacing:.05em;box-shadow:0 1px 4px rgba(0,0,0,.2)"' +
-        ' title="Alternar moeda">' +
-        '<span>\uD83C\uDDE7\uD83C\uDDF7</span><span data-currency-toggle-label>BRL</span>' +
-      '</button>' +
+    '<!-- col direita: perfil + carrinho -->' +
+    '<div style="display:flex;align-items:center;justify-content:flex-end;gap:12px">' +
       '<a href="perfil.html" data-auth-perfil style="color:#3D1A78;text-decoration:none" title="Minha Conta">' +
         '<i class="fa-regular fa-circle-user" style="font-size:22px"></i>' +
       '</a>' +
@@ -129,6 +130,20 @@
       header.setAttribute('data-je-done', '1');
       header.innerHTML = HEADER_HTML;
       header.style.cssText = 'display:grid;align-items:center;padding:10px 16px;border-bottom:1px solid #EDE0FF;gap:8px;grid-template-columns:1fr auto 1fr';
+    }
+
+    // Botão flutuante de moeda (canto inferior esquerdo)
+    if (!document.getElementById('je-currency-float')) {
+      var floatBtn = document.createElement('button');
+      floatBtn.id = 'je-currency-float';
+      floatBtn.setAttribute('data-currency-toggle', '');
+      floatBtn.title = 'Alternar moeda';
+      floatBtn.onclick = function() { typeof toggleCurrency === 'function' && toggleCurrency(); };
+      floatBtn.style.cssText = 'position:fixed;bottom:24px;left:20px;z-index:998;display:flex;align-items:center;gap:6px;background:#2C1654;color:white;font-family:Nunito,sans-serif;font-weight:900;font-size:11px;padding:9px 16px;border-radius:999px;border:none;cursor:pointer;letter-spacing:.05em;box-shadow:0 4px 16px rgba(44,22,84,.35);transition:transform .15s';
+      floatBtn.innerHTML = '<span>\uD83C\uDDE7\uD83C\uDDF7</span><span data-currency-toggle-label>BRL</span>';
+      floatBtn.onmouseover = function() { this.style.transform = 'scale(1.06)'; };
+      floatBtn.onmouseout  = function() { this.style.transform = ''; };
+      document.body.appendChild(floatBtn);
     }
 
     // Atualiza badge do carrinho assim que o header existir

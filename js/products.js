@@ -18,6 +18,37 @@ function getProductById(id) {
 
 const PRODUCTS = [
   {
+    "id": "ma-me-latte-kit-premium-w-milk-protein",
+    "name": "Ma & Me Latte kit Premium W Milk Protein",
+    "category": "Cabelos",
+    "cat": "cabelos",
+    "subcategory": "Shampoo",
+    "priceBRL": 83.42,
+    "priceJPY": 1300,
+    "weight": 500,
+    "description": "Kit aponês nutritivo com proteína do leite para cabelos macios.",
+    "details": "O Ma & Me Latte Premium W Milk Protein é um tratamento capilar japonês desenvolvido para nutrir profundamente cabelos danificados, especialmente de adultos e crianças.",
+    "origin": "Japão",
+    "image": "https://cdn.jsdelivr.net/gh/igorngf1re/japaoexpress@main/images/produtos/1775818367083_31dbfgmu-yl._ac_uf894_1000_ql80_.jpg",
+    "image2": null,
+    "image3": null,
+    "images": [
+      "https://cdn.jsdelivr.net/gh/igorngf1re/japaoexpress@main/images/produtos/1775818367083_31dbfgmu-yl._ac_uf894_1000_ql80_.jpg"
+    ],
+    "units": 1,
+    "featured": false,
+    "cost": 41.71,
+    "markup": 100,
+    "badge": null,
+    "badgeBg": "#f5a623",
+    "stock": 10,
+    "rating": 4.5,
+    "reviews": 0,
+    "cardBg": "bg-[#fadbd8]",
+    "rotate": "rotate(1deg)",
+    "deco": "tape"
+  },
+  {
     "id": "kit-ma-me-repair-danos-sem-silicone-para",
     "name": "Kit ma&me Repair Danos Sem Silicone (Para Pais e Filhos)",
     "category": "Cabelos",

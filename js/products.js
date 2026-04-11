@@ -18,6 +18,38 @@ function getProductById(id) {
 
 const PRODUCTS = [
   {
+    "id": "kit-ma-me-repair-danos-sem-silicone-para",
+    "name": "Kit ma&me Repair Danos Sem Silicone (Para Pais e Filhos)",
+    "category": "Cabelos",
+    "cat": "cabelos",
+    "subcategory": "Shampoo",
+    "brand": null,
+    "priceBRL": 83.42,
+    "priceJPY": 1300,
+    "weight": 500,
+    "description": "Shampoo e condicionador japonês suave, sem silicone, ideal para toda a família",
+    "details": "O kit ma&me Aminoácido Repair é um tratamento capilar japonês desenvolvido para reparar cabelos danificados de forma suave e eficaz. Sua fórmula sem silicone é segura para uso diário e indicada para toda a família, inclusive crianças.",
+    "origin": "Japão",
+    "image": "https://cdn.jsdelivr.net/gh/igorngf1re/japaoexpress@main/images/produtos/1775818047307_skuimg-d_79851_xl.jpg",
+    "image2": null,
+    "image3": null,
+    "images": [
+      "https://cdn.jsdelivr.net/gh/igorngf1re/japaoexpress@main/images/produtos/1775818047307_skuimg-d_79851_xl.jpg"
+    ],
+    "units": 1,
+    "featured": false,
+    "cost": 41.71,
+    "markup": 100,
+    "badge": null,
+    "badgeBg": "#f5a623",
+    "stock": 10,
+    "rating": 4.5,
+    "reviews": 0,
+    "cardBg": "bg-[#fff9c4]",
+    "rotate": "rotate(2deg)",
+    "deco": "tape"
+  },
+  {
     "id": "ma-me-latte-kit-premium-w-milk-protein",
     "name": "Ma & Me Latte kit Premium W Milk Protein",
     "category": "Cabelos",
@@ -46,37 +78,6 @@ const PRODUCTS = [
     "reviews": 0,
     "cardBg": "bg-[#fadbd8]",
     "rotate": "rotate(1deg)",
-    "deco": "tape"
-  },
-  {
-    "id": "kit-ma-me-repair-danos-sem-silicone-para",
-    "name": "Kit ma&me Repair Danos Sem Silicone (Para Pais e Filhos)",
-    "category": "Cabelos",
-    "cat": "cabelos",
-    "subcategory": "Shampoo",
-    "priceBRL": 83.42,
-    "priceJPY": 1300,
-    "weight": 500,
-    "description": "Shampoo e condicionador japonês suave, sem silicone, ideal para toda a família",
-    "details": "O kit ma&me Aminoácido Repair é um tratamento capilar japonês desenvolvido para reparar cabelos danificados de forma suave e eficaz. Sua fórmula sem silicone é segura para uso diário e indicada para toda a família, inclusive crianças.",
-    "origin": "Japão",
-    "image": "https://cdn.jsdelivr.net/gh/igorngf1re/japaoexpress@main/images/produtos/1775818047307_skuimg-d_79851_xl.jpg",
-    "image2": null,
-    "image3": null,
-    "images": [
-      "https://cdn.jsdelivr.net/gh/igorngf1re/japaoexpress@main/images/produtos/1775818047307_skuimg-d_79851_xl.jpg"
-    ],
-    "units": 1,
-    "featured": false,
-    "cost": 41.71,
-    "markup": 100,
-    "badge": null,
-    "badgeBg": "#f5a623",
-    "stock": 10,
-    "rating": 4.5,
-    "reviews": 0,
-    "cardBg": "bg-[#fadbd8]",
-    "rotate": "rotate(-2deg)",
     "deco": "tape"
   },
   {

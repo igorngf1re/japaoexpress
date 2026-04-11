@@ -96,9 +96,12 @@
         /* ── Responsive ── */
         @media (max-width: 768px) {
             #sidebar { width: 100%; min-width: 0; height: auto; border-right: none; border-bottom: 2px solid #E8DEF8; }
-            #layout { flex-direction: column !important; }
-            #mainArea { height: auto; }
+            #productList { max-height: 220px !important; overflow-y: auto; }
+            #layout { flex-direction: column !important; height: auto !important; min-height: 0; }
+            #mainArea { height: auto !important; overflow-y: visible; }
             #previewPanel { display: none; }
+            #formSection { padding: 1rem !important; }
+            body { overflow-y: auto; }
         }
     </style>
 </head>
@@ -203,8 +206,8 @@
                         </div>
                     </div>
 
-                    <!-- Categoria + Subcategoria -->
-                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                    <!-- Categoria + Subcategoria + Marca -->
+                    <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
                         <div>
                             <label class="field-label">Categoria *</label>
                             <select id="fCategory" class="field-input" onchange="onCategoryChange()" required>
@@ -237,6 +240,19 @@
                             <input id="fSubcategory" type="text" class="field-input" placeholder="ex: Limpeza Facial"
                                    list="subcatList" oninput="updatePreview()">
                             <datalist id="subcatList"></datalist>
+                        </div>
+                        <div>
+                            <label class="field-label">Marca / Fabricante</label>
+                            <input id="fBrand" type="text" class="field-input" placeholder="Senka, Shiseido, Glico…"
+                                   list="brandList" oninput="updatePreview()">
+                            <datalist id="brandList">
+                                <option value="Senka"><option value="Shiseido"><option value="Kosé">
+                                <option value="Rohto"><option value="Hada Labo"><option value="Biore">
+                                <option value="Kao"><option value="Lion"><option value="SK-II">
+                                <option value="Meiji"><option value="Glico"><option value="Morinaga">
+                                <option value="Calbee"><option value="Suntory"><option value="Kirin">
+                                <option value="Bandai"><option value="Good Smile Company">
+                            </datalist>
                         </div>
                     </div>
 
@@ -439,7 +455,7 @@
                     </div>
 
                     <!-- Origem + Estoque + Avaliação -->
-                    <div class="grid grid-cols-3 gap-4">
+                    <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
                         <div>
                             <label class="field-label">Origem / Loja</label>
                             <input id="fOrigin" type="text" class="field-input" placeholder="Rakuten" oninput="updatePreview()">
@@ -923,6 +939,7 @@ function newProduct() {
   editingId = null;
   document.getElementById('productForm').reset();
   document.getElementById('fId').readOnly = false;
+  document.getElementById('fBrand').value   = '';
   document.getElementById('fBadgeBg').value = '#F5A623';
   document.getElementById('fCardBg').value  = '#D6EAF8';
   document.getElementById('fStock').value   = '10';
@@ -957,6 +974,7 @@ function editProduct(id) {
   document.getElementById('fName').value         = p.name || '';
   document.getElementById('fCategory').value     = p.category || 'Cosméticos';
   document.getElementById('fSubcategory').value  = p.subcategory || '';
+  document.getElementById('fBrand').value        = p.brand || '';
   document.getElementById('fPriceJPY').value     = p.priceJPY || '';
   document.getElementById('fPriceBRL').value     = p.priceBRL || '';
   document.getElementById('fPriceBRL').dataset.manual = '1';
@@ -969,7 +987,7 @@ function editProduct(id) {
   document.getElementById('fImage3').value       = p.image3 || (p.images?.[2]) || '';
   document.getElementById('fUnits').value        = p.units || 1;
   document.getElementById('fFeatured').checked  = p.featured === true;
-  document.getElementById('fCost').value    = p.cost || '';
+  document.getElementById('fCost').value     = p.cost || '';
   document.getElementById('fMarkup').value  = p.markup || '23';
   document.getElementById('fBadge').value        = p.badge || '';
   updateImagePreviews();
@@ -1015,6 +1033,7 @@ async function saveProduct(e) {
     category,
     cat:         catInfo.cat,
     subcategory: document.getElementById('fSubcategory').value.trim(),
+    brand:       document.getElementById('fBrand').value.trim() || null,
     priceBRL:    parseFloat(document.getElementById('fPriceBRL').value) || 0,
     priceJPY:    parseInt(document.getElementById('fPriceJPY').value)   || 0,
     weight:      parseInt(document.getElementById('fWeight').value)      || 200,
@@ -1043,7 +1062,15 @@ async function saveProduct(e) {
     deco:        document.querySelector('input[name="fDeco"]:checked')?.value || 'tape',
   };
 
-  const isEdit   = !!editingId;
+  const isEdit = !!editingId;
+  if (!isEdit) {
+    product.createdAt = Date.now();
+  } else {
+    // Preserva o createdAt original ao editar
+    const existing = _allProducts.find(p => p.id === editingId);
+    if (existing?.createdAt) product.createdAt = existing.createdAt;
+  }
+
   const saveBtn  = document.getElementById('saveBtn');
   const saveTxt  = saveBtn.querySelector('span');
   saveBtn.disabled = true;

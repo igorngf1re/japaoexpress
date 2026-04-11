@@ -180,8 +180,19 @@
     <!-- ══════════════ GRID DE PRODUTOS ══════════════ -->
     <section class="px-6 md:px-10 py-10">
 
-        <!-- Contador -->
-        <p id="productCount" class="text-xs font-bold text-[#9B59B6] mb-6 tracking-widest uppercase"></p>
+        <!-- Contador + Ordenação -->
+        <div class="flex items-center justify-between mb-6 flex-wrap gap-2">
+            <p id="productCount" class="text-xs font-bold text-[#9B59B6] tracking-widest uppercase"></p>
+            <select id="sortSelect"
+                class="text-xs font-bold text-[#2C1654] border-2 border-[#E2D4F0] rounded-full px-3 py-1.5 bg-[#FDFAF2] outline-none focus:border-[#9B59B6] cursor-pointer appearance-none pr-7 transition"
+                style="background-image:url(\"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6'%3E%3Cpath d='M0 0l5 6 5-6z' fill='%239B59B6'/%3E%3C/svg%3E\");background-repeat:no-repeat;background-position:right 10px center">
+                <option value="default">↕ Ordenar</option>
+                <option value="newest">🆕 Mais recentes</option>
+                <option value="oldest">🕐 Mais antigos</option>
+                <option value="price-asc">↑ Menor preço</option>
+                <option value="price-desc">↓ Maior preço</option>
+            </select>
+        </div>
 
         <div id="productsGrid" class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-x-5 gap-y-10">
             <!-- preenchido via JS -->
@@ -265,6 +276,7 @@
     const _urlSearch = _params.get('search');
     let activeCat  = _urlCat || 'todos';
     let searchTerm = _urlSearch ? _urlSearch.toLowerCase().trim() : '';
+    let sortOrder  = 'default';
 
     // Aplica estado inicial da URL na UI
     if (_urlSearch) searchInput.value = _urlSearch;
@@ -313,11 +325,22 @@
 
     // ── Renderiza e filtra ────────────────────────────────────────
     function renderAll() {
-        const filtered = PRODUCTS.filter(p => {
+        let filtered = PRODUCTS.filter(p => {
             const matchCat    = activeCat === 'todos' || p.cat === activeCat;
             const matchSearch = (p.name + ' ' + p.category).toLowerCase().includes(searchTerm);
             return matchCat && matchSearch;
         });
+
+        // Ordenação dinâmica
+        if (sortOrder === 'price-asc') {
+            filtered = [...filtered].sort((a, b) => a.priceBRL - b.priceBRL);
+        } else if (sortOrder === 'price-desc') {
+            filtered = [...filtered].sort((a, b) => b.priceBRL - a.priceBRL);
+        } else if (sortOrder === 'newest') {
+            filtered = [...filtered].sort((a, b) => (b.createdAt || 0) - (a.createdAt || 0));
+        } else if (sortOrder === 'oldest') {
+            filtered = [...filtered].sort((a, b) => (a.createdAt || 0) - (b.createdAt || 0));
+        }
 
         grid.innerHTML = filtered.map(renderCard).join('');
         const n = filtered.length;
@@ -346,6 +369,11 @@
 
     searchInput.addEventListener('input', () => {
         searchTerm = searchInput.value.toLowerCase().trim();
+        renderAll();
+    });
+
+    document.getElementById('sortSelect').addEventListener('change', function() {
+        sortOrder = this.value;
         renderAll();
     });
 

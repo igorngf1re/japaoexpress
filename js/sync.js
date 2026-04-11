@@ -17,6 +17,13 @@ function _db() {
 let _unsubSync = null;
 let _firstSnap = true;
 
+// Suprime snapshots da nuvem por N ms após uma escrita local,
+// evitando que dados antigos sobrescrevam mudanças em trânsito.
+// Ex: remover item do carrinho → gravamos no Firestore → snapshot
+// volta com dado NOVO (item removido). Sem a supressão, o snapshot
+// chega durante os ~400ms do debounce e reverte a remoção.
+let _ignoreSnapUntil = 0;
+
 /**
  * Inicia o listener em tempo real no documento do usuário.
  * Qualquer mudança no Firestore (de qualquer dispositivo)
@@ -59,17 +66,21 @@ function startRealtimeSync(uid) {
         _writeToFirestore(uid);
       }
     } else {
-      // Snapshots subsequentes: nuvem é autoritativa
-      // (inclui mudanças feitas em outros dispositivos)
-      localStorage.setItem('je_cart', JSON.stringify(cloudCart));
-      localStorage.setItem('je_favs', JSON.stringify(cloudFavs));
+      // Snapshots subsequentes: nuvem é autoritativa —
+      // MAS não sobrescreve se há escrita local recente em andamento
+      // (janela de 3s após qualquer escrita local)
+      if (Date.now() > _ignoreSnapUntil) {
+        localStorage.setItem('je_cart', JSON.stringify(cloudCart));
+        localStorage.setItem('je_favs', JSON.stringify(cloudFavs));
+      }
     }
 
-    // Perfil: nuvem é base, preserva cpf (não sincronizado) e dados de auth
-    if (data.profile) {
+    // Perfil: atualiza da nuvem somente fora da janela de supressão
+    if (data.profile && Date.now() > _ignoreSnapUntil) {
       const localUser = _localUser() || {};
       localStorage.setItem('je_user', JSON.stringify({
         ...data.profile,
+        // Preserva campos locais que não vêm do Firestore ou podem ser mais recentes
         cpf:   localUser.cpf   || '',
         uid,
         email: localUser.email || data.profile.email || '',
@@ -105,7 +116,13 @@ function scheduleSyncToCloud() {
   const user = _localUser();
   if (!user?.uid) return;
   clearTimeout(_syncTimer);
-  _syncTimer = setTimeout(() => _writeToFirestore(user.uid), 800);
+  _syncTimer = setTimeout(() => {
+    _syncTimer = null;
+    // Suprime snapshots por 3s após a escrita local para evitar
+    // que dados antigos da nuvem sobrescrevam mudanças em trânsito
+    _ignoreSnapUntil = Date.now() + 3000;
+    _writeToFirestore(user.uid);
+  }, 400); // 400ms: rápido o suficiente para parecer instantâneo
 }
 
 // ── Escreve carrinho + favs + perfil no Firestore ─────────

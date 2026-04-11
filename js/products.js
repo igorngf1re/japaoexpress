@@ -45,8 +45,8 @@ const PRODUCTS = [
     "stock": 10,
     "rating": 4.5,
     "reviews": 0,
-    "cardBg": "bg-[#fff9c4]",
-    "rotate": "rotate(2deg)",
+    "cardBg": "bg-[#fadbd8]",
+    "rotate": "rotate(-1deg)",
     "deco": "tape"
   },
   {

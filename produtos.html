@@ -183,15 +183,33 @@
         <!-- Contador + Ordenação -->
         <div class="flex items-center justify-between mb-6 flex-wrap gap-2">
             <p id="productCount" class="text-xs font-bold text-[#9B59B6] tracking-widest uppercase"></p>
-            <select id="sortSelect"
-                class="text-xs font-bold text-[#2C1654] border-2 border-[#E2D4F0] rounded-full px-3 py-1.5 bg-[#FDFAF2] outline-none focus:border-[#9B59B6] cursor-pointer appearance-none pr-7 transition"
-                style="background-image:url(\"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6'%3E%3Cpath d='M0 0l5 6 5-6z' fill='%239B59B6'/%3E%3C/svg%3E\");background-repeat:no-repeat;background-position:right 10px center">
-                <option value="default">↕ Ordenar</option>
-                <option value="newest">🆕 Mais recentes</option>
-                <option value="oldest">🕐 Mais antigos</option>
-                <option value="price-asc">↑ Menor preço</option>
-                <option value="price-desc">↓ Maior preço</option>
-            </select>
+            <div class="relative" id="sortWrapper">
+                <button id="sortBtn"
+                    onclick="document.getElementById('sortDropdown').classList.toggle('hidden')"
+                    class="flex items-center gap-1.5 bg-[#FDFAF2] hover:bg-[#F0E8FF] text-[#2C1654] border-2 border-[#E2D4F0] font-bold text-xs py-2 px-3.5 rounded-full transition whitespace-nowrap shadow-sm"
+                    title="Ordenar produtos">
+                    <i class="fa-solid fa-sort text-[#9B59B6]"></i>
+                    <span id="sortLabel">Ordenar</span>
+                    <i class="fa-solid fa-chevron-down text-[#9B59B6] text-[9px]"></i>
+                </button>
+                <div id="sortDropdown" class="hidden absolute right-0 top-full mt-2 bg-white rounded-2xl shadow-xl border border-[#E2D4F0] z-50 py-2 overflow-hidden" style="min-width:180px">
+                    <button class="fsort w-full text-left px-4 py-2 text-sm font-black text-[#2C1654] hover:bg-[#F3EAFC] transition" data-sort="default">
+                        <i class="fa-solid fa-sort w-4 mr-2 text-[#9B59B6]"></i>Relevância
+                    </button>
+                    <button class="fsort w-full text-left px-4 py-2 text-sm font-semibold text-[#4A3060] hover:bg-[#F3EAFC] transition" data-sort="newest">
+                        <i class="fa-solid fa-clock-rotate-left w-4 mr-2 text-[#9B59B6]"></i>Mais recentes
+                    </button>
+                    <button class="fsort w-full text-left px-4 py-2 text-sm font-semibold text-[#4A3060] hover:bg-[#F3EAFC] transition" data-sort="oldest">
+                        <i class="fa-solid fa-clock w-4 mr-2 text-[#9B59B6]"></i>Mais antigos
+                    </button>
+                    <button class="fsort w-full text-left px-4 py-2 text-sm font-semibold text-[#4A3060] hover:bg-[#F3EAFC] transition" data-sort="price-asc">
+                        <i class="fa-solid fa-arrow-up w-4 mr-2 text-[#9B59B6]"></i>Menor preço
+                    </button>
+                    <button class="fsort w-full text-left px-4 py-2 text-sm font-semibold text-[#4A3060] hover:bg-[#F3EAFC] transition" data-sort="price-desc">
+                        <i class="fa-solid fa-arrow-down w-4 mr-2 text-[#9B59B6]"></i>Maior preço
+                    </button>
+                </div>
+            </div>
         </div>
 
         <div id="productsGrid" class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-x-5 gap-y-10">
@@ -372,9 +390,22 @@
         renderAll();
     });
 
-    document.getElementById('sortSelect').addEventListener('change', function() {
-        sortOrder = this.value;
-        renderAll();
+    // Dropdown de ordenação
+    const sortLabel = document.getElementById('sortLabel');
+    const sortLabels = { default: 'Ordenar', newest: 'Mais recentes', oldest: 'Mais antigos', 'price-asc': 'Menor preço', 'price-desc': 'Maior preço' };
+    document.querySelectorAll('.fsort').forEach(item => {
+        item.addEventListener('click', () => {
+            sortOrder = item.dataset.sort;
+            if (sortLabel) sortLabel.textContent = sortLabels[sortOrder] || 'Ordenar';
+            document.getElementById('sortDropdown').classList.add('hidden');
+            renderAll();
+        });
+    });
+
+    // Fecha dropdown de ordenação ao clicar fora
+    document.addEventListener('click', function(e) {
+        var sw = document.getElementById('sortWrapper');
+        if (sw && !sw.contains(e.target)) document.getElementById('sortDropdown')?.classList.add('hidden');
     });
 
     renderAll();

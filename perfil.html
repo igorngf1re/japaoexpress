@@ -117,15 +117,15 @@
 
         <!-- Nav Tabs -->
         <nav class="flex flex-col gap-1 mt-2">
-          <button class="sidebar-tab active" data-tab="pedidos">
-            <i class="fa-solid fa-box w-5 text-center"></i> Meus Pedidos
-          </button>
-          <button class="sidebar-tab" data-tab="meu-perfil">
+          <button class="sidebar-tab active" data-tab="meu-perfil">
             <i class="fa-solid fa-user w-5 text-center"></i> Meu Perfil
           </button>
           <button class="sidebar-tab" data-tab="enderecos">
             <i class="fa-solid fa-location-dot w-5 text-center"></i> Endereços
           </button>
+          <a href="meus-pedidos.html" class="sidebar-tab">
+            <i class="fa-solid fa-box w-5 text-center"></i> Meus Pedidos
+          </a>
           <a href="favoritos.html" class="sidebar-tab">
             <i class="fa-solid fa-heart w-5 text-center"></i> Favoritos
           </a>
@@ -139,21 +139,8 @@
     <!-- CONTENT AREA -->
     <section class="flex-1 min-w-0">
 
-      <!-- TAB: MEUS PEDIDOS -->
-      <div id="tab-pedidos" class="tab-content active">
-        <h1 class="font-hero text-[2rem] text-[#2C1654] mb-5 leading-none">Meus Pedidos</h1>
-        <div class="flex flex-col items-center justify-center py-16 text-center gap-4 bg-white rounded-2xl border border-gray-100 shadow-sm">
-          <i class="fa-solid fa-box-open text-[#E2D4F0] text-6xl"></i>
-          <p class="font-hand text-2xl text-[#4A3060]">Nenhum pedido ainda</p>
-          <p class="text-sm text-gray-400 font-semibold max-w-xs">Quando você fizer um pedido, ele aparecerá aqui com o rastreio Japan Post.</p>
-          <a href="produtos.html" class="mt-2 inline-block px-6 py-2.5 bg-[#9B59B6] text-white font-black text-sm rounded-full hover:bg-[#7d3fa0] transition">
-            <i class="fa-solid fa-store mr-2"></i>Ver Produtos
-          </a>
-        </div>
-      </div>
-
       <!-- TAB: MEU PERFIL -->
-      <div id="tab-meu-perfil" class="tab-content">
+      <div id="tab-meu-perfil" class="tab-content active">
         <h1 class="font-hero text-[2rem] text-[#2C1654] mb-5 leading-none">Meu Perfil</h1>
         <div class="bg-white rounded-2xl p-6 shadow-sm border border-gray-100">
           <form onsubmit="saveProfile(event)" class="grid grid-cols-1 sm:grid-cols-2 gap-4">

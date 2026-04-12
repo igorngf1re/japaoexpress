@@ -18,6 +18,41 @@ function getProductById(id) {
 
 const PRODUCTS = [
   {
+    "id": "senka-perfect-whip-espuma-de-limpeza-fac",
+    "name": "Senka Perfect Whip Espuma de Limpeza Facial 120g",
+    "category": "Cosméticos",
+    "cat": "cosmeticos",
+    "subcategory": "Limpeza Facial",
+    "brand": "Senka",
+    "priceBRL": 22.89,
+    "priceJPY": 586,
+    "weight": 120,
+    "description": "Espuma facial japonesa ultra cremosa para limpeza profunda e pele macia",
+    "details": "A Shiseido Senka Perfect Whip é uma espuma de limpeza facial japonesa famosa por sua textura rica e cremosa que remove impurezas profundamente sem ressecar a pele. Benefícios principais: Limpeza profunda dos poros ✨Espuma densa e suave✨Mantém a hidratação natural da pele✨Sensação de pele macia e fresca✨Ingredientes principais: Ácido hialurônico - Seda branca natural - Agentes de limpeza suaves, Modo de uso: Aplique uma pequena quantidade nas mãos, adicione água e forme uma espuma rica. Massageie suavemente no rosto e enxágue bem. Diferenciais japoneses: Desenvolvido com tecnologia japonesa de espuma micro-densa, proporcionando uma limpeza eficiente e delicada ao mesmo tempo, muito popular entre consumidores no Japão.",
+    "origin": "Japão",
+    "image": "https://cdn.jsdelivr.net/gh/igorngf1re/japaoexpress@main/images/produtos/1775953539772_img_4649.jpeg",
+    "image2": "https://cdn.jsdelivr.net/gh/igorngf1re/japaoexpress@main/images/produtos/1775953548988_img_4651.jpeg",
+    "image3": "https://cdn.jsdelivr.net/gh/igorngf1re/japaoexpress@main/images/produtos/1775953559422_img_4650.jpeg",
+    "images": [
+      "https://cdn.jsdelivr.net/gh/igorngf1re/japaoexpress@main/images/produtos/1775953539772_img_4649.jpeg",
+      "https://cdn.jsdelivr.net/gh/igorngf1re/japaoexpress@main/images/produtos/1775953548988_img_4651.jpeg",
+      "https://cdn.jsdelivr.net/gh/igorngf1re/japaoexpress@main/images/produtos/1775953559422_img_4650.jpeg"
+    ],
+    "units": 1,
+    "featured": true,
+    "cost": 18.61,
+    "markup": 23,
+    "badge": null,
+    "badgeBg": "#e74c3c",
+    "stock": 10,
+    "rating": 5,
+    "reviews": 0,
+    "cardBg": "bg-[#d6eaf8]",
+    "rotate": "rotate(2deg)",
+    "deco": "tape",
+    "createdAt": 1775953886973
+  },
+  {
     "id": "kit-ma-me-repair-danos-sem-silicone-para",
     "name": "Kit ma&me Repair Danos Sem Silicone (Para Pais e Filhos)",
     "category": "Cabelos",

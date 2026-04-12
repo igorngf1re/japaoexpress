@@ -1156,7 +1156,14 @@ async function saveProduct(e) {
     if (idx !== -1) _allProducts[idx] = product;
     else            _allProducts.unshift(product);
 
-    newProduct();
+    if (isEdit) {
+      // Mantém o produto selecionado — só re-renderiza sidebar
+      saveBtn.disabled = false;
+      saveTxt.textContent = 'Atualizar Produto';
+      renderSidebar(document.getElementById('sidebarSearch').value);
+    } else {
+      newProduct();
+    }
   } catch (err) {
     showToast(`❌ ${err.message}`, 'error');
     saveBtn.disabled = false;

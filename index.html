@@ -873,8 +873,10 @@ function initNovidades() {
     if (typeof PRODUCTS === 'undefined') return;
     const grid = document.getElementById('novidadesGrid');
     if (!grid) return;
-    // Pega os últimos 4 do array (mais recentes)
-    const recent = [...PRODUCTS].slice(-4).reverse();
+    // Ordena por createdAt desc e pega os 4 mais recentes
+    const recent = [...PRODUCTS]
+      .sort((a, b) => (b.createdAt || 0) - (a.createdAt || 0))
+      .slice(0, 4);
     grid.innerHTML = recent.map((p, i) => buildDestCard(p, i + 2)).join('');
 }
 

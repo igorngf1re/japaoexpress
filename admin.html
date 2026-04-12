@@ -93,6 +93,32 @@
             display: flex; align-items: center; justify-content: center; z-index: 999;
         }
 
+        /* ── Admin nav tabs ── */
+        .admin-nav-btn {
+            display: flex; align-items: center; gap: 6px;
+            padding: 10px 20px; font-weight: 800; font-size: 0.78rem;
+            color: #C9B8E8; border-bottom: 3px solid transparent;
+            transition: color 0.15s, border-color 0.15s; cursor: pointer;
+            background: none; border-top: none; border-left: none; border-right: none;
+        }
+        .admin-nav-btn:hover { color: #fff; }
+        .admin-nav-btn.active { color: #fff; border-bottom-color: #9B59B6; }
+
+        /* ── Order status chips ── */
+        .s-pendente   { background:#FEF3C7; color:#92400E; }
+        .s-confirmado { background:#DBEAFE; color:#1E40AF; }
+        .s-enviado    { background:#FFEDD5; color:#9A3412; }
+        .s-entregue   { background:#D1FAE5; color:#065F46; }
+        .s-cancelado  { background:#FEE2E2; color:#991B1B; }
+        .status-chip  { font-size:0.6rem; font-weight:900; padding:2px 8px; border-radius:9999px; text-transform:uppercase; letter-spacing:0.04em; }
+
+        /* ── Orders sidebar ── */
+        #ordersSidebar { width:280px; min-width:280px; background:#FDFAF2; border-right:2px solid #E8DEF8; display:flex; flex-direction:column; height:calc(100vh - 100px); overflow:hidden; }
+        #ordersMain    { flex:1; background:#F7F3FF; overflow-y:auto; }
+        .order-row     { padding:10px 12px; border-bottom:1px solid #F0E8FF; cursor:pointer; transition:background 0.12s; }
+        .order-row:hover { background:#F0E8FF; }
+        .order-row.active { background:#EDE0FF; border-left:3px solid #9B59B6; }
+
         /* ── Responsive ── */
         @media (max-width: 768px) {
             #sidebar { width: 100%; min-width: 0; height: auto; border-right: none; border-bottom: 2px solid #E8DEF8; }
@@ -102,6 +128,8 @@
             #previewPanel { display: none; }
             #formSection { padding: 1rem !important; }
             body { overflow-y: auto; }
+            #ordersSidebar { width:100%; min-width:0; height:auto; border-right:none; border-bottom:2px solid #E8DEF8; }
+            #ordersPanel { flex-direction:column !important; height:auto !important; }
         }
     </style>
 </head>
@@ -147,8 +175,19 @@
     </div>
 </header>
 
+<!-- ══ ADMIN NAV ════════════════════════════════════════ -->
+<nav class="bg-[#3D1A78] border-b border-[#4A2585] flex items-center px-2">
+    <button id="navProdutos" class="admin-nav-btn active" onclick="switchAdminView('produtos')">
+        <i class="fa-solid fa-box text-[10px]"></i> Produtos
+    </button>
+    <button id="navPedidos" class="admin-nav-btn" onclick="switchAdminView('pedidos')">
+        <i class="fa-solid fa-bag-shopping text-[10px]"></i> Pedidos
+        <span id="pendenteBadge" class="hidden bg-red-500 text-white text-[9px] font-black px-1.5 py-0.5 rounded-full">0</span>
+    </button>
+</nav>
+
 <!-- ══ LAYOUT ═════════════════════════════════════════ -->
-<div id="layout" class="flex" style="height: calc(100vh - 60px)">
+<div id="layout" class="flex" style="height: calc(100vh - 100px)">
 
     <!-- ── SIDEBAR: Lista de produtos ───────────────── -->
     <aside id="sidebar">
@@ -595,6 +634,39 @@
             </section>
 
         </div>
+    </main>
+</div>
+
+<!-- ══ ORDERS PANEL ════════════════════════════════════ -->
+<div id="ordersPanel" class="hidden flex" style="height:calc(100vh - 100px)">
+
+    <!-- sidebar: lista de pedidos -->
+    <aside id="ordersSidebar">
+        <div class="px-4 py-3 border-b border-[#E8DEF8]">
+            <p class="font-black text-sm text-[#2C1654]">Pedidos</p>
+            <p id="ordersCount" class="text-[10px] font-bold text-[#9B59B6]">carregando…</p>
+        </div>
+        <!-- filtro de status -->
+        <div class="px-3 py-2 border-b border-[#E8DEF8] flex gap-1 flex-wrap">
+            <button class="ofilter active text-[10px] font-black px-2.5 py-1 rounded-full bg-[#9B59B6] text-white" data-f="todos" onclick="filterOrders('todos',this)">Todos</button>
+            <button class="ofilter text-[10px] font-black px-2.5 py-1 rounded-full bg-[#F0E8FF] text-[#9B59B6]" data-f="pendente" onclick="filterOrders('pendente',this)">Pendente</button>
+            <button class="ofilter text-[10px] font-black px-2.5 py-1 rounded-full bg-[#F0E8FF] text-[#9B59B6]" data-f="confirmado" onclick="filterOrders('confirmado',this)">Confirmado</button>
+            <button class="ofilter text-[10px] font-black px-2.5 py-1 rounded-full bg-[#F0E8FF] text-[#9B59B6]" data-f="enviado" onclick="filterOrders('enviado',this)">Enviado</button>
+            <button class="ofilter text-[10px] font-black px-2.5 py-1 rounded-full bg-[#F0E8FF] text-[#9B59B6]" data-f="entregue" onclick="filterOrders('entregue',this)">Entregue</button>
+        </div>
+        <div id="ordersList" class="flex-1 overflow-y-auto"></div>
+    </aside>
+
+    <!-- main: detalhe do pedido -->
+    <main id="ordersMain" class="p-6">
+        <div id="orderEmpty" class="flex flex-col items-center justify-center h-full gap-4 text-center">
+            <div class="w-16 h-16 bg-[#F0E8FF] rounded-full flex items-center justify-center">
+                <i class="fa-solid fa-bag-shopping text-[#9B59B6] text-2xl"></i>
+            </div>
+            <p class="font-black text-[#2C1654]">Selecione um pedido</p>
+            <p class="text-xs font-semibold text-gray-400">Clique em um pedido na lista para ver detalhes</p>
+        </div>
+        <div id="orderDetail" class="hidden max-w-2xl mx-auto"></div>
     </main>
 </div>
 
@@ -1205,6 +1277,318 @@ document.addEventListener('DOMContentLoaded', () => {
   renderSidebar();
   updatePreview();
 });
+</script>
+
+<!-- ══ FIREBASE SDK (para pedidos) ════════════════════ -->
+<script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-firestore-compat.js"></script>
+
+<script>
+// ═══════════════════════════════════════════════════════
+// Japão Express — Orders Management
+// ═══════════════════════════════════════════════════════
+
+// Firebase init (só inicializa se ainda não foi)
+(function() {
+  const cfg = {
+    apiKey:            "AIzaSyD41IlaTAFm9_ta4Tc50FV11Viz3vR2ewg",
+    authDomain:        "japaoexpress-e7773.firebaseapp.com",
+    projectId:         "japaoexpress-e7773",
+    storageBucket:     "japaoexpress-e7773.firebasestorage.app",
+    messagingSenderId: "344684740712",
+    appId:             "1:344684740712:web:22b0eaf26bd0d93ff07bdd",
+  };
+  if (!firebase.apps.length) firebase.initializeApp(cfg);
+})();
+
+// ── State ─────────────────────────────────────────────
+let _allOrders       = [];
+let _ordersFilter    = 'todos';
+let _selectedOrderId = null;
+let _ordersUnsub     = null;
+let _adminView       = 'produtos'; // 'produtos' | 'pedidos'
+
+// ── Status labels & colors ────────────────────────────
+const STATUS_LABEL = {
+  pendente:   'Pendente',
+  confirmado: 'Confirmado',
+  enviado:    'Enviado',
+  entregue:   'Entregue',
+  cancelado:  'Cancelado',
+};
+const STATUS_NEXT = {
+  pendente:   ['confirmado', 'cancelado'],
+  confirmado: ['enviado',    'cancelado'],
+  enviado:    ['entregue',   'cancelado'],
+  entregue:   [],
+  cancelado:  [],
+};
+const STATUS_ICON = {
+  pendente:   'fa-clock',
+  confirmado: 'fa-circle-check',
+  enviado:    'fa-truck',
+  entregue:   'fa-box-open',
+  cancelado:  'fa-ban',
+};
+const PAY_LABEL = { pix:'PIX', card:'Cartão', boleto:'Boleto', wise:'Wise' };
+
+// ── Switch view ───────────────────────────────────────
+function switchAdminView(view) {
+  _adminView = view;
+  document.getElementById('layout').classList.toggle('hidden', view === 'pedidos');
+  document.getElementById('ordersPanel').classList.toggle('hidden', view === 'produtos');
+  document.getElementById('navProdutos').classList.toggle('active', view === 'produtos');
+  document.getElementById('navPedidos').classList.toggle('active', view === 'pedidos');
+
+  if (view === 'pedidos' && !_ordersUnsub) loadOrders();
+}
+
+// ── Load orders (real-time) ───────────────────────────
+function loadOrders() {
+  const db = firebase.firestore();
+  document.getElementById('ordersCount').textContent = 'carregando…';
+
+  _ordersUnsub = db.collection('orders')
+    .orderBy('createdAt', 'desc')
+    .limit(200)
+    .onSnapshot(snap => {
+      _allOrders = snap.docs.map(d => ({ ...d.data(), _id: d.id }));
+      renderOrdersList();
+      updatePendenteBadge();
+    }, err => {
+      document.getElementById('ordersCount').textContent = 'erro ao carregar';
+      console.error('[JE Admin] orders error:', err);
+    });
+}
+
+// ── Update pending badge ──────────────────────────────
+function updatePendenteBadge() {
+  const n = _allOrders.filter(o => o.status === 'pendente').length;
+  const badge = document.getElementById('pendenteBadge');
+  badge.textContent = n;
+  badge.classList.toggle('hidden', n === 0);
+}
+
+// ── Filter orders ─────────────────────────────────────
+function filterOrders(f, btn) {
+  _ordersFilter = f;
+  document.querySelectorAll('.ofilter').forEach(b => {
+    b.classList.remove('active','bg-[#9B59B6]','text-white');
+    b.classList.add('bg-[#F0E8FF]','text-[#9B59B6]');
+  });
+  btn.classList.add('active','bg-[#9B59B6]','text-white');
+  btn.classList.remove('bg-[#F0E8FF]','text-[#9B59B6]');
+  renderOrdersList();
+}
+
+// ── Render orders list ────────────────────────────────
+function renderOrdersList() {
+  const filtered = _ordersFilter === 'todos'
+    ? _allOrders
+    : _allOrders.filter(o => o.status === _ordersFilter);
+
+  const count = document.getElementById('ordersCount');
+  count.textContent = `${filtered.length} pedido${filtered.length !== 1 ? 's' : ''}`;
+
+  const list = document.getElementById('ordersList');
+  if (!filtered.length) {
+    list.innerHTML = `<div class="p-6 text-center text-xs font-semibold text-gray-400">Nenhum pedido encontrado</div>`;
+    return;
+  }
+
+  list.innerHTML = filtered.map(o => {
+    const date = o.createdAt?.toDate ? o.createdAt.toDate().toLocaleDateString('pt-BR') : '—';
+    const active = _selectedOrderId === (o.id || o._id) ? 'active' : '';
+    return `
+      <div class="order-row ${active}" onclick="showOrderDetail('${o.id || o._id}')">
+        <div class="flex items-center justify-between mb-1">
+          <span class="text-[10px] font-black text-[#9B59B6] font-mono">#${(o.id || o._id).slice(-8).toUpperCase()}</span>
+          <span class="status-chip s-${o.status}">${STATUS_LABEL[o.status] || o.status}</span>
+        </div>
+        <p class="text-xs font-black text-[#2C1654] truncate">${o.customerName || '—'}</p>
+        <div class="flex items-center justify-between mt-1">
+          <span class="text-[10px] font-bold text-gray-400">${date}</span>
+          <span class="text-[10px] font-black text-[#9B59B6]">R$ ${(o.total || 0).toFixed(2)}</span>
+        </div>
+      </div>`;
+  }).join('');
+}
+
+// ── Show order detail ─────────────────────────────────
+function showOrderDetail(orderId) {
+  _selectedOrderId = orderId;
+  renderOrdersList(); // re-render to update active state
+
+  const o = _allOrders.find(x => (x.id || x._id) === orderId);
+  if (!o) return;
+
+  document.getElementById('orderEmpty').classList.add('hidden');
+  const detail = document.getElementById('orderDetail');
+  detail.classList.remove('hidden');
+
+  const date = o.createdAt?.toDate
+    ? o.createdAt.toDate().toLocaleString('pt-BR', { timeZone: 'America/Sao_Paulo' })
+    : '—';
+
+  const items = (o.items || []).map(i => `
+    <div class="flex items-center gap-3 py-2 border-b border-gray-100 last:border-0">
+      ${i.image ? `<img src="${i.image}" class="w-10 h-10 rounded-lg object-cover bg-gray-100" onerror="this.style.display='none'">` : '<div class="w-10 h-10 rounded-lg bg-[#F0E8FF] flex items-center justify-center"><i class="fa-solid fa-box text-[#9B59B6] text-xs"></i></div>'}
+      <div class="flex-1 min-w-0">
+        <p class="text-xs font-black text-[#2C1654] truncate">${i.name || '—'}</p>
+        <p class="text-[10px] font-bold text-gray-400">x${i.qty || 1} · R$ ${((i.priceBRL || 0) * (i.qty || 1)).toFixed(2)}</p>
+      </div>
+    </div>`).join('');
+
+  const history = (o.statusHistory || []).slice().reverse().map(h => {
+    const hDate = h.ts ? new Date(h.ts).toLocaleString('pt-BR', { timeZone: 'America/Sao_Paulo' }) : '—';
+    return `
+      <div class="flex gap-2 items-start">
+        <div class="w-2 h-2 rounded-full mt-1.5 flex-shrink-0 s-${h.status}" style="min-width:8px;min-height:8px;"></div>
+        <div>
+          <p class="text-xs font-black text-[#2C1654]">${STATUS_LABEL[h.status] || h.status}</p>
+          ${h.note ? `<p class="text-[10px] font-semibold text-gray-500">${h.note}</p>` : ''}
+          <p class="text-[10px] text-gray-400">${hDate}</p>
+        </div>
+      </div>`;
+  }).join('');
+
+  const nextStatuses = STATUS_NEXT[o.status] || [];
+  const actionBtns = nextStatuses.map(s => {
+    const colors = s === 'cancelado'
+      ? 'bg-red-100 hover:bg-red-600 text-red-600 hover:text-white'
+      : 'bg-[#9B59B6] hover:bg-[#7D3C98] text-white';
+    return `<button onclick="promptStatusUpdate('${orderId}','${o.uid || ''}','${s}')"
+      class="${colors} font-black text-xs py-2 px-4 rounded-full transition flex items-center gap-1.5">
+      <i class="fa-solid ${STATUS_ICON[s]}"></i> ${STATUS_LABEL[s]}
+    </button>`;
+  }).join('');
+
+  const addr = o.shippingAddress || {};
+  const addrLine = [addr.street, addr.number, addr.complement, addr.neighborhood, addr.city, addr.state, addr.cep]
+    .filter(Boolean).join(', ') || '—';
+
+  detail.innerHTML = `
+    <div class="bg-white rounded-2xl shadow-md p-5 mb-4">
+      <div class="flex items-start justify-between mb-3">
+        <div>
+          <p class="font-mono text-xs font-black text-[#9B59B6]">#${(o.id || o._id).toUpperCase()}</p>
+          <p class="text-[10px] font-semibold text-gray-400">${date}</p>
+        </div>
+        <span class="status-chip s-${o.status} text-sm px-3 py-1">${STATUS_LABEL[o.status] || o.status}</span>
+      </div>
+
+      <!-- Cliente -->
+      <div class="grid grid-cols-2 gap-3 text-xs mb-4">
+        <div>
+          <p class="text-[10px] font-black text-[#9B59B6] uppercase tracking-wide mb-0.5">Cliente</p>
+          <p class="font-black text-[#2C1654]">${o.customerName || '—'}</p>
+          <p class="font-semibold text-gray-500">${o.customerEmail || '—'}</p>
+          <p class="font-semibold text-gray-500">${o.customerPhone || '—'}</p>
+          ${o.customerCpf ? `<p class="font-semibold text-gray-500">CPF: ${o.customerCpf}</p>` : ''}
+        </div>
+        <div>
+          <p class="text-[10px] font-black text-[#9B59B6] uppercase tracking-wide mb-0.5">Endereço</p>
+          <p class="font-semibold text-gray-600 text-[11px] leading-relaxed">${addrLine}</p>
+        </div>
+      </div>
+
+      <!-- Itens -->
+      <div class="mb-4">
+        <p class="text-[10px] font-black text-[#9B59B6] uppercase tracking-wide mb-2">Itens</p>
+        <div class="border border-gray-100 rounded-xl px-3">${items}</div>
+      </div>
+
+      <!-- Totais -->
+      <div class="bg-[#F7F3FF] rounded-xl p-3 mb-4 text-xs space-y-1">
+        <div class="flex justify-between"><span class="font-semibold text-gray-500">Subtotal</span><span class="font-black text-[#2C1654]">R$ ${(o.subtotal || 0).toFixed(2)}</span></div>
+        ${o.discount > 0 ? `<div class="flex justify-between"><span class="font-semibold text-green-600">Desconto</span><span class="font-black text-green-600">-R$ ${(o.discount || 0).toFixed(2)}</span></div>` : ''}
+        <div class="flex justify-between"><span class="font-semibold text-gray-500">Envio (${o.shipping?.name || '—'})</span><span class="font-black text-[#2C1654]">R$ ${(o.shipping?.priceBRL || 0).toFixed(2)}</span></div>
+        <div class="flex justify-between border-t border-[#E8DEF8] pt-1 mt-1"><span class="font-black text-[#2C1654]">Total</span><span class="font-black text-[#9B59B6] text-sm">R$ ${(o.total || 0).toFixed(2)}</span></div>
+        <div class="flex justify-between"><span class="font-semibold text-gray-500">Pagamento</span><span class="font-black text-[#2C1654]">${PAY_LABEL[o.payment] || o.payment || '—'}</span></div>
+      </div>
+
+      <!-- Rastreio -->
+      <div class="mb-4">
+        <p class="text-[10px] font-black text-[#9B59B6] uppercase tracking-wide mb-1.5">Código de Rastreio</p>
+        <div class="flex gap-2">
+          <input id="trackingInput_${o.id || o._id}" type="text" value="${o.trackingCode || ''}"
+            placeholder="ex: JA123456789JP"
+            class="field-input flex-1 text-xs py-2 font-mono">
+          <button onclick="saveTracking('${o.id || o._id}','${o.uid || ''}')"
+            class="bg-[#9B59B6] hover:bg-[#7D3C98] text-white font-black text-xs px-4 rounded-xl transition">
+            Salvar
+          </button>
+        </div>
+      </div>
+
+      <!-- Ações de status -->
+      ${nextStatuses.length ? `
+      <div class="mb-4">
+        <p class="text-[10px] font-black text-[#9B59B6] uppercase tracking-wide mb-2">Atualizar Status</p>
+        <div class="flex gap-2 flex-wrap">${actionBtns}</div>
+      </div>` : ''}
+
+      <!-- Histórico -->
+      <div>
+        <p class="text-[10px] font-black text-[#9B59B6] uppercase tracking-wide mb-2">Histórico</p>
+        <div class="space-y-2">${history}</div>
+      </div>
+    </div>`;
+}
+
+// ── Prompt status update ──────────────────────────────
+function promptStatusUpdate(orderId, uid, newStatus) {
+  const note = newStatus === 'cancelado'
+    ? (prompt('Motivo do cancelamento (opcional):') || 'Pedido cancelado')
+    : (newStatus === 'enviado'
+        ? (prompt('Código de rastreio (opcional — ou salve no campo acima):') || '')
+        : '');
+  updateOrderStatus(orderId, uid, newStatus, note);
+}
+
+// ── Update order status in Firestore ─────────────────
+async function updateOrderStatus(orderId, uid, newStatus, note = '') {
+  const db = firebase.firestore();
+  const histEntry = { status: newStatus, ts: new Date().toISOString(), note };
+  const updates = {
+    status: newStatus,
+    statusHistory: firebase.firestore.FieldValue.arrayUnion(histEntry),
+  };
+  if (note && newStatus === 'enviado') updates.trackingCode = note;
+
+  try {
+    showToast('Atualizando pedido…', 'info');
+    const batch = db.batch();
+    batch.update(db.collection('orders').doc(orderId), updates);
+    if (uid) batch.update(db.collection('users').doc(uid).collection('orders').doc(orderId), updates);
+    await batch.commit();
+    showToast(`✅ Status → ${STATUS_LABEL[newStatus]}`, 'success');
+    // re-render detail
+    setTimeout(() => { if (_selectedOrderId === orderId) showOrderDetail(orderId); }, 300);
+  } catch (e) {
+    showToast(`❌ Erro: ${e.message}`, 'error');
+  }
+}
+
+// ── Save tracking code ────────────────────────────────
+async function saveTracking(orderId, uid) {
+  const input = document.getElementById(`trackingInput_${orderId}`);
+  const code  = input?.value?.trim() || '';
+  if (!code) { showToast('Digite o código de rastreio', 'error'); return; }
+
+  const db = firebase.firestore();
+  const updates = { trackingCode: code };
+  try {
+    showToast('Salvando rastreio…', 'info');
+    const batch = db.batch();
+    batch.update(db.collection('orders').doc(orderId), updates);
+    if (uid) batch.update(db.collection('users').doc(uid).collection('orders').doc(orderId), updates);
+    await batch.commit();
+    showToast('✅ Código de rastreio salvo!', 'success');
+  } catch (e) {
+    showToast(`❌ Erro: ${e.message}`, 'error');
+  }
+}
 </script>
 
 </body>

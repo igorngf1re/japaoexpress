@@ -1288,6 +1288,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
 <!-- ══ FIREBASE SDK (para pedidos) ════════════════════ -->
 <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-auth-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-firestore-compat.js"></script>
 
 <script>
@@ -1351,8 +1352,20 @@ function switchAdminView(view) {
 }
 
 // ── Load orders (real-time) ───────────────────────────
-function loadOrders() {
+async function loadOrders() {
   const db = firebase.firestore();
+  document.getElementById('ordersCount').textContent = 'conectando…';
+
+  // Sign-in anônimo garante que request.auth != null nas regras do Firestore
+  try {
+    if (!firebase.auth().currentUser) {
+      await firebase.auth().signInAnonymously();
+    }
+  } catch (authErr) {
+    console.warn('[JE Admin] auth error:', authErr);
+    // Tenta mesmo assim — pode funcionar se as regras forem abertas
+  }
+
   document.getElementById('ordersCount').textContent = 'carregando…';
 
   _ordersUnsub = db.collection('orders')
@@ -1363,8 +1376,16 @@ function loadOrders() {
       renderOrdersList();
       updatePendenteBadge();
     }, err => {
-      document.getElementById('ordersCount').textContent = 'erro ao carregar';
       console.error('[JE Admin] orders error:', err);
+      const msg = err.code === 'permission-denied'
+        ? 'Sem permissão — ajuste as regras do Firestore'
+        : `Erro: ${err.message}`;
+      document.getElementById('ordersCount').textContent = msg;
+      document.getElementById('ordersList').innerHTML =
+        `<div class="p-4 text-xs font-bold text-red-600 bg-red-50 m-2 rounded-xl">
+          <p>⚠️ ${msg}</p>
+          ${err.code === 'permission-denied' ? '<p class="mt-1 text-[10px] font-semibold text-red-400">Firebase Console → Firestore → Regras → adicione: allow read: if request.auth != null;</p>' : ''}
+        </div>`;
     });
 }
 

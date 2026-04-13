@@ -501,8 +501,8 @@
         document.getElementById('productName').textContent    = p.name;
         document.getElementById('productPrice').setAttribute('data-price-brl', p.priceBRL);
         document.getElementById('productPrice').textContent   = 'R$ ' + p.priceBRL.toFixed(2).replace('.', ',');
-        document.getElementById('productDesc').textContent    = p.description;
-        document.getElementById('productDetails').textContent = p.details;
+        document.getElementById('productDesc').innerHTML    = p.description || '';
+        document.getElementById('productDetails').innerHTML = p.details || '';
         document.getElementById('productOrigin').textContent  = p.origin;
 
         // Avaliações dinâmicas

@@ -226,9 +226,9 @@
                 </div>
 
                 <!-- Descrição curta -->
-                <p id="productDesc" class="text-sm font-semibold text-[#4A3060] leading-relaxed border-l-4 border-[#E2D4F0] pl-4">
+                <div id="productDesc" class="text-sm font-semibold text-[#4A3060] leading-relaxed border-l-4 border-[#E2D4F0] pl-4">
                     —
-                </p>
+                </div>
 
                 <!-- Quantidade -->
                 <div class="flex items-center gap-3">
@@ -283,7 +283,7 @@
                             <i id="acc1-icon" class="fa-solid fa-chevron-down text-[#9B59B6] transition-transform"></i>
                         </button>
                         <div id="acc1" class="accordion-content">
-                            <p id="productDetails" class="text-xs font-semibold text-[#4A3060] leading-relaxed pb-3 pt-1">—</p>
+                            <div id="productDetails" class="text-xs font-semibold text-[#4A3060] leading-relaxed pb-3 pt-1">—</div>
                         </div>
                     </div>
 
@@ -472,6 +472,20 @@
         'Colecionáveis':'text-violet-600 bg-violet-100',
     };
 
+    // ── Renderização inteligente de conteúdo ─────────────────────
+    // Se tiver tags HTML → renderiza como HTML
+    // Se for texto puro → formata com parágrafos e quebras de linha
+    function renderContent(text) {
+        if (!text) return '—';
+        const hasHTML = /<[a-z][\s\S]*>/i.test(text);
+        if (hasHTML) return text;
+        // Texto puro: quebra dupla de linha → parágrafo, simples → <br>
+        return text
+            .split(/\n\n+/)
+            .map(p => `<p class="mb-2">${p.replace(/\n/g, '<br>')}</p>`)
+            .join('');
+    }
+
     // ── Quantidade ────────────────────────────────────────────────
     let qty = 1;
     function changeQty(delta) {
@@ -501,8 +515,8 @@
         document.getElementById('productName').textContent    = p.name;
         document.getElementById('productPrice').setAttribute('data-price-brl', p.priceBRL);
         document.getElementById('productPrice').textContent   = 'R$ ' + p.priceBRL.toFixed(2).replace('.', ',');
-        document.getElementById('productDesc').innerHTML    = p.description || '';
-        document.getElementById('productDetails').innerHTML = p.details || '';
+        document.getElementById('productDesc').innerHTML    = renderContent(p.description);
+        document.getElementById('productDetails').innerHTML = renderContent(p.details);
         document.getElementById('productOrigin').textContent  = p.origin;
 
         // Avaliações dinâmicas

@@ -1,218 +1,246 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Entrar — Japão Express</title>
-    <!-- Favicon & PWA -->
-    <link rel="icon" type="image/png" sizes="32x32" href="icons/icon-128.png">
-    <link rel="icon" type="image/png" sizes="192x192" href="icons/icon-192.png">
-    <link rel="apple-touch-icon" sizes="180x180" href="icons/icon-180.png">
-    <link rel="manifest" href="manifest.json">
-    <meta name="theme-color" content="#9B59B6">
-    <meta name="apple-mobile-web-app-capable" content="yes">
-    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-    <meta name="apple-mobile-web-app-title" content="Japão Express">
-    <meta name="msapplication-TileImage" content="icons/icon-144.png">
-    <meta name="msapplication-TileColor" content="#9B59B6">
-    <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Baloo+2:wght@700;800;900&family=Caveat:wght@600;700&family=Nunito:wght@400;600;700;800;900&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <style>
-        @font-face { font-family:'Sucker Brush'; src:url('sucker-brush.ttf') format('truetype'); font-display:swap; }
-        * { box-sizing:border-box; }
-        body { font-family:'Nunito',sans-serif; background:#E8DEF8; min-height:100vh; display:flex; justify-content:center; align-items:flex-start; padding:2rem 1rem; }
-        .font-hand { font-family:'Caveat',cursive; }
-        .font-hero { font-family: 'Baloo 2', 'Nunito', sans-serif; font-weight: 800 !important; letter-spacing:0.01em; }
-        .post-it { position:relative; box-shadow:2px 5px 14px rgba(0,0,0,0.10); }
-        .tape { position:absolute; top:-13px; left:50%; transform:translateX(-50%) rotate(-2deg); width:52px; height:20px; background:rgba(226,206,148,0.82); }
-        .fl { display:block; font-weight:900; font-size:0.7rem; text-transform:uppercase; letter-spacing:0.06em; color:#2C1654; margin-bottom:4px; }
-        .fi { width:100%; border:2px solid #e5e7eb; border-radius:12px; padding:11px 14px; font-family:'Nunito',sans-serif; font-weight:600; font-size:0.88rem; color:#2C1654; background:white; outline:none; transition:border-color 0.15s; }
-        .fi:focus { border-color:#9B59B6; }
-        .tab-content { display:none; }
-        .tab-content.active { display:block; }
-        @keyframes fadeIn { from{opacity:0;transform:translateY(6px)} to{opacity:1;transform:none} }
-        .tab-content.active { animation:fadeIn 0.2s ease; }
-    </style>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Minha Conta — Japão Express</title>
+  <link rel="icon" type="image/png" sizes="32x32" href="icons/icon-128.png">
+  <link rel="icon" type="image/png" sizes="192x192" href="icons/icon-192.png">
+  <link rel="apple-touch-icon" sizes="180x180" href="icons/icon-180.png">
+  <link rel="manifest" href="manifest.json">
+  <meta name="theme-color" content="#9B59B6">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="apple-mobile-web-app-title" content="Japão Express">
+  <meta name="msapplication-TileImage" content="icons/icon-144.png">
+  <meta name="msapplication-TileColor" content="#9B59B6">
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Baloo+2:wght@700;800;900&family=Caveat:wght@600;700&family=Nunito:wght@400;600;700;800;900&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            brand: '#9B59B6',
+            brandDark: '#3D1A78',
+            brandDeep: '#2C1654',
+          }
+        }
+      }
+    }
+  </script>
+  <style>
+    .font-hand { font-family: 'Caveat', cursive; }
+    .font-hero { font-family: 'Baloo 2', 'Nunito', sans-serif; font-weight: 800 !important; }
+    body {
+      font-family: 'Nunito', sans-serif;
+      background: #E8DEF8;
+      min-height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: flex-start;
+      padding: 2rem 1rem;
+    }
+    .tape {
+      position: absolute;
+      top: -13px;
+      left: 50%;
+      transform: translateX(-50%) rotate(-2deg);
+      width: 52px;
+      height: 20px;
+      background: rgba(226,206,148,0.82);
+    }
+    .pin {
+      position: absolute;
+      top: 10px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 14px;
+      height: 14px;
+      background: radial-gradient(circle at 38% 38%, #ff7e7e, #c0392b);
+      border-radius: 50%;
+      box-shadow: inset -2px -2px 4px rgba(0,0,0,0.28), 1px 2px 4px rgba(0,0,0,0.22);
+      z-index: 10;
+    }
+    .tab-content { display: none; }
+    .tab-content.active { display: block; }
+    .sidebar-tab {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      padding: 0.5rem 0.75rem;
+      border-radius: 0.5rem;
+      font-weight: 700;
+      font-size: 0.875rem;
+      cursor: pointer;
+      transition: background 0.15s, color 0.15s;
+      color: #3D1A78;
+    }
+    .sidebar-tab:hover { background: #E2D4F0; }
+    .sidebar-tab.active { background: #9B59B6; color: #fff; }
+  </style>
 </head>
 <body>
-<div class="bg-[#FDFAF2] w-full max-w-4xl rounded-3xl shadow-2xl overflow-visible border-t-[10px] border-[#9B59B6]">
 
-    <!-- HEADER -->
-    <header></header>
+<div class="bg-[#FDFAF2] w-full max-w-4xl rounded-3xl shadow-2xl border-t-[10px] border-[#9B59B6] overflow-visible">
 
-    <!-- BREADCRUMB -->
-    <div class="px-6 md:px-10 pt-3 pb-1">
-        <p class="text-xs font-semibold text-[#9B59B6] tracking-wide">
-            <a href="index.html" class="hover:underline">Home</a>
-            <span class="mx-1 text-gray-400">/</span>
-            <span class="text-[#2C1654]">Entrar</span>
-        </p>
-    </div>
+  <header></header>
 
-    <!-- CONTEÚDO -->
-    <section class="px-6 md:px-10 py-8 flex flex-col md:flex-row gap-8 items-start justify-center">
+  <div class="border-t border-gray-200 mx-6 md:mx-10"></div>
 
-        <!-- CARD PRINCIPAL -->
-        <div class="w-full max-w-md mx-auto md:mx-0">
+  <main class="flex flex-col md:flex-row gap-6 px-6 md:px-10 py-8">
 
-            <!-- TABS -->
-            <div class="flex gap-2 mb-6 relative">
-                <button id="tabLoginBtn" onclick="switchTab('login')"
-                    class="flex-1 py-2.5 rounded-full font-black text-sm tracking-wide transition bg-[#9B59B6] text-white shadow-md">
-                    Entrar
-                </button>
-                <button id="tabRegisterBtn" onclick="switchTab('register')"
-                    class="flex-1 py-2.5 rounded-full font-black text-sm tracking-wide transition bg-[#F0F0F0] text-[#2C1654] hover:bg-[#E2D4F0]">
-                    Criar Conta
-                </button>
-            </div>
+    <aside class="md:w-1/4 flex-shrink-0">
+      <div class="bg-[#F5F5F5] rounded-2xl p-5 shadow-md flex flex-col gap-4">
 
-            <!-- TAB: ENTRAR -->
-            <div id="tabLogin" class="tab-content active">
-                <h1 class="font-hero text-[2.5rem] text-[#2C1654] leading-none mb-1">Bem-vindo de volta!</h1>
-                <p class="text-sm font-semibold text-[#4A3060] mb-6">Acesse sua conta Japão Express</p>
-
-                <form onsubmit="handleLogin(event)" class="space-y-4">
-                    <div>
-                        <label class="fl" for="loginEmail">Email</label>
-                        <div class="relative">
-                            <i class="fa-solid fa-envelope absolute left-3.5 top-1/2 -translate-y-1/2 text-[#C39BD3] text-sm"></i>
-                            <input id="loginEmail" class="fi pl-9" type="email" placeholder="seu@email.com" required>
-                        </div>
-                    </div>
-                    <div>
-                        <label class="fl" for="loginPass">Senha</label>
-                        <div class="relative">
-                            <i class="fa-solid fa-lock absolute left-3.5 top-1/2 -translate-y-1/2 text-[#C39BD3] text-sm"></i>
-                            <input id="loginPass" class="fi pl-9 pr-10" type="password" placeholder="Sua senha" required>
-                            <button type="button" onclick="togglePwd('loginPass','eyeLogin')" class="absolute right-3.5 top-1/2 -translate-y-1/2 text-gray-400 hover:text-[#9B59B6] transition cursor-pointer">
-                                <i id="eyeLogin" class="fa-solid fa-eye text-sm"></i>
-                            </button>
-                        </div>
-                    </div>
-                    <div class="flex items-center justify-between">
-                        <label class="flex items-center gap-2 cursor-pointer">
-                            <input type="checkbox" class="accent-[#9B59B6] w-4 h-4 rounded">
-                            <span class="text-xs font-semibold text-[#4A3060]">Lembrar de mim</span>
-                        </label>
-                        <a href="#" class="text-xs font-black text-[#9B59B6] hover:underline">Esqueci minha senha</a>
-                    </div>
-                    <button type="submit" class="w-full bg-[#9B59B6] text-white font-black py-3.5 rounded-full hover:bg-[#7D3C98] transition text-sm tracking-widest uppercase shadow-lg cursor-pointer">
-                        ENTRAR
-                    </button>
-                </form>
-
-                <div class="flex items-center gap-3 my-5">
-                    <div class="flex-1 h-px bg-gray-200"></div>
-                    <span class="text-xs font-bold text-gray-400">ou entre com</span>
-                    <div class="flex-1 h-px bg-gray-200"></div>
-                </div>
-
-                <button type="button" onclick="handleGoogle()" class="w-full border-2 border-gray-200 rounded-full py-3 flex items-center justify-center gap-3 font-bold text-sm text-[#2C1654] hover:border-[#9B59B6] hover:bg-[#F7F3FF] transition cursor-pointer">
-                    <svg width="18" height="18" viewBox="0 0 48 48"><path fill="#4285F4" d="M44.5 20H24v8.5h11.7C34.2 33.5 29.7 36 24 36c-6.6 0-12-5.4-12-12s5.4-12 12-12c3 0 5.7 1.1 7.8 2.9l6.4-6.4C34.6 5.1 29.6 3 24 3 12.4 3 3 12.4 3 24s9.4 21 21 21c10.8 0 20-7.4 20-21 0-1.3-.2-2.7-.5-4z"/><path fill="#34A853" d="M6.3 14.7l7 5.1C15.1 16.1 19.2 13 24 13c3 0 5.7 1.1 7.8 2.9l6.4-6.4C34.6 5.1 29.6 3 24 3c-7.6 0-14.2 4.6-17.7 11.7z"/><path fill="#FBBC05" d="M24 45c5.5 0 10.5-1.9 14.4-5l-6.7-5.5C29.7 36 27 37 24 37c-5.7 0-10.2-3.5-11.7-8.5L6.3 34C9.8 40.4 16.4 45 24 45z"/><path fill="#EA4335" d="M44.5 20H24v8.5h11.7c-.5 2.3-1.7 4.3-3.5 5.7l6.7 5.5C42.6 36.6 45 31 45 24c0-1.3-.2-2.7-.5-4z"/></svg>
-                    Entrar com Google
-                </button>
-
-                <p class="text-center text-xs font-semibold text-gray-400 mt-5">
-                    Não tem conta? <button onclick="switchTab('register')" class="text-[#9B59B6] font-black hover:underline cursor-pointer">Criar conta grátis</button>
-                </p>
-            </div>
-
-            <!-- TAB: CRIAR CONTA -->
-            <div id="tabRegister" class="tab-content">
-                <h1 class="font-hero text-[2.5rem] text-[#2C1654] leading-none mb-1">Crie sua conta</h1>
-                <p class="text-sm font-semibold text-[#4A3060] mb-6">É rápido e gratuito!</p>
-
-                <form onsubmit="handleRegister(event)" class="space-y-4">
-                    <div>
-                        <label class="fl">Nome completo</label>
-                        <div class="relative">
-                            <i class="fa-solid fa-user absolute left-3.5 top-1/2 -translate-y-1/2 text-[#C39BD3] text-sm"></i>
-                            <input class="fi pl-9" type="text" placeholder="Seu nome completo" required>
-                        </div>
-                    </div>
-                    <div>
-                        <label class="fl">Email</label>
-                        <div class="relative">
-                            <i class="fa-solid fa-envelope absolute left-3.5 top-1/2 -translate-y-1/2 text-[#C39BD3] text-sm"></i>
-                            <input class="fi pl-9" type="email" placeholder="seu@email.com" required>
-                        </div>
-                    </div>
-                    <div>
-                        <label class="fl">Senha</label>
-                        <div class="relative">
-                            <i class="fa-solid fa-lock absolute left-3.5 top-1/2 -translate-y-1/2 text-[#C39BD3] text-sm"></i>
-                            <input id="regPass" class="fi pl-9 pr-10" type="password" placeholder="Mín. 8 caracteres" required>
-                            <button type="button" onclick="togglePwd('regPass','eyeReg')" class="absolute right-3.5 top-1/2 -translate-y-1/2 text-gray-400 hover:text-[#9B59B6] transition cursor-pointer">
-                                <i id="eyeReg" class="fa-solid fa-eye text-sm"></i>
-                            </button>
-                        </div>
-                    </div>
-                    <div>
-                        <label class="fl">Confirmar senha</label>
-                        <div class="relative">
-                            <i class="fa-solid fa-lock absolute left-3.5 top-1/2 -translate-y-1/2 text-[#C39BD3] text-sm"></i>
-                            <input class="fi pl-9" type="password" placeholder="Repita a senha" required>
-                        </div>
-                    </div>
-                    <label class="flex items-start gap-2 cursor-pointer">
-                        <input type="checkbox" class="accent-[#9B59B6] w-4 h-4 mt-0.5 rounded flex-shrink-0" required>
-                        <span class="text-xs font-semibold text-[#4A3060] leading-relaxed">
-                            Aceito os <a href="institucional.html#termos" class="text-[#9B59B6] font-black hover:underline">Termos de Uso</a>
-                            e a <a href="institucional.html#privacidade" class="text-[#9B59B6] font-black hover:underline">Política de Privacidade</a>
-                        </span>
-                    </label>
-                    <button type="submit" class="w-full bg-[#9B59B6] text-white font-black py-3.5 rounded-full hover:bg-[#7D3C98] transition text-sm tracking-widest uppercase shadow-lg cursor-pointer">
-                        CRIAR CONTA
-                    </button>
-                </form>
-
-                <div class="flex items-center gap-3 my-5">
-                    <div class="flex-1 h-px bg-gray-200"></div>
-                    <span class="text-xs font-bold text-gray-400">ou cadastre com</span>
-                    <div class="flex-1 h-px bg-gray-200"></div>
-                </div>
-
-                <button type="button" onclick="handleGoogle()" class="w-full border-2 border-gray-200 rounded-full py-3 flex items-center justify-center gap-3 font-bold text-sm text-[#2C1654] hover:border-[#9B59B6] hover:bg-[#F7F3FF] transition cursor-pointer">
-                    <svg width="18" height="18" viewBox="0 0 48 48"><path fill="#4285F4" d="M44.5 20H24v8.5h11.7C34.2 33.5 29.7 36 24 36c-6.6 0-12-5.4-12-12s5.4-12 12-12c3 0 5.7 1.1 7.8 2.9l6.4-6.4C34.6 5.1 29.6 3 24 3 12.4 3 3 12.4 3 24s9.4 21 21 21c10.8 0 20-7.4 20-21 0-1.3-.2-2.7-.5-4z"/><path fill="#34A853" d="M6.3 14.7l7 5.1C15.1 16.1 19.2 13 24 13c3 0 5.7 1.1 7.8 2.9l6.4-6.4C34.6 5.1 29.6 3 24 3c-7.6 0-14.2 4.6-17.7 11.7z"/><path fill="#FBBC05" d="M24 45c5.5 0 10.5-1.9 14.4-5l-6.7-5.5C29.7 36 27 37 24 37c-5.7 0-10.2-3.5-11.7-8.5L6.3 34C9.8 40.4 16.4 45 24 45z"/><path fill="#EA4335" d="M44.5 20H24v8.5h11.7c-.5 2.3-1.7 4.3-3.5 5.7l6.7 5.5C42.6 36.6 45 31 45 24c0-1.3-.2-2.7-.5-4z"/></svg>
-                    Continuar com Google
-                </button>
-
-                <p class="text-center text-xs font-semibold text-gray-400 mt-5">
-                    Já tem conta? <button onclick="switchTab('login')" class="text-[#9B59B6] font-black hover:underline cursor-pointer">Entrar</button>
-                </p>
-            </div>
+        <div class="flex flex-col items-center gap-2 text-center">
+          <div class="w-16 h-16 bg-[#E2D4F0] rounded-full flex items-center justify-center">
+            <i class="fa-solid fa-user text-[#9B59B6] text-2xl"></i>
+          </div>
+          <div>
+            <p id="sidebarName" class="font-hero text-xl text-[#2C1654] leading-tight"></p>
+            <p id="sidebarEmail" class="text-xs text-gray-500 font-semibold"></p>
+          </div>
+          <button onclick="logout()" class="mt-1 px-4 py-1.5 rounded-full border-2 border-[#9B59B6] text-[#9B59B6] text-xs font-bold hover:bg-[#9B59B6] hover:text-white transition">
+            <i class="fa-solid fa-right-from-bracket mr-1"></i>Sair
+          </button>
         </div>
 
-        <!-- POST-IT LATERAL (desktop) -->
-        <div class="hidden md:block post-it bg-[#F5F5F5] rounded-xl p-5 max-w-[180px] rotate-[-2deg] shadow-md mt-12 flex-shrink-0">
-            <div class="tape"></div>
-            <div class="mt-3 space-y-3">
-                <p class="font-hand text-lg text-[#2C1654] font-bold leading-tight">Crie sua conta e rastreie seus pedidos! 📦</p>
-                <hr class="border-dashed border-gray-300">
-                <div class="space-y-1.5 text-xs font-bold text-[#4A3060]">
-                    <p class="flex items-center gap-1.5"><i class="fa-solid fa-check text-[#25D366]"></i> Histórico de pedidos</p>
-                    <p class="flex items-center gap-1.5"><i class="fa-solid fa-check text-[#25D366]"></i> Código de rastreio</p>
-                    <p class="flex items-center gap-1.5"><i class="fa-solid fa-check text-[#25D366]"></i> Lista de favoritos</p>
-                    <p class="flex items-center gap-1.5"><i class="fa-solid fa-check text-[#25D366]"></i> Checkout mais rápido</p>
-                </div>
-            </div>
+        <nav class="flex flex-col gap-1 mt-2">
+          <button class="sidebar-tab active" data-tab="pedidos">
+            <i class="fa-solid fa-box w-5 text-center"></i> Meus Pedidos
+          </button>
+          <button class="sidebar-tab" data-tab="meu-perfil">
+            <i class="fa-solid fa-user w-5 text-center"></i> Meu Perfil
+          </button>
+          <button class="sidebar-tab" data-tab="enderecos">
+            <i class="fa-solid fa-location-dot w-5 text-center"></i> Endereços
+          </button>
+          <a href="favoritos.html" class="sidebar-tab">
+            <i class="fa-solid fa-heart w-5 text-center"></i> Favoritos
+          </a>
+          <a href="contato.html" class="sidebar-tab">
+            <i class="fa-solid fa-phone w-5 text-center"></i> Contato
+          </a>
+        </nav>
+      </div>
+    </aside>
+
+    <section class="flex-1 min-w-0">
+
+      <div id="tab-pedidos" class="tab-content active">
+        <h1 class="font-hero text-[2rem] text-[#2C1654] mb-5 leading-none">Meus Pedidos</h1>
+        <div class="flex flex-col items-center justify-center py-16 text-center gap-4 bg-white rounded-2xl border border-gray-100 shadow-sm">
+          <i class="fa-solid fa-box-open text-[#E2D4F0] text-6xl"></i>
+          <p class="font-hand text-2xl text-[#4A3060]">Nenhum pedido ainda</p>
+          <p class="text-sm text-gray-400 font-semibold max-w-xs">Quando você fizer um pedido, ele aparecerá aqui com o rastreio Japan Post.</p>
+          <a href="produtos.html" class="mt-2 inline-block px-6 py-2.5 bg-[#9B59B6] text-white font-black text-sm rounded-full hover:bg-[#7d3fa0] transition">
+            <i class="fa-solid fa-store mr-2"></i>Ver Produtos
+          </a>
         </div>
+      </div>
+
+      <div id="tab-meu-perfil" class="tab-content">
+        <h1 class="font-hero text-[2rem] text-[#2C1654] mb-5 leading-none">Meu Perfil</h1>
+        <div class="bg-white rounded-2xl p-6 shadow-sm border border-gray-100">
+          <form onsubmit="saveProfile(event)" class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            <div class="flex flex-col gap-1">
+              <label class="text-xs font-black text-[#3D1A78] uppercase tracking-wide">Nome Completo</label>
+              <input id="profileName" type="text" class="border-2 border-gray-200 rounded-xl px-3 py-2 text-sm font-semibold focus:outline-none focus:border-[#9B59B6] transition" required />
+            </div>
+            <div class="flex flex-col gap-1">
+              <label class="text-xs font-black text-[#3D1A78] uppercase tracking-wide">E-mail</label>
+              <input id="profileEmail" type="email" class="border-2 border-gray-200 rounded-xl px-3 py-2 text-sm font-semibold focus:outline-none focus:border-[#9B59B6] transition" required />
+            </div>
+            <div class="flex flex-col gap-1">
+              <label class="text-xs font-black text-[#3D1A78] uppercase tracking-wide">CPF</label>
+              <input id="profileCpf" type="text" maxlength="14" placeholder="000.000.000-00" oninput="maskCpf(this)" class="border-2 border-gray-200 rounded-xl px-3 py-2 text-sm font-semibold focus:outline-none focus:border-[#9B59B6] transition" />
+            </div>
+            <div class="flex flex-col gap-1">
+              <label class="text-xs font-black text-[#3D1A78] uppercase tracking-wide">Telefone / WhatsApp</label>
+              <input id="profilePhone" type="tel" class="border-2 border-gray-200 rounded-xl px-3 py-2 text-sm font-semibold focus:outline-none focus:border-[#9B59B6] transition" />
+            </div>
+            <div class="flex flex-col gap-1">
+              <label class="text-xs font-black text-[#3D1A78] uppercase tracking-wide">Data de Nascimento</label>
+              <input id="profileBirthdate" type="date" class="border-2 border-gray-200 rounded-xl px-3 py-2 text-sm font-semibold focus:outline-none focus:border-[#9B59B6] transition" />
+            </div>
+            <div class="sm:col-span-2 flex justify-end mt-2">
+              <button type="submit" class="px-6 py-2.5 rounded-full bg-[#9B59B6] text-white font-black text-sm hover:bg-[#7d3fa0] transition">
+                <i class="fa-solid fa-floppy-disk mr-1"></i>Salvar Alterações
+              </button>
+            </div>
+          </form>
+        </div>
+      </div>
+
+      <div id="tab-enderecos" class="tab-content">
+        <h1 class="font-hero text-[2rem] text-[#2C1654] mb-5 leading-none">Endereço de Entrega</h1>
+        <div class="bg-white rounded-2xl p-6 shadow-sm border border-gray-100">
+          <form onsubmit="saveAddress(event)" class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            <div class="flex flex-col gap-1">
+              <label class="text-xs font-black text-[#3D1A78] uppercase tracking-wide">CEP</label>
+              <input id="addrCep" type="text" maxlength="9" placeholder="00000-000"
+                class="border-2 border-gray-200 rounded-xl px-3 py-2 text-sm font-semibold focus:outline-none focus:border-[#9B59B6] transition"
+                oninput="formatCep(this)" onblur="fetchCep(this.value)" required />
+            </div>
+            <div class="flex flex-col gap-1">
+              <label class="text-xs font-black text-[#3D1A78] uppercase tracking-wide">Estado</label>
+              <input id="addrState" type="text" maxlength="2" placeholder="SP"
+                class="border-2 border-gray-200 rounded-xl px-3 py-2 text-sm font-semibold focus:outline-none focus:border-[#9B59B6] transition" required />
+            </div>
+            <div class="flex flex-col gap-1">
+              <label class="text-xs font-black text-[#3D1A78] uppercase tracking-wide">Cidade</label>
+              <input id="addrCity" type="text" placeholder="São Paulo"
+                class="border-2 border-gray-200 rounded-xl px-3 py-2 text-sm font-semibold focus:outline-none focus:border-[#9B59B6] transition" required />
+            </div>
+            <div class="flex flex-col gap-1">
+              <label class="text-xs font-black text-[#3D1A78] uppercase tracking-wide">Bairro</label>
+              <input id="addrDistrict" type="text" placeholder="Centro"
+                class="border-2 border-gray-200 rounded-xl px-3 py-2 text-sm font-semibold focus:outline-none focus:border-[#9B59B6] transition" required />
+            </div>
+            <div class="flex flex-col gap-1 sm:col-span-2">
+              <label class="text-xs font-black text-[#3D1A78] uppercase tracking-wide">Rua / Avenida</label>
+              <input id="addrStreet" type="text" placeholder="Rua das Flores"
+                class="border-2 border-gray-200 rounded-xl px-3 py-2 text-sm font-semibold focus:outline-none focus:border-[#9B59B6] transition" required />
+            </div>
+            <div class="flex flex-col gap-1">
+              <label class="text-xs font-black text-[#3D1A78] uppercase tracking-wide">Número</label>
+              <input id="addrNumber" type="text" placeholder="123"
+                class="border-2 border-gray-200 rounded-xl px-3 py-2 text-sm font-semibold focus:outline-none focus:border-[#9B59B6] transition" required />
+            </div>
+            <div class="flex flex-col gap-1">
+              <label class="text-xs font-black text-[#3D1A78] uppercase tracking-wide">Complemento</label>
+              <input id="addrComplement" type="text" placeholder="Apto 42 (opcional)"
+                class="border-2 border-gray-200 rounded-xl px-3 py-2 text-sm font-semibold focus:outline-none focus:border-[#9B59B6] transition" />
+            </div>
+            <div class="sm:col-span-2 flex justify-end mt-2">
+              <button type="submit" class="px-6 py-2.5 rounded-full bg-[#9B59B6] text-white font-black text-sm hover:bg-[#7d3fa0] transition">
+                <i class="fa-solid fa-floppy-disk mr-1"></i>Salvar Endereço
+              </button>
+            </div>
+          </form>
+        </div>
+      </div>
+
     </section>
+  </main>
 
-    <!-- FOOTER -->
-    <footer class="border-t-2 border-gray-200 px-6 md:px-10 pt-8 pb-6 grid grid-cols-1 md:grid-cols-3 gap-8 text-center md:text-left text-sm text-[#4A3060]">
-        <div><h5 class="font-black text-base mb-2 text-[#2C1654]">Japão Express</h5><p class="text-xs leading-relaxed font-semibold">Direto do Japão para o Brasil.</p></div>
-        <div><h5 class="font-black text-base mb-2 text-[#2C1654]">Quick Links</h5><ul class="space-y-1 text-xs font-semibold"><li><a href="produtos.html" class="hover:text-[#9B59B6]">Produtos</a></li><li><a href="contato.html" class="hover:text-[#9B59B6]">Contato</a></li><li><a href="institucional.html" class="hover:text-[#9B59B6]">Sobre Nós</a></li></ul></div>
-        <div><h5 class="font-black text-base mb-3 text-[#2C1654]">Social Media</h5><div class="flex justify-center md:justify-start gap-4 text-xl"><a href="https://www.instagram.com/ojapaoexpress" target="_blank" rel="noopener" class="text-[#2C1654] hover:text-[#9B59B6]"><i class="fa-brands fa-instagram"></i></a><a href="#" class="text-[#2C1654] hover:text-[#9B59B6]"><i class="fa-brands fa-tiktok"></i></a><a href="mailto:ojapaoexpress@gmail.com" class="text-[#2C1654] hover:text-[#9B59B6]" title="E-mail"><i class="fa-solid fa-envelope"></i></a></div></div>
-    </footer>
-    <div class="text-center text-xs py-4 text-gray-400 border-t border-gray-100 font-semibold">© 2026 Japão Express. Todos os direitos reservados</div>
+  <footer class="border-t-2 border-gray-200 px-6 md:px-10 pt-8 pb-6 grid grid-cols-1 md:grid-cols-3 gap-8 text-center md:text-left text-sm text-[#4A3060]">
+    <div><h5 class="font-black text-base mb-2 text-[#2C1654]">Japão Express</h5><p class="text-xs leading-relaxed font-semibold">Direto do Japão para o Brasil.</p></div>
+    <div><h5 class="font-black text-base mb-2 text-[#2C1654]">Quick Links</h5><ul class="space-y-1 text-xs font-semibold"><li><a href="produtos.html" class="hover:text-[#9B59B6]">Produtos</a></li><li><a href="institucional.html" class="hover:text-[#9B59B6]">Sobre Nós</a></li><li><a href="contato.html" class="hover:text-[#9B59B6]">Contato</a></li><li><a href="politicas.html" class="hover:text-[#9B59B6]">Políticas</a></li><li><a href="tokushoho.html" class="hover:text-[#9B59B6]">特定商取引法</a></li></ul></div>
+    <div><h5 class="font-black text-base mb-3 text-[#2C1654]">Social Media</h5><div class="flex justify-center md:justify-start gap-4 text-xl"><a href="https://www.instagram.com/ojapaoexpress" target="_blank" rel="noopener" class="text-[#2C1654] hover:text-[#9B59B6]"><i class="fa-brands fa-instagram"></i></a><a href="#" class="text-[#2C1654] hover:text-[#9B59B6]"><i class="fa-brands fa-tiktok"></i></a><a href="mailto:ojapaoexpress@gmail.com" class="text-[#2C1654] hover:text-[#9B59B6]" title="E-mail"><i class="fa-solid fa-envelope"></i></a></div></div>
+  </footer>
+  <div class="text-center text-xs py-4 text-gray-400 border-t border-gray-100 font-semibold">© 2026 Japão Express. Todos os direitos reservados</div>
+
 </div>
+
 <script src="js/header.js"></script>
 <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-auth-compat.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-firestore-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-firestore-compat.js"></script>
 <script src="js/firebase-config.js"></script>
 <script src="js/products.js"></script>
 <script src="js/cart.js"></script>
@@ -220,94 +248,156 @@
 <script src="js/currency.js"></script>
 <script src="js/auth.js"></script>
 <script>
-    function showError(msg) {
-        let el = document.getElementById('authError');
-        if (!el) {
-            el = document.createElement('p');
-            el.id = 'authError';
-            el.className = 'text-red-500 text-xs font-bold text-center mt-2';
-            document.querySelector('.tab-content.active')?.appendChild(el);
-        }
-        el.textContent = msg;
+  // ── Máscara de CPF ────────────────────────────────────────────
+  function maskCpf(input) {
+    let v = input.value.replace(/\D/g, '');
+    if (v.length <= 11) {
+      v = v.replace(/(\d{3})(\d)/, "$1.$2");
+      v = v.replace(/(\d{3})(\d)/, "$1.$2");
+      v = v.replace(/(\d{3})(\d{1,2})$/, "$1-$2");
     }
+    input.value = v;
+  }
 
-    function switchTab(tab) {
-        document.getElementById('tabLogin').classList.toggle('active', tab === 'login');
-        document.getElementById('tabRegister').classList.toggle('active', tab === 'register');
-        document.getElementById('tabLoginBtn').className = tab === 'login'
-            ? 'flex-1 py-2.5 rounded-full font-black text-sm tracking-wide transition bg-[#9B59B6] text-white shadow-md'
-            : 'flex-1 py-2.5 rounded-full font-black text-sm tracking-wide transition bg-[#F0F0F0] text-[#2C1654] hover:bg-[#E2D4F0]';
-        document.getElementById('tabRegisterBtn').className = tab === 'register'
-            ? 'flex-1 py-2.5 rounded-full font-black text-sm tracking-wide transition bg-[#9B59B6] text-white shadow-md'
-            : 'flex-1 py-2.5 rounded-full font-black text-sm tracking-wide transition bg-[#F0F0F0] text-[#2C1654] hover:bg-[#E2D4F0]';
-    }
+  // ── Auth gate ─────────────────────────────────────────────────
+  if (!getUser()) { window.location.href = 'login.html'; }
 
-    function togglePwd(inputId, eyeId) {
-        const inp = document.getElementById(inputId);
-        const eye = document.getElementById(eyeId);
-        const isPass = inp.type === 'password';
-        inp.type = isPass ? 'text' : 'password';
-        eye.className = isPass ? 'fa-solid fa-eye-slash text-sm' : 'fa-solid fa-eye text-sm';
-    }
+  // ── Preenche dados do usuário ──────────────────────────────────
+  document.addEventListener('DOMContentLoaded', () => {
+    const user = getUser();
+    if (!user) return;
 
-    async function handleLogin(e) {
-        e.preventDefault();
-        const btn   = e.target.querySelector('button[type=submit]');
-        const email = document.getElementById('loginEmail').value.trim();
-        const pass  = document.getElementById('loginPass').value;
-        btn.disabled = true;
-        btn.textContent = 'Entrando…';
-        try {
-            await firebaseLogin(email, pass);
-            window.location.href = 'perfil.html';
-        } catch (err) {
-            btn.disabled = false;
-            btn.textContent = 'Entrar';
-            const msg = err.code === 'auth/invalid-credential' || err.code === 'auth/wrong-password'
-                ? 'E-mail ou senha incorretos.'
-                : err.code === 'auth/user-not-found' ? 'Usuário não encontrado.'
-                : err.code === 'auth/too-many-requests' ? 'Muitas tentativas. Tente mais tarde.'
-                : 'Erro ao entrar. Tente novamente.';
-            showError(msg);
-        }
-    }
+    // Sidebar
+    const sName  = document.getElementById('sidebarName');
+    const sEmail = document.getElementById('sidebarEmail');
+    if (sName)  sName.textContent  = user.name  || '';
+    if (sEmail) sEmail.textContent = user.email || '';
 
-    async function handleRegister(e) {
-        e.preventDefault();
-        const btn   = e.target.querySelector('button[type=submit]');
-        const name  = e.target.querySelector('input[type=text]').value.trim() || 'Usuário';
-        const email = e.target.querySelector('input[type=email]').value.trim();
-        const pass  = e.target.querySelectorAll('input[type=password]')[0].value;
-        btn.disabled = true;
-        btn.textContent = 'Criando conta…';
-        try {
-            await firebaseRegister(email, pass, name);
-            window.location.href = 'index.html';
-        } catch (err) {
-            btn.disabled = false;
-            btn.textContent = 'Criar Conta';
-            const msg = err.code === 'auth/email-already-in-use'
-                ? 'Este e-mail já está cadastrado.'
-                : err.code === 'auth/weak-password' ? 'Senha muito fraca (mínimo 6 caracteres).'
-                : err.code === 'auth/invalid-email'  ? 'E-mail inválido.'
-                : 'Erro ao criar conta. Tente novamente.';
-            showError(msg);
-        }
-    }
+    // Formulário de perfil
+    const f = {
+      profileName:      user.name,
+      profileEmail:     user.email,
+      profilePhone:     user.phone     || '',
+      profileCpf:       user.cpf       || '', // Adicionado CPF
+      profileBirthdate: user.birthdate || '',
+    };
+    Object.entries(f).forEach(([id, val]) => {
+      const el = document.getElementById(id);
+      if (el) el.value = val;
+    });
 
-    async function handleGoogle() {
-        try {
-            const provider = new firebase.auth.GoogleAuthProvider();
-            const cred = await firebase.auth().signInWithPopup(provider);
-            const u = cred.user;
-            setUser({ uid: u.uid, email: u.email, name: u.displayName || u.email.split('@')[0] });
-            window.location.href = 'index.html';
-        } catch (err) {
-            if (err.code !== 'auth/popup-closed-by-user') {
-                showError('Erro ao entrar com Google. Tente novamente.');
-            }
-        }
+    // Formulário de endereço
+    const addr = user.address || {};
+    const addrFields = {
+      addrCep:          addr.cep          || '',
+      addrState:        addr.state        || '',
+      addrCity:         addr.city         || '',
+      addrDistrict:     addr.district     || '', // Corrigido para district
+      addrStreet:       addr.street       || '',
+      addrNumber:       addr.number       || '',
+      addrComplement:   addr.complement   || '',
+    };
+    Object.entries(addrFields).forEach(([id, val]) => {
+      const el = document.getElementById(id);
+      if (el) el.value = val;
+    });
+
+    updateAllBadges();
+    updateAuthUI();
+  });
+
+  // ── Salvar perfil ──────────────────────────────────────────────
+  function saveProfile(e) {
+    if (e) e.preventDefault();
+    const user      = getUser();
+    const name      = document.getElementById('profileName')?.value.trim();
+    const email     = document.getElementById('profileEmail')?.value.trim();
+    const phone     = document.getElementById('profilePhone')?.value.trim();
+    const cpf       = document.getElementById('profileCpf')?.value.trim();
+    const birthdate = document.getElementById('profileBirthdate')?.value;
+    
+    if (user && name) {
+      setUser({ ...user, name, email: email || user.email, phone, cpf, birthdate });
+      // Atualiza sidebar em tempo real
+      const sName  = document.getElementById('sidebarName');
+      const sEmail = document.getElementById('sidebarEmail');
+      if (sName)  sName.textContent  = name;
+      if (sEmail) sEmail.textContent = email || user.email;
+      // Salva perfil na nuvem (sincroniza entre dispositivos)
+      if (typeof scheduleSyncToCloud === 'function') scheduleSyncToCloud();
     }
+    showToast('Perfil salvo com sucesso!');
+  }
+
+  // ── Salvar endereço ────────────────────────────────────────────
+  function saveAddress(e) {
+    if (e) e.preventDefault();
+    const user = getUser();
+    if (!user) return;
+    const address = {
+      cep:          document.getElementById('addrCep')?.value.trim()          || '',
+      state:        document.getElementById('addrState')?.value.trim()        || '',
+      city:         document.getElementById('addrCity')?.value.trim()         || '',
+      district:     document.getElementById('addrDistrict')?.value.trim()     || '', // Corrigido
+      street:       document.getElementById('addrStreet')?.value.trim()       || '',
+      number:       document.getElementById('addrNumber')?.value.trim()       || '',
+      complement:   document.getElementById('addrComplement')?.value.trim()   || '',
+    };
+    setUser({ ...user, address });
+    if (typeof scheduleSyncToCloud === 'function') scheduleSyncToCloud();
+    showToast('Endereço salvo com sucesso!');
+  }
+
+  // ── Auto-preenchimento por CEP (ViaCEP) ───────────────────────
+  function formatCep(input) {
+    let v = input.value.replace(/\D/g, '').slice(0, 8);
+    if (v.length > 5) v = v.slice(0, 5) + '-' + v.slice(5);
+    input.value = v;
+  }
+
+  async function fetchCep(cep) {
+    const digits = cep.replace(/\D/g, '');
+    if (digits.length !== 8) return;
+    try {
+      const r = await fetch('https://viacep.com.br/ws/' + digits + '/json/');
+      const d = await r.json();
+      if (d.erro) return;
+      if (d.logradouro) document.getElementById('addrStreet').value       = d.logradouro;
+      if (d.bairro)     document.getElementById('addrDistrict').value     = d.bairro; // Corrigido
+      if (d.localidade) document.getElementById('addrCity').value         = d.localidade;
+      if (d.uf)         document.getElementById('addrState').value        = d.uf;
+      document.getElementById('addrNumber').focus();
+    } catch {}
+  }
+
+  function showToast(msg) {
+    let t = document.getElementById('profileToast');
+    if (!t) {
+      t = document.createElement('div');
+      t.id = 'profileToast';
+      t.style.cssText = 'position:fixed;bottom:24px;left:50%;transform:translateX(-50%);background:#2C1654;color:white;padding:12px 20px;border-radius:12px;font-family:Nunito,sans-serif;font-weight:800;font-size:0.85rem;box-shadow:0 4px 16px rgba(0,0,0,0.25);z-index:9999;transition:opacity 0.3s;white-space:nowrap';
+      document.body.appendChild(t);
+    }
+    t.textContent = '✅ ' + msg;
+    t.style.opacity = '1';
+    clearTimeout(t._t);
+    t._t = setTimeout(() => t.style.opacity = '0', 2500);
+  }
+
+  // ── Tabs ───────────────────────────────────────────────────────
+  const tabs = document.querySelectorAll('.sidebar-tab[data-tab]');
+  const contents = document.querySelectorAll('.tab-content');
+  tabs.forEach(tab => {
+    tab.addEventListener('click', () => {
+      tabs.forEach(t => t.classList.remove('active'));
+      tab.classList.add('active');
+      contents.forEach(c => {
+        c.classList.remove('active');
+        if (c.id === 'tab-' + tab.dataset.tab) c.classList.add('active');
+      });
+    });
+  });
 </script>
+
 </body>
 </html>

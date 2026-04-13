@@ -1356,15 +1356,14 @@ async function loadOrders() {
   const db = firebase.firestore();
   document.getElementById('ordersCount').textContent = 'conectando…';
 
-  // Sign-in anônimo garante que request.auth != null nas regras do Firestore
-  try {
-    if (!firebase.auth().currentUser) {
-      await firebase.auth().signInAnonymously();
-    }
-  } catch (authErr) {
-    console.warn('[JE Admin] auth error:', authErr);
-    // Tenta mesmo assim — pode funcionar se as regras forem abertas
-  }
+  // Aguarda o Firebase Auth restaurar a sessão do usuário (é assíncrono)
+  // currentUser é null imediatamente após init — onAuthStateChanged resolve isso
+  await new Promise(resolve => {
+    const unsub = firebase.auth().onAuthStateChanged(user => {
+      unsub();
+      resolve(user);
+    });
+  });
 
   document.getElementById('ordersCount').textContent = 'carregando…';
 

@@ -15,19 +15,41 @@ export default async function handler(req, res) {
     isTest:  key.startsWith('sk_test_'),
   };
 
+  // ── Teste 1: fetch direto sem SDK ────────────────────────
+  let rawFetch = null;
+  try {
+    const resp = await fetch('https://api.stripe.com/v1/balance', {
+      headers: { Authorization: `Bearer ${key}` },
+      signal: AbortSignal.timeout(8000),
+    });
+    rawFetch = { status: resp.status, ok: resp.ok };
+    if (resp.ok) {
+      const body = await resp.json();
+      rawFetch.currency = body.available?.[0]?.currency;
+    } else {
+      const body = await resp.text();
+      rawFetch.body = body.slice(0, 200);
+    }
+  } catch (e) {
+    rawFetch = { error: e.message, cause: e.cause ? String(e.cause) : null };
+  }
+
+  // ── Teste 2: SDK Stripe ──────────────────────────────────
+  let sdk = null;
   try {
     const stripe = new Stripe(key, { maxNetworkRetries: 0, timeout: 8000 });
     const balance = await stripe.balance.retrieve();
-    return res.json({ ok: true, keyInfo, currency: balance.available?.[0]?.currency });
+    sdk = { ok: true, currency: balance.available?.[0]?.currency };
   } catch (e) {
-    return res.json({
+    sdk = {
       ok:         false,
-      keyInfo,
       message:    e.message,
       type:       e.type,
       code:       e.code,
       statusCode: e.statusCode,
       cause:      e.cause ? String(e.cause) : null,
-    });
+    };
   }
+
+  return res.json({ keyInfo, rawFetch, sdk });
 }

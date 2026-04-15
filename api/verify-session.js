@@ -16,7 +16,7 @@ export default async function handler(req, res) {
   const key = process.env.STRIPE_SECRET_KEY;
   if (!key)  return res.status(200).json({ paid: false, reason: 'Stripe not configured' });
 
-  const stripe = new Stripe(key, { apiVersion: '2023-10-16', fetchFn: globalThis.fetch.bind(globalThis) });
+  const stripe = new Stripe(key, { apiVersion: '2023-10-16', httpClient: Stripe.createFetchHttpClient(globalThis.fetch.bind(globalThis)) });
 
   try {
     const session = await stripe.checkout.sessions.retrieve(sessionId);

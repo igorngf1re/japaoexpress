@@ -37,7 +37,7 @@ export default async function handler(req, res) {
   // ── Teste 2: SDK Stripe ──────────────────────────────────
   let sdk = null;
   try {
-    const stripe = new Stripe(key, { apiVersion: '2023-10-16', maxNetworkRetries: 0, timeout: 8000, fetchFn: globalThis.fetch.bind(globalThis) });
+    const stripe = new Stripe(key, { apiVersion: '2023-10-16', maxNetworkRetries: 0, timeout: 8000, httpClient: Stripe.createFetchHttpClient(globalThis.fetch.bind(globalThis)) });
     const balance = await stripe.balance.retrieve();
     sdk = { ok: true, currency: balance.available?.[0]?.currency };
   } catch (e) {

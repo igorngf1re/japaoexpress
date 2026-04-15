@@ -80,10 +80,10 @@ function startRealtimeSync(uid) {
       const localUser = _localUser() || {};
       localStorage.setItem('je_user', JSON.stringify({
         ...data.profile,
-        // Preserva campos locais que não vêm do Firestore ou podem ser mais recentes
-        cpf:   localUser.cpf   || '',
+        // CPF vem do Firestore agora; fallback para local caso ainda não tenha sido sincronizado
+        cpf:   data.profile.cpf   || localUser.cpf   || '',
         uid,
-        email: localUser.email || data.profile.email || '',
+        email: data.profile.email || localUser.email || '',
       }));
     }
 
@@ -142,6 +142,7 @@ async function _writeToFirestore(uid) {
         phone:     user.phone     || '',
         birthdate: user.birthdate || '',
         email:     user.email     || '',
+        cpf:       user.cpf       || '',
         address:   user.address   || {},
       },
       updatedAt: firebase.firestore.FieldValue.serverTimestamp(),

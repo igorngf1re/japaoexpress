@@ -73,9 +73,9 @@ export default async function handler(req, res) {
     }
 
     // ── Métodos de pagamento por seleção ──────────────────
-    const pmTypes = payment === 'pix'    ? ['pix', 'card']
-                  : payment === 'boleto' ? ['boleto', 'card']
-                  :                        ['card', 'pix'];
+    const pmTypes = payment === 'pix'    ? ['pix']
+                  : payment === 'boleto' ? ['boleto']
+                  :                        ['card'];
 
     // ── Cria sessão Stripe ────────────────────────────────
     const session = await stripe.checkout.sessions.create({
@@ -110,7 +110,18 @@ export default async function handler(req, res) {
     return res.status(200).json({ url: session.url });
 
   } catch (e) {
-    console.error('[JE Stripe] create-checkout-session error:', e);
-    return res.status(500).json({ error: e.message });
+    console.error('[JE Stripe] create-checkout-session error:', {
+      message:    e.message,
+      type:       e.type,
+      code:       e.code,
+      statusCode: e.statusCode,
+      raw:        e.raw,
+    });
+    return res.status(500).json({
+      error:      e.message,
+      type:       e.type       || null,
+      code:       e.code       || null,
+      statusCode: e.statusCode || null,
+    });
   }
 }

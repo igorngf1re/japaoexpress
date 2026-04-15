@@ -39,31 +39,6 @@
       font-family: 'Nunito', sans-serif;
       background: #E8DEF8;
       min-height: 100vh;
-      display: flex;
-      justify-content: center;
-      align-items: flex-start;
-      padding: 2rem 1rem;
-    }
-    .tape {
-      position: absolute;
-      top: -13px;
-      left: 50%;
-      transform: translateX(-50%) rotate(-2deg);
-      width: 52px;
-      height: 20px;
-      background: rgba(226,206,148,0.82);
-    }
-    .pin {
-      position: absolute;
-      top: 10px;
-      left: 50%;
-      transform: translateX(-50%);
-      width: 14px;
-      height: 14px;
-      background: radial-gradient(circle at 38% 38%, #ff7e7e, #c0392b);
-      border-radius: 50%;
-      box-shadow: inset -2px -2px 4px rgba(0,0,0,0.28), 1px 2px 4px rgba(0,0,0,0.22);
-      z-index: 10;
     }
     .tab-content { display: none; }
     .tab-content.active { display: block; }
@@ -78,166 +53,303 @@
       cursor: pointer;
       transition: background 0.15s, color 0.15s;
       color: #3D1A78;
+      width: 100%;
+      text-align: left;
+      background: none;
+      border: none;
+      text-decoration: none;
     }
     .sidebar-tab:hover { background: #E2D4F0; }
     .sidebar-tab.active { background: #9B59B6; color: #fff; }
+
+    /* Login/cadastro */
+    .auth-input {
+      width: 100%;
+      border: 2px solid #e5e7eb;
+      border-radius: 12px;
+      padding: 10px 14px;
+      font-size: 0.875rem;
+      font-weight: 600;
+      font-family: 'Nunito', sans-serif;
+      color: #2C1654;
+      outline: none;
+      transition: border-color 0.2s;
+    }
+    .auth-input:focus { border-color: #9B59B6; }
+    .auth-btn {
+      width: 100%;
+      background: #9B59B6;
+      color: white;
+      font-weight: 900;
+      padding: 11px;
+      border-radius: 999px;
+      border: none;
+      cursor: pointer;
+      font-size: 0.9rem;
+      font-family: 'Nunito', sans-serif;
+      transition: background 0.2s;
+    }
+    .auth-btn:hover { background: #7d3fa0; }
+    .auth-btn:disabled { background: #c4a4d8; cursor: not-allowed; }
+
+    /* Status badges */
+    .s-pendente    { background:#FEF3C7; color:#92400E; }
+    .s-confirmado  { background:#D1FAE5; color:#065F46; }
+    .s-enviado     { background:#DBEAFE; color:#1E40AF; }
+    .s-entregue    { background:#EDE9FE; color:#4C1D95; }
+    .s-cancelado   { background:#FEE2E2; color:#991B1B; }
+
+    @keyframes fadeInUp {
+      from { opacity:0; transform:translateY(16px); }
+      to   { opacity:1; transform:translateY(0); }
+    }
+    .anim { animation: fadeInUp 0.35s ease both; }
   </style>
 </head>
 <body>
 
-<div class="bg-[#FDFAF2] w-full max-w-4xl rounded-3xl shadow-2xl border-t-[10px] border-[#9B59B6] overflow-visible">
+<script src="js/header.js"></script>
 
-  <header></header>
+<!-- ══════════════════════════════════════════════════
+     SEÇÃO DE LOGIN / CADASTRO (mostrada quando não logado)
+══════════════════════════════════════════════════════ -->
+<div id="authSection" class="hidden min-h-screen flex items-center justify-center px-4 py-10">
+  <div class="w-full max-w-sm">
 
-  <div class="border-t border-gray-200 mx-6 md:mx-10"></div>
+    <!-- Card -->
+    <div class="bg-[#FDFAF2] rounded-3xl shadow-2xl border-t-[8px] border-[#9B59B6] p-8 anim">
 
-  <main class="flex flex-col md:flex-row gap-6 px-6 md:px-10 py-8">
+      <!-- Logo -->
+      <div class="flex justify-center mb-6">
+        <a href="index.html">
+          <img src="logo.png" onerror="this.onerror=null;this.src='https://i.imgur.com/lxyYcwX.png'" alt="Japão Express" class="h-16 object-contain">
+        </a>
+      </div>
 
-    <aside class="md:w-1/4 flex-shrink-0">
-      <div class="bg-[#F5F5F5] rounded-2xl p-5 shadow-md flex flex-col gap-4">
+      <!-- Tabs Login / Cadastro -->
+      <div class="flex bg-[#F0E8FF] rounded-2xl p-1 mb-6 gap-1">
+        <button id="tabLoginBtn" onclick="switchAuthTab('login')"
+          class="flex-1 py-2 rounded-xl text-sm font-black transition"
+          style="background:#9B59B6;color:white">
+          Entrar
+        </button>
+        <button id="tabRegisterBtn" onclick="switchAuthTab('register')"
+          class="flex-1 py-2 rounded-xl text-sm font-black transition"
+          style="color:#3D1A78">
+          Criar Conta
+        </button>
+      </div>
 
-        <div class="flex flex-col items-center gap-2 text-center">
-          <div class="w-16 h-16 bg-[#E2D4F0] rounded-full flex items-center justify-center">
-            <i class="fa-solid fa-user text-[#9B59B6] text-2xl"></i>
+      <!-- Form Login -->
+      <form id="loginForm" onsubmit="handleLogin(event)" class="flex flex-col gap-4">
+        <div class="flex flex-col gap-1">
+          <label class="text-xs font-black text-[#3D1A78] uppercase tracking-wide">E-mail</label>
+          <input id="loginEmail" type="email" placeholder="seu@email.com" class="auth-input" required autocomplete="email" />
+        </div>
+        <div class="flex flex-col gap-1">
+          <label class="text-xs font-black text-[#3D1A78] uppercase tracking-wide">Senha</label>
+          <div class="relative">
+            <input id="loginPassword" type="password" placeholder="••••••••" class="auth-input" required autocomplete="current-password" style="padding-right:42px" />
+            <button type="button" onclick="togglePwd('loginPassword',this)" class="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-[#9B59B6]">
+              <i class="fa-solid fa-eye text-sm"></i>
+            </button>
           </div>
-          <div>
-            <p id="sidebarName" class="font-hero text-xl text-[#2C1654] leading-tight"></p>
-            <p id="sidebarEmail" class="text-xs text-gray-500 font-semibold"></p>
+        </div>
+        <div id="loginError" class="hidden text-xs text-red-600 font-bold bg-red-50 rounded-xl px-3 py-2"></div>
+        <button type="submit" id="loginBtn" class="auth-btn mt-1">
+          <i class="fa-solid fa-right-to-bracket mr-2"></i>Entrar
+        </button>
+      </form>
+
+      <!-- Form Cadastro -->
+      <form id="registerForm" onsubmit="handleRegister(event)" class="flex flex-col gap-4 hidden">
+        <div class="flex flex-col gap-1">
+          <label class="text-xs font-black text-[#3D1A78] uppercase tracking-wide">Nome Completo</label>
+          <input id="regName" type="text" placeholder="Seu nome" class="auth-input" required autocomplete="name" />
+        </div>
+        <div class="flex flex-col gap-1">
+          <label class="text-xs font-black text-[#3D1A78] uppercase tracking-wide">E-mail</label>
+          <input id="regEmail" type="email" placeholder="seu@email.com" class="auth-input" required autocomplete="email" />
+        </div>
+        <div class="flex flex-col gap-1">
+          <label class="text-xs font-black text-[#3D1A78] uppercase tracking-wide">Senha</label>
+          <div class="relative">
+            <input id="regPassword" type="password" placeholder="Mínimo 6 caracteres" class="auth-input" required minlength="6" autocomplete="new-password" style="padding-right:42px" />
+            <button type="button" onclick="togglePwd('regPassword',this)" class="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-[#9B59B6]">
+              <i class="fa-solid fa-eye text-sm"></i>
+            </button>
           </div>
-          <button onclick="logout()" class="mt-1 px-4 py-1.5 rounded-full border-2 border-[#9B59B6] text-[#9B59B6] text-xs font-bold hover:bg-[#9B59B6] hover:text-white transition">
-            <i class="fa-solid fa-right-from-bracket mr-1"></i>Sair
-          </button>
         </div>
+        <div id="registerError" class="hidden text-xs text-red-600 font-bold bg-red-50 rounded-xl px-3 py-2"></div>
+        <button type="submit" id="registerBtn" class="auth-btn mt-1">
+          <i class="fa-solid fa-user-plus mr-2"></i>Criar Conta
+        </button>
+      </form>
 
-        <nav class="flex flex-col gap-1 mt-2">
-          <button class="sidebar-tab active" data-tab="pedidos">
-            <i class="fa-solid fa-box w-5 text-center"></i> Meus Pedidos
-          </button>
-          <button class="sidebar-tab" data-tab="meu-perfil">
-            <i class="fa-solid fa-user w-5 text-center"></i> Meu Perfil
-          </button>
-          <button class="sidebar-tab" data-tab="enderecos">
-            <i class="fa-solid fa-location-dot w-5 text-center"></i> Endereços
-          </button>
-          <a href="favoritos.html" class="sidebar-tab">
-            <i class="fa-solid fa-heart w-5 text-center"></i> Favoritos
-          </a>
-          <a href="contato.html" class="sidebar-tab">
-            <i class="fa-solid fa-phone w-5 text-center"></i> Contato
-          </a>
-        </nav>
-      </div>
-    </aside>
-
-    <section class="flex-1 min-w-0">
-
-      <div id="tab-pedidos" class="tab-content active">
-        <h1 class="font-hero text-[2rem] text-[#2C1654] mb-5 leading-none">Meus Pedidos</h1>
-        <div class="flex flex-col items-center justify-center py-16 text-center gap-4 bg-white rounded-2xl border border-gray-100 shadow-sm">
-          <i class="fa-solid fa-box-open text-[#E2D4F0] text-6xl"></i>
-          <p class="font-hand text-2xl text-[#4A3060]">Nenhum pedido ainda</p>
-          <p class="text-sm text-gray-400 font-semibold max-w-xs">Quando você fizer um pedido, ele aparecerá aqui com o rastreio Japan Post.</p>
-          <a href="produtos.html" class="mt-2 inline-block px-6 py-2.5 bg-[#9B59B6] text-white font-black text-sm rounded-full hover:bg-[#7d3fa0] transition">
-            <i class="fa-solid fa-store mr-2"></i>Ver Produtos
-          </a>
-        </div>
-      </div>
-
-      <div id="tab-meu-perfil" class="tab-content">
-        <h1 class="font-hero text-[2rem] text-[#2C1654] mb-5 leading-none">Meu Perfil</h1>
-        <div class="bg-white rounded-2xl p-6 shadow-sm border border-gray-100">
-          <form onsubmit="saveProfile(event)" class="grid grid-cols-1 sm:grid-cols-2 gap-4">
-            <div class="flex flex-col gap-1">
-              <label class="text-xs font-black text-[#3D1A78] uppercase tracking-wide">Nome Completo</label>
-              <input id="profileName" type="text" class="border-2 border-gray-200 rounded-xl px-3 py-2 text-sm font-semibold focus:outline-none focus:border-[#9B59B6] transition" required />
-            </div>
-            <div class="flex flex-col gap-1">
-              <label class="text-xs font-black text-[#3D1A78] uppercase tracking-wide">E-mail</label>
-              <input id="profileEmail" type="email" class="border-2 border-gray-200 rounded-xl px-3 py-2 text-sm font-semibold focus:outline-none focus:border-[#9B59B6] transition" required />
-            </div>
-            <div class="flex flex-col gap-1">
-              <label class="text-xs font-black text-[#3D1A78] uppercase tracking-wide">CPF</label>
-              <input id="profileCpf" type="text" maxlength="14" placeholder="000.000.000-00" oninput="maskCpf(this)" class="border-2 border-gray-200 rounded-xl px-3 py-2 text-sm font-semibold focus:outline-none focus:border-[#9B59B6] transition" />
-            </div>
-            <div class="flex flex-col gap-1">
-              <label class="text-xs font-black text-[#3D1A78] uppercase tracking-wide">Telefone / WhatsApp</label>
-              <input id="profilePhone" type="tel" class="border-2 border-gray-200 rounded-xl px-3 py-2 text-sm font-semibold focus:outline-none focus:border-[#9B59B6] transition" />
-            </div>
-            <div class="flex flex-col gap-1">
-              <label class="text-xs font-black text-[#3D1A78] uppercase tracking-wide">Data de Nascimento</label>
-              <input id="profileBirthdate" type="date" class="border-2 border-gray-200 rounded-xl px-3 py-2 text-sm font-semibold focus:outline-none focus:border-[#9B59B6] transition" />
-            </div>
-            <div class="sm:col-span-2 flex justify-end mt-2">
-              <button type="submit" class="px-6 py-2.5 rounded-full bg-[#9B59B6] text-white font-black text-sm hover:bg-[#7d3fa0] transition">
-                <i class="fa-solid fa-floppy-disk mr-1"></i>Salvar Alterações
-              </button>
-            </div>
-          </form>
-        </div>
-      </div>
-
-      <div id="tab-enderecos" class="tab-content">
-        <h1 class="font-hero text-[2rem] text-[#2C1654] mb-5 leading-none">Endereço de Entrega</h1>
-        <div class="bg-white rounded-2xl p-6 shadow-sm border border-gray-100">
-          <form onsubmit="saveAddress(event)" class="grid grid-cols-1 sm:grid-cols-2 gap-4">
-            <div class="flex flex-col gap-1">
-              <label class="text-xs font-black text-[#3D1A78] uppercase tracking-wide">CEP</label>
-              <input id="addrCep" type="text" maxlength="9" placeholder="00000-000"
-                class="border-2 border-gray-200 rounded-xl px-3 py-2 text-sm font-semibold focus:outline-none focus:border-[#9B59B6] transition"
-                oninput="formatCep(this)" onblur="fetchCep(this.value)" required />
-            </div>
-            <div class="flex flex-col gap-1">
-              <label class="text-xs font-black text-[#3D1A78] uppercase tracking-wide">Estado</label>
-              <input id="addrState" type="text" maxlength="2" placeholder="SP"
-                class="border-2 border-gray-200 rounded-xl px-3 py-2 text-sm font-semibold focus:outline-none focus:border-[#9B59B6] transition" required />
-            </div>
-            <div class="flex flex-col gap-1">
-              <label class="text-xs font-black text-[#3D1A78] uppercase tracking-wide">Cidade</label>
-              <input id="addrCity" type="text" placeholder="São Paulo"
-                class="border-2 border-gray-200 rounded-xl px-3 py-2 text-sm font-semibold focus:outline-none focus:border-[#9B59B6] transition" required />
-            </div>
-            <div class="flex flex-col gap-1">
-              <label class="text-xs font-black text-[#3D1A78] uppercase tracking-wide">Bairro</label>
-              <input id="addrDistrict" type="text" placeholder="Centro"
-                class="border-2 border-gray-200 rounded-xl px-3 py-2 text-sm font-semibold focus:outline-none focus:border-[#9B59B6] transition" required />
-            </div>
-            <div class="flex flex-col gap-1 sm:col-span-2">
-              <label class="text-xs font-black text-[#3D1A78] uppercase tracking-wide">Rua / Avenida</label>
-              <input id="addrStreet" type="text" placeholder="Rua das Flores"
-                class="border-2 border-gray-200 rounded-xl px-3 py-2 text-sm font-semibold focus:outline-none focus:border-[#9B59B6] transition" required />
-            </div>
-            <div class="flex flex-col gap-1">
-              <label class="text-xs font-black text-[#3D1A78] uppercase tracking-wide">Número</label>
-              <input id="addrNumber" type="text" placeholder="123"
-                class="border-2 border-gray-200 rounded-xl px-3 py-2 text-sm font-semibold focus:outline-none focus:border-[#9B59B6] transition" required />
-            </div>
-            <div class="flex flex-col gap-1">
-              <label class="text-xs font-black text-[#3D1A78] uppercase tracking-wide">Complemento</label>
-              <input id="addrComplement" type="text" placeholder="Apto 42 (opcional)"
-                class="border-2 border-gray-200 rounded-xl px-3 py-2 text-sm font-semibold focus:outline-none focus:border-[#9B59B6] transition" />
-            </div>
-            <div class="sm:col-span-2 flex justify-end mt-2">
-              <button type="submit" class="px-6 py-2.5 rounded-full bg-[#9B59B6] text-white font-black text-sm hover:bg-[#7d3fa0] transition">
-                <i class="fa-solid fa-floppy-disk mr-1"></i>Salvar Endereço
-              </button>
-            </div>
-          </form>
-        </div>
-      </div>
-
-    </section>
-  </main>
-
-  <footer class="border-t-2 border-gray-200 px-6 md:px-10 pt-8 pb-6 grid grid-cols-1 md:grid-cols-3 gap-8 text-center md:text-left text-sm text-[#4A3060]">
-    <div><h5 class="font-black text-base mb-2 text-[#2C1654]">Japão Express</h5><p class="text-xs leading-relaxed font-semibold">Direto do Japão para o Brasil.</p></div>
-    <div><h5 class="font-black text-base mb-2 text-[#2C1654]">Quick Links</h5><ul class="space-y-1 text-xs font-semibold"><li><a href="produtos.html" class="hover:text-[#9B59B6]">Produtos</a></li><li><a href="institucional.html" class="hover:text-[#9B59B6]">Sobre Nós</a></li><li><a href="contato.html" class="hover:text-[#9B59B6]">Contato</a></li><li><a href="politicas.html" class="hover:text-[#9B59B6]">Políticas</a></li><li><a href="tokushoho.html" class="hover:text-[#9B59B6]">特定商取引法</a></li></ul></div>
-    <div><h5 class="font-black text-base mb-3 text-[#2C1654]">Social Media</h5><div class="flex justify-center md:justify-start gap-4 text-xl"><a href="https://www.instagram.com/ojapaoexpress" target="_blank" rel="noopener" class="text-[#2C1654] hover:text-[#9B59B6]"><i class="fa-brands fa-instagram"></i></a><a href="#" class="text-[#2C1654] hover:text-[#9B59B6]"><i class="fa-brands fa-tiktok"></i></a><a href="mailto:ojapaoexpress@gmail.com" class="text-[#2C1654] hover:text-[#9B59B6]" title="E-mail"><i class="fa-solid fa-envelope"></i></a></div></div>
-  </footer>
-  <div class="text-center text-xs py-4 text-gray-400 border-t border-gray-100 font-semibold">© 2026 Japão Express. Todos os direitos reservados</div>
-
+      <p class="text-center text-xs text-gray-400 font-semibold mt-5">
+        <i class="fa-solid fa-shield-halved text-[#9B59B6] mr-1"></i>Seus dados estão seguros
+      </p>
+    </div>
+  </div>
 </div>
 
-<script src="js/header.js"></script>
+<!-- ══════════════════════════════════════════════════
+     PAINEL DA CONTA (mostrado quando logado)
+══════════════════════════════════════════════════════ -->
+<div id="accountSection" class="hidden max-w-4xl mx-auto px-4 py-8">
+
+  <div class="bg-[#FDFAF2] w-full rounded-3xl shadow-2xl border-t-[10px] border-[#9B59B6] overflow-hidden">
+
+    <main class="flex flex-col md:flex-row gap-6 px-6 md:px-10 py-8">
+
+      <!-- Sidebar -->
+      <aside class="md:w-1/4 flex-shrink-0">
+        <div class="bg-[#F5F5F5] rounded-2xl p-5 shadow-md flex flex-col gap-4">
+          <div class="flex flex-col items-center gap-2 text-center">
+            <div class="w-16 h-16 bg-[#E2D4F0] rounded-full flex items-center justify-center">
+              <i class="fa-solid fa-user text-[#9B59B6] text-2xl"></i>
+            </div>
+            <div>
+              <p id="sidebarName" class="font-hero text-xl text-[#2C1654] leading-tight"></p>
+              <p id="sidebarEmail" class="text-xs text-gray-500 font-semibold"></p>
+            </div>
+            <button onclick="logout()" class="mt-1 px-4 py-1.5 rounded-full border-2 border-[#9B59B6] text-[#9B59B6] text-xs font-bold hover:bg-[#9B59B6] hover:text-white transition">
+              <i class="fa-solid fa-right-from-bracket mr-1"></i>Sair
+            </button>
+          </div>
+
+          <nav class="flex flex-col gap-1 mt-2">
+            <button class="sidebar-tab active" data-tab="pedidos">
+              <i class="fa-solid fa-box w-5 text-center"></i> Meus Pedidos
+            </button>
+            <button class="sidebar-tab" data-tab="meu-perfil">
+              <i class="fa-solid fa-user w-5 text-center"></i> Meu Perfil
+            </button>
+            <button class="sidebar-tab" data-tab="enderecos">
+              <i class="fa-solid fa-location-dot w-5 text-center"></i> Endereços
+            </button>
+            <a href="favoritos.html" class="sidebar-tab">
+              <i class="fa-solid fa-heart w-5 text-center"></i> Favoritos
+            </a>
+            <a href="contato.html" class="sidebar-tab">
+              <i class="fa-solid fa-phone w-5 text-center"></i> Contato
+            </a>
+          </nav>
+        </div>
+      </aside>
+
+      <!-- Conteúdo -->
+      <section class="flex-1 min-w-0">
+
+        <!-- Aba: Meus Pedidos -->
+        <div id="tab-pedidos" class="tab-content active">
+          <h1 class="font-hero text-[2rem] text-[#2C1654] mb-5 leading-none">Meus Pedidos</h1>
+          <div id="ordersContainer">
+            <div class="flex flex-col items-center justify-center py-16 text-center gap-3">
+              <i class="fa-solid fa-spinner fa-spin text-[#9B59B6] text-3xl"></i>
+              <p class="text-sm text-gray-400 font-semibold">Carregando pedidos...</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Aba: Meu Perfil -->
+        <div id="tab-meu-perfil" class="tab-content">
+          <h1 class="font-hero text-[2rem] text-[#2C1654] mb-5 leading-none">Meu Perfil</h1>
+          <div class="bg-white rounded-2xl p-6 shadow-sm border border-gray-100">
+            <form onsubmit="saveProfile(event)" class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+              <div class="flex flex-col gap-1">
+                <label class="text-xs font-black text-[#3D1A78] uppercase tracking-wide">Nome Completo</label>
+                <input id="profileName" type="text" class="border-2 border-gray-200 rounded-xl px-3 py-2 text-sm font-semibold focus:outline-none focus:border-[#9B59B6] transition" required />
+              </div>
+              <div class="flex flex-col gap-1">
+                <label class="text-xs font-black text-[#3D1A78] uppercase tracking-wide">E-mail</label>
+                <input id="profileEmail" type="email" class="border-2 border-gray-200 rounded-xl px-3 py-2 text-sm font-semibold focus:outline-none focus:border-[#9B59B6] transition" required />
+              </div>
+              <div class="flex flex-col gap-1">
+                <label class="text-xs font-black text-[#3D1A78] uppercase tracking-wide">CPF</label>
+                <input id="profileCpf" type="text" maxlength="14" placeholder="000.000.000-00" oninput="maskCpf(this)" class="border-2 border-gray-200 rounded-xl px-3 py-2 text-sm font-semibold focus:outline-none focus:border-[#9B59B6] transition" />
+              </div>
+              <div class="flex flex-col gap-1">
+                <label class="text-xs font-black text-[#3D1A78] uppercase tracking-wide">Telefone / WhatsApp</label>
+                <input id="profilePhone" type="tel" class="border-2 border-gray-200 rounded-xl px-3 py-2 text-sm font-semibold focus:outline-none focus:border-[#9B59B6] transition" />
+              </div>
+              <div class="flex flex-col gap-1">
+                <label class="text-xs font-black text-[#3D1A78] uppercase tracking-wide">Data de Nascimento</label>
+                <input id="profileBirthdate" type="date" class="border-2 border-gray-200 rounded-xl px-3 py-2 text-sm font-semibold focus:outline-none focus:border-[#9B59B6] transition" />
+              </div>
+              <div class="sm:col-span-2 flex justify-end mt-2">
+                <button type="submit" class="px-6 py-2.5 rounded-full bg-[#9B59B6] text-white font-black text-sm hover:bg-[#7d3fa0] transition">
+                  <i class="fa-solid fa-floppy-disk mr-1"></i>Salvar Alterações
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+
+        <!-- Aba: Endereços -->
+        <div id="tab-enderecos" class="tab-content">
+          <h1 class="font-hero text-[2rem] text-[#2C1654] mb-5 leading-none">Endereço de Entrega</h1>
+          <div class="bg-white rounded-2xl p-6 shadow-sm border border-gray-100">
+            <form onsubmit="saveAddress(event)" class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+              <div class="flex flex-col gap-1">
+                <label class="text-xs font-black text-[#3D1A78] uppercase tracking-wide">CEP</label>
+                <input id="addrCep" type="text" maxlength="9" placeholder="00000-000"
+                  class="border-2 border-gray-200 rounded-xl px-3 py-2 text-sm font-semibold focus:outline-none focus:border-[#9B59B6] transition"
+                  oninput="formatCep(this)" onblur="fetchCep(this.value)" required />
+              </div>
+              <div class="flex flex-col gap-1">
+                <label class="text-xs font-black text-[#3D1A78] uppercase tracking-wide">Estado</label>
+                <input id="addrState" type="text" maxlength="2" placeholder="SP"
+                  class="border-2 border-gray-200 rounded-xl px-3 py-2 text-sm font-semibold focus:outline-none focus:border-[#9B59B6] transition" required />
+              </div>
+              <div class="flex flex-col gap-1">
+                <label class="text-xs font-black text-[#3D1A78] uppercase tracking-wide">Cidade</label>
+                <input id="addrCity" type="text" placeholder="São Paulo"
+                  class="border-2 border-gray-200 rounded-xl px-3 py-2 text-sm font-semibold focus:outline-none focus:border-[#9B59B6] transition" required />
+              </div>
+              <div class="flex flex-col gap-1">
+                <label class="text-xs font-black text-[#3D1A78] uppercase tracking-wide">Bairro</label>
+                <input id="addrDistrict" type="text" placeholder="Centro"
+                  class="border-2 border-gray-200 rounded-xl px-3 py-2 text-sm font-semibold focus:outline-none focus:border-[#9B59B6] transition" required />
+              </div>
+              <div class="flex flex-col gap-1 sm:col-span-2">
+                <label class="text-xs font-black text-[#3D1A78] uppercase tracking-wide">Rua / Avenida</label>
+                <input id="addrStreet" type="text" placeholder="Rua das Flores"
+                  class="border-2 border-gray-200 rounded-xl px-3 py-2 text-sm font-semibold focus:outline-none focus:border-[#9B59B6] transition" required />
+              </div>
+              <div class="flex flex-col gap-1">
+                <label class="text-xs font-black text-[#3D1A78] uppercase tracking-wide">Número</label>
+                <input id="addrNumber" type="text" placeholder="123"
+                  class="border-2 border-gray-200 rounded-xl px-3 py-2 text-sm font-semibold focus:outline-none focus:border-[#9B59B6] transition" required />
+              </div>
+              <div class="flex flex-col gap-1">
+                <label class="text-xs font-black text-[#3D1A78] uppercase tracking-wide">Complemento</label>
+                <input id="addrComplement" type="text" placeholder="Apto 42 (opcional)"
+                  class="border-2 border-gray-200 rounded-xl px-3 py-2 text-sm font-semibold focus:outline-none focus:border-[#9B59B6] transition" />
+              </div>
+              <div class="sm:col-span-2 flex justify-end mt-2">
+                <button type="submit" class="px-6 py-2.5 rounded-full bg-[#9B59B6] text-white font-black text-sm hover:bg-[#7d3fa0] transition">
+                  <i class="fa-solid fa-floppy-disk mr-1"></i>Salvar Endereço
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+
+      </section>
+    </main>
+
+    <footer class="border-t-2 border-gray-200 px-6 md:px-10 pt-8 pb-6 grid grid-cols-1 md:grid-cols-3 gap-8 text-center md:text-left text-sm text-[#4A3060]">
+      <div><h5 class="font-black text-base mb-2 text-[#2C1654]">Japão Express</h5><p class="text-xs leading-relaxed font-semibold">Direto do Japão para o Brasil.</p></div>
+      <div><h5 class="font-black text-base mb-2 text-[#2C1654]">Quick Links</h5><ul class="space-y-1 text-xs font-semibold"><li><a href="produtos.html" class="hover:text-[#9B59B6]">Produtos</a></li><li><a href="institucional.html" class="hover:text-[#9B59B6]">Sobre Nós</a></li><li><a href="contato.html" class="hover:text-[#9B59B6]">Contato</a></li><li><a href="politicas.html" class="hover:text-[#9B59B6]">Políticas</a></li></ul></div>
+      <div><h5 class="font-black text-base mb-3 text-[#2C1654]">Social Media</h5><div class="flex justify-center md:justify-start gap-4 text-xl"><a href="https://www.instagram.com/ojapaoexpress" target="_blank" rel="noopener" class="text-[#2C1654] hover:text-[#9B59B6]"><i class="fa-brands fa-instagram"></i></a><a href="#" class="text-[#2C1654] hover:text-[#9B59B6]"><i class="fa-brands fa-tiktok"></i></a><a href="mailto:ojapaoexpress@gmail.com" class="text-[#2C1654] hover:text-[#9B59B6]" title="E-mail"><i class="fa-solid fa-envelope"></i></a></div></div>
+    </footer>
+    <div class="text-center text-xs py-4 text-gray-400 border-t border-gray-100 font-semibold">© 2026 Japão Express. Todos os direitos reservados</div>
+
+  </div>
+</div>
+
+<!-- Scripts -->
 <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-auth-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-firestore-compat.js"></script>
@@ -248,156 +360,327 @@
 <script src="js/currency.js"></script>
 <script src="js/auth.js"></script>
 <script>
-  // ── Máscara de CPF ────────────────────────────────────────────
-  function maskCpf(input) {
-    let v = input.value.replace(/\D/g, '');
-    if (v.length <= 11) {
-      v = v.replace(/(\d{3})(\d)/, "$1.$2");
-      v = v.replace(/(\d{3})(\d)/, "$1.$2");
-      v = v.replace(/(\d{3})(\d{1,2})$/, "$1-$2");
-    }
-    input.value = v;
+
+// ── Mostrar seção correta baseado no estado de login ─────────
+function renderPage() {
+  const user = getUser();
+  const authSection    = document.getElementById('authSection');
+  const accountSection = document.getElementById('accountSection');
+
+  if (user) {
+    authSection.classList.add('hidden');
+    accountSection.classList.remove('hidden');
+    fillAccountData(user);
+    loadOrders(user);
+  } else {
+    authSection.classList.remove('hidden');
+    accountSection.classList.add('hidden');
   }
+}
 
-  // ── Auth gate ─────────────────────────────────────────────────
-  if (!getUser()) { window.location.href = 'login.html'; }
+// ── Login ────────────────────────────────────────────────────
+async function handleLogin(e) {
+  e.preventDefault();
+  const btn = document.getElementById('loginBtn');
+  const err = document.getElementById('loginError');
+  const email    = document.getElementById('loginEmail').value.trim();
+  const password = document.getElementById('loginPassword').value;
 
-  // ── Preenche dados do usuário ──────────────────────────────────
-  document.addEventListener('DOMContentLoaded', () => {
-    const user = getUser();
-    if (!user) return;
+  btn.disabled = true;
+  btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin mr-2"></i>Entrando...';
+  err.classList.add('hidden');
 
-    // Sidebar
-    const sName  = document.getElementById('sidebarName');
-    const sEmail = document.getElementById('sidebarEmail');
-    if (sName)  sName.textContent  = user.name  || '';
-    if (sEmail) sEmail.textContent = user.email || '';
+  try {
+    await firebaseLogin(email, password);
+    renderPage();
+  } catch (ex) {
+    err.textContent = friendlyAuthError(ex.code);
+    err.classList.remove('hidden');
+  } finally {
+    btn.disabled = false;
+    btn.innerHTML = '<i class="fa-solid fa-right-to-bracket mr-2"></i>Entrar';
+  }
+}
 
-    // Formulário de perfil
-    const f = {
-      profileName:      user.name,
-      profileEmail:     user.email,
-      profilePhone:     user.phone     || '',
-      profileCpf:       user.cpf       || '', // Adicionado CPF
-      profileBirthdate: user.birthdate || '',
-    };
-    Object.entries(f).forEach(([id, val]) => {
-      const el = document.getElementById(id);
-      if (el) el.value = val;
-    });
+// ── Cadastro ─────────────────────────────────────────────────
+async function handleRegister(e) {
+  e.preventDefault();
+  const btn = document.getElementById('registerBtn');
+  const err = document.getElementById('registerError');
+  const name     = document.getElementById('regName').value.trim();
+  const email    = document.getElementById('regEmail').value.trim();
+  const password = document.getElementById('regPassword').value;
 
-    // Formulário de endereço
-    const addr = user.address || {};
-    const addrFields = {
-      addrCep:          addr.cep          || '',
-      addrState:        addr.state        || '',
-      addrCity:         addr.city         || '',
-      addrDistrict:     addr.district     || '', // Corrigido para district
-      addrStreet:       addr.street       || '',
-      addrNumber:       addr.number       || '',
-      addrComplement:   addr.complement   || '',
-    };
-    Object.entries(addrFields).forEach(([id, val]) => {
-      const el = document.getElementById(id);
-      if (el) el.value = val;
-    });
+  btn.disabled = true;
+  btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin mr-2"></i>Criando conta...';
+  err.classList.add('hidden');
 
-    updateAllBadges();
-    updateAuthUI();
+  try {
+    await firebaseRegister(email, password, name);
+    renderPage();
+  } catch (ex) {
+    err.textContent = friendlyAuthError(ex.code);
+    err.classList.remove('hidden');
+  } finally {
+    btn.disabled = false;
+    btn.innerHTML = '<i class="fa-solid fa-user-plus mr-2"></i>Criar Conta';
+  }
+}
+
+// ── Mensagens de erro amigáveis ──────────────────────────────
+function friendlyAuthError(code) {
+  const map = {
+    'auth/user-not-found':        'E-mail não cadastrado.',
+    'auth/wrong-password':        'Senha incorreta.',
+    'auth/invalid-email':         'E-mail inválido.',
+    'auth/email-already-in-use':  'Este e-mail já está cadastrado.',
+    'auth/weak-password':         'Senha muito fraca (mínimo 6 caracteres).',
+    'auth/too-many-requests':     'Muitas tentativas. Tente novamente em alguns minutos.',
+    'auth/invalid-credential':    'E-mail ou senha incorretos.',
+    'auth/network-request-failed':'Sem conexão. Verifique sua internet.',
+  };
+  return map[code] || 'Erro ao autenticar. Tente novamente.';
+}
+
+// ── Alternar entre Login / Cadastro ─────────────────────────
+function switchAuthTab(tab) {
+  const loginForm    = document.getElementById('loginForm');
+  const registerForm = document.getElementById('registerForm');
+  const loginBtn     = document.getElementById('tabLoginBtn');
+  const registerBtn  = document.getElementById('tabRegisterBtn');
+
+  if (tab === 'login') {
+    loginForm.classList.remove('hidden');
+    registerForm.classList.add('hidden');
+    loginBtn.style.cssText    = 'background:#9B59B6;color:white;flex:1;padding:8px;border-radius:12px;font-size:0.875rem;font-weight:900;border:none;cursor:pointer;transition:background 0.2s';
+    registerBtn.style.cssText = 'flex:1;padding:8px;border-radius:12px;font-size:0.875rem;font-weight:900;border:none;cursor:pointer;color:#3D1A78;background:transparent;transition:background 0.2s';
+  } else {
+    loginForm.classList.add('hidden');
+    registerForm.classList.remove('hidden');
+    registerBtn.style.cssText = 'background:#9B59B6;color:white;flex:1;padding:8px;border-radius:12px;font-size:0.875rem;font-weight:900;border:none;cursor:pointer;transition:background 0.2s';
+    loginBtn.style.cssText    = 'flex:1;padding:8px;border-radius:12px;font-size:0.875rem;font-weight:900;border:none;cursor:pointer;color:#3D1A78;background:transparent;transition:background 0.2s';
+  }
+}
+
+// ── Mostrar / ocultar senha ──────────────────────────────────
+function togglePwd(inputId, btn) {
+  const input = document.getElementById(inputId);
+  const isText = input.type === 'text';
+  input.type = isText ? 'password' : 'text';
+  btn.innerHTML = `<i class="fa-solid fa-eye${isText ? '' : '-slash'} text-sm"></i>`;
+}
+
+// ── Preenche dados da conta ──────────────────────────────────
+function fillAccountData(user) {
+  const sName  = document.getElementById('sidebarName');
+  const sEmail = document.getElementById('sidebarEmail');
+  if (sName)  sName.textContent  = user.name  || '';
+  if (sEmail) sEmail.textContent = user.email || '';
+
+  const fields = {
+    profileName:      user.name       || '',
+    profileEmail:     user.email      || '',
+    profilePhone:     user.phone      || '',
+    profileCpf:       user.cpf        || '',
+    profileBirthdate: user.birthdate  || '',
+  };
+  Object.entries(fields).forEach(([id, val]) => {
+    const el = document.getElementById(id);
+    if (el) el.value = val;
   });
 
-  // ── Salvar perfil ──────────────────────────────────────────────
-  function saveProfile(e) {
-    if (e) e.preventDefault();
-    const user      = getUser();
-    const name      = document.getElementById('profileName')?.value.trim();
-    const email     = document.getElementById('profileEmail')?.value.trim();
-    const phone     = document.getElementById('profilePhone')?.value.trim();
-    const cpf       = document.getElementById('profileCpf')?.value.trim();
-    const birthdate = document.getElementById('profileBirthdate')?.value;
-    
-    if (user && name) {
-      setUser({ ...user, name, email: email || user.email, phone, cpf, birthdate });
-      // Atualiza sidebar em tempo real
-      const sName  = document.getElementById('sidebarName');
-      const sEmail = document.getElementById('sidebarEmail');
-      if (sName)  sName.textContent  = name;
-      if (sEmail) sEmail.textContent = email || user.email;
-      // Salva perfil na nuvem (sincroniza entre dispositivos)
-      if (typeof scheduleSyncToCloud === 'function') scheduleSyncToCloud();
-    }
-    showToast('Perfil salvo com sucesso!');
-  }
+  const addr = user.address || {};
+  const addrFields = {
+    addrCep:        addr.cep        || '',
+    addrState:      addr.state      || '',
+    addrCity:       addr.city       || '',
+    addrDistrict:   addr.district   || '',
+    addrStreet:     addr.street     || '',
+    addrNumber:     addr.number     || '',
+    addrComplement: addr.complement || '',
+  };
+  Object.entries(addrFields).forEach(([id, val]) => {
+    const el = document.getElementById(id);
+    if (el) el.value = val;
+  });
 
-  // ── Salvar endereço ────────────────────────────────────────────
-  function saveAddress(e) {
-    if (e) e.preventDefault();
-    const user = getUser();
-    if (!user) return;
-    const address = {
-      cep:          document.getElementById('addrCep')?.value.trim()          || '',
-      state:        document.getElementById('addrState')?.value.trim()        || '',
-      city:         document.getElementById('addrCity')?.value.trim()         || '',
-      district:     document.getElementById('addrDistrict')?.value.trim()     || '', // Corrigido
-      street:       document.getElementById('addrStreet')?.value.trim()       || '',
-      number:       document.getElementById('addrNumber')?.value.trim()       || '',
-      complement:   document.getElementById('addrComplement')?.value.trim()   || '',
-    };
-    setUser({ ...user, address });
+  if (typeof updateAllBadges === 'function') updateAllBadges();
+  if (typeof updateAuthUI    === 'function') updateAuthUI();
+}
+
+// ── Carrega pedidos do Firestore ─────────────────────────────
+async function loadOrders(user) {
+  const container = document.getElementById('ordersContainer');
+  if (!container || !user?.uid) return;
+
+  try {
+    await new Promise(resolve => {
+      const unsub = firebase.auth().onAuthStateChanged(u => { unsub(); resolve(u); });
+    });
+
+    const db = firebase.firestore();
+    const snap = await db.collection('users').doc(user.uid)
+                         .collection('orders')
+                         .orderBy('createdAt', 'desc')
+                         .get();
+
+    if (snap.empty) {
+      container.innerHTML = `
+        <div class="flex flex-col items-center justify-center py-16 text-center gap-4 bg-white rounded-2xl border border-gray-100 shadow-sm">
+          <i class="fa-solid fa-box-open text-[#E2D4F0] text-6xl"></i>
+          <p class="font-hand text-2xl text-[#4A3060]">Nenhum pedido ainda</p>
+          <p class="text-sm text-gray-400 font-semibold max-w-xs">Quando você fizer um pedido, ele aparecerá aqui com o rastreio Japan Post.</p>
+          <a href="produtos.html" class="mt-2 inline-block px-6 py-2.5 bg-[#9B59B6] text-white font-black text-sm rounded-full hover:bg-[#7d3fa0] transition">
+            <i class="fa-solid fa-store mr-2"></i>Ver Produtos
+          </a>
+        </div>`;
+      return;
+    }
+
+    const statusLabel = { pendente:'Aguardando', confirmado:'Confirmado', enviado:'Enviado', entregue:'Entregue', cancelado:'Cancelado' };
+    const payLabel    = { card:'Cartão', pix:'Pix', boleto:'Boleto', wise:'Wise' };
+
+    container.innerHTML = snap.docs.map(doc => {
+      const o = doc.data();
+      const date = o.createdAt?.toDate ? o.createdAt.toDate().toLocaleDateString('pt-BR') : '—';
+      const status = o.status || 'pendente';
+      return `
+        <div class="bg-white rounded-2xl border border-gray-100 shadow-sm p-5 mb-4 anim">
+          <div class="flex items-start justify-between gap-3 mb-3">
+            <div>
+              <p class="font-black text-[#2C1654] text-sm">Pedido #${(o.id || doc.id).slice(-8).toUpperCase()}</p>
+              <p class="text-xs text-gray-400 font-semibold">${date} · ${payLabel[o.payment] || o.payment || '—'}</p>
+            </div>
+            <span class="text-xs font-black px-3 py-1 rounded-full s-${status}">${statusLabel[status] || status}</span>
+          </div>
+          ${(o.items || []).length ? `
+          <ul class="text-xs text-[#4A3060] font-semibold space-y-0.5 mb-3 border-t border-gray-100 pt-3">
+            ${(o.items || []).map(i => `<li class="flex justify-between"><span>${i.name} ×${i.qty||1}</span><span>R$ ${((i.priceBRL||0)*(i.qty||1)).toFixed(2).replace('.',',')}</span></li>`).join('')}
+          </ul>` : ''}
+          <div class="flex items-center justify-between border-t border-gray-100 pt-3">
+            <span class="text-xs text-gray-400 font-semibold">Total</span>
+            <span class="font-black text-[#9B59B6]">R$ ${(o.total||0).toFixed(2).replace('.',',')}</span>
+          </div>
+          ${o.trackingCode ? `
+          <div class="mt-3 bg-[#F0FFF4] rounded-xl p-3 flex items-center gap-2 text-xs font-bold text-green-800">
+            <i class="fa-solid fa-truck text-green-600"></i>
+            Rastreio Japan Post: <span class="font-black">${o.trackingCode}</span>
+          </div>` : ''}
+        </div>`;
+    }).join('');
+
+  } catch (err) {
+    console.warn('[JE] loadOrders error:', err);
+    container.innerHTML = `
+      <div class="bg-red-50 border border-red-200 rounded-2xl p-5 text-sm text-red-700 font-semibold">
+        <i class="fa-solid fa-circle-exclamation mr-2"></i>Erro ao carregar pedidos. Recarregue a página.
+      </div>`;
+  }
+}
+
+// ── Salvar perfil ────────────────────────────────────────────
+function saveProfile(e) {
+  if (e) e.preventDefault();
+  const user      = getUser();
+  const name      = document.getElementById('profileName')?.value.trim();
+  const email     = document.getElementById('profileEmail')?.value.trim();
+  const phone     = document.getElementById('profilePhone')?.value.trim();
+  const cpf       = document.getElementById('profileCpf')?.value.trim();
+  const birthdate = document.getElementById('profileBirthdate')?.value;
+  if (user && name) {
+    setUser({ ...user, name, email: email || user.email, phone, cpf, birthdate });
+    document.getElementById('sidebarName').textContent  = name;
+    document.getElementById('sidebarEmail').textContent = email || user.email;
     if (typeof scheduleSyncToCloud === 'function') scheduleSyncToCloud();
-    showToast('Endereço salvo com sucesso!');
   }
+  showToast('Perfil salvo com sucesso!');
+}
 
-  // ── Auto-preenchimento por CEP (ViaCEP) ───────────────────────
-  function formatCep(input) {
-    let v = input.value.replace(/\D/g, '').slice(0, 8);
-    if (v.length > 5) v = v.slice(0, 5) + '-' + v.slice(5);
-    input.value = v;
+// ── Salvar endereço ──────────────────────────────────────────
+function saveAddress(e) {
+  if (e) e.preventDefault();
+  const user = getUser();
+  if (!user) return;
+  const address = {
+    cep:        document.getElementById('addrCep')?.value.trim()        || '',
+    state:      document.getElementById('addrState')?.value.trim()      || '',
+    city:       document.getElementById('addrCity')?.value.trim()       || '',
+    district:   document.getElementById('addrDistrict')?.value.trim()   || '',
+    street:     document.getElementById('addrStreet')?.value.trim()     || '',
+    number:     document.getElementById('addrNumber')?.value.trim()     || '',
+    complement: document.getElementById('addrComplement')?.value.trim() || '',
+  };
+  setUser({ ...user, address });
+  if (typeof scheduleSyncToCloud === 'function') scheduleSyncToCloud();
+  showToast('Endereço salvo com sucesso!');
+}
+
+// ── CEP auto-preenchimento ───────────────────────────────────
+function maskCpf(input) {
+  let v = input.value.replace(/\D/g, '');
+  v = v.replace(/(\d{3})(\d)/, '$1.$2');
+  v = v.replace(/(\d{3})(\d)/, '$1.$2');
+  v = v.replace(/(\d{3})(\d{1,2})$/, '$1-$2');
+  input.value = v;
+}
+function formatCep(input) {
+  let v = input.value.replace(/\D/g, '').slice(0, 8);
+  if (v.length > 5) v = v.slice(0, 5) + '-' + v.slice(5);
+  input.value = v;
+}
+async function fetchCep(cep) {
+  const digits = cep.replace(/\D/g, '');
+  if (digits.length !== 8) return;
+  try {
+    const r = await fetch('https://viacep.com.br/ws/' + digits + '/json/');
+    const d = await r.json();
+    if (d.erro) return;
+    if (d.logradouro) document.getElementById('addrStreet').value   = d.logradouro;
+    if (d.bairro)     document.getElementById('addrDistrict').value = d.bairro;
+    if (d.localidade) document.getElementById('addrCity').value     = d.localidade;
+    if (d.uf)         document.getElementById('addrState').value    = d.uf;
+    document.getElementById('addrNumber').focus();
+  } catch {}
+}
+
+// ── Toast ────────────────────────────────────────────────────
+function showToast(msg) {
+  let t = document.getElementById('profileToast');
+  if (!t) {
+    t = document.createElement('div');
+    t.id = 'profileToast';
+    t.style.cssText = 'position:fixed;bottom:24px;left:50%;transform:translateX(-50%);background:#2C1654;color:white;padding:12px 20px;border-radius:12px;font-family:Nunito,sans-serif;font-weight:800;font-size:0.85rem;box-shadow:0 4px 16px rgba(0,0,0,0.25);z-index:9999;transition:opacity 0.3s;white-space:nowrap';
+    document.body.appendChild(t);
   }
+  t.textContent = '✅ ' + msg;
+  t.style.opacity = '1';
+  clearTimeout(t._t);
+  t._t = setTimeout(() => t.style.opacity = '0', 2500);
+}
 
-  async function fetchCep(cep) {
-    const digits = cep.replace(/\D/g, '');
-    if (digits.length !== 8) return;
-    try {
-      const r = await fetch('https://viacep.com.br/ws/' + digits + '/json/');
-      const d = await r.json();
-      if (d.erro) return;
-      if (d.logradouro) document.getElementById('addrStreet').value       = d.logradouro;
-      if (d.bairro)     document.getElementById('addrDistrict').value     = d.bairro; // Corrigido
-      if (d.localidade) document.getElementById('addrCity').value         = d.localidade;
-      if (d.uf)         document.getElementById('addrState').value        = d.uf;
-      document.getElementById('addrNumber').focus();
-    } catch {}
-  }
-
-  function showToast(msg) {
-    let t = document.getElementById('profileToast');
-    if (!t) {
-      t = document.createElement('div');
-      t.id = 'profileToast';
-      t.style.cssText = 'position:fixed;bottom:24px;left:50%;transform:translateX(-50%);background:#2C1654;color:white;padding:12px 20px;border-radius:12px;font-family:Nunito,sans-serif;font-weight:800;font-size:0.85rem;box-shadow:0 4px 16px rgba(0,0,0,0.25);z-index:9999;transition:opacity 0.3s;white-space:nowrap';
-      document.body.appendChild(t);
-    }
-    t.textContent = '✅ ' + msg;
-    t.style.opacity = '1';
-    clearTimeout(t._t);
-    t._t = setTimeout(() => t.style.opacity = '0', 2500);
-  }
-
-  // ── Tabs ───────────────────────────────────────────────────────
-  const tabs = document.querySelectorAll('.sidebar-tab[data-tab]');
-  const contents = document.querySelectorAll('.tab-content');
-  tabs.forEach(tab => {
-    tab.addEventListener('click', () => {
-      tabs.forEach(t => t.classList.remove('active'));
-      tab.classList.add('active');
-      contents.forEach(c => {
-        c.classList.remove('active');
-        if (c.id === 'tab-' + tab.dataset.tab) c.classList.add('active');
-      });
+// ── Tabs ─────────────────────────────────────────────────────
+document.querySelectorAll('.sidebar-tab[data-tab]').forEach(tab => {
+  tab.addEventListener('click', () => {
+    document.querySelectorAll('.sidebar-tab[data-tab]').forEach(t => t.classList.remove('active'));
+    tab.classList.add('active');
+    document.querySelectorAll('.tab-content').forEach(c => {
+      c.classList.remove('active');
+      if (c.id === 'tab-' + tab.dataset.tab) c.classList.add('active');
     });
   });
-</script>
+});
 
+// ── Init: aguarda Firebase Auth e decide o que mostrar ───────
+document.addEventListener('DOMContentLoaded', () => {
+  if (typeof firebase !== 'undefined' && firebase.apps?.length) {
+    firebase.auth().onAuthStateChanged(u => {
+      renderPage();
+    });
+  } else {
+    renderPage();
+  }
+});
+
+</script>
 </body>
 </html>

@@ -16,7 +16,7 @@ export default async function handler(req, res) {
     return res.status(200).json({ error: 'Stripe not configured', fallback: true });
   }
 
-  const stripe = new Stripe(key, { apiVersion: '2023-10-16' });
+  const stripe = new Stripe(key, { apiVersion: '2023-10-16', fetchFn: globalThis.fetch.bind(globalThis) });
   const domain = process.env.DOMAIN || 'https://japaoexpress.vercel.app';
 
   const {

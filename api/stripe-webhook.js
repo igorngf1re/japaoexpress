@@ -62,7 +62,7 @@ export default async function handler(req, res) {
 
   if (!key) return res.status(200).json({ ok: false, reason: 'Stripe not configured' });
 
-  const stripe  = new Stripe(key);
+  const stripe  = new Stripe(key, { apiVersion: '2023-10-16' });
   const rawBody = await getRawBody(req);
   const sig     = req.headers['stripe-signature'];
 

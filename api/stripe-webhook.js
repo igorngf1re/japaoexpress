@@ -6,6 +6,7 @@
 // ═══════════════════════════════════════════════════════════
 
 import Stripe from 'stripe';
+import { sendEmail } from '../lib/sendEmail.js';
 
 // Vercel: desabilita bodyParser para que possamos ler o raw body
 export const config = { api: { bodyParser: false } };
@@ -108,6 +109,9 @@ export default async function handler(req, res) {
 
     // Envia notificação Telegram (fire-and-forget)
     sendTelegram(order).catch(e => console.warn('[JE Webhook] Telegram error:', e));
+
+    // Envia email de confirmação de pagamento ao cliente (fire-and-forget)
+    sendEmail('payment_confirmed', order).catch(e => console.warn('[JE Webhook] Email error:', e));
   }
 
   return res.status(200).json({ received: true });

@@ -192,6 +192,18 @@ function buildOrderCard(order) {
 
       <!-- Summary + Timeline -->
       <div class="space-y-4">
+
+        <!-- Rastreamento (aparece só quando enviado/entregue e tem código) -->
+        ${order.trackingCode ? `<div class="bg-[#EDE9FE] rounded-xl p-3">
+          <p class="text-[0.65rem] font-black text-[#7C3AED] uppercase tracking-widest mb-1.5">Rastreamento</p>
+          <p class="font-mono font-black text-[#2C1654] text-sm tracking-wider mb-2">${order.trackingCode}</p>
+          <a href="${order.trackingUrl || `https://rastreamento.correios.com.br/app/resultado.php?objeto=${order.trackingCode}`}"
+             target="_blank" rel="noopener"
+             class="inline-flex items-center gap-1.5 bg-[#9B59B6] text-white text-[0.65rem] font-black px-3 py-1.5 rounded-full hover:bg-[#7D3C98] transition">
+            <i class="fa-solid fa-magnifying-glass text-[0.55rem]"></i> Rastrear pedido
+          </a>
+        </div>` : ''}
+
         <!-- Totals -->
         <div>
           <p class="text-[0.65rem] font-black text-[#9B59B6] uppercase tracking-widest mb-2">Resumo</p>

@@ -1590,6 +1590,19 @@ async function updateOrderStatus(orderId, uid, newStatus, note = '') {
     if (uid) batch.update(db.collection('users').doc(uid).collection('orders').doc(orderId), updates);
     await batch.commit();
     showToast(`✅ Status → ${STATUS_LABEL[newStatus]}`, 'success');
+
+    // Dispara email ao cliente quando enviado ou entregue
+    if (newStatus === 'enviado' || newStatus === 'entregue') {
+      const order = _allOrders.find(x => (x.id || x._id) === orderId);
+      if (order?.customerEmail) {
+        const trackingCode = updates.trackingCode || order.trackingCode || '';
+        const trackingUrl  = order.trackingUrl
+          || (trackingCode ? `https://rastreamento.correios.com.br/app/resultado.php?objeto=${trackingCode}` : '');
+        const emailOrder = buildEmailOrder(order, trackingCode, trackingUrl);
+        sendOrderEmail(newStatus === 'enviado' ? 'shipped' : 'delivered', emailOrder);
+      }
+    }
+
     // re-render detail
     setTimeout(() => { if (_selectedOrderId === orderId) showOrderDetail(orderId); }, 300);
   } catch (e) {
@@ -1604,7 +1617,8 @@ async function saveTracking(orderId, uid) {
   if (!code) { showToast('Digite o código de rastreio', 'error'); return; }
 
   const db = firebase.firestore();
-  const updates = { trackingCode: code };
+  const trackingUrl = `https://rastreamento.correios.com.br/app/resultado.php?objeto=${code}`;
+  const updates = { trackingCode: code, trackingUrl };
   try {
     showToast('Salvando rastreio…', 'info');
     const batch = db.batch();
@@ -1612,8 +1626,56 @@ async function saveTracking(orderId, uid) {
     if (uid) batch.update(db.collection('users').doc(uid).collection('orders').doc(orderId), updates);
     await batch.commit();
     showToast('✅ Código de rastreio salvo!', 'success');
+
+    // Se o pedido já está "enviado", re-dispara o email de envio com o código
+    const order = _allOrders.find(x => (x.id || x._id) === orderId);
+    if (order?.customerEmail && order.status === 'enviado') {
+      const emailOrder = buildEmailOrder(order, code, trackingUrl);
+      sendOrderEmail('shipped', emailOrder);
+    }
   } catch (e) {
     showToast(`❌ Erro: ${e.message}`, 'error');
+  }
+}
+
+// ── Email helpers ─────────────────────────────────────
+function buildEmailOrder(order, trackingCode, trackingUrl) {
+  return {
+    id:            order.id || order._id || '',
+    customerName:  order.customerName  || '',
+    customerEmail: order.customerEmail || '',
+    items:         order.items         || [],
+    subtotal:      order.subtotal      || 0,
+    discount:      order.discount      || 0,
+    shippingBRL:   order.shipping?.priceBRL || order.shippingBRL || 0,
+    shippingName:  order.shipping?.name || order.shippingName || 'Japan Post',
+    total:         order.total         || 0,
+    paymentMethod: order.payment       || order.paymentMethod || 'card',
+    trackingCode:  trackingCode        || '',
+    trackingUrl:   trackingUrl         || '',
+  };
+}
+
+async function sendOrderEmail(event, order) {
+  try {
+    const resp = await fetch('/api/send-email', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${adminKey}`,
+      },
+      body: JSON.stringify({ event, order }),
+    });
+    const json = await resp.json();
+    if (json.ok) {
+      showToast('📧 Email enviado ao cliente!', 'success');
+    } else if (json.skipped) {
+      console.log('[JE Admin] Email ignorado (GMAIL_APP_PASSWORD não configurado)');
+    } else {
+      console.warn('[JE Admin] Email error:', json.error);
+    }
+  } catch (e) {
+    console.warn('[JE Admin] Email fetch error:', e.message);
   }
 }
 </script>

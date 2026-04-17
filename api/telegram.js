@@ -274,7 +274,7 @@ async function extractWithAI(messages) {
     headers: {
       'Authorization': `Bearer ${OPENROUTER_KEY}`,
       'Content-Type':  'application/json',
-      'HTTP-Referer':  'https://japaoexpress.vercel.app',
+      'HTTP-Referer':  'https://japaoexpress.shop',
       'X-Title':       'Japao Express Bot',
     },
     body: JSON.stringify({
@@ -411,7 +411,7 @@ async function handlePublish(chatId, message) {
     await sendMessage(chatId,
       `✅ "${productObj.name}" ${duplicate ? 'substituído' : 'publicado'} com sucesso!\n\n` +
       `🚀 Vercel vai redeployar em ~1 minuto.\n` +
-      `🌐 japaoexpress.vercel.app/produtos.html`
+      `🌐 japaoexpress.shop/produtos.html`
     );
   } catch (err) {
     await sendMessage(chatId, `❌ Erro ao publicar: ${err.message}`);

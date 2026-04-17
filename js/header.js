@@ -16,7 +16,7 @@
   var SIDEBAR_HTML = '<div id="sidebarOverlay" onclick="closeSidebar()">' +
     '<aside id="sidebarPanel" onclick="event.stopPropagation()">' +
       '<div style="display:flex;align-items:center;justify-content:center;padding:18px 20px;border-bottom:1px solid #EDE0FF;position:relative">' +
-        '<a href="index.html" onclick="closeSidebar()">' +
+        '<a href="/" onclick="closeSidebar()">' +
           '<img src="logo.png" onerror="this.onerror=null;this.src=\'https://i.imgur.com/lxyYcwX.png\'" alt="Japão Express" style="height:80px;object-fit:contain;display:block">' +
         '</a>' +
         '<button onclick="closeSidebar()" style="position:absolute;right:14px;top:50%;transform:translateY(-50%);background:none;border:none;cursor:pointer;color:#9B59B6;font-size:26px;font-weight:900;line-height:1">&times;</button>' +
@@ -59,7 +59,7 @@
         '<a href="meus-pedidos.html" class="je-si" onclick="closeSidebar()"><span class="icon"><i class="fa-solid fa-receipt"></i></span> Meus Pedidos</a>' +
         '<a href="perfil.html"      class="je-si" onclick="closeSidebar()"><span class="icon"><i class="fa-regular fa-circle-user"></i></span> Minha Conta</a>' +
         '<div class="je-sdiv"></div>' +
-        '<a href="index.html#como-funciona" class="je-si" onclick="closeSidebar()"><span class="icon"><i class="fa-solid fa-circle-question"></i></span> Como Funciona</a>' +
+        '<a href="/#como-funciona" class="je-si" onclick="closeSidebar()"><span class="icon"><i class="fa-solid fa-circle-question"></i></span> Como Funciona</a>' +
         '<a href="contato.html" class="je-si" onclick="closeSidebar()"><span class="icon"><i class="fa-solid fa-envelope"></i></span> Contato</a>' +
       '</nav>' +
       '<div style="padding:16px 20px;border-top:1px solid #EDE0FF;font-size:12px;color:#9B8FBB;font-weight:600">\u00A9 2026 Japão Express \uD83C\uDF38</div>' +
@@ -77,7 +77,7 @@
     '</div>' +
     '<!-- col centro: logo -->' +
     '<div style="display:flex;justify-content:center">' +
-      '<a href="index.html">' +
+      '<a href="/">' +
         '<img src="logo.png" onerror="this.onerror=null;this.src=\'https://i.imgur.com/lxyYcwX.png\'" alt="Japão Express" style="height:96px;object-fit:contain;filter:drop-shadow(0 1px 3px rgba(0,0,0,.1))">' +
       '</a>' +
     '</div>' +

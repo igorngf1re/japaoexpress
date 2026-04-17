@@ -1592,15 +1592,18 @@ async function updateOrderStatus(orderId, uid, newStatus, note = '') {
     await batch.commit();
     showToast(`✅ Status → ${STATUS_LABEL[newStatus]}`, 'success');
 
-    // Dispara email ao cliente quando enviado ou entregue
-    if (newStatus === 'enviado' || newStatus === 'entregue') {
+    // Dispara email ao cliente conforme o novo status
+    if (newStatus === 'confirmado' || newStatus === 'enviado' || newStatus === 'entregue') {
       const order = _allOrders.find(x => (x.id || x._id) === orderId);
       if (order?.customerEmail) {
         const trackingCode = updates.trackingCode || order.trackingCode || '';
         const trackingUrl  = order.trackingUrl
           || (trackingCode ? `https://rastreamento.correios.com.br/app/resultado.php?objeto=${trackingCode}` : '');
         const emailOrder = buildEmailOrder(order, trackingCode, trackingUrl);
-        sendOrderEmail(newStatus === 'enviado' ? 'shipped' : 'delivered', emailOrder);
+        const emailType = newStatus === 'confirmado' ? 'order_created'
+                        : newStatus === 'enviado'    ? 'shipped'
+                        :                             'delivered';
+        sendOrderEmail(emailType, emailOrder);
       }
     }
 

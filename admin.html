@@ -1502,7 +1502,14 @@ function showOrderDetail(orderId) {
           <p class="font-mono text-xs font-black text-[#9B59B6]">#${(o.id || o._id).toUpperCase()}</p>
           <p class="text-[10px] font-semibold text-gray-400">${date}</p>
         </div>
-        <span class="status-chip s-${o.status} text-sm px-3 py-1">${STATUS_LABEL[o.status] || o.status}</span>
+        <div class="flex items-center gap-2">
+          <span class="status-chip s-${o.status} text-sm px-3 py-1">${STATUS_LABEL[o.status] || o.status}</span>
+          <button onclick="deleteOrder('${o.id || o._id}','${o.uid || ''}')"
+            title="Apagar pedido"
+            class="w-8 h-8 flex items-center justify-center rounded-full bg-red-50 hover:bg-red-600 text-red-500 hover:text-white transition">
+            <i class="fa-solid fa-trash text-xs"></i>
+          </button>
+        </div>
       </div>
 
       <!-- Cliente -->
@@ -1595,7 +1602,9 @@ async function updateOrderStatus(orderId, uid, newStatus, note = '') {
     // Dispara email ao cliente conforme o novo status
     if (newStatus === 'confirmado' || newStatus === 'enviado' || newStatus === 'entregue') {
       const order = _allOrders.find(x => (x.id || x._id) === orderId);
-      if (order?.customerEmail) {
+      if (!order?.customerEmail) {
+        showToast('⚠️ Pedido sem email — notificação não enviada', 'error');
+      } else {
         const trackingCode = updates.trackingCode || order.trackingCode || '';
         const trackingUrl  = order.trackingUrl
           || (trackingCode ? `https://rastreamento.correios.com.br/app/resultado.php?objeto=${trackingCode}` : '');
@@ -1670,16 +1679,56 @@ async function sendOrderEmail(event, order) {
       },
       body: JSON.stringify({ event, order }),
     });
+    if (resp.status === 401) {
+      showToast('❌ Email: chave admin incorreta (401)', 'error');
+      console.error('[JE Admin] send-email 401 — adminKey:', adminKey ? 'preenchida' : 'vazia');
+      return;
+    }
+    if (!resp.ok) {
+      showToast(`❌ Email: erro ${resp.status}`, 'error');
+      console.error('[JE Admin] send-email HTTP', resp.status);
+      return;
+    }
     const json = await resp.json();
     if (json.ok) {
       showToast('📧 Email enviado ao cliente!', 'success');
     } else if (json.skipped) {
-      console.log('[JE Admin] Email ignorado (GMAIL_APP_PASSWORD não configurado)');
+      showToast('⚠️ Email ignorado (GMAIL não configurado)', 'error');
+      console.warn('[JE Admin] Email ignorado — GMAIL_APP_PASSWORD não configurado');
     } else {
-      console.warn('[JE Admin] Email error:', json.error);
+      showToast(`❌ Email erro: ${json.error || 'desconhecido'}`, 'error');
+      console.error('[JE Admin] Email error:', json);
     }
   } catch (e) {
-    console.warn('[JE Admin] Email fetch error:', e.message);
+    showToast(`❌ Email: ${e.message}`, 'error');
+    console.error('[JE Admin] Email fetch error:', e);
+  }
+}
+
+// ── Delete order ──────────────────────────────────────
+async function deleteOrder(orderId, uid) {
+  const confirmed = confirm(`Apagar pedido #${orderId.toUpperCase()}?\n\nEsta ação não pode ser desfeita.`);
+  if (!confirmed) return;
+
+  const db = firebase.firestore();
+  try {
+    showToast('Apagando pedido…', 'info');
+    const batch = db.batch();
+    batch.delete(db.collection('orders').doc(orderId));
+    if (uid) batch.delete(db.collection('users').doc(uid).collection('orders').doc(orderId));
+    await batch.commit();
+
+    // Remove do array local e limpa o painel de detalhe
+    _allOrders = _allOrders.filter(x => (x.id || x._id) !== orderId);
+    if (_selectedOrderId === orderId) {
+      _selectedOrderId = null;
+      document.getElementById('orderDetail').classList.add('hidden');
+      document.getElementById('orderEmpty').classList.remove('hidden');
+    }
+    renderOrdersList();
+    showToast('🗑️ Pedido apagado!', 'success');
+  } catch (e) {
+    showToast(`❌ Erro ao apagar: ${e.message}`, 'error');
   }
 }
 </script>

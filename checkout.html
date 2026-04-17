@@ -570,9 +570,16 @@ async function _saveOrderToFirestore(orderId, cart, method, shpBRL, shpJPY, paym
 }
 
 document.addEventListener('DOMContentLoaded', async () => {
+    // ── Exige login para finalizar compra ─────────────────────
+    const user = (typeof getUser === 'function') ? getUser() : null;
+    if (!user) {
+        window.location.href = 'login.html?redirect=checkout.html';
+        return;
+    }
+
     try {
         const cached = JSON.parse(localStorage.getItem('je_rate') || 'null');
-        if (cached && cached.rate && Date.now() - cached.ts < 3600000) { _ckRate = cached.rate; } 
+        if (cached && cached.rate && Date.now() - cached.ts < 3600000) { _ckRate = cached.rate; }
         else { const res = await fetch('/api/exchange-rate'); const data = await res.json(); _ckRate = data.rates?.JPY || 22; }
     } catch {}
 
@@ -582,7 +589,6 @@ document.addEventListener('DOMContentLoaded', async () => {
     else document.getElementById('ship_ems').checked = true;
 
     // Pré-preenche com dados do perfil salvo (com as novas chaves sincronizadas)
-    const user = (typeof getUser === 'function') ? getUser() : null;
     if (user) {
         const set = (id, val) => { const el = document.getElementById(id); if (el && val) el.value = val; };
         set('ck-name',  user.name);

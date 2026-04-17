@@ -366,6 +366,13 @@
     const authSection    = document.getElementById('authSection');
     const accountSection = document.getElementById('accountSection');
     if (user) {
+      // Se veio de um redirect (ex: checkout exige login), volta para lá
+      const params   = new URLSearchParams(window.location.search);
+      const redirect = params.get('redirect');
+      if (redirect) {
+        window.location.href = redirect;
+        return;
+      }
       authSection.classList.add('hidden');
       accountSection.classList.remove('hidden');
       accountSection.style.display = 'flex';
@@ -674,6 +681,16 @@
 
   // ── Init ─────────────────────────────────────────────────────
   document.addEventListener('DOMContentLoaded', () => {
+    // Mostra aviso se veio do checkout sem estar logado
+    const params = new URLSearchParams(window.location.search);
+    if (params.get('redirect') === 'checkout.html') {
+      const notice = document.createElement('div');
+      notice.className = 'fixed top-4 left-1/2 -translate-x-1/2 z-50 bg-[#2C1654] text-white text-sm font-black px-5 py-3 rounded-2xl shadow-xl flex items-center gap-2';
+      notice.innerHTML = '<i class="fa-solid fa-lock text-[#C9A8E8]"></i> Faça login ou cadastre-se para finalizar sua compra';
+      document.body.appendChild(notice);
+      setTimeout(() => notice.remove(), 5000);
+    }
+
     if (typeof firebase !== 'undefined' && firebase.apps?.length) {
       firebase.auth().onAuthStateChanged(() => renderPage());
     } else {

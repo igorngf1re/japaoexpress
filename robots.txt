@@ -1,0 +1,7 @@
+User-agent: *
+Allow: /
+
+Disallow: /admin.html
+Disallow: /index-preview.html
+
+Sitemap: https://japaoexpress.shop/sitemap.xml

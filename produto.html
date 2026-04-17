@@ -5,6 +5,13 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Produto — Japão Express</title>
+    <meta name="description" content="Veja detalhes, fotos e preço deste produto importado do Japão. Entrega para todo o Brasil.">
+    <meta property="og:type" content="product">
+    <meta property="og:site_name" content="Japão Express">
+    <meta property="og:title" content="Produto — Japão Express">
+    <meta property="og:description" content="Veja detalhes, fotos e preço deste produto importado do Japão. Entrega para todo o Brasil.">
+    <meta property="og:image" content="https://japaoexpress.shop/icons/icon-512.png">
+    <meta name="twitter:card" content="summary_large_image">
     <!-- Favicon & PWA -->
     <link rel="icon" type="image/png" sizes="32x32" href="icons/icon-128.png">
     <link rel="icon" type="image/png" sizes="192x192" href="icons/icon-192.png">
@@ -553,7 +560,7 @@
         thumbSrcs.forEach((src, i) => {
             const t = document.createElement('div');
             t.className = 'thumb bg-[#F5F5F5] ' + (i === 0 ? 'active' : '');
-            t.innerHTML = '<img src="' + src + '" class="w-full h-full object-contain p-1">';
+            t.innerHTML = '<img src="' + src + '" alt="' + p.name + ' - foto ' + (i + 1) + '" class="w-full h-full object-contain p-1">';
             t.onclick = () => {
                 // Troca a imagem principal ao clicar
                 mainImg.innerHTML = '<img src="' + src + '" alt="' + p.name + '" class="w-full h-full object-contain p-4">';

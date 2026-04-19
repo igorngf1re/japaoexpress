@@ -486,10 +486,13 @@
         if (!text) return '—';
         const hasHTML = /<[a-z][\s\S]*>/i.test(text);
         if (hasHTML) return text;
+        // Normaliza \n literais (string "\\n") para quebras de linha reais
+        const normalized = text.replace(/\\n/g, '\n');
         // Texto puro: quebra dupla de linha → parágrafo, simples → <br>
-        return text
+        return normalized
             .split(/\n\n+/)
-            .map(p => `<p class="mb-2">${p.replace(/\n/g, '<br>')}</p>`)
+            .map(p => `<p class="mb-2">${p.trim().replace(/\n/g, '<br>')}</p>`)
+            .filter(p => p !== '<p class="mb-2"></p>')
             .join('');
     }
 

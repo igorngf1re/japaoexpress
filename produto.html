@@ -122,11 +122,9 @@
         .accordion-content {
             max-height: 0;
             overflow: hidden;
-            transition: max-height 0.3s ease;
+            transition: max-height 0.4s ease;
         }
-        .accordion-content.open {
-            max-height: 600px;
-        }
+        /* max-height definido via JS (scrollHeight) para nunca cortar conteúdo longo */
 
         /* ── Fita adesiva ── */
         .tape {
@@ -507,8 +505,14 @@
     function toggleAccordion(id) {
         const el   = document.getElementById(id);
         const icon = document.getElementById(id + '-icon');
-        el.classList.toggle('open');
-        icon.style.transform = el.classList.contains('open') ? 'rotate(180deg)' : '';
+        const isOpen = el.style.maxHeight && el.style.maxHeight !== '0px';
+        if (isOpen) {
+            el.style.maxHeight = '0px';
+            icon.style.transform = '';
+        } else {
+            el.style.maxHeight = el.scrollHeight + 'px';
+            icon.style.transform = 'rotate(180deg)';
+        }
     }
 
     // ── Renderizar produto ─────────────────────────────────────────

@@ -218,7 +218,7 @@
             <section id="formSection" class="flex-1 p-6 min-w-0">
                 <div class="flex items-center justify-between mb-5">
                     <h2 id="formTitle" class="font-hero text-[1.6rem] text-[#2C1654]">Novo Produto</h2>
-                    <button id="cancelBtn" onclick="newProduct()" style="display:none"
+                    <button id="cancelBtn" type="button" onclick="newProduct()" style="display:none"
                         class="text-xs font-bold text-[#9B59B6] hover:text-[#7D3C98] flex items-center gap-1 transition">
                         <i class="fa-solid fa-xmark"></i> Cancelar edição
                     </button>
@@ -1094,62 +1094,65 @@ function editProduct(id) {
 async function saveProduct(e) {
   e.preventDefault();
 
-  const id       = document.getElementById('fId').value.trim();
-  const name     = document.getElementById('fName').value.trim();
-  const category = document.getElementById('fCategory').value;
-  const catInfo  = CAT_MAP[category] || CAT_MAP['Outros'];
-  const cardBgHex = document.getElementById('fCardBg').value;
-
-  const product = {
-    id,
-    name,
-    category,
-    cat:         catInfo.cat,
-    subcategory: document.getElementById('fSubcategory').value.trim(),
-    brand:       document.getElementById('fBrand').value.trim() || null,
-    priceBRL:    parseFloat(document.getElementById('fPriceBRL').value) || 0,
-    priceJPY:    parseInt(document.getElementById('fPriceJPY').value)   || 0,
-    weight:      parseInt(document.getElementById('fWeight').value)      || 200,
-    description: document.getElementById('fDescription').value.trim().replace(/\\n/g, '\n'),
-    details:     document.getElementById('fDetails').value.trim().replace(/\\n/g, '\n'),
-    origin:      document.getElementById('fOrigin').value.trim() || 'Japão',
-    image:       document.getElementById('fImage').value.trim(),
-    image2:      document.getElementById('fImage2').value.trim() || null,
-    image3:      document.getElementById('fImage3').value.trim() || null,
-    images:      [
-      document.getElementById('fImage').value.trim(),
-      document.getElementById('fImage2').value.trim(),
-      document.getElementById('fImage3').value.trim(),
-    ].filter(Boolean),
-    units:       parseInt(document.getElementById('fUnits').value) || 1,
-    featured:    document.getElementById('fFeatured').checked || false,
-    cost:        parseFloat(document.getElementById('fCost').value) || null,
-    markup:      parseFloat(document.getElementById('fMarkup').value) || 23,
-    badge:       document.getElementById('fBadge').value.trim() || null,
-    badgeBg:     document.getElementById('fBadgeBg').value,
-    stock:       parseInt(document.getElementById('fStock').value) || 10,
-    rating:      parseFloat(document.getElementById('fRating').value) || 4.5,
-    reviews:     parseInt(document.getElementById('fReviews').value)  || 0,
-    cardBg:      `bg-[${cardBgHex}]`,
-    rotate:      ROTATES[Math.floor(Math.random() * ROTATES.length)],
-    deco:        document.querySelector('input[name="fDeco"]:checked')?.value || 'tape',
-  };
-
-  const isEdit = !!editingId;
-  if (!isEdit) {
-    product.createdAt = Date.now();
-  } else {
-    // Preserva o createdAt original ao editar
-    const existing = _allProducts.find(p => p.id === editingId);
-    if (existing?.createdAt) product.createdAt = existing.createdAt;
-  }
-
-  const saveBtn  = document.getElementById('saveBtn');
-  const saveTxt  = saveBtn.querySelector('span');
-  saveBtn.disabled = true;
-  saveTxt.textContent = isEdit ? 'Atualizando…' : 'Publicando…';
+  const saveBtn = document.getElementById('saveBtn');
+  const saveTxt = saveBtn.querySelector('span');
 
   try {
+    const id       = document.getElementById('fId').value.trim();
+    const name     = document.getElementById('fName').value.trim();
+    const category = document.getElementById('fCategory').value;
+    const catInfo  = CAT_MAP[category] || CAT_MAP['Outros'];
+    const cardBgHex = document.getElementById('fCardBg').value;
+
+    const product = {
+      id,
+      name,
+      category,
+      cat:         catInfo.cat,
+      subcategory: document.getElementById('fSubcategory').value.trim(),
+      brand:       document.getElementById('fBrand').value.trim() || null,
+      priceBRL:    parseFloat(document.getElementById('fPriceBRL').value) || 0,
+      priceJPY:    parseInt(document.getElementById('fPriceJPY').value)   || 0,
+      weight:      parseInt(document.getElementById('fWeight').value)      || 200,
+      description: document.getElementById('fDescription').value.trim().replace(/\\n/g, '\n'),
+      details:     document.getElementById('fDetails').value.trim().replace(/\\n/g, '\n'),
+      origin:      document.getElementById('fOrigin').value.trim() || 'Japão',
+      image:       document.getElementById('fImage').value.trim(),
+      image2:      document.getElementById('fImage2').value.trim() || null,
+      image3:      document.getElementById('fImage3').value.trim() || null,
+      images:      [
+        document.getElementById('fImage').value.trim(),
+        document.getElementById('fImage2').value.trim(),
+        document.getElementById('fImage3').value.trim(),
+      ].filter(Boolean),
+      units:       parseInt(document.getElementById('fUnits').value) || 1,
+      featured:    document.getElementById('fFeatured').checked || false,
+      cost:        parseFloat(document.getElementById('fCost').value) || null,
+      markup:      parseFloat(document.getElementById('fMarkup').value) || 23,
+      badge:       document.getElementById('fBadge').value.trim() || null,
+      badgeBg:     document.getElementById('fBadgeBg').value,
+      stock:       parseInt(document.getElementById('fStock').value) || 10,
+      rating:      parseFloat(document.getElementById('fRating').value) || 4.5,
+      reviews:     parseInt(document.getElementById('fReviews').value)  || 0,
+      cardBg:      `bg-[${cardBgHex}]`,
+      rotate:      ROTATES[Math.floor(Math.random() * ROTATES.length)],
+      deco:        document.querySelector('input[name="fDeco"]:checked')?.value || 'tape',
+    };
+
+    const isEdit = !!editingId;
+    if (!isEdit) {
+      product.createdAt = Date.now();
+    } else {
+      // Preserva o createdAt original ao editar
+      const existing = _allProducts.find(p => p.id === editingId);
+      if (existing?.createdAt) product.createdAt = existing.createdAt;
+    }
+
+    console.log('[JE Admin] saveProduct | isEdit:', isEdit, '| id:', id, '| editingId:', editingId);
+
+    saveBtn.disabled = true;
+    saveTxt.textContent = isEdit ? 'Atualizando…' : 'Publicando…';
+
     await callApi(isEdit ? 'update' : 'add', { product });
     showToast(`✅ "${name}" ${isEdit ? 'atualizado' : 'publicado'}! Site atualiza em ~1 min.`, 'success');
 
@@ -1166,9 +1169,10 @@ async function saveProduct(e) {
       newProduct();
     }
   } catch (err) {
+    console.error('[JE Admin] saveProduct error:', err);
     showToast(`❌ ${err.message}`, 'error');
     saveBtn.disabled = false;
-    saveTxt.textContent = isEdit ? 'Atualizar Produto' : 'Publicar Produto';
+    saveTxt.textContent = editingId ? 'Atualizar Produto' : 'Publicar Produto';
   }
 }
 

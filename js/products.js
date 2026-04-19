@@ -18,6 +18,39 @@ function getProductById(id) {
 
 const PRODUCTS = [
   {
+    "id": "softymo-super-cleansing-wash-colageno",
+    "name": "Softymo Super Cleansing Wash Colágeno",
+    "category": "Cosméticos",
+    "cat": "cosmeticos",
+    "subcategory": "Limpeza facial",
+    "brand": null,
+    "priceBRL": 44.92,
+    "priceJPY": 700,
+    "weight": 190,
+    "description": "Limpeza facial profunda com colágeno para pele hidratada e macia.",
+    "details": "O Softymo Super Cleansing Wash com Colágeno é um sabonete facial japonês de alta qualidade desenvolvido para remover impurezas, oleosidade e resíduos de maquiagem enquanto hidrata profundamente a pele.",
+    "origin": "Japão",
+    "image": "https://cdn.jsdelivr.net/gh/igorngf1re/japaoexpress@main/images/produtos/1775816890370_9787226016_001.avif",
+    "image2": "https://cloudinary.images-iherb.com/image/upload/f_auto,q_auto:eco/images/sfo/sfo30375/l/12.jpg",
+    "image3": null,
+    "images": [
+      "https://cdn.jsdelivr.net/gh/igorngf1re/japaoexpress@main/images/produtos/1775816890370_9787226016_001.avif",
+      "https://cloudinary.images-iherb.com/image/upload/f_auto,q_auto:eco/images/sfo/sfo30375/l/12.jpg"
+    ],
+    "units": 1,
+    "featured": false,
+    "cost": 22.46,
+    "markup": 100,
+    "badge": null,
+    "badgeBg": "#f5a623",
+    "stock": 10,
+    "rating": 4.5,
+    "reviews": 0,
+    "cardBg": "bg-[#d5f5e3]",
+    "rotate": "rotate(2deg)",
+    "deco": "tape"
+  },
+  {
     "id": "locao-clareadora-melano-cc",
     "name": "Loção Clareadora Melano CC Whitening Lotion 170ml",
     "category": "Cosméticos",
@@ -215,37 +248,6 @@ const PRODUCTS = [
     "reviews": 0,
     "cardBg": "bg-[#fadbd8]",
     "rotate": "rotate(1deg)",
-    "deco": "tape"
-  },
-  {
-    "id": "softymo-super-cleansing-wash-colageno",
-    "name": "Softymo Super Cleansing Wash Colágeno",
-    "category": "Cosméticos",
-    "cat": "cosmeticos",
-    "subcategory": "Limpeza facial",
-    "priceBRL": 44.92,
-    "priceJPY": 700,
-    "weight": 190,
-    "description": "Limpeza facial profunda com colágeno para pele hidratada e macia.",
-    "details": "O Softymo Super Cleansing Wash com Colágeno é um sabonete facial japonês de alta qualidade desenvolvido para remover impurezas, oleosidade e resíduos de maquiagem enquanto hidrata profundamente a pele.",
-    "origin": "Japão",
-    "image": "https://cdn.jsdelivr.net/gh/igorngf1re/japaoexpress@main/images/produtos/1775816890370_9787226016_001.avif",
-    "image2": null,
-    "image3": null,
-    "images": [
-      "https://cdn.jsdelivr.net/gh/igorngf1re/japaoexpress@main/images/produtos/1775816890370_9787226016_001.avif"
-    ],
-    "units": 1,
-    "featured": false,
-    "cost": 22.46,
-    "markup": 100,
-    "badge": null,
-    "badgeBg": "#f5a623",
-    "stock": 10,
-    "rating": 4.5,
-    "reviews": 0,
-    "cardBg": "bg-[#d5f5e3]",
-    "rotate": "rotate(-1deg)",
     "deco": "tape"
   },
   {

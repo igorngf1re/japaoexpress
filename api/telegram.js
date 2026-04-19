@@ -618,6 +618,7 @@ function buildProductObject(p) {
     stock:       10,
     rating:      4.5,
     reviews:     0,
+    createdAt:   Date.now(),
     cardBg:      catInfo.cardBg,
     rotate:      rotate[Math.floor(Math.random() * rotate.length)],
     deco:        decos[Math.floor(Math.random() * decos.length)],

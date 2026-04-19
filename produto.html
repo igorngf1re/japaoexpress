@@ -484,10 +484,10 @@
     // Se for texto puro → formata com parágrafos e quebras de linha
     function renderContent(text) {
         if (!text) return '—';
-        const hasHTML = /<[a-z][\s\S]*>/i.test(text);
-        if (hasHTML) return text;
-        // Normaliza \n literais (string "\\n") para quebras de linha reais
+        // Normaliza \n literais (dois chars: \ + n) para quebras reais — SEMPRE, antes de qualquer lógica
         const normalized = text.replace(/\\n/g, '\n');
+        const hasHTML = /<[a-z][\s\S]*>/i.test(normalized);
+        if (hasHTML) return normalized;
         // Texto puro: quebra dupla de linha → parágrafo, simples → <br>
         return normalized
             .split(/\n\n+/)

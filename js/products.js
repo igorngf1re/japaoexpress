@@ -18,6 +18,41 @@ function getProductById(id) {
 
 const PRODUCTS = [
   {
+    "id": "protetor-solar-anessa-perfect-uv",
+    "name": "Protetor Solar Anessa Perfect UV Sunscreen Skincare Milk SPF50+ PA++++ 90g",
+    "category": "Cosméticos",
+    "cat": "cosmeticos",
+    "subcategory": "Protetor Solar",
+    "brand": "Shiseido",
+    "priceBRL": 173.1,
+    "priceJPY": 4500,
+    "weight": 130,
+    "description": "Protetor solar japonês premium com alta proteção UV e resistência à água.",
+    "details": "<p>O Anessa Perfect UV Sunscreen Skincare Milk da Shiseido é um dos protetores solares mais icônicos do Japão, conhecido por sua tecnologia avançada de proteção UV e resistência superior. Ideal para rosto e corpo, oferece alta proteção com textura leve e confortável.</p><p><strong><i class=\"fa-solid fa-wand-magic-sparkles\"></i> Benefícios principais:</strong></p><ul><li>Proteção máxima SPF50+ PA++++ contra raios UVA e UVB</li><li>Tecnologia resistente à água, suor e atrito</li><li>Textura leve tipo milk, fácil de espalhar</li><li>Ajuda a proteger a pele contra danos solares e envelhecimento precoce</li><li>Pode ser usado como base para maquiagem</li></ul><p><strong><i class=\"fa-solid fa-flask-vial\"></i> Ingredientes/Composição:</strong></p><ul><li>Dióxido de titânio: proteção física contra raios UV</li><li>Óxido de zinco: proteção de amplo espectro</li><li>Glicerina: hidratação da pele</li><li>Ácido hialurônico: retenção de umidade</li></ul><p><strong><i class=\"fa-solid fa-hand-sparkles\"></i> Modo de uso:</strong></p><p>Aplique uma quantidade adequada sobre a pele limpa antes da exposição ao sol. Reaplique ao longo do dia, especialmente após suor intenso, contato com água ou secagem com toalha.</p><p><strong><i class=\"fa-solid fa-shield-check\"></i> Por que escolher este produto?</strong></p><p>Desenvolvido pela renomada Shiseido, o Anessa é líder em proteção solar no Japão, combinando inovação tecnológica com alta eficácia. Sua fórmula avançada garante proteção duradoura sem comprometer o conforto da pele.</p><p><strong><i class=\"fa-solid fa-triangle-exclamation\"></i> Aviso / Atenção:</strong></p><p>Evite contato com os olhos. Em caso de irritação, suspenda o uso. Uso externo. Manter fora do alcance de crianças.</p>",
+    "origin": "Japão",
+    "image": "https://shop.theclub.com.hk/media/catalog/product/cache/d53955ad62cca2bdfa3416fe3f9f2e9e/c/r/cr-lpi_4020_50001.jpg",
+    "image2": "https://medias.lookatme.com.ph/publishing/LOOKPH-50046413-side-zoom.jpg?version=1728401016",
+    "image3": "https://japaoentrega.com/wp-content/uploads/2024/08/51l2wLEHr4L._AC_SX679_.jpg",
+    "images": [
+      "https://shop.theclub.com.hk/media/catalog/product/cache/d53955ad62cca2bdfa3416fe3f9f2e9e/c/r/cr-lpi_4020_50001.jpg",
+      "https://medias.lookatme.com.ph/publishing/LOOKPH-50046413-side-zoom.jpg?version=1728401016",
+      "https://japaoentrega.com/wp-content/uploads/2024/08/51l2wLEHr4L._AC_SX679_.jpg"
+    ],
+    "units": 1,
+    "featured": false,
+    "cost": 140.73,
+    "markup": 23,
+    "badge": null,
+    "badgeBg": "#f5a623",
+    "stock": 5,
+    "rating": 5,
+    "reviews": 0,
+    "cardBg": "bg-[#fcf3cf]",
+    "rotate": "rotate(-1deg)",
+    "deco": "tape",
+    "createdAt": 1776602897799
+  },
+  {
     "id": "locao-clareadora-melano-cc",
     "name": "Loção Clareadora Melano CC Whitening Lotion 170ml",
     "category": "Cosméticos",

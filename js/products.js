@@ -18,6 +18,41 @@ function getProductById(id) {
 
 const PRODUCTS = [
   {
+    "id": "locao-clareadora-melano-cc",
+    "name": "Loção Clareadora Medicated Melano CC Whitening Lotion 170ml",
+    "category": "Cosméticos",
+    "cat": "cosmeticos",
+    "subcategory": "Loção",
+    "brand": "Melano CC",
+    "priceBRL": 31.27,
+    "priceJPY": 800,
+    "weight": 167,
+    "description": "Loção facial japonesa com vitamina C para pele uniforme",
+    "details": "<p>A Loção Clareadora Melano CC da Rohto é um dos cuidados faciais mais populares do Japão, desenvolvida com foco em uniformizar o tom da pele e combater manchas. Sua fórmula leve e refrescante entrega hidratação enquanto atua diretamente na aparência de marcas e tonalidade irregular.</p>\\n\\n<p><strong><i class=\"fa-solid fa-wand-magic-sparkles\"></i> Benefícios principais:</strong></p>\\n<ul>\\n<li>Ajuda a reduzir manchas escuras e marcas de acne</li>\\n<li>Uniformiza o tom da pele com uso contínuo</li>\\n<li>Contém vitamina C ativa para ação antioxidante</li>\\n<li>Textura leve, ideal para uso diário sem pesar</li>\\n<li>Hidrata e melhora a aparência geral da pele</li>\\n<li>Auxilia na prevenção de novas manchas</li>\\n</ul>\\n\\n<p><strong><i class=\"fa-solid fa-flask-vial\"></i> Ingredientes ou Composição:</strong></p>\\n<ul>\\n<li>Vitamina C (ácido ascórbico): ajuda no clareamento e ação antioxidante</li>\\n<li>Dipotassium Glycyrrhizate: auxilia na redução de inflamações</li>\\n<li>Extratos hidratantes: ajudam a manter a pele macia</li>\\n</ul>\\n\\n<p><strong><i class=\"fa-solid fa-hand-sparkles\"></i> Modo de uso:</strong></p>\\n<p>Após a limpeza do rosto, aplique uma quantidade adequada da loção nas mãos ou algodão e espalhe suavemente sobre a pele. Use diariamente, de manhã e à noite, antes do hidratante.</p>\\n\\n<p><strong><i class=\"fa-solid fa-shield-check\"></i> Por que escolher este produto?</strong></p>\\n<p>A linha Melano CC é extremamente popular no Japão e reconhecida por sua eficácia no cuidado com manchas e uniformização da pele. Produzida pela Rohto Pharmaceutical, uma marca tradicional com décadas de experiência, essa loção combina tecnologia japonesa com ingredientes ativos comprovados.</p>\\n\\n<p><strong><i class=\"fa-solid fa-triangle-exclamation\"></i> Aviso / Atenção:</strong></p>\\n<p>Evite contato com os olhos. Em caso de irritação, suspenda o uso. Não utilizar em pele lesionada. Recomenda-se o uso de protetor solar durante o dia.",
+    "origin": "Japão",
+    "image": "https://cloudinary.images-iherb.com/image/upload/f_auto,q_auto:eco/images/mec/mec16966/l/2.jpg",
+    "image2": "https://cloudinary.images-iherb.com/image/upload/f_auto,q_auto:eco/images/mec/mec16966/l/3.jpg",
+    "image3": "https://epocacosmeticos.vteximg.com.br/arquivos/ids/1361363-800-800/locao-hidratante-melano-cc-lotion%20-4-.jpg?v=639029723397030000",
+    "images": [
+      "https://cloudinary.images-iherb.com/image/upload/f_auto,q_auto:eco/images/mec/mec16966/l/2.jpg",
+      "https://cloudinary.images-iherb.com/image/upload/f_auto,q_auto:eco/images/mec/mec16966/l/3.jpg",
+      "https://epocacosmeticos.vteximg.com.br/arquivos/ids/1361363-800-800/locao-hidratante-melano-cc-lotion%20-4-.jpg?v=639029723397030000"
+    ],
+    "units": 1,
+    "featured": false,
+    "cost": 25.02,
+    "markup": 25,
+    "badge": null,
+    "badgeBg": "#f5a623",
+    "stock": 10,
+    "rating": 4.5,
+    "reviews": 0,
+    "cardBg": "bg-[#d6eaf8]",
+    "rotate": "rotate(-1deg)",
+    "deco": "tape",
+    "createdAt": 1776568524510
+  },
+  {
     "id": "senka-perfect-whip-espuma-de-limpeza-fac",
     "name": "Senka Perfect Whip Espuma de Limpeza Facial 120g",
     "category": "Cosméticos",

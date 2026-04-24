@@ -18,6 +18,41 @@ function getProductById(id) {
 
 const PRODUCTS = [
   {
+    "id": "shampoo-tratamento-refa-honey-queen-kit",
+    "name": "Shampoo & Tratamento ReFa HONEY QUEEN - KIT",
+    "category": "Cabelos",
+    "cat": "cabelos",
+    "subcategory": "Shampoo e Condicionador",
+    "brand": "ReFa",
+    "priceBRL": 188.26,
+    "priceJPY": 4840,
+    "weight": 710,
+    "description": "Kit Shampoo e Tratamento ReFa HONEY QUEEN, com geleia real e mel para cabelos hidratados e reparados",
+    "details": "<p>Apresentamos o Kit Shampoo & Tratamento ReFa HONEY QUEEN, um tratamento capilar japonês que combina a ciência com os benefícios da natureza. A ReFa, conhecida por seus produtos inovadores, traz a você uma experiência única de cuidado com os cabelos.</p><p><strong><i class=\"fa-solid fa-wand-magic-sparkles\"></i> Benefícios principais:</strong></p><ul><li>Reparação intensiva dos fios danificados.</li><li>Hidratação profunda e duradoura.</li><li>Cabelos mais macios e brilhantes.</li><li>Fortalecimento da fibra capilar.</li><li>Proteção contra danos futuros.</li><li>Fragrância delicada de Honey Queen Lemon.</li></ul><p><strong><i class=\"fa-solid fa-flask-vial\"></i> Ingredientes ou Composição:</strong></p><ul><li>Geleia Real: Nutre e revitaliza o cabelo, promovendo a saúde do couro cabeludo.</li><li>Mel: Proporciona hidratação e brilho, selando a umidade nos fios.</li><li>Ceramidas: Fortalecem a estrutura capilar, reduzindo a quebra.</li><li>Vitaminas: Essenciais para a saúde e crescimento do cabelo.</li></ul><p><strong><i class=\"fa-solid fa-hand-sparkles\"></i> Modo de uso:</strong></p><p>Aplique o shampoo nos cabelos molhados, massageando suavemente o couro cabeludo. Enxágue bem. Em seguida, aplique o tratamento no comprimento dos fios, evitando a raiz. Deixe agir por alguns minutos e enxágue completamente.</p><p><strong><i class=\"fa-solid fa-shield-check\"></i> Por que escolher este produto?</strong></p><p>A ReFa é uma marca japonesa renomada por sua tecnologia e qualidade. Este kit oferece uma combinação exclusiva de ingredientes naturais e ciência avançada para transformar seus cabelos, proporcionando resultados visíveis desde a primeira aplicação.</p><p><strong><i class=\"fa-solid fa-box-open\"></i> Conteúdo da embalagem:</strong></p><ul><li>1 Shampoo ReFa HONEY QUEEN</li><li>1 Tratamento ReFa HONEY QUEEN</li></ul>",
+    "origin": "Japão",
+    "image": "https://www.mtgec.jp/assets/beauty/refa/products/honey_queen/img/product/im-buy-2set.jpg",
+    "image2": "https://www.mtgec.jp/assets/beauty/refa/products/honey_queen/img/im-kv-sp.jpg",
+    "image3": "https://cloudflare.lipscosme.com/image/2026-04-08-34d5500eabc3745658d1a6d3.png?auto=avif%2Cwebp&fio=1&orient=1&width=1424",
+    "images": [
+      "https://www.mtgec.jp/assets/beauty/refa/products/honey_queen/img/product/im-buy-2set.jpg",
+      "https://www.mtgec.jp/assets/beauty/refa/products/honey_queen/img/im-kv-sp.jpg",
+      "https://cloudflare.lipscosme.com/image/2026-04-08-34d5500eabc3745658d1a6d3.png?auto=avif%2Cwebp&fio=1&orient=1&width=1424"
+    ],
+    "units": 1,
+    "featured": true,
+    "cost": 150.61,
+    "markup": 25,
+    "badge": null,
+    "badgeBg": "#f5a623",
+    "stock": 10,
+    "rating": 4.5,
+    "reviews": 0,
+    "cardBg": "bg-[#d5f5e3]",
+    "rotate": "rotate(1deg)",
+    "deco": "tape",
+    "createdAt": 1777008574421
+  },
+  {
     "id": "shampoo-e-condicionador-himawari-rich-re",
     "name": "Shampoo e Condicionador HIMAWARI Rich & Repair - Kit 2x500ml",
     "category": "Cabelos",

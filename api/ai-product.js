@@ -4,15 +4,15 @@
 // JSON pronto para preencher o formulário do admin
 // ═══════════════════════════════════════════════════════════
 
-const OPENROUTER_KEY = process.env.OPENROUTER_API_KEY;
+const GEMINI_KEY     = process.env.GEMINI_API_KEY;      // Primário: Google AI Studio (gratuito, confiável)
+const OPENROUTER_KEY = process.env.OPENROUTER_API_KEY;  // Fallback: OpenRouter
 const ADMIN_SECRET   = process.env.ADMIN_SECRET;
 
-// Modelos gratuitos no OpenRouter — em ordem de preferência
-// Se o primeiro falhar com 404/429, tenta o próximo
-const AI_MODELS = [
-  'google/gemini-2.0-flash-thinking-exp-01-21:free',
-  'meta-llama/llama-3.3-70b-instruct:free',
-  'deepseek/deepseek-chat-v3-0324:free',
+// Modelos OpenRouter de fallback (usados só se GEMINI_API_KEY não estiver configurado)
+const OPENROUTER_MODELS = [
+  'meta-llama/llama-3.1-8b-instruct:free',
+  'google/gemma-2-9b-it:free',
+  'mistralai/mistral-7b-instruct:free',
 ];
 
 const SYSTEM_PROMPT = `Você é um especialista em e-commerce de produtos japoneses importados para o Brasil, trabalhando para a loja "Japão Express".
@@ -96,7 +96,9 @@ export default async function handler(req, res) {
   if (!ADMIN_SECRET) return res.status(503).json({ ok: false, error: 'ADMIN_SECRET não configurado.' });
   if (token !== ADMIN_SECRET) return res.status(401).json({ ok: false, error: 'Chave admin incorreta.' });
 
-  if (!OPENROUTER_KEY) return res.status(503).json({ ok: false, error: 'OPENROUTER_API_KEY não configurado.' });
+  if (!GEMINI_KEY && !OPENROUTER_KEY) {
+    return res.status(503).json({ ok: false, error: 'Configure GEMINI_API_KEY ou OPENROUTER_API_KEY na Vercel.' });
+  }
 
   const { url } = req.body || {};
   if (!url || !url.startsWith('http')) return res.status(400).json({ ok: false, error: 'URL inválida.' });
@@ -105,48 +107,21 @@ export default async function handler(req, res) {
     // ── 1. Scrapa a página ────────────────────────────────
     const context = await scrapePage(url);
 
-    // ── 2. Chama a IA (com fallback entre modelos) ────────
     const userMessage =
       `URL do produto: ${url}\n\n` +
       `=== Conteúdo extraído da página ===\n${context}\n\n` +
       `Pesquise informações adicionais sobre este produto se necessário e preencha o JSON completo.`;
 
+    // ── 2. Chama a IA ─────────────────────────────────────
+    // Primário: Gemini 2.0 Flash direto (Google AI Studio — grátis, 1.5k req/dia)
+    // Fallback: OpenRouter com modelos gratuitos
     let rawText = '';
-    let lastError = '';
-    for (const model of AI_MODELS) {
-      const aiResp = await fetch('https://openrouter.ai/api/v1/chat/completions', {
-        method: 'POST',
-        headers: {
-          'Authorization': `Bearer ${OPENROUTER_KEY}`,
-          'Content-Type':  'application/json',
-          'HTTP-Referer':  'https://japaoexpress.shop',
-          'X-Title':       'Japao Express Admin',
-        },
-        body: JSON.stringify({
-          model,
-          messages: [
-            { role: 'system', content: SYSTEM_PROMPT },
-            { role: 'user',   content: userMessage },
-          ],
-          temperature: 0.3,
-          max_tokens:  2500,
-        }),
-      });
 
-      if (!aiResp.ok) {
-        const errText = await aiResp.text();
-        lastError = `${model} → ${aiResp.status}: ${errText.slice(0, 120)}`;
-        console.warn('[ai-product] model failed, trying next:', lastError);
-        continue; // tenta próximo modelo
-      }
-
-      const aiData = await aiResp.json();
-      rawText = aiData.choices?.[0]?.message?.content || '';
-      if (rawText) break; // sucesso, para o loop
-      lastError = `${model} → resposta vazia`;
+    if (GEMINI_KEY) {
+      rawText = await callGemini(GEMINI_KEY, userMessage);
+    } else {
+      rawText = await callOpenRouter(OPENROUTER_KEY, userMessage);
     }
-
-    if (!rawText) throw new Error(`Todos os modelos falharam. Último erro: ${lastError}`);
 
     // ── 3. Extrai e valida JSON da resposta ───────────────
     const jsonMatch = rawText.match(/\{[\s\S]*\}/);
@@ -177,6 +152,68 @@ export default async function handler(req, res) {
     console.error('[ai-product]', err);
     return res.status(500).json({ ok: false, error: err.message });
   }
+}
+
+// ── Gemini 2.0 Flash direto (Google AI Studio) ───────────
+// Gratuito: 15 RPM, 1.500 req/dia, 1M tokens/dia
+// Chave gratuita em: aistudio.google.com
+
+async function callGemini(apiKey, userMessage) {
+  const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${apiKey}`;
+  const resp = await fetch(url, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({
+      systemInstruction: { parts: [{ text: SYSTEM_PROMPT }] },
+      contents: [{ role: 'user', parts: [{ text: userMessage }] }],
+      generationConfig: { temperature: 0.3, maxOutputTokens: 2500 },
+    }),
+  });
+  if (!resp.ok) {
+    const err = await resp.text();
+    throw new Error(`Gemini ${resp.status}: ${err.slice(0, 200)}`);
+  }
+  const data = await resp.json();
+  const text = data.candidates?.[0]?.content?.parts?.[0]?.text || '';
+  if (!text) throw new Error('Gemini retornou resposta vazia.');
+  return text;
+}
+
+// ── OpenRouter (fallback) ─────────────────────────────────
+
+async function callOpenRouter(apiKey, userMessage) {
+  let lastError = '';
+  for (const model of OPENROUTER_MODELS) {
+    const resp = await fetch('https://openrouter.ai/api/v1/chat/completions', {
+      method: 'POST',
+      headers: {
+        'Authorization': `Bearer ${apiKey}`,
+        'Content-Type':  'application/json',
+        'HTTP-Referer':  'https://japaoexpress.shop',
+        'X-Title':       'Japao Express Admin',
+      },
+      body: JSON.stringify({
+        model,
+        messages: [
+          { role: 'system', content: SYSTEM_PROMPT },
+          { role: 'user',   content: userMessage },
+        ],
+        temperature: 0.3,
+        max_tokens:  2500,
+      }),
+    });
+    if (!resp.ok) {
+      const errText = await resp.text();
+      lastError = `${model} → ${resp.status}`;
+      console.warn('[ai-product] OpenRouter model failed:', lastError, errText.slice(0, 100));
+      continue;
+    }
+    const data = await resp.json();
+    const text = data.choices?.[0]?.message?.content || '';
+    if (text) return text;
+    lastError = `${model} → resposta vazia`;
+  }
+  throw new Error(`OpenRouter: todos os modelos falharam. Último: ${lastError}. Configure GEMINI_API_KEY para resultado mais confiável.`);
 }
 
 // ── Scraping da página ────────────────────────────────────

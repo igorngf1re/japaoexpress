@@ -18,6 +18,41 @@ function getProductById(id) {
 
 const PRODUCTS = [
   {
+    "id": "serum-facial-celimax-retinal-shot-booste",
+    "name": "Sérum Facial Celimax Retinal Shot Booster 30ml",
+    "category": "Cosméticos",
+    "cat": "cosmeticos",
+    "subcategory": "Tratamento Facial",
+    "brand": "Celimax",
+    "priceBRL": 155.59,
+    "priceJPY": 4000,
+    "weight": 60,
+    "description": "Sérum com retinol puro que ajuda a reduzir rugas, melhorar a firmeza e minimizar poros.",
+    "details": "<p>Descubra o poder da beleza japonesa com o Sérum Facial Celimax The Real Niacinamide 15%. Formulado com ingredientes de alta qualidade e a expertise japonesa em cuidados com a pele, este sérum é a chave para uma pele radiante e com poros minimizados.</p><p><strong><i class=\"fa-solid fa-wand-magic-sparkles\"></i> Benefícios principais:</strong></p><ul><li>Redução visível dos poros</li><li>Suavização de linhas finas e rugas</li><li>Controle da oleosidade</li><li>Melhora da textura da pele</li><li>Aumento da luminosidade</li><li>Ação antioxidante, protegendo contra radicais livres</li></ul><p><strong><i class=\"fa-solid fa-flask-vial\"></i> Ingredientes ou Composição:</strong></p><ul><li>Niacinamida (15%): Reduz poros, uniformiza o tom da pele e suaviza linhas finas.</li></ul><p><strong><i class=\"fa-solid fa-hand-sparkles\"></i> Modo de uso:</strong></p><p>Após a limpeza e tonificação, aplique algumas gotas do sérum no rosto e pescoço, massageando suavemente até a completa absorção. Use de manhã e à noite.</p><p><strong><i class=\"fa-solid fa-shield-check\"></i> Por que escolher este produto?</strong></p><p>Celimax é uma marca reconhecida por sua qualidade e eficácia. Este sérum, fabricado no Japão, oferece resultados visíveis e duradouros, proporcionando uma pele mais jovem e saudável.</p><p><strong><i class=\"fa-solid fa-box-open\"></i> Conteúdo da embalagem:</strong></p><ul><li>1 frasco de Sérum Facial Celimax The Real Niacinamide 15%</li></ul>",
+    "origin": "Japão",
+    "image": "https://i.ebayimg.com/images/g/FpYAAeSw9EZonrsi/s-l1600.webp",
+    "image2": "https://d1flfk77wl2xk4.cloudfront.net/Assets/celimax-the-vita-a-retinal-shot-tightening-booster-15ml/03/274/XL_p0212227403.jpg",
+    "image3": "https://acdn-us.mitiendanube.com/stores/005/226/087/products/img_5430-122426326293f6838117695430634678-1024-1024.webp",
+    "images": [
+      "https://i.ebayimg.com/images/g/FpYAAeSw9EZonrsi/s-l1600.webp",
+      "https://d1flfk77wl2xk4.cloudfront.net/Assets/celimax-the-vita-a-retinal-shot-tightening-booster-15ml/03/274/XL_p0212227403.jpg",
+      "https://acdn-us.mitiendanube.com/stores/005/226/087/products/img_5430-122426326293f6838117695430634678-1024-1024.webp"
+    ],
+    "units": 1,
+    "featured": false,
+    "cost": 124.47,
+    "markup": 25,
+    "badge": null,
+    "badgeBg": "#f5a623",
+    "stock": 10,
+    "rating": 4.5,
+    "reviews": 0,
+    "cardBg": "bg-[#d6eaf8]",
+    "rotate": "rotate(2deg)",
+    "deco": "tape",
+    "createdAt": 1777009887497
+  },
+  {
     "id": "shampoo-tratamento-refa-honey-queen-kit",
     "name": "Shampoo & Tratamento ReFa HONEY QUEEN - KIT",
     "category": "Cabelos",

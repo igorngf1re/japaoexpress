@@ -159,7 +159,8 @@ export default async function handler(req, res) {
 // Chave gratuita em: aistudio.google.com
 
 async function callGemini(apiKey, userMessage) {
-  const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${apiKey}`;
+  // gemini-1.5-flash: gratuito sem billing, 15 RPM, 1M tokens/dia
+  const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${apiKey}`;
   const resp = await fetch(url, {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },

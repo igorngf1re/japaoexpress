@@ -9,11 +9,11 @@ const OPENROUTER_KEY = process.env.OPENROUTER_API_KEY;  // Primário: OpenRouter
 const ADMIN_SECRET   = process.env.ADMIN_SECRET;
 
 // Modelos OpenRouter — IDs verificados via API em 2025-04-24
-// Lista consultada em: openrouter.ai/api/v1/models
+// SEM :free — evita rate limit compartilhado. Custo: ~$0,0003 por produto (desprezível)
 const OPENROUTER_MODELS = [
-  'meta-llama/llama-3.3-70b-instruct:free',  // 70B, excelente PT-BR, verificado ativo
-  'google/gemma-3-27b-it:free',              // Google 27B, bom para estrutura
-  'qwen/qwen3-next-80b-a3b-instruct:free',   // 80B, forte em instruções
+  'google/gemini-2.0-flash-lite-001',   // $0.07/M tok, 1M ctx — melhor custo/qualidade
+  'google/gemini-2.0-flash-001',        // $0.10/M tok, 1M ctx — fallback
+  'meta-llama/llama-3.3-70b-instruct',  // $0.10/M tok — fallback 2
 ];
 
 const SYSTEM_PROMPT = `Você é um especialista em e-commerce de produtos japoneses importados para o Brasil, trabalhando para a loja "Japão Express".

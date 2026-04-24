@@ -226,6 +226,26 @@
 
                 <form id="productForm" onsubmit="saveProduct(event)" class="space-y-4">
 
+                    <!-- IA Auto-fill -->
+                    <div class="bg-gradient-to-br from-[#F4F0FF] to-[#EAD5F5] rounded-2xl p-4 border border-[#D4B8E0]">
+                        <div class="flex items-center gap-2 mb-3">
+                            <i class="fa-solid fa-wand-magic-sparkles text-[#9B59B6]"></i>
+                            <span class="font-black text-[#2C1654] text-sm">Preencher com IA</span>
+                            <span class="ml-auto text-[9px] bg-[#9B59B6] text-white px-2 py-0.5 rounded-full font-black tracking-wide">GEMINI</span>
+                        </div>
+                        <div class="flex gap-2">
+                            <input id="aiUrl" type="url"
+                                   placeholder="Cole o link do produto (Amazon JP, Rakuten, Cosme…)"
+                                   class="flex-1 text-xs rounded-xl border border-[#D4B8E0] px-3 py-2.5 bg-white focus:outline-none focus:ring-2 focus:ring-[#9B59B6] font-semibold text-[#4A3060] placeholder-[#C5A8D8]">
+                            <button id="aiFillBtn" type="button" onclick="aiAutoFill()"
+                                    class="bg-[#9B59B6] hover:bg-[#7D3C98] disabled:opacity-50 text-white text-xs font-black px-4 py-2.5 rounded-xl transition flex items-center gap-1.5 whitespace-nowrap shadow-md">
+                                <i class="fa-solid fa-wand-magic-sparkles"></i>
+                                <span id="aiFillTxt">Preencher</span>
+                            </button>
+                        </div>
+                        <p id="aiStatus" class="text-[10px] font-bold mt-2 hidden"></p>
+                    </div>
+
                     <!-- Nome + ID -->
                     <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
                         <div>
@@ -1196,6 +1216,82 @@ async function deleteProduct(id) {
     else renderSidebar(document.getElementById('sidebarSearch').value);
   } catch (err) {
     showToast(`❌ ${err.message}`, 'error');
+  }
+}
+
+// ── IA Auto-fill ──────────────────────────────────────
+
+async function aiAutoFill() {
+  const url    = document.getElementById('aiUrl').value.trim();
+  const btn    = document.getElementById('aiFillBtn');
+  const txt    = document.getElementById('aiFillTxt');
+  const status = document.getElementById('aiStatus');
+
+  if (!url) { showToast('Cole um link de produto', 'error'); return; }
+  if (!url.startsWith('http')) { showToast('URL inválida (deve começar com http)', 'error'); return; }
+  if (!adminKey) { document.getElementById('keyModal').style.display = 'flex'; return; }
+
+  btn.disabled = true;
+  txt.textContent = 'Pesquisando…';
+  status.textContent = '🔍 Acessando a página e consultando IA…';
+  status.className = 'text-[10px] font-bold mt-2 text-[#9B59B6]';
+
+  try {
+    const resp = await fetch('/api/ai-product', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${adminKey}` },
+      body: JSON.stringify({ url }),
+    });
+    const data = await resp.json();
+    if (!data.ok) throw new Error(data.error);
+
+    const p = data.product;
+
+    // ── Preenche os campos ──────────────────────────────
+    // Nome (gera ID automaticamente)
+    document.getElementById('fName').value = p.nome || '';
+    onNameInput();
+
+    // Categoria + subcategoria
+    const catEl = document.getElementById('fCategory');
+    if (p.categoria && [...catEl.options].some(o => o.value === p.categoria)) {
+      catEl.value = p.categoria;
+    }
+    onCategoryChange();
+    // Restaura subcategoria depois do onCategoryChange
+    setTimeout(() => {
+      document.getElementById('fSubcategory').value = p.subcategoria || '';
+    }, 0);
+
+    document.getElementById('fBrand').value       = p.marca || '';
+    document.getElementById('fPriceJPY').value    = p.preco_jpy || '';
+    document.getElementById('fWeight').value      = p.peso_gramas || '';
+    document.getElementById('fDescription').value = (p.descricao_curta || '').slice(0, 100);
+    document.getElementById('fDetails').value     = p.descricao_completa || '';
+    document.getElementById('fOrigin').value      = p.origem || 'Japão';
+    document.getElementById('fUnits').value       = p.unidades_por_pacote || 1;
+
+    // Dispara cálculos automáticos
+    autoPrice();
+    updatePreview();
+    document.getElementById('descCount').textContent =
+      `(${(p.descricao_curta || '').length}/100)`;
+
+    status.textContent = '✅ Campos preenchidos! Revise, adicione as fotos e salve.';
+    status.className   = 'text-[10px] font-bold mt-2 text-green-600';
+    showToast('✅ IA preencheu o produto!', 'success');
+
+    // Scroll para o campo de imagem
+    document.getElementById('fImage').scrollIntoView({ behavior: 'smooth', block: 'center' });
+
+  } catch (err) {
+    console.error('[JE Admin] aiAutoFill error:', err);
+    status.textContent = `❌ ${err.message}`;
+    status.className   = 'text-[10px] font-bold mt-2 text-red-500';
+    showToast(`❌ IA: ${err.message}`, 'error');
+  } finally {
+    btn.disabled    = false;
+    txt.textContent = 'Preencher';
   }
 }
 

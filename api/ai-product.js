@@ -7,9 +7,13 @@
 const OPENROUTER_KEY = process.env.OPENROUTER_API_KEY;
 const ADMIN_SECRET   = process.env.ADMIN_SECRET;
 
-// Modelo principal: Gemini 2.0 Flash (via OpenRouter, gratuito)
-// Excelente para pesquisa de produtos e geração de HTML em PT-BR
-const AI_MODEL = 'google/gemini-2.0-flash-exp:free';
+// Modelos gratuitos no OpenRouter — em ordem de preferência
+// Se o primeiro falhar com 404/429, tenta o próximo
+const AI_MODELS = [
+  'google/gemini-2.0-flash-thinking-exp-01-21:free',
+  'meta-llama/llama-3.3-70b-instruct:free',
+  'deepseek/deepseek-chat-v3-0324:free',
+];
 
 const SYSTEM_PROMPT = `Você é um especialista em e-commerce de produtos japoneses importados para o Brasil, trabalhando para a loja "Japão Express".
 
@@ -101,38 +105,48 @@ export default async function handler(req, res) {
     // ── 1. Scrapa a página ────────────────────────────────
     const context = await scrapePage(url);
 
-    // ── 2. Chama a IA ─────────────────────────────────────
+    // ── 2. Chama a IA (com fallback entre modelos) ────────
     const userMessage =
       `URL do produto: ${url}\n\n` +
       `=== Conteúdo extraído da página ===\n${context}\n\n` +
       `Pesquise informações adicionais sobre este produto se necessário e preencha o JSON completo.`;
 
-    const aiResp = await fetch('https://openrouter.ai/api/v1/chat/completions', {
-      method: 'POST',
-      headers: {
-        'Authorization': `Bearer ${OPENROUTER_KEY}`,
-        'Content-Type':  'application/json',
-        'HTTP-Referer':  'https://japaoexpress.shop',
-        'X-Title':       'Japao Express Admin',
-      },
-      body: JSON.stringify({
-        model:       AI_MODEL,
-        messages: [
-          { role: 'system', content: SYSTEM_PROMPT },
-          { role: 'user',   content: userMessage },
-        ],
-        temperature: 0.3,
-        max_tokens:  2500,
-      }),
-    });
+    let rawText = '';
+    let lastError = '';
+    for (const model of AI_MODELS) {
+      const aiResp = await fetch('https://openrouter.ai/api/v1/chat/completions', {
+        method: 'POST',
+        headers: {
+          'Authorization': `Bearer ${OPENROUTER_KEY}`,
+          'Content-Type':  'application/json',
+          'HTTP-Referer':  'https://japaoexpress.shop',
+          'X-Title':       'Japao Express Admin',
+        },
+        body: JSON.stringify({
+          model,
+          messages: [
+            { role: 'system', content: SYSTEM_PROMPT },
+            { role: 'user',   content: userMessage },
+          ],
+          temperature: 0.3,
+          max_tokens:  2500,
+        }),
+      });
 
-    if (!aiResp.ok) {
-      const errText = await aiResp.text();
-      throw new Error(`OpenRouter ${aiResp.status}: ${errText.slice(0, 200)}`);
+      if (!aiResp.ok) {
+        const errText = await aiResp.text();
+        lastError = `${model} → ${aiResp.status}: ${errText.slice(0, 120)}`;
+        console.warn('[ai-product] model failed, trying next:', lastError);
+        continue; // tenta próximo modelo
+      }
+
+      const aiData = await aiResp.json();
+      rawText = aiData.choices?.[0]?.message?.content || '';
+      if (rawText) break; // sucesso, para o loop
+      lastError = `${model} → resposta vazia`;
     }
 
-    const aiData = await aiResp.json();
-    const rawText = aiData.choices?.[0]?.message?.content || '';
+    if (!rawText) throw new Error(`Todos os modelos falharam. Último erro: ${lastError}`);
 
     // ── 3. Extrai e valida JSON da resposta ───────────────
     const jsonMatch = rawText.match(/\{[\s\S]*\}/);

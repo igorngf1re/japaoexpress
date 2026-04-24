@@ -4,15 +4,16 @@
 // JSON pronto para preencher o formulário do admin
 // ═══════════════════════════════════════════════════════════
 
-const GEMINI_KEY     = process.env.GEMINI_API_KEY;      // Primário: Google AI Studio (gratuito, confiável)
-const OPENROUTER_KEY = process.env.OPENROUTER_API_KEY;  // Fallback: OpenRouter
+const GEMINI_KEY     = process.env.GEMINI_API_KEY;      // Opcional: Google AI Studio (requer billing ativo)
+const OPENROUTER_KEY = process.env.OPENROUTER_API_KEY;  // Primário: OpenRouter (já configurado e funcionando)
 const ADMIN_SECRET   = process.env.ADMIN_SECRET;
 
-// Modelos OpenRouter de fallback (usados só se GEMINI_API_KEY não estiver configurado)
+// Modelos OpenRouter — IDs verificados via API em 2025-04-24
+// Lista consultada em: openrouter.ai/api/v1/models
 const OPENROUTER_MODELS = [
-  'meta-llama/llama-3.1-8b-instruct:free',
-  'google/gemma-2-9b-it:free',
-  'mistralai/mistral-7b-instruct:free',
+  'meta-llama/llama-3.3-70b-instruct:free',  // 70B, excelente PT-BR, verificado ativo
+  'google/gemma-3-27b-it:free',              // Google 27B, bom para estrutura
+  'qwen/qwen3-next-80b-a3b-instruct:free',   // 80B, forte em instruções
 ];
 
 const SYSTEM_PROMPT = `Você é um especialista em e-commerce de produtos japoneses importados para o Brasil, trabalhando para a loja "Japão Express".
@@ -96,8 +97,8 @@ export default async function handler(req, res) {
   if (!ADMIN_SECRET) return res.status(503).json({ ok: false, error: 'ADMIN_SECRET não configurado.' });
   if (token !== ADMIN_SECRET) return res.status(401).json({ ok: false, error: 'Chave admin incorreta.' });
 
-  if (!GEMINI_KEY && !OPENROUTER_KEY) {
-    return res.status(503).json({ ok: false, error: 'Configure GEMINI_API_KEY ou OPENROUTER_API_KEY na Vercel.' });
+  if (!OPENROUTER_KEY && !GEMINI_KEY) {
+    return res.status(503).json({ ok: false, error: 'Configure OPENROUTER_API_KEY na Vercel.' });
   }
 
   const { url } = req.body || {};
@@ -113,12 +114,17 @@ export default async function handler(req, res) {
       `Pesquise informações adicionais sobre este produto se necessário e preencha o JSON completo.`;
 
     // ── 2. Chama a IA ─────────────────────────────────────
-    // Primário: Gemini 2.0 Flash direto (Google AI Studio — grátis, 1.5k req/dia)
-    // Fallback: OpenRouter com modelos gratuitos
+    // Primário: OpenRouter (já configurado, confiável, ~$0,001/req)
+    // Opcional: Gemini direto se GEMINI_KEY estiver com billing ativo
     let rawText = '';
 
     if (GEMINI_KEY) {
-      rawText = await callGemini(GEMINI_KEY, userMessage);
+      try {
+        rawText = await callGemini(GEMINI_KEY, userMessage);
+      } catch (e) {
+        console.warn('[ai-product] Gemini falhou, usando OpenRouter:', e.message);
+        rawText = await callOpenRouter(OPENROUTER_KEY, userMessage);
+      }
     } else {
       rawText = await callOpenRouter(OPENROUTER_KEY, userMessage);
     }
@@ -159,8 +165,8 @@ export default async function handler(req, res) {
 // Chave gratuita em: aistudio.google.com
 
 async function callGemini(apiKey, userMessage) {
-  // gemini-1.5-flash: gratuito sem billing, 15 RPM, 1M tokens/dia
-  const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${apiKey}`;
+  // gemini-2.0-flash-lite: maior cota gratuita, confirmado disponível nesta chave
+  const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash-lite:generateContent?key=${apiKey}`;
   const resp = await fetch(url, {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },

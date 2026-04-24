@@ -18,6 +18,40 @@ function getProductById(id) {
 
 const PRODUCTS = [
   {
+    "id": "shampoo-e-condicionador-himawari-rich-re",
+    "name": "Shampoo e Condicionador HIMAWARI Rich & Repair - Kit 2x500ml",
+    "category": "Cabelos",
+    "cat": "cabelos",
+    "subcategory": "Cabelos",
+    "brand": "HIMAWARI",
+    "priceBRL": 96.86,
+    "priceJPY": 2490,
+    "weight": 1400,
+    "description": "Kit Shampoo e Condicionador HIMAWARI Rich & Repair, fórmula japonesa para cabelos macios e controlad",
+    "details": "<p>Descubra o poder da linha HIMAWARI Rich & Repair, um tratamento capilar japonês que transforma seus cabelos. Este kit, com shampoo e condicionador, foi desenvolvido para controlar o volume, proporcionar maciez e um brilho radiante. Sinta a diferença da fórmula japonesa, que cuida dos seus cabelos com ingredientes de alta qualidade.</p><p><strong><i class=\"fa-solid fa-wand-magic-sparkles\"></i> Benefícios principais:</strong></p><ul><li>Controla o volume e o frizz.</li><li>Proporciona cabelos macios e fáceis de pentear.</li><li>Sistema de cuidado que age na superfície e no interior do fio.</li><li>Cabelos com menos ondulação.</li><li>Reparação intensiva para áreas danificadas.</li><li>Cabelos com um aroma floral elegante e duradouro.</li></ul><p><strong><i class=\"fa-solid fa-flask-vial\"></i> Ingredientes ou Composição:</strong></p><ul><li>[Não disponível na descrição, mas a marca é conhecida por usar óleo de girassol e outros ingredientes naturais]</li></ul><p><strong><i class=\"fa-solid fa-hand-sparkles\"></i> Modo de uso:</strong></p><p>Aplique o shampoo nos cabelos molhados, massageando suavemente o couro cabeludo. Enxágue bem. Em seguida, aplique o condicionador do comprimento às pontas, deixando agir por alguns minutos. Enxágue completamente.</p><p><strong><i class=\"fa-solid fa-shield-check\"></i> Por que escolher este produto?</strong></p><p>A linha HIMAWARI é reconhecida no Japão por sua eficácia e ingredientes de alta qualidade. A fórmula Rich & Repair oferece um tratamento completo, deixando os cabelos saudáveis, macios e com um perfume agradável.</p><p><strong><i class=\"fa-solid fa-box-open\"></i> Conteúdo da embalagem:</strong></p><ul><li>1 Shampoo HIMAWARI Rich & Repair 500ml</li><li>1 Condicionador HIMAWARI Rich & Repair 500ml</li></ul>",
+    "origin": "Japão",
+    "image": "https://wafuu.com/cdn/shop/products/kracie-dear-beaute-himawari-richrepair-oil-in-shampootreatment-set-438535_1080x.png?v=1706143640",
+    "image2": "https://www.biteki.com/wp-content/uploads/2021/12/202202gbc74-1-1.jpg",
+    "image3": null,
+    "images": [
+      "https://wafuu.com/cdn/shop/products/kracie-dear-beaute-himawari-richrepair-oil-in-shampootreatment-set-438535_1080x.png?v=1706143640",
+      "https://www.biteki.com/wp-content/uploads/2021/12/202202gbc74-1-1.jpg"
+    ],
+    "units": 1,
+    "featured": false,
+    "cost": 77.49,
+    "markup": 25,
+    "badge": null,
+    "badgeBg": "#f5a623",
+    "stock": 10,
+    "rating": 4.5,
+    "reviews": 0,
+    "cardBg": "bg-[#fcf3cf]",
+    "rotate": "rotate(-2deg)",
+    "deco": "tape",
+    "createdAt": 1777007581229
+  },
+  {
     "id": "protetor-solar-anessa-perfect-uv",
     "name": "Protetor Solar Anessa Perfect UV Sunscreen Skincare Milk SPF50+ PA++++ 90g",
     "category": "Cosméticos",

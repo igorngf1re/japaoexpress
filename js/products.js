@@ -18,6 +18,40 @@ function getProductById(id) {
 
 const PRODUCTS = [
   {
+    "id": "espuma-de-limpeza-rosette-com-argila-mar",
+    "name": "Espuma de Limpeza Rosette com Argila Marinha 30g",
+    "category": "Cosméticos",
+    "cat": "cosmeticos",
+    "subcategory": "",
+    "brand": "Rosette",
+    "priceBRL": 46.3,
+    "priceJPY": 1200,
+    "weight": 200,
+    "description": "Espuma facial com argila marinha que limpa profundamente e reduz poros.",
+    "details": "A Espuma de Limpeza Rosette Face Wash Pasta Kaidei Smooth é um clássico japonês desenvolvido para limpeza profunda dos poros. Com argila marinha rica em minerais, remove impurezas e excesso de oleosidade, deixando a pele limpa e suave.<i class=\"fa-solid fa-wand-magic-sparkles\"> Benefícios principais:Limpeza profunda dos porosRemove oleosidade e impurezasAjuda a reduzir cravos e textura irregularDeixa a pele mais macia e suaveFórmula com argila rica em minerais<i class=\"fa-solid fa-flask-vial\"> Ingredientes/Composição:Argila marinha: absorve impurezas e oleosidadeEnxofre: auxilia no controle de acne e cravosGlicerina: mantém a hidratação da pele<i class=\"fa-solid fa-hand-sparkles\"> Modo de uso:Aplique uma pequena quantidade nas mãos, adicione água para formar espuma e massageie suavemente o rosto. Enxágue bem com água morna. Use diariamente, de manhã e à noite.<i class=\"fa-solid fa-shield-check\"> Por que escolher este produto?A Rosette é uma marca tradicional no Japão, reconhecida por suas fórmulas eficazes e acessíveis. Esta linha com argila marinha é especialmente indicada para quem busca limpeza profunda com cuidado suave para a pele.<i class=\"fa-solid fa-triangle-exclamation\"> Aviso / Atenção:Evite contato com os olhos. Em caso de irritação, suspenda o uso. Uso externo. Manter fora do alcance de crianças.",
+    "origin": "Japão",
+    "image": "https://cdn.jsdelivr.net/gh/igorngf1re/japaoexpress@main/images/produtos/1777097033955_img_4754.jpeg",
+    "image2": "https://cdn.jsdelivr.net/gh/igorngf1re/japaoexpress@main/images/produtos/1777097043841_img_4755.jpeg",
+    "image3": null,
+    "images": [
+      "https://cdn.jsdelivr.net/gh/igorngf1re/japaoexpress@main/images/produtos/1777097033955_img_4754.jpeg",
+      "https://cdn.jsdelivr.net/gh/igorngf1re/japaoexpress@main/images/produtos/1777097043841_img_4755.jpeg"
+    ],
+    "units": 1,
+    "featured": false,
+    "cost": 37.64,
+    "markup": 23,
+    "badge": null,
+    "badgeBg": "#f5a623",
+    "stock": 10,
+    "rating": 4.5,
+    "reviews": 0,
+    "cardBg": "bg-[#d6eaf8]",
+    "rotate": "rotate(-2deg)",
+    "deco": "tape",
+    "createdAt": 1777097069304
+  },
+  {
     "id": "serum-facial-celimax-retinal-shot-booste",
     "name": "Sérum Facial Celimax Retinal Shot Booster 30ml",
     "category": "Cosméticos",

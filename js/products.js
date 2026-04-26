@@ -47,7 +47,7 @@ const PRODUCTS = [
     "rating": 4.5,
     "reviews": 0,
     "cardBg": "bg-[#d6eaf8]",
-    "rotate": "rotate(-2deg)",
+    "rotate": "rotate(1deg)",
     "deco": "tape",
     "createdAt": 1777097069304
   },
